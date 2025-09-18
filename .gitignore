@@ -1,0 +1,5 @@
+smolvlm-500m-finetuned/
+smolvlm-finetuned/
+wandb/
+all/
+benchmark_cache/

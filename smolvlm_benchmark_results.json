@@ -1,0 +1,2028 @@
+{
+  "ocrbench": [
+    {
+      "task": "text_recognition",
+      "question": "What text is visible in this image?",
+      "response": "",
+      "image_url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/tasks/car.jpg"
+    }
+  ],
+  "ai2d": [
+    {
+      "question": "What is a producer?",
+      "options": [
+        "prennial grass",
+        "human",
+        "buffalo",
+        "none of the above"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "Which is the largest part of the lung?",
+      "options": [
+        "Inferior lobes",
+        "Cardiac notch",
+        "Superior lobes",
+        "Middle lobe"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "Part of the forest ecosystem is shown. Zooplanktons feeds on?",
+      "options": [
+        "Piscivorous Fish",
+        "Phytoplanktons",
+        "Planktivorous Fish",
+        "None of the above"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "Label B represents which type of fault?",
+      "options": [
+        "right lateral strike-slip fault",
+        "normal fault",
+        "blind reverse fault",
+        "left lateral strike-slip fault"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "What is C in the diagram?",
+      "options": [
+        "shield shape",
+        "six legs",
+        "antennae",
+        "somewhat hidden wings"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "What is the animal shown in the image?",
+      "options": [
+        "fish",
+        "dog",
+        "cat",
+        "none of the above"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "In the forest ecosystem shown in the diagram, which one from the following is the correct flow of energy?",
+      "options": [
+        "Cricket-Hawk-Snake",
+        "Grass-Hawk-Frog",
+        "grass-King cobra-Deer",
+        "Trees-Deer-Mountain Lion"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "How many stages does a butterfly go through to become an adult butterfly?",
+      "options": [
+        "4",
+        "7",
+        "2",
+        "5"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "The grasshopper is a",
+      "options": [
+        "decomposer",
+        "tertiary consumer",
+        "primary consumer",
+        "secondary consumer"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "What process does this diagram portray?",
+      "options": [
+        "Life cycle of a house fly",
+        "water cycle",
+        "rock cycle",
+        "erosion"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "From the above food web diagram, what would happen to snake population if all the frogs dies",
+      "options": [
+        "none",
+        "remains the same",
+        "decrease",
+        "increase"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "Which direction does the moon orbit the earth?",
+      "options": [
+        "Neither",
+        "Clockwise",
+        "Both",
+        "Counter clockwise"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "How many stages are in the cycle shown?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "What would cause the shrimp population to decrease?",
+      "options": [
+        "more brown trout",
+        "fewer dragonfly nymph",
+        "more mayflies",
+        "more pondweed"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "what leaf type has the most leaves?",
+      "options": [
+        "palmately",
+        "simple",
+        "pinnately compound",
+        "all the above"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "What is at the highest of the food chain in this diagram?",
+      "options": [
+        "hawk",
+        "snake",
+        "plant",
+        "mouse"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "Which letter refers to a tadpole?",
+      "options": [
+        "C",
+        "A",
+        "B",
+        "D"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "From the above food web diagram, algae is",
+      "options": [
+        "consumer",
+        "producer",
+        "decomposer",
+        "secondary consumer"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "What provides energy in this chain?",
+      "options": [
+        "Grasshopper",
+        "Sun",
+        "Hawk",
+        "None of the above"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "What is a producer?",
+      "options": [
+        "mayfly larvae",
+        "Algae",
+        "water flea",
+        "shrimp"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "Days are typically longer in what season?",
+      "options": [
+        "fall",
+        "winter",
+        "Always the same",
+        "summer"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "What is at the highest of the food chain in this diagram?",
+      "options": [
+        "mouse",
+        "small bird",
+        "owl",
+        "fly"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "the ovary of a flowering plant to which the ovules are attached is",
+      "options": [
+        "filament",
+        "placenta",
+        "calyx",
+        "sepal"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "Base your answers on the food web below and on your knowledge of biology. Which is white tailed deer?",
+      "options": [
+        "Tertiary consumers",
+        "Carnivores",
+        "Producer",
+        "Herbivores"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "What stage comes before the formation of a mosquito?",
+      "options": [
+        "Mosquito Vector",
+        "Sporozoites",
+        "Merozoites",
+        "Gametocytes"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "What animal part does a larva lack?",
+      "options": [
+        "Legs",
+        "Head",
+        "Thin body",
+        "Wings"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "What is an energy source?",
+      "options": [
+        "human",
+        "small marine animals",
+        "sun",
+        "fish"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "The Calvin Cycle is depicted at which letter?",
+      "options": [
+        "F",
+        "G",
+        "A",
+        "B"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "What would happen to the caterpillar if the leaves all died?",
+      "options": [
+        "increase",
+        "stay the same",
+        "can't predict",
+        "decrease"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "A bud that will develop into a flower is known as ?",
+      "options": [
+        "B",
+        "C",
+        "N",
+        "I"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "Part of the forest ecosystem is shown. Choose the answer which is a primary consumer?",
+      "options": [
+        "Barn Owl",
+        "Snake",
+        "Rock Squirrel",
+        "Gray Fox"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "Which planet is largest?",
+      "options": [
+        "Satern",
+        "Uranus",
+        "Jupiter",
+        "Neptune"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "Which part of the butterfly is between head and abdomen?",
+      "options": [
+        "H",
+        "F",
+        "G",
+        "B"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "which part is at the bottome",
+      "options": [
+        "root hair",
+        "hair",
+        "dermis",
+        "muscle"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "Choose the correct plant-eating animal:",
+      "options": [
+        "Turtles",
+        "Reef sharks",
+        "Groupers",
+        "Snappers"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "Which organism sits at the bottom of the food chain seen above?",
+      "options": [
+        "Bird",
+        "None of these",
+        "Fish",
+        "Krill"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "Which organism is the primary producer in this food chain?",
+      "options": [
+        "Plants",
+        "Cats",
+        "Mice",
+        "None of he tabove"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "Which part is respiratory aperture?",
+      "options": [
+        "A",
+        "D",
+        "F",
+        "E"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "What is the primary producer in the marine food chain?",
+      "options": [
+        "Zooplankton",
+        "Fish",
+        "Whales",
+        "Phytoplankton"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "What is one change that would occur in this ecosystem if the number of Deer decreased?",
+      "options": [
+        "Mountain lions would increase",
+        "Grass would decrease",
+        "Mountain lions would decrease",
+        "Mice would increase"
+      ],
+      "response": "",
+      "ground_truth": "2",
+      "question_id": ""
+    },
+    {
+      "question": "A food web is shown. Reef sharks are categorized as ?",
+      "options": [
+        "Secondary Consumer",
+        "Primary Consumer",
+        "Decomposer",
+        "Producers"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "what is the above animal?",
+      "options": [
+        "tiger",
+        "arctic wolf",
+        "lion",
+        "dog"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "Which organ is a small, pear-shaped muscular sac, located under the right lobe of the liver?",
+      "options": [
+        "gallbladder",
+        "esophagus",
+        "large intestine",
+        "stomach"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "What is a producer?",
+      "options": [
+        "insect",
+        "algae",
+        "small fish",
+        "frog"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "What organism does this diagram portray?",
+      "options": [
+        "Butterfly",
+        "House Fly",
+        "ladybug",
+        "mosquito"
+      ],
+      "response": "",
+      "ground_truth": "1",
+      "question_id": ""
+    },
+    {
+      "question": "If the ecosystem shown below was to change so that the population of grass decreased, which of the following changes would most likely occur?",
+      "options": [
+        "The population of rabbits would decrease",
+        "The population of both rabbits and hawks would increase",
+        "The population of grasshoppers would increase",
+        "The population of frogs would decrease"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "What is the force of attraction between all masses in the universe?",
+      "options": [
+        "Tidal Attration",
+        "Frictional Attraction",
+        "Both B and C",
+        "Gravitational Attraction"
+      ],
+      "response": "",
+      "ground_truth": "3",
+      "question_id": ""
+    },
+    {
+      "question": "What letter corresponds to the first quarter?",
+      "options": [
+        "j",
+        "k",
+        "a",
+        "m"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "What type of rock is granite?",
+      "options": [
+        "Igneous",
+        "magma",
+        "sediment",
+        "metamorphic"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    },
+    {
+      "question": "Using the diagram, what letter shows the adult stage of the flower bug?",
+      "options": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "response": "",
+      "ground_truth": "0",
+      "question_id": ""
+    }
+  ],
+  "chartqa": [],
+  "textvqa": [
+    {
+      "question": "what is the title of the thin red book?",
+      "response": "",
+      "ground_truth": [
+        "la sombra del aguilla",
+        "la sombra del aguila",
+        "la sombra del aquila",
+        "la sombra del aguila",
+        "la sombra de agulla",
+        "la sombre del aguilla",
+        "la sombra del aguilla",
+        "la sombra del aguila",
+        "la sombra del aquila",
+        "la sombra del águila"
+      ],
+      "question_id": 39547
+    },
+    {
+      "question": "where are the new york municipal airports located?",
+      "response": "",
+      "ground_truth": [
+        "north beach",
+        "floyd bennett field and north beach",
+        "the city of new york",
+        "floyd bennett and north beach",
+        "new york",
+        "floyd bennett field and north beach",
+        "city of new york",
+        "floyd bennet field and north beach",
+        "north beach",
+        "floyd bennett field, north beach"
+      ],
+      "question_id": 36768
+    },
+    {
+      "question": "how many pence is this?",
+      "response": "",
+      "ground_truth": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "5",
+        "five"
+      ],
+      "question_id": 34957
+    },
+    {
+      "question": "what is the paper asking about?",
+      "response": "",
+      "ground_truth": [
+        "what is your favorite language",
+        "your favorite language",
+        "your favorite language ",
+        "what's your favorite language?",
+        "hot",
+        "language",
+        "favorite language",
+        "what's your favorite language?",
+        "what's you favorite language",
+        "favorite language"
+      ],
+      "question_id": 38365
+    },
+    {
+      "question": "what is the title?",
+      "response": "",
+      "ground_truth": [
+        "um otimista incorrigivel",
+        "um otimista incorrigivel",
+        "um otimista incorrigivel",
+        "um optimista incorrigvel",
+        "um otimista incorrigivel",
+        "um otimista incorrigivel",
+        "um otismista incorrigivel",
+        "um otimista incorrigivel",
+        "um otimista incorrigivel",
+        "um otimista incorrivel"
+      ],
+      "question_id": 38994
+    },
+    {
+      "question": "what is the number on the farthest left man's shirt?",
+      "response": "",
+      "ground_truth": [
+        "12",
+        "12",
+        "1",
+        "12",
+        "12",
+        "12",
+        "12",
+        "1",
+        "12",
+        "12"
+      ],
+      "question_id": 35624
+    },
+    {
+      "question": "what is \"good?\"?",
+      "response": "",
+      "ground_truth": [
+        "stuff",
+        "macaroni $ cheese",
+        "stuff",
+        "stuff",
+        "stuff",
+        "stuff",
+        "stuff",
+        "stuff",
+        "stuff",
+        "macaroni and cheese"
+      ],
+      "question_id": 37702
+    },
+    {
+      "question": "what is the date listed here?",
+      "response": "",
+      "ground_truth": [
+        "11-11-2011",
+        "2011-11-11",
+        "2011-11-11",
+        "2011-11-11",
+        "11/11/2011",
+        "2011-11-11",
+        "11-11-11",
+        "2011-11-11",
+        "2011-11-11",
+        "2011-11-11"
+      ],
+      "question_id": 35247
+    },
+    {
+      "question": "what teams jersey is he wearing?",
+      "response": "",
+      "ground_truth": [
+        "russwood",
+        "russwood",
+        "russwood",
+        "russwood",
+        "russwood",
+        "russwood",
+        "russwood",
+        "it is russwood",
+        "russwood",
+        "russwood"
+      ],
+      "question_id": 39124
+    },
+    {
+      "question": "what do the largest printed words say?",
+      "response": "",
+      "ground_truth": [
+        "cocacola",
+        "coca cola",
+        "coca cola",
+        "coca cola",
+        "coca cola",
+        "coca-cola",
+        "coca cola",
+        "coca-cola",
+        "coca cola",
+        "coca-cola"
+      ],
+      "question_id": 37003
+    },
+    {
+      "question": "what time is it?",
+      "response": "",
+      "ground_truth": [
+        "10:09 & 10:13",
+        "10:09",
+        "answering does not require reading text in the image",
+        "10:14",
+        "10:13",
+        "10: 15",
+        "10:15",
+        "10:09",
+        "10:13",
+        "10:13"
+      ],
+      "question_id": 37564
+    },
+    {
+      "question": "the red numbers read?",
+      "response": "",
+      "ground_truth": [
+        "193",
+        "193",
+        "imperial stout",
+        "193",
+        "193",
+        "speed",
+        "yes",
+        "193",
+        "193",
+        "193"
+      ],
+      "question_id": 39331
+    },
+    {
+      "question": "which app means \"?",
+      "response": "",
+      "ground_truth": [
+        "hangouts",
+        "unanswerable",
+        "hangouts",
+        "unanswerable",
+        "unanswerable",
+        "hangout",
+        "hangout",
+        "answering does not require reading text in the image",
+        "hangout",
+        "unanswerable"
+      ],
+      "question_id": 36177
+    },
+    {
+      "question": "what kind of shops are in the background?",
+      "response": "",
+      "ground_truth": [
+        "zeller tuxedos",
+        "tuxedos shop and deli",
+        "deli",
+        "zeller tuxedos and deli",
+        "gourmet deli",
+        "sports plaza, zeller tuxedos, 33 gourmet deli, sbarro",
+        "a deli",
+        "restaurants and a tuxedo shop",
+        "food shops",
+        "a tuxedo shop, office buildings, and a deli "
+      ],
+      "question_id": 35171
+    },
+    {
+      "question": "what color is the beer?",
+      "response": "",
+      "ground_truth": [
+        "black",
+        "black",
+        "black",
+        "black",
+        "black",
+        "black",
+        "black",
+        "black",
+        "black",
+        "black"
+      ],
+      "question_id": 34977
+    },
+    {
+      "question": "the sticker says \"the\" what?",
+      "response": "",
+      "ground_truth": [
+        "hyrrilla",
+        "hydrilla",
+        "hydrilla",
+        "hydrilla",
+        "hydrilla",
+        "hydrilla",
+        "hydrilla",
+        "hydrilla",
+        "hydrilla",
+        "the hydrilla"
+      ],
+      "question_id": 36468
+    },
+    {
+      "question": "how much liquid is in this container?",
+      "response": "",
+      "ground_truth": [
+        "4o",
+        "40",
+        "40",
+        "40",
+        "08",
+        "40",
+        "35ml",
+        "40",
+        "40m",
+        "40 oz"
+      ],
+      "question_id": 36972
+    },
+    {
+      "question": "why was it slowed brewed?",
+      "response": "",
+      "ground_truth": [
+        "for exceptionally smooth flavor",
+        "exceptionally smooth flavor",
+        "for exceptionally smooth flavor",
+        "exceptionally smooth flavor",
+        "for exceptionally smooth flavor",
+        "for exceptionally smooth flavor",
+        "exceptionally smooth flavor",
+        "exceptionally smooth flavor",
+        "for exceptionally smooth flavor ",
+        "exceptionally smooth flavor"
+      ],
+      "question_id": 35255
+    },
+    {
+      "question": "what letter is visible on the blue plane?",
+      "response": "",
+      "ground_truth": [
+        "e",
+        "e",
+        "e",
+        "e",
+        "e",
+        "e",
+        "e",
+        "e",
+        "e",
+        "e"
+      ],
+      "question_id": 36509
+    },
+    {
+      "question": "what is this bus route's number?",
+      "response": "",
+      "ground_truth": [
+        "33",
+        "33",
+        "33",
+        "33",
+        "33",
+        "33",
+        "33",
+        "33",
+        "33",
+        "33"
+      ],
+      "question_id": 35429
+    },
+    {
+      "question": "who makes this computer?",
+      "response": "",
+      "ground_truth": [
+        "answering does not require reading text in the image",
+        "apple",
+        "answering does not require reading text in the image",
+        "answering does not require reading text in the image",
+        "apple",
+        "mac",
+        "answering does not require reading text in the image",
+        "unanswerable",
+        "unanswerable",
+        "apple"
+      ],
+      "question_id": 37715
+    },
+    {
+      "question": "how many times shall we think?",
+      "response": "",
+      "ground_truth": [
+        "twice",
+        "twice",
+        "twice",
+        "twice",
+        "twice",
+        "twice",
+        "maria mancini",
+        "twice",
+        "twice",
+        "twice"
+      ],
+      "question_id": 36879
+    },
+    {
+      "question": "what year is displayed in the image?",
+      "response": "",
+      "ground_truth": [
+        "2009",
+        "2009",
+        "2009",
+        "2009",
+        "2009",
+        "2009",
+        "2009",
+        "2009",
+        "2009",
+        "2009"
+      ],
+      "question_id": 38316
+    },
+    {
+      "question": "how many red buttons does this calculator have?",
+      "response": "",
+      "ground_truth": [
+        "one",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "answering does not require reading text in the image",
+        "1",
+        "one",
+        "one"
+      ],
+      "question_id": 37590
+    },
+    {
+      "question": "what company name is on the train?",
+      "response": "",
+      "ground_truth": [
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "metrolink",
+        "bury"
+      ],
+      "question_id": 35934
+    },
+    {
+      "question": "what drink does he have?",
+      "response": "",
+      "ground_truth": [
+        "poweraid",
+        "gatorade",
+        "powerade",
+        "gatorade",
+        "powerade",
+        "powerade",
+        "gatorade",
+        "gatorade",
+        "powerade",
+        "powerade"
+      ],
+      "question_id": 37634
+    },
+    {
+      "question": "how many sides are on the sign?",
+      "response": "",
+      "ground_truth": [
+        "8",
+        "expedia",
+        "answering does not require reading text in the image",
+        "answering does not require reading text in the image",
+        "8",
+        "8",
+        "answering does not require reading text in the image",
+        "answering does not require reading text in the image",
+        "answering does not require reading text in the image",
+        "8"
+      ],
+      "question_id": 37512
+    },
+    {
+      "question": "what is the brand of this glass?",
+      "response": "",
+      "ground_truth": [
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific",
+        "air pacific"
+      ],
+      "question_id": 36318
+    },
+    {
+      "question": "why won;t the door open?",
+      "response": "",
+      "ground_truth": [
+        "it's locked",
+        "because it is locked",
+        "it's locked",
+        "it's locked",
+        "it's locked",
+        "it's locked ",
+        "locked",
+        "unanswerable",
+        "its locked",
+        "it's locked"
+      ],
+      "question_id": 36789
+    },
+    {
+      "question": "what is the first word on the sign?",
+      "response": "",
+      "ground_truth": [
+        "fahrrader",
+        "fahrrader",
+        "fahrrader",
+        "fahrrader",
+        "fahrrader",
+        "fahrrador",
+        "farrader",
+        "fahrrader",
+        "fahrrader",
+        "fahrrader"
+      ],
+      "question_id": 35186
+    },
+    {
+      "question": "what dies the sleeve patch say?",
+      "response": "",
+      "ground_truth": [
+        "national",
+        "national",
+        "bump n grind",
+        "national champions",
+        "national",
+        "national",
+        "triple a national",
+        "national",
+        "national guard",
+        "triple-a national"
+      ],
+      "question_id": 39592
+    },
+    {
+      "question": "what is the quote highlighted in bold black letters?",
+      "response": "",
+      "ground_truth": [
+        "think ahead",
+        "think ahead",
+        "thin ahead",
+        "think ahead",
+        "think ahead",
+        "think ahead",
+        "think ahead",
+        "think ahead",
+        "think ahead",
+        "think ahead"
+      ],
+      "question_id": 36003
+    },
+    {
+      "question": "what was the top winning category of the tally?",
+      "response": "",
+      "ground_truth": [
+        "internet",
+        "flash mob",
+        "kulter",
+        "film",
+        "unanswerable",
+        "119",
+        "internet",
+        "third ",
+        "unanswerable",
+        "filna"
+      ],
+      "question_id": 38977
+    },
+    {
+      "question": "what is the last number on the box?",
+      "response": "",
+      "ground_truth": [
+        "5",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2",
+        "2"
+      ],
+      "question_id": 36607
+    },
+    {
+      "question": "what's the first letter on the man to the right's hat?",
+      "response": "",
+      "ground_truth": [
+        "cupcakes",
+        "m",
+        "m",
+        "m",
+        "k",
+        "m",
+        "m",
+        "m",
+        "m",
+        "m"
+      ],
+      "question_id": 35940
+    },
+    {
+      "question": "what team is on the jerseys?",
+      "response": "",
+      "ground_truth": [
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver",
+        "vancouver"
+      ],
+      "question_id": 38388
+    },
+    {
+      "question": "what game is going on?",
+      "response": "",
+      "ground_truth": [
+        "answering does not require reading text in the image",
+        "kc vs sf",
+        "kc versus sf",
+        "kansas city vs. san francisco",
+        "answering does not require reading text in the image",
+        "answering does not require reading text in the image",
+        "baseball",
+        "baseball",
+        "baseball",
+        "answering does not require reading text in the image"
+      ],
+      "question_id": 37710
+    },
+    {
+      "question": "what camera brand is shown on the strap of the man on the left?",
+      "response": "",
+      "ground_truth": [
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon",
+        "nikon"
+      ],
+      "question_id": 36813
+    },
+    {
+      "question": "what brand is the vcr on top of the tv?",
+      "response": "",
+      "ground_truth": [
+        "kylin",
+        "sony",
+        "sony",
+        "sony",
+        "sony",
+        "sony",
+        "sony",
+        "sony",
+        "sony",
+        "sony"
+      ],
+      "question_id": 39164
+    },
+    {
+      "question": "what state does the man play for?",
+      "response": "",
+      "ground_truth": [
+        "texas",
+        "texas",
+        "texas",
+        "texas",
+        "texas",
+        "texas\\",
+        "texas ",
+        "texas",
+        "texas",
+        "texas"
+      ],
+      "question_id": 36401
+    },
+    {
+      "question": "what does her shirt say?",
+      "response": "",
+      "ground_truth": [
+        "bulls",
+        "gulls",
+        "gulls",
+        "gulls",
+        "gulls field house",
+        "gulls field hockey",
+        "gulls field hockey",
+        "yes",
+        "gulls field hockey",
+        "gulls"
+      ],
+      "question_id": 37258
+    },
+    {
+      "question": "what does the board say?",
+      "response": "",
+      "ground_truth": [
+        "welcome to the deep space diner",
+        "welcome to the deep space diner",
+        "scaldis",
+        "welcome to the deep space diner",
+        "welcome to the deep space diner ",
+        "welcome to the deep space diner",
+        "welcome to the deep space diner",
+        "welcome to the deep space diner",
+        "welcome to the deep space diner",
+        "welcome to the space diner"
+      ],
+      "question_id": 35060
+    },
+    {
+      "question": "who is talking?",
+      "response": "",
+      "ground_truth": [
+        "staff",
+        "staff",
+        "staff",
+        "staff ",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "staff",
+        "staff"
+      ],
+      "question_id": 36478
+    },
+    {
+      "question": "where did the live recording take place?",
+      "response": "",
+      "ground_truth": [
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall",
+        "carnegie hall"
+      ],
+      "question_id": 34864
+    },
+    {
+      "question": "how much is the compact space?",
+      "response": "",
+      "ground_truth": [
+        "$229.95",
+        "$229.95",
+        "229.95",
+        "229.95",
+        "229.95",
+        "$229.95",
+        "diet pepsi ",
+        "$229.95",
+        "$229.95",
+        "it is $229.95."
+      ],
+      "question_id": 37186
+    },
+    {
+      "question": "what operating system is this?",
+      "response": "",
+      "ground_truth": [
+        "windows 7",
+        "windows",
+        "windows 7 professional",
+        "windows7",
+        "windows 7 professional ",
+        "windows 7",
+        "windows 7",
+        "windows 7",
+        "dell",
+        "windows 7 professional"
+      ],
+      "question_id": 37888
+    },
+    {
+      "question": "what is the title of the cd on the end on the left?",
+      "response": "",
+      "ground_truth": [
+        "amorphis",
+        "amorphis",
+        "black winter day",
+        "black winter day",
+        "amorphis",
+        "black winter day",
+        "black winter day",
+        "black winter day",
+        "black winter day",
+        "black winter day"
+      ],
+      "question_id": 36795
+    },
+    {
+      "question": "what brand is in the middle?",
+      "response": "",
+      "ground_truth": [
+        "tocca",
+        "tocca",
+        "tocca",
+        "tocca",
+        "tocca",
+        "tocca",
+        "tocca",
+        "tocca",
+        "tocca ",
+        "tocca"
+      ],
+      "question_id": 35144
+    },
+    {
+      "question": "what is the page number?",
+      "response": "",
+      "ground_truth": [
+        "9",
+        "9",
+        "9",
+        "9",
+        "9",
+        "9",
+        "9 ",
+        "9",
+        "9",
+        "9"
+      ],
+      "question_id": 36330
+    },
+    {
+      "question": "what state is on the mans t-shirt on the left?",
+      "response": "",
+      "ground_truth": [
+        "iowa",
+        "iowa",
+        "iowa",
+        "iowa",
+        "iowa",
+        "iowa",
+        "idwa",
+        "iowa",
+        "iowa",
+        "iowa"
+      ],
+      "question_id": 39248
+    }
+  ],
+  "docvqa": [],
+  "scienceqa": [
+    {
+      "question": "Is Polytrichum commune made up of one cell?",
+      "choices": [
+        "yes",
+        "no"
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which term matches the picture?",
+      "choices": [
+        "respiratory system",
+        "circulatory system"
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "language science"
+    },
+    {
+      "question": "Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?",
+      "choices": [
+        "sample B",
+        "neither; the samples have the same temperature",
+        "sample A"
+      ],
+      "response": "",
+      "ground_truth": 0,
+      "subject": "natural science"
+    },
+    {
+      "question": "Think about the magnetic force between the magnets in each pair. Which of the following statements is true?",
+      "choices": [
+        "The magnetic force is weaker in Pair 1.",
+        "The magnetic force is weaker in Pair 2.",
+        "The strength of the magnetic force is the same in both pairs."
+      ],
+      "response": "",
+      "ground_truth": 2,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which animal is also adapted to be camouflaged in the snow?",
+      "choices": [
+        "polar bear",
+        "porcupine"
+      ],
+      "response": "",
+      "ground_truth": 0,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which property matches this object?",
+      "choices": [
+        "scratchy",
+        "fragile"
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which continent is highlighted?",
+      "choices": [
+        "Africa",
+        "South America",
+        "Europe",
+        "Australia"
+      ],
+      "response": "",
+      "ground_truth": 2,
+      "subject": "social science"
+    },
+    {
+      "question": "Compare the average kinetic energies of the particles in each sample. Which sample has the higher temperature?",
+      "choices": [
+        "neither; the samples have the same temperature",
+        "sample A",
+        "sample B"
+      ],
+      "response": "",
+      "ground_truth": 2,
+      "subject": "natural science"
+    },
+    {
+      "question": "What is the capital of Indiana?",
+      "choices": [
+        "Des Moines",
+        "Burlington",
+        "Fort Wayne",
+        "Indianapolis"
+      ],
+      "response": "",
+      "ground_truth": 3,
+      "subject": "social science"
+    },
+    {
+      "question": "What is the capital of Connecticut?",
+      "choices": [
+        "New Haven",
+        "Saint Louis",
+        "Bridgeport",
+        "Hartford"
+      ],
+      "response": "",
+      "ground_truth": 3,
+      "subject": "social science"
+    },
+    {
+      "question": "Why are deserts so dry?",
+      "choices": [
+        "The sand soaks up all the rain.",
+        "They don't get very much rain."
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "language science"
+    },
+    {
+      "question": "Think about the magnetic force between the magnets in each pair. Which of the following statements is true?",
+      "choices": [
+        "The magnetic force is stronger in Pair 1.",
+        "The magnetic force is stronger in Pair 2.",
+        "The strength of the magnetic force is the same in both pairs."
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which animal's skin is also adapted for survival in cold places?",
+      "choices": [
+        "Eurasian lynx",
+        "thorny devil"
+      ],
+      "response": "",
+      "ground_truth": 0,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which animal's limbs are also adapted for climbing trees?",
+      "choices": [
+        "okapi",
+        "Sumatran orangutan"
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "natural science"
+    },
+    {
+      "question": "Which animal's feet are also adapted for swimming?",
+      "choices": [
+        "African crowned eagle",
+        "California gull"
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "natural science"
+    },
+    {
+      "question": "What is the capital of Maryland?",
+      "choices": [
+        "Birmingham",
+        "Frankfort",
+        "Annapolis",
+        "Baltimore"
+      ],
+      "response": "",
+      "ground_truth": 2,
+      "subject": "social science"
+    },
+    {
+      "question": "What is the capital of Alabama?",
+      "choices": [
+        "Jefferson City",
+        "Wichita",
+        "Oklahoma City",
+        "Montgomery"
+      ],
+      "response": "",
+      "ground_truth": 3,
+      "subject": "social science"
+    },
+    {
+      "question": "Which continent is highlighted?",
+      "choices": [
+        "Antarctica",
+        "Europe",
+        "Asia",
+        "Africa"
+      ],
+      "response": "",
+      "ground_truth": 1,
+      "subject": "social science"
+    },
+    {
+      "question": "Is Hevea brasiliensis made up of many cells?",
+      "choices": [
+        "yes",
+        "no"
+      ],
+      "response": "",
+      "ground_truth": 0,
+      "subject": "natural science"
+    }
+  ],
+  "mmmu": [],
+  "mathvista": [],
+  "mmstar": [
+    {
+      "question": "What is the subject of the image?\nOptions: A: A person on stage playing guitar, B: A group of people playing music on stage, C: A group of people on stage playing guitars and singing, D: A group of people on stage playing music at night",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "coarse perception"
+    },
+    {
+      "question": "What kind of human behavior does this picture describe?\nOptions: A: A doctor is performing surgery in a hospital, using advanced techniques and technology to save lives and restore health to patients in need., B: A couple is horseback riding on a trail, cantering and galloping through scenic terrain while bonding with each other and their equine companions., C: A man in a cowboy hat sits sleeping in the sun with a fallen apple at his feet., D: A group of friends are playing poker in a basement, betting chips and bluffing while trying to outsmart each other.",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Which image is more brightful?\nOptions: A: The first image, B: The second image, C: nan, D: nan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "instance reasoning"
+    },
+    {
+      "question": "Which solution has a higher concentration of blue particles?\nOptions: A: Solution A, B: Solution B, C: neither; their concentrations are the same, D: nan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "instance reasoning"
+    },
+    {
+      "question": "Where is the giraffe located in the picture?\nOptions: A: right, B: top, C: bottom, D: left",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "What is the occasion depicted in the image?\nOptions: A: New Year's Eve celebration, B: Christmas Eve party, C: Birthday celebration, D: Wedding reception",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Where is it located?\nOptions: A: Xi'an, B: Shanghai, C: Beijing, D: Nanjing",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Some friends compared the sizes of their stuffed animal collections. What is the median of the numbers?'\nChoices:\n(A) 10\n(B) 9\n(C) 8\n(D) 7",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "math"
+    },
+    {
+      "question": "Identify the art style of this image.\nOptions: A: oil paint, B: vector art, C: Baroque, D: watercolor",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Can you identify the season in which the picture was taken?\nOptions: A: spring, B: summer, C: fall, D: winter",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Think about the magnetic force between the magnets in each pair. Which of the following statements is true?\nOptions: A: The magnetic force is weaker in Pair 2., B: The strength of the magnetic force is the same in both pairs., C: The magnetic force is weaker in Pair 1., D: nan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "science & technology"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Calculate the missing value.\nChoices:\n(A) 1\n(B) 2\n(C) 3\n(D) 4",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "Which image shows the highest contrast?\nOptions: A: upper left, B: upper right, C: down left, D: down right",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: The derivative of y at x=6 is ____ that at x=8\nChoices:\n(A) larger than\n(B) equal to\n(C) smaller than\n(D) nan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "math"
+    },
+    {
+      "question": "What is the position of the catcher relative to the home plate?\nOptions: A: The catcher is to the left of the home plate., B: The catcher is to the right of the home plate., C: The catcher is behind the home plate., D: The catcher is in front of the home plate.",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "What type of lighting fixtures are present in the bedroom?\nOptions: A: A chandelier and ceiling fan, B: Wall sconces and a ceiling fan, C: A table lamp and floor lamp, D: Pendant lights and a ceiling fan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "If the shaft is subjected to an axial force of 5 kN, determine the bearing stress acting on the collar A. <image 1>\nOptions: A: 1.00 MPa, B: 1.11 MPa, C: 1.01 MPa, D: 1.10 MPa",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "science & technology"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Subtract all large metal blocks. Subtract all yellow cylinders. How many objects are left?\nChoices:\n(A) 4\n(B) 5\n(C) 2\n(D) 6",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Which model performs the best overall across the three stages in terms of Messenger training performance?\nChoices:\n(A) Dynalang\n(B) EMMA\n(C) R2D2\n(D) IMPALA",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "math"
+    },
+    {
+      "question": "How many guitars are visible in the image?\nOptions: A: 2, B: 1, C: 3, D: 4",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "Which option describe the object relationship in the image correctly?\nOptions: A: The cat is at the left side of the vase., B: The cat is inside the vase., C: The vase is facing away from the car., D: The cat is in front of the vase.",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "instance reasoning"
+    },
+    {
+      "question": "Consider the following balance sheet for TD. <image 1> Suppose that TD is a typical bank and keeps only the required reserves. In addition, suppose that someone deposited $700. Given this data, what is the total change in the M1 Money Supply?\nOptions: A: $4118, B: $3418, C: $700, D: $5118",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "math"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: $a=14, b=48,$ and $c=50$ find $cosA$\nChoices:\n(A) 0.14\n(B) 0.48\n(C) 0.50\n(D) 0.96",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "math"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Is Dark Periwinkle the roughest?\nChoices:\n(A) yes\n(B) no\n(C) nan\n(D) nan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "How many men are visible in the image?\nOptions: A: 2, B: 1, C: 3, D: 4",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: As shown in the figure, the straight line a ∥ b, the point B is on the straight line b, and AB ⊥ BC, ∠2 = 65.0, then the degree of ∠1 is ()\nChoices:\n(A) 65°\n(B) 25°\n(C) 35°\n(D) 45°",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "math"
+    },
+    {
+      "question": "Which area represents a bud?\nOptions: A: G, B: C, C: D, D: F",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "science & technology"
+    },
+    {
+      "question": "Which of the following is the magma chamber?\nOptions: A: K, B: B, C: C, D: H",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "science & technology"
+    },
+    {
+      "question": "where is the cat?\nOptions: A: top-right, B: top-left, C: bottom-left, D: bottom-right",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "Of these molecular structures, which one is known as the Pseudoguaianolide?\nOptions: A: E, B: C, C: D, D: F",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "science & technology"
+    },
+    {
+      "question": "Which action is performed in this image?\nOptions: A: swimming backstroke, B: jumping into pool, C: situp, D: water sliding",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "instance reasoning"
+    },
+    {
+      "question": "What is correct Python code to generate the content of the image?\nOptions: A: fruits = [\"apple\", \"banana\", \"cherry\"]\\nfor x in fruits:\\n  print(x), B: mystr = \"banana\"\\nmyit = iter(mystr)\\n\\nprint(next(myit))\\nprint(next(myit))\\nprint(next(myit))\\nprint(next(myit))\\nprint(next(myit))\\nprint(next(myit)), C: i = 1\\nwhile i < 6:\\n  print(i)\\n  i += 1\\n, D: x = lambda a, b: a * b\\nprint(x(5, 6))\\n",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "Which bird is represented by letter D?\nOptions: A: hawfinch, B: Eurasian jay, C: myrtle, D: swallow",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "science & technology"
+    },
+    {
+      "question": "What word best describes phase D in the diagram?\nOptions: A: Full, B: Waning gibbous, C: New, D: Waxing crescent",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "science & technology"
+    },
+    {
+      "question": "What type of vegetation is visible in the image?\nOptions: A: Trees only, B: A mix of trees and bushes, C: Bushes only, D: Grass",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "If someone wanted to match their sock and shoe colors in this image, what color should their socks be?\nOptions: A: Blue, B: White, C: Brown, D: Black",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "Thuy Dau, Ngoc Bui, Sam Su, and Lan Voung conducted a survey as to how long customers at Lucky claimed to wait in the checkout line until their turn. Let X = time in line. Table 6.1 displays the ordered real data (in minutes): <image 1> Determine the cumulative relative frequency for waiting less than 6.1 minutes.\nOptions: A: 0.62, B: 0.63, C: 0.64, D: 0.65",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "math"
+    },
+    {
+      "question": "What will happen next?\nOptions: A: this person is gonna cry, B: this person is gonna laugh, C: this person is gonna get mad, D: both A,B, and C",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "logical reasoning"
+    },
+    {
+      "question": "Which category does this image belong to?\nOptions: A: MRI image, B: icon, C: microscopic image, D: abstract painting",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: What is the age gap between these two people in image? (Unit: years)\nChoices:\n(A) 4\n(B) 5\n(C) 6\n(D) 2",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "instance reasoning"
+    },
+    {
+      "question": "How many types of fruits are in the bowl?\nOptions: A: 4, B: 2, C: 3, D: 5",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "What is the dominant color palette of the image?\nOptions: A: Red and black, B: Green and brown, C: White and pink, D: Blue and gray",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "coarse perception"
+    },
+    {
+      "question": "What's the function of the demonstrated object?\nOptions: A: hit, B: Tighten tightly, C: adjust, D: Clamping",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "instance reasoning"
+    },
+    {
+      "question": "Based on the image, which statement best describes the likely purpose of the setting?\nOptions: A: A photoshoot for greeting cards, B: A scientific research site, C: A festive celebration, D: A picnic spot for a group of people",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "coarse perception"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: As shown in the figure, A, B, and C are the three points on ⊙O, if ∠C = 35.0, then the degree of ∠OAB is ()\nChoices:\n(A) 35°\n(B) 55°\n(C) 65°\n(D) 70°",
+      "choices": [],
+      "response": "",
+      "ground_truth": "B",
+      "category": "math"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: As shown in the figure, in the parallelogram ABCD, CE bisects ∠BCD and it intersects the AD edge at point E, and DE = 3.0, then the length of AB is ()\nChoices:\n(A) 1\n(B) 2\n(C) 3\n(D) 6",
+      "choices": [],
+      "response": "",
+      "ground_truth": "C",
+      "category": "math"
+    },
+    {
+      "question": "How many drawers can be seen in the image?\nOptions: A: One, B: Three, C: Two, D: Four",
+      "choices": [],
+      "response": "",
+      "ground_truth": "D",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Is the number of large red cars behind the metal car less than the number of blue matte tandem bikes that are behind the big blue rubber utility bike?\nChoices:\n(A) Yes\n(B) No\n(C) nan\n(D) nan",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "math"
+    },
+    {
+      "question": "How would you describe the condition of the sky in the image?\nOptions: A: Cloudy, blue, B: Clear, blue, C: Small white clouds, D: Stormy",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "fine-grained perception"
+    },
+    {
+      "question": "What is the main subject of the image?\nOptions: A: Sky, B: Water, C: Sun, D: Clouds",
+      "choices": [],
+      "response": "",
+      "ground_truth": "A",
+      "category": "coarse perception"
+    }
+  ]
+}

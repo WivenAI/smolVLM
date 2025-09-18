@@ -1,0 +1,18 @@
+{
+  "ocrbench": [
+    {
+      "task": "text_recognition",
+      "question": "What text is visible in this image?",
+      "response": "",
+      "image_url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/tasks/car.jpg"
+    }
+  ],
+  "textvqa": [],
+  "docvqa": [],
+  "chartqa": [],
+  "ai2d": [],
+  "scienceqa": [],
+  "mmstar": [],
+  "mmmu": [],
+  "mathvista": []
+}
