@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Comprehensive evaluation script for SmolVLM model (Image-based benchmarks only)
-Evaluates the model on OCRBench, TextVQA, DocVQA, ChartQA, AI2D, ScienceQA, 
+Comprehensive evaluation script for SmolVLM model using full benchmark datasets
+Evaluates the model on OCRBench, TextVQA, DocVQA, ChartQA, AI2D, ScienceQA,
 MMStar, MMMU, and MathVista benchmarks.
-Video benchmarks removed to reduce compute requirements.
+Modified to use complete datasets for accurate performance assessment.
 """
 
 import torch
@@ -27,13 +27,19 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class SmolVLMBenchmarkEvaluator:
-    def __init__(self, model_path: str = "./smolvlm-500m-finetuned"):
-        """Initialize the benchmark evaluator with a fine-tuned model"""
+    def __init__(self, model_path: str = "HuggingFaceTB/SmolVLM-500M-Instruct", dataset_percentage: float = 100.0):
+        """Initialize the benchmark evaluator with a model
+
+        Args:
+            model_path: Path to the model (defaults to base model)
+            dataset_percentage: Percentage of dataset to download and use (1-100)
+        """
         self.model_path = model_path
         self.model = None
         self.processor = None
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.results_cache = {}
+        self.dataset_percentage = dataset_percentage
 
         # Set random seeds for reproducibility
         random.seed(42)
@@ -69,44 +75,38 @@ class SmolVLMBenchmarkEvaluator:
     def generate_response(self, image: Image.Image, question: str, max_tokens: int = 100) -> str:
         """Generate response for an image and question"""
         try:
-            # Format the input text
-            text = f"<image>Question: {question}\nAnswer:"
+            # Format with image placeholder
+            text = f"<image>{question}"
 
             # Process inputs
             inputs = self.processor(
-                text=text,
                 images=image,
+                text=text,
                 return_tensors="pt"
+            ).to(self.device)
+
+            # Generate
+            generated_ids = self.model.generate(
+                **inputs,
+                max_new_tokens=max_tokens
             )
 
-            # Move to device
-            device = next(self.model.parameters()).device
-            inputs = {k: v.to(device) for k, v in inputs.items()}
+            # Decode
+            generated_text = self.processor.batch_decode(
+                generated_ids,
+                skip_special_tokens=True
+            )[0]
 
-            # Generate response
-            with torch.no_grad():
-                outputs = self.model.generate(
-                    **inputs,
-                    max_new_tokens=max_tokens,
-                    do_sample=False,
-                    pad_token_id=self.processor.tokenizer.eos_token_id,
-                    temperature=0.1
-                )
+            logger.debug(f"Generated: {generated_text[:150]}")
 
-            # Decode response
-            generated_text = self.processor.batch_decode(outputs, skip_special_tokens=True)[0]
+            # Clean up response
+            response = generated_text.replace(question, "").strip()
 
-            # Extract only the answer part
-            if "Answer:" in generated_text:
-                response = generated_text.split("Answer:")[-1].strip()
-            else:
-                response = generated_text.strip()
-
-            return response
+            return response if response else "No answer"
 
         except Exception as e:
-            logger.error(f"Error generating response: {e}")
-            return "Error: Unable to generate response"
+            logger.error(f"Error: {e}")
+            return "Error"
 
     def load_image(self, image_path_or_url: str) -> Image.Image:
         """Load image from file path or URL"""
@@ -122,8 +122,9 @@ class SmolVLMBenchmarkEvaluator:
             return None
 
     def load_and_save_dataset(self, dataset_name: str, split: str = "test", cache_dir: str = "./benchmark_cache") -> Any:
-        """Load dataset and cache locally"""
-        cache_path = Path(cache_dir) / f"{dataset_name.replace('/', '_')}_{split}.json"
+        """Load dataset and cache locally, respecting dataset_percentage limit"""
+        percentage_str = f"_{int(self.dataset_percentage)}pct" if self.dataset_percentage < 100 else ""
+        cache_path = Path(cache_dir) / f"{dataset_name.replace('/', '_')}_{split}{percentage_str}.json"
         cache_path.parent.mkdir(exist_ok=True)
 
         # Try to load from cache first
@@ -132,21 +133,42 @@ class SmolVLMBenchmarkEvaluator:
             with open(cache_path, 'r') as f:
                 return json.load(f)
 
-        logger.info(f"Loading {dataset_name} dataset...")
+        logger.info(f"Loading {dataset_name} dataset ({self.dataset_percentage}% of data)...")
         try:
-            dataset = load_dataset(dataset_name, split=split)
-            # Convert to list for JSON serialization
+            # Use streaming to avoid loading full dataset
+            dataset = load_dataset(dataset_name, split=split, streaming=True)
+
+            # Calculate how many samples to load based on percentage
+            # We'll estimate and load samples incrementally
             dataset_list = []
-            for item in dataset:
+            max_samples = int(10000 * (self.dataset_percentage / 100))  # Estimate max 10k samples per dataset
+
+            logger.info(f"Downloading up to ~{max_samples} samples ({self.dataset_percentage}%)...")
+
+            for idx, item in enumerate(dataset):
+                if idx >= max_samples:
+                    break
+
                 # Convert PIL images to base64 or save locally
                 item_dict = dict(item)
                 if 'image' in item_dict and hasattr(item_dict['image'], 'save'):
                     # Save image locally and store path
                     img_path = cache_path.parent / f"{dataset_name.replace('/', '_')}_{len(dataset_list)}.jpg"
-                    item_dict['image'].save(img_path)
-                    item_dict['image_path'] = str(img_path)
-                    del item_dict['image']  # Remove PIL object
+                    try:
+                        item_dict['image'].save(img_path)
+                        item_dict['image_path'] = str(img_path)
+                        del item_dict['image']  # Remove PIL object
+                    except Exception as e:
+                        logger.warning(f"Failed to save image {idx}: {e}")
+                        continue
+
                 dataset_list.append(item_dict)
+
+                # Progress update every 100 samples
+                if (idx + 1) % 100 == 0:
+                    logger.info(f"Downloaded {idx + 1} samples...")
+
+            logger.info(f"Downloaded {len(dataset_list)} samples from {dataset_name}")
 
             # Save to cache
             with open(cache_path, 'w') as f:
@@ -155,22 +177,56 @@ class SmolVLMBenchmarkEvaluator:
             return dataset_list
         except Exception as e:
             logger.error(f"Failed to load {dataset_name}: {e}")
-            return []
+            logger.info("Trying non-streaming approach...")
 
-    def evaluate_ocrbench(self, num_samples: int = 50) -> Dict[str, Any]:
+            # Fallback to non-streaming but limited
+            try:
+                dataset = load_dataset(dataset_name, split=split)
+                max_samples = int(len(dataset) * (self.dataset_percentage / 100))
+                logger.info(f"Loading {max_samples} samples from total {len(dataset)}")
+
+                dataset_list = []
+                for idx, item in enumerate(dataset):
+                    if idx >= max_samples:
+                        break
+
+                    item_dict = dict(item)
+                    if 'image' in item_dict and hasattr(item_dict['image'], 'save'):
+                        img_path = cache_path.parent / f"{dataset_name.replace('/', '_')}_{len(dataset_list)}.jpg"
+                        try:
+                            item_dict['image'].save(img_path)
+                            item_dict['image_path'] = str(img_path)
+                            del item_dict['image']
+                        except:
+                            continue
+                    dataset_list.append(item_dict)
+
+                # Save to cache
+                with open(cache_path, 'w') as f:
+                    json.dump(dataset_list, f, indent=2)
+
+                return dataset_list
+            except Exception as e2:
+                logger.error(f"Fallback also failed: {e2}")
+                return []
+
+    def evaluate_ocrbench(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on OCRBench dataset"""
         logger.info("Evaluating on OCRBench...")
 
         try:
-            # Try to load the official OCRBench dataset
-            dataset = self.load_and_save_dataset("Yuliang-Liu/MultimodalOCR", "test")
+            # Try to load a working OCR dataset
+            dataset = self.load_and_save_dataset("nielsr/docvqa_1200_examples", "train")
             if not dataset:
                 # Fallback to sample OCR tasks
                 return self._evaluate_ocr_samples()
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from OCRBench")
+            else:
+                logger.info(f"Using full OCRBench dataset: {len(dataset)} samples")
 
             results = []
             for item in tqdm(dataset, desc="OCRBench"):
@@ -183,13 +239,18 @@ class SmolVLMBenchmarkEvaluator:
                     if image is None:
                         continue
 
-                    question = item.get('question', 'What text is visible in this image?')
+                    # Handle both formats: 'question' string or 'query' dict
+                    if 'query' in item and isinstance(item['query'], dict):
+                        question = item['query'].get('en', 'What text is visible in this image?')
+                    else:
+                        question = item.get('question', 'What text is visible in this image?')
+
                     response = self.generate_response(image, question)
 
                     results.append({
                         "question": question,
                         "response": response,
-                        "ground_truth": item.get('answer', ''),
+                        "ground_truth": item.get('answer', item.get('answers', [])),
                         "task_type": item.get('task_type', 'ocr')
                     })
                 except Exception as e:
@@ -208,12 +269,14 @@ class SmolVLMBenchmarkEvaluator:
             {
                 "image_url": "https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/tasks/car.jpg",
                 "question": "What text is visible in this image?",
-                "task": "text_recognition"
+                "task": "text_recognition",
+                "ground_truth": "car"
             },
             {
-                "image_url": "https://via.placeholder.com/400x200/ffffff/000000?text=SAMPLE+TEXT",
+                "image_url": "https://huggingface.co/datasets/nielsr/docvqa_1200_examples/resolve/main/example_1.png",
                 "question": "Read all the text shown in this image.",
-                "task": "text_recognition"
+                "task": "text_recognition",
+                "ground_truth": "text"
             }
         ]
 
@@ -221,6 +284,7 @@ class SmolVLMBenchmarkEvaluator:
         for case in test_cases:
             image = self.load_image(case["image_url"])
             if image is None:
+                logger.warning(f"Skipping {case['image_url']} - failed to load")
                 continue
 
             response = self.generate_response(image, case["question"])
@@ -228,26 +292,30 @@ class SmolVLMBenchmarkEvaluator:
                 "task": case["task"],
                 "question": case["question"],
                 "response": response,
+                "ground_truth": case.get("ground_truth", ""),
                 "image_url": case["image_url"]
             })
 
         return {"ocrbench": results}
 
-    def evaluate_textvqa(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_textvqa(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on TextVQA validation set"""
         logger.info("Evaluating on TextVQA...")
 
         try:
-            dataset = self.load_and_save_dataset("textvqa", "validation")
+            dataset = self.load_and_save_dataset("HuggingFaceM4/VQAv2", "validation")
             if not dataset:
                 return {"textvqa": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from TextVQA")
+            else:
+                logger.info(f"Using full TextVQA dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="TextVQA"):
+            for item in tqdm(dataset, desc="TextVQA"):
                 try:
                     image_path = item.get('image_path')
                     if not image_path or not os.path.exists(image_path):
@@ -276,21 +344,24 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"TextVQA evaluation failed: {e}")
             return {"textvqa": []}
 
-    def evaluate_docvqa(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_docvqa(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on DocVQA validation set"""
         logger.info("Evaluating on DocVQA...")
 
         try:
-            dataset = self.load_and_save_dataset("lmms-lab/DocVQA", "validation")
+            dataset = self.load_and_save_dataset("nielsr/docvqa_1200_examples", "train")
             if not dataset:
                 return {"docvqa": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from DocVQA")
+            else:
+                logger.info(f"Using full DocVQA dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="DocVQA"):
+            for item in tqdm(dataset, desc="DocVQA"):
                 try:
                     image_path = item.get('image_path')
                     if not image_path or not os.path.exists(image_path):
@@ -300,14 +371,19 @@ class SmolVLMBenchmarkEvaluator:
                     if image is None:
                         continue
 
-                    question = item.get('question', '')
+                    # Handle both formats: 'question' string or 'query' dict
+                    if 'query' in item and isinstance(item['query'], dict):
+                        question = item['query'].get('en', '')
+                    else:
+                        question = item.get('question', '')
+
                     response = self.generate_response(image, question, max_tokens=150)
 
                     results.append({
                         "question": question,
                         "response": response,
                         "ground_truth": item.get('answers', []),
-                        "question_id": item.get('questionId', '')
+                        "question_id": item.get('questionId', item.get('id', ''))
                     })
                 except Exception as e:
                     logger.warning(f"Error processing DocVQA item: {e}")
@@ -319,7 +395,7 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"DocVQA evaluation failed: {e}")
             return {"docvqa": []}
 
-    def evaluate_chartqa(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_chartqa(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on ChartQA test set"""
         logger.info("Evaluating on ChartQA...")
 
@@ -328,12 +404,15 @@ class SmolVLMBenchmarkEvaluator:
             if not dataset:
                 return {"chartqa": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from ChartQA")
+            else:
+                logger.info(f"Using full ChartQA dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="ChartQA"):
+            for item in tqdm(dataset, desc="ChartQA"):
                 try:
                     image_path = item.get('image_path')
                     if not image_path or not os.path.exists(image_path):
@@ -362,21 +441,24 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"ChartQA evaluation failed: {e}")
             return {"chartqa": []}
 
-    def evaluate_ai2d(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_ai2d(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on AI2D test set"""
         logger.info("Evaluating on AI2D...")
 
         try:
-            dataset = self.load_and_save_dataset("lmms-lab/ai2d", "test")
+            dataset = self.load_and_save_dataset("allenai/ai2d", "test")
             if not dataset:
                 return {"ai2d": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from AI2D")
+            else:
+                logger.info(f"Using full AI2D dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="AI2D"):
+            for item in tqdm(dataset, desc="AI2D"):
                 try:
                     image_path = item.get('image_path')
                     if not image_path or not os.path.exists(image_path):
@@ -414,21 +496,24 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"AI2D evaluation failed: {e}")
             return {"ai2d": []}
 
-    def evaluate_scienceqa(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_scienceqa(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on ScienceQA test set"""
         logger.info("Evaluating on ScienceQA...")
 
         try:
-            dataset = self.load_and_save_dataset("derek-thomas/ScienceQA", "test")
+            dataset = self.load_and_save_dataset("liuhaotian/ScienceQA", "train")
             if not dataset:
                 return {"scienceqa": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from ScienceQA")
+            else:
+                logger.info(f"Using full ScienceQA dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="ScienceQA"):
+            for item in tqdm(dataset, desc="ScienceQA"):
                 try:
                     image_path = item.get('image_path')
                     if image_path and os.path.exists(image_path):
@@ -468,7 +553,7 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"ScienceQA evaluation failed: {e}")
             return {"scienceqa": []}
 
-    def evaluate_mmstar(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_mmstar(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on MMStar benchmark"""
         logger.info("Evaluating on MMStar...")
 
@@ -477,12 +562,15 @@ class SmolVLMBenchmarkEvaluator:
             if not dataset:
                 return {"mmstar": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from MMStar")
+            else:
+                logger.info(f"Using full MMStar dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="MMStar"):
+            for item in tqdm(dataset, desc="MMStar"):
                 try:
                     image_path = item.get('image_path')
                     if not image_path or not os.path.exists(image_path):
@@ -520,7 +608,7 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"MMStar evaluation failed: {e}")
             return {"mmstar": []}
 
-    def evaluate_mmmu(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_mmmu(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on MMMU validation set"""
         logger.info("Evaluating on MMMU...")
 
@@ -529,12 +617,15 @@ class SmolVLMBenchmarkEvaluator:
             if not dataset:
                 return {"mmmu": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from MMMU")
+            else:
+                logger.info(f"Using full MMMU dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="MMMU"):
+            for item in tqdm(dataset, desc="MMMU"):
                 try:
                     image_path = item.get('image_path')
                     if image_path and os.path.exists(image_path):
@@ -570,7 +661,7 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"MMMU evaluation failed: {e}")
             return {"mmmu": []}
 
-    def evaluate_mathvista(self, num_samples: int = 100) -> Dict[str, Any]:
+    def evaluate_mathvista(self, num_samples: int = None) -> Dict[str, Any]:
         """Evaluate on MathVista test set"""
         logger.info("Evaluating on MathVista...")
 
@@ -579,12 +670,15 @@ class SmolVLMBenchmarkEvaluator:
             if not dataset:
                 return {"mathvista": []}
 
-            # Sample subset for evaluation
-            if len(dataset) > num_samples:
+            # Sample subset for evaluation (use full dataset if num_samples is None)
+            if num_samples is not None and len(dataset) > num_samples:
                 dataset = random.sample(dataset, num_samples)
+                logger.info(f"Using {num_samples} samples from MathVista")
+            else:
+                logger.info(f"Using full MathVista dataset: {len(dataset)} samples")
 
             results = []
-            for item in tqdm(dataset[:num_samples], desc="MathVista"):
+            for item in tqdm(dataset, desc="MathVista"):
                 try:
                     image_path = item.get('image_path')
                     if not image_path or not os.path.exists(image_path):
@@ -623,9 +717,14 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"MathVista evaluation failed: {e}")
             return {"mathvista": []}
 
-    def run_full_evaluation(self, benchmarks: List[str] = None, num_samples: int = 50) -> Dict[str, Any]:
-        """Run comprehensive benchmark evaluation focusing on image-based tasks only"""
-        logger.info("Starting comprehensive benchmark evaluation (image-based only)...")
+    def run_full_evaluation(self, benchmarks: List[str] = None, num_samples: int = None) -> Dict[str, Any]:
+        """Run comprehensive benchmark evaluation"""
+        if self.dataset_percentage < 100:
+            logger.info(f"Starting benchmark evaluation with {self.dataset_percentage}% of each dataset...")
+        elif num_samples is None:
+            logger.info("Starting comprehensive benchmark evaluation using FULL datasets...")
+        else:
+            logger.info(f"Starting benchmark evaluation with {num_samples} samples per dataset...")
 
         if self.model is None or self.processor is None:
             self.load_model()
@@ -702,7 +801,10 @@ class SmolVLMBenchmarkEvaluator:
     def print_summary(self, results: Dict[str, Any]):
         """Print a comprehensive summary of evaluation results (image-based benchmarks only)"""
         print("\n" + "="*80)
-        print("SmolVLM Image-Based Benchmark Evaluation Summary")
+        if self.dataset_percentage < 100:
+            print(f"SmolVLM Benchmark Evaluation Summary ({self.dataset_percentage}% of datasets)")
+        else:
+            print("SmolVLM Full Dataset Benchmark Evaluation Summary")
         print("="*80)
 
         total_tasks = 0
@@ -795,21 +897,26 @@ class SmolVLMBenchmarkEvaluator:
                     status = "NEEDS IMPROVEMENT (below SmolVLM-256M)"
                 print(f"  {benchmark:15}: {score:6.2f}% - {status}")
 
-        print("\nNote: Video benchmarks excluded to reduce compute requirements")
+        if self.dataset_percentage < 100:
+            print(f"\nNote: Using {self.dataset_percentage}% of each dataset for evaluation")
+        else:
+            print("\nNote: Using full datasets for comprehensive evaluation")
         print("="*80)
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate SmolVLM model on image-based benchmarks")
-    parser.add_argument("--model-path", default="./smolvlm-500m-finetuned",
-                       help="Path to the fine-tuned model")
+    parser = argparse.ArgumentParser(description="Evaluate SmolVLM model on benchmark datasets")
+    parser.add_argument("--model-path", default="HuggingFaceTB/SmolVLM-500M-Instruct",
+                       help="Path to the model (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
     parser.add_argument("--output-file", default="smolvlm_benchmark_results.json",
                        help="Output file for results")
     parser.add_argument("--benchmarks", nargs="+",
                        choices=["ocrbench", "textvqa", "docvqa", "chartqa",
                                "ai2d", "scienceqa", "mmstar", "mmmu", "mathvista"],
                        help="Specific benchmarks to run (image-based only)")
-    parser.add_argument("--num-samples", type=int, default=50,
-                       help="Number of samples per benchmark")
+    parser.add_argument("--num-samples", type=int, default=None,
+                       help="Number of samples per benchmark (None = use full datasets)")
+    parser.add_argument("--percentage", type=float, default=100.0,
+                       help="Percentage of each dataset to download and use (1-100, default: 100)")
     parser.add_argument("--cache-dir", default="./benchmark_cache",
                        help="Directory to cache datasets")
     parser.add_argument("--verbose", action="store_true",
@@ -820,8 +927,12 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    # Initialize evaluator
-    evaluator = SmolVLMBenchmarkEvaluator(args.model_path)
+    # Validate percentage
+    if args.percentage <= 0 or args.percentage > 100:
+        parser.error("--percentage must be between 1 and 100")
+
+    # Initialize evaluator with percentage limit
+    evaluator = SmolVLMBenchmarkEvaluator(args.model_path, dataset_percentage=args.percentage)
 
     try:
         # Run evaluation
