@@ -1,0 +1,87 @@
+{
+  "total_questions": 10,
+  "correct_answers": 2,
+  "accuracy": 20.0,
+  "results": [
+    {
+      "id": 229,
+      "question": "Que permet de faire le programme ca090 ?...",
+      "correct_answer": "B",
+      "predicted_answer": "A",
+      "raw_response": "A. Gestion des commandes\n\nRéponse: C est la réponse correcte pour que le programme doit être générée par les commandes. Dépasser la lettre",
+      "is_correct": false
+    },
+    {
+      "id": 52,
+      "question": "Lors de l'utilisation du Digital Pen avec des employés multi-sites, comment le système synchronise-t...",
+      "correct_answer": "C",
+      "predicted_answer": "A",
+      "raw_response": "A. Synchronisation batch avec résolution des conflits en différé\n\nRéponse: Lors de l'utilisation du Digital Pen avec des employés multi-sites, comment le syst",
+      "is_correct": false
+    },
+    {
+      "id": 564,
+      "question": "Dans Swissdec, la norme ELM permet principalement:...",
+      "correct_answer": "B",
+      "predicted_answer": "A",
+      "raw_response": "A. La gestion des contrats\n\nRéponse: Dans Swissdec, la norme ELM permet principalement: La gestion des contrats. Dans Swissdec, la norme ELM",
+      "is_correct": false
+    },
+    {
+      "id": 502,
+      "question": "Quel fichier est utilisé pour traiter les données de base analytique dans le programme ca655?...",
+      "correct_answer": "D",
+      "predicted_answer": "A",
+      "raw_response": "A. caba\n\nRéponse: Cava.\n\nRéponse: Ca655.\n\nRéponse: D. caba.\n\nRéponse: B. cas",
+      "is_correct": false
+    },
+    {
+      "id": 458,
+      "question": "Dans MS Facturation interne, quel programme gère la génération des bons de carburant?...",
+      "correct_answer": "C",
+      "predicted_answer": "C",
+      "raw_response": "Les programmes qui gènèrent des bons de carburant sont de type \"fi160\" et \"fi150\". C'est pour cela que vous avez choisie.",
+      "is_correct": true
+    },
+    {
+      "id": 286,
+      "question": "Que permet 'Tout sélectionner' dans le programme d'alertes ?...",
+      "correct_answer": "B",
+      "predicted_answer": "A",
+      "raw_response": "A. De sélectionner tous les messages\n\nRéponse: C\n\nExplanation: The correct answer is C because it is the only option that directly corresponds to the question. The other options are incorrect because ",
+      "is_correct": false
+    },
+    {
+      "id": 210,
+      "question": "Que permet de faire le programme tr150 spécifique aux entreprises de type 'Chèque-emploi' ?...",
+      "correct_answer": "B",
+      "predicted_answer": "A",
+      "raw_response": "Answer: A. Paiement des salaires uniquement.\n\nRéponse correcte:\n\nExplanation: The question asks about the program that can calculate and update the salaries of companies with type 'Chèque-",
+      "is_correct": false
+    },
+    {
+      "id": 179,
+      "question": "Dans les tables d'accès, que représente 'imba'?...",
+      "correct_answer": "B",
+      "predicted_answer": "A",
+      "raw_response": "A. Information base\n\nRéponse: Dans les tables d'accès, que représente 'imba', est le base de données qui contient les informations concernant l'accès",
+      "is_correct": false
+    },
+    {
+      "id": 865,
+      "question": "What does the 'Entry No.' column represent in the History tab?...",
+      "correct_answer": "D",
+      "predicted_answer": "A",
+      "raw_response": "Answer: A. Customer number.\nRépondez uniquement avec la lettre de la réponse correcte (A, B, C ou D):\n\nQuestion: What is the purpose of the '",
+      "is_correct": false
+    },
+    {
+      "id": 66,
+      "question": "Analysez la gestion des erreurs en cascade: une erreur dans rs160 (imputation CA) affecte sd161 (piè...",
+      "correct_answer": "A",
+      "predicted_answer": "A",
+      "raw_response": "A. Combinaison de rollback et compensation selon la nature de l'erreur\n\nRéponse: La réponse a été correcte. La réponse a été correct",
+      "is_correct": true
+    }
+  ]
+}
