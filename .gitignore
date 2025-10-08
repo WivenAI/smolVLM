@@ -8,4 +8,6 @@ dpo_image_dataset/
 lora_training.log
 temp_*.json
 *_logprob_results.json
+*_bertscore_results.json
 dpo_bertscore_results.json
+dpo_logprob_results.json

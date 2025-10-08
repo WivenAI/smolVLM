@@ -188,29 +188,38 @@ def evaluate_bertscore(dataset_path, image_dir, model, processor, output_file="b
 
 
 def main():
-    # Paths
-    dataset_path = "dpo_image_dataset/dpo_dataset.json"
-    image_dir = "dpo_image_dataset"
-    output_file = "dpo_bertscore_results.json"
+    import argparse
+
+    parser = argparse.ArgumentParser(description="BERTScore Benchmark for DPO Dataset")
+    parser.add_argument("--model-path", type=str, default="HuggingFaceTB/SmolVLM-500M-Instruct",
+                       help="Path to model (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
+    parser.add_argument("--dataset-path", type=str, default="dpo_image_dataset/dpo_dataset.json",
+                       help="Path to DPO dataset JSON")
+    parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
+                       help="Directory containing images")
+    parser.add_argument("--output-file", type=str, default="dpo_bertscore_results.json",
+                       help="Output file for results")
+
+    args = parser.parse_args()
 
     # Check CUDA availability
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
     # Load model
-    model, processor = load_model_and_processor()
+    model, processor = load_model_and_processor(args.model_path)
 
     # Run evaluation
     results = evaluate_bertscore(
-        dataset_path=dataset_path,
-        image_dir=image_dir,
+        dataset_path=args.dataset_path,
+        image_dir=args.image_dir,
         model=model,
         processor=processor,
-        output_file=output_file
+        output_file=args.output_file
     )
 
     print(f"\nBERTScore evaluation completed!")
-    print(f"Results saved to: {output_file}")
+    print(f"Results saved to: {args.output_file}")
 
 
 if __name__ == "__main__":

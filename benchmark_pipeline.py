@@ -79,11 +79,20 @@ class BenchmarkPipeline:
         subprocess.run(cmd)
 
         # 5. DPO Log Probabilities
-        print("\n[5/5] Running DPO Log Probability Benchmark...")
+        print("\n[5/6] Running DPO Log Probability Benchmark...")
         cmd = [
             "python", "evaluate_dpo_logprobs.py",
             "--model-path", model_path,
             "--output-file", f"temp_dpo_logprob_{self.timestamp}.json"
+        ]
+        subprocess.run(cmd)
+
+        # 6. BERTScore
+        print("\n[6/6] Running BERTScore Benchmark...")
+        cmd = [
+            "python", "evaluate_bertscore_dpo.py",
+            "--model-path", model_path,
+            "--output-file", f"temp_bertscore_{self.timestamp}.json"
         ]
         subprocess.run(cmd)
 
@@ -111,7 +120,8 @@ class BenchmarkPipeline:
             f"temp_doc_{self.timestamp}.json",
             f"temp_chart_{self.timestamp}.json",
             f"temp_qcm_{self.timestamp}.json",
-            f"temp_dpo_logprob_{self.timestamp}.json"
+            f"temp_dpo_logprob_{self.timestamp}.json",
+            f"temp_bertscore_{self.timestamp}.json"
         ]
 
         for temp_file in temp_files:
@@ -135,6 +145,16 @@ class BenchmarkPipeline:
                             "preference_accuracy": data["overall_metrics"]["preference_accuracy"],
                             "margin_mean": data["overall_metrics"]["margin"]["mean"],
                             "num_examples": data["overall_metrics"]["num_examples"]
+                        }
+                    elif "overall_metrics" in data and "f1" in data.get("overall_metrics", {}):
+                        # BERTScore format
+                        combined["benchmarks"]["bertscore"] = {
+                            "overall_metrics": data["overall_metrics"],
+                            "metadata": data.get("metadata", {}),
+                            "f1_mean": data["overall_metrics"]["f1"]["mean"],
+                            "precision_mean": data["overall_metrics"]["precision"]["mean"],
+                            "recall_mean": data["overall_metrics"]["recall"]["mean"],
+                            "num_examples": data["metadata"]["num_examples"]
                         }
                     else:
                         # Vision benchmark format
@@ -199,6 +219,19 @@ class BenchmarkPipeline:
                         "correct": correct,
                         "total": num_examples,
                         "accuracy": pref_acc * 100  # Convert to percentage
+                    }
+                    continue
+
+            # Handle BERTScore format
+            if benchmark_name == "bertscore" and isinstance(benchmark_data, dict):
+                if "f1_mean" in benchmark_data:
+                    num_examples = benchmark_data.get("num_examples", 0)
+                    f1_score = benchmark_data.get("f1_mean", 0.0)
+                    # Use F1 score as "accuracy" metric (it's already 0-1, convert to percentage)
+                    accuracies[benchmark_name] = {
+                        "correct": int(f1_score * num_examples),  # Approximate
+                        "total": num_examples,
+                        "accuracy": f1_score * 100  # Convert to percentage
                     }
                     continue
 
@@ -293,8 +326,8 @@ class BenchmarkPipeline:
         print(f"# SmolVLM Benchmark Pipeline")
         print(f"# Timestamp: {self.timestamp}")
         print(f"# Samples per benchmark: {num_samples}")
-        print(f"# Benchmarks: OCRBench, DocVQA, ChartQA, ERP QCM, DPO LogProb")
-        print(f"# Total questions: ~{num_samples * 4} + DPO dataset")
+        print(f"# Benchmarks: OCRBench, DocVQA, ChartQA, ERP QCM, DPO LogProb, BERTScore")
+        print(f"# Total questions: ~{num_samples * 4} + DPO dataset (LogProb + BERTScore)")
         print(f"{'#'*80}\n")
 
         # Step 1: Benchmark base model
