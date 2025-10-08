@@ -1,5 +1,11 @@
 smolvlm-500m-finetuned/
 smolvlm-finetuned/
+smolvlm-500m-lora-finetuned/
 wandb/
 all/
 benchmark_cache/
+dpo_image_dataset/
+lora_training.log
+temp_*.json
+*_logprob_results.json
+dpo_bertscore_results.json
