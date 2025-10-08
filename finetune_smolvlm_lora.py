@@ -217,7 +217,7 @@ def main():
         per_device_train_batch_size=1,  # Must be 1 due to variable image patch sizes
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=8,
-        learning_rate=1e-5,  # Drastically reduced LR from 2e-4 to 1e-5
+        learning_rate=1e-7,  # Ultra-low LR (1e-5 / 100 = 1e-7) for maximum stability
         lr_scheduler_type="cosine",
         warmup_steps=100,
         weight_decay=0.01,
