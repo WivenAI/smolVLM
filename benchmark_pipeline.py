@@ -320,7 +320,7 @@ class BenchmarkPipeline:
 
         return comparison
 
-    def run_full_pipeline(self, num_samples: int = 100, train: bool = True):
+    def run_full_pipeline(self, num_samples: int = 100, train: bool = True, skip_base: bool = False):
         """Run the complete pipeline"""
         print(f"\n{'#'*80}")
         print(f"# SmolVLM Benchmark Pipeline")
@@ -330,22 +330,28 @@ class BenchmarkPipeline:
         print(f"# Total questions: ~{num_samples * 4} + DPO dataset (LogProb + BERTScore)")
         print(f"{'#'*80}\n")
 
-        # Step 1: Benchmark base model
-        base_results_file = self.results_dir / f"base_model_{self.timestamp}.json"
-        print("\n" + "="*80)
-        print("STEP 1: Benchmarking Base Model")
-        print("="*80)
-        base_results = self.run_benchmark(
-            model_path=self.base_model,
-            output_file=str(base_results_file),
-            num_samples=num_samples
-        )
+        base_results = None
+        base_acc = None
 
-        # Display base model results
-        base_acc = self.calculate_accuracy(base_results)
-        print(f"\nBase Model Results:")
-        for benchmark, acc in base_acc.items():
-            print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+        # Step 1: Benchmark base model (optional)
+        if not skip_base:
+            base_results_file = self.results_dir / f"base_model_{self.timestamp}.json"
+            print("\n" + "="*80)
+            print("STEP 1: Benchmarking Base Model")
+            print("="*80)
+            base_results = self.run_benchmark(
+                model_path=self.base_model,
+                output_file=str(base_results_file),
+                num_samples=num_samples
+            )
+
+            # Display base model results
+            base_acc = self.calculate_accuracy(base_results)
+            print(f"\nBase Model Results:")
+            for benchmark, acc in base_acc.items():
+                print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+        else:
+            print("\n⚠ Skipping base model benchmark (--train-only mode)")
 
         # Step 2: Train model (optional)
         if train:
@@ -369,13 +375,21 @@ class BenchmarkPipeline:
                 num_samples=num_samples
             )
 
-            # Step 4: Compare results
-            print("\n" + "="*80)
-            print("STEP 4: Comparing Results")
-            print("="*80)
-            comparison = self.compare_results(base_results, trained_results)
-
-            return base_results, trained_results, comparison
+            # Step 4: Compare results (only if base model was benchmarked)
+            if base_results:
+                print("\n" + "="*80)
+                print("STEP 4: Comparing Results")
+                print("="*80)
+                comparison = self.compare_results(base_results, trained_results)
+                return base_results, trained_results, comparison
+            else:
+                print("\n⚠ Skipping comparison (no base model results)")
+                # Display trained model results
+                trained_acc = self.calculate_accuracy(trained_results)
+                print(f"\nTrained Model Results:")
+                for benchmark, acc in trained_acc.items():
+                    print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+                return None, trained_results, None
         else:
             print("\n⚠ Training skipped (train=False)")
             return base_results, None, None
@@ -389,6 +403,8 @@ def main():
                        help="Number of samples per benchmark (default: 100)")
     parser.add_argument("--skip-training", action="store_true",
                        help="Skip training step, only benchmark base model")
+    parser.add_argument("--train-only", action="store_true",
+                       help="Train and benchmark only the trained model (skip base model)")
     parser.add_argument("--train-script", default="finetune_smolvlm_lora.py",
                        help="Training script to use (default: finetune_smolvlm_lora.py - recommended for GPUs <16GB)")
 
@@ -398,7 +414,8 @@ def main():
     pipeline = BenchmarkPipeline()
     pipeline.run_full_pipeline(
         num_samples=args.num_samples,
-        train=not args.skip_training
+        train=not args.skip_training,
+        skip_base=args.train_only
     )
 
 
