@@ -147,6 +147,11 @@ def evaluate_dpo_logprobs(dataset_path, image_dir, model, processor, output_file
             if image.mode != 'RGB':
                 image = image.convert('RGB')
 
+            # Resize large images to avoid processor errors
+            max_size = 1024
+            if image.size[0] > max_size or image.size[1] > max_size:
+                image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
             # Get prompt and responses
             prompt = item['prompt']
             chosen = item['chosen']

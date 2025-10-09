@@ -75,6 +75,11 @@ class SmolVLMBenchmarkEvaluator:
     def generate_response(self, image: Image.Image, question: str, max_tokens: int = 100) -> str:
         """Generate response for an image and question"""
         try:
+            # Resize large images to avoid processor errors
+            max_size = 1024
+            if image.size[0] > max_size or image.size[1] > max_size:
+                image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
             # Format with image placeholder
             text = f"<image>{question}"
 

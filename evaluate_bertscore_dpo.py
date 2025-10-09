@@ -107,6 +107,11 @@ def evaluate_bertscore(dataset_path, image_dir, model, processor, output_file="b
         if image.mode != 'RGB':
             image = image.convert('RGB')
 
+        # Resize large images to avoid processor errors
+        max_size = 1024
+        if image.size[0] > max_size or image.size[1] > max_size:
+            image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
         # Generate prediction
         prompt = item['prompt']
         prediction = generate_response(model, processor, image, prompt)
