@@ -52,7 +52,8 @@ def generate_response(model, processor, image, prompt, max_new_tokens=512):
     inputs = processor(
         text=prompt_text,
         images=image,
-        return_tensors="pt"
+        return_tensors="pt",
+        size={"longest_edge": 1024}
     ).to(model.device)
 
     # Generate

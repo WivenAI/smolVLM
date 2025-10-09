@@ -51,7 +51,8 @@ def compute_response_logprob(model, processor, image, prompt, response):
         text=full_text,
         images=image,
         return_tensors="pt",
-        padding=True
+        padding=True,
+        size={"longest_edge": 1024}
     ).to(model.device)
 
     # Get model outputs
@@ -69,7 +70,8 @@ def compute_response_logprob(model, processor, image, prompt, response):
         text=prompt_only_text,
         images=image,
         return_tensors="pt",
-        padding=True
+        padding=True,
+        size={"longest_edge": 1024}
     ).to(model.device)
 
     prompt_length = prompt_inputs['input_ids'].shape[1]

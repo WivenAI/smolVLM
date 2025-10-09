@@ -87,7 +87,8 @@ class SmolVLMBenchmarkEvaluator:
             inputs = self.processor(
                 images=image,
                 text=text,
-                return_tensors="pt"
+                return_tensors="pt",
+                size={"longest_edge": 1024}
             ).to(self.device)
 
             # Generate
