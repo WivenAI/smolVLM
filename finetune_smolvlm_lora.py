@@ -98,6 +98,11 @@ class DPOImageDatasetSFT(torch.utils.data.Dataset):
         if image.mode != 'RGB':
             image = image.convert('RGB')
 
+        # Resize large images to avoid processor errors
+        max_size = 1024
+        if image.size[0] > max_size or image.size[1] > max_size:
+            image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
         # Use prompt and chosen response only
         prompt = item['prompt']
         chosen = item['chosen']
@@ -110,7 +115,8 @@ class DPOImageDatasetSFT(torch.utils.data.Dataset):
             text=text,
             images=image,
             return_tensors="pt",
-            padding=True
+            padding=True,
+            size={"longest_edge": 1024}
         )
 
         # Flatten tensors
