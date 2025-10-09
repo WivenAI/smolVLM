@@ -1,0 +1,66 @@
+{
+  "timestamp": "20251008_092319",
+  "base_model": "HuggingFaceTB/SmolVLM-500M-Instruct",
+  "base_accuracies": {
+    "ocrbench": {
+      "correct": 775,
+      "total": 1000,
+      "accuracy": 77.5
+    },
+    "docvqa": {
+      "correct": 816,
+      "total": 1000,
+      "accuracy": 81.6
+    },
+    "chartqa": {
+      "correct": 135,
+      "total": 318,
+      "accuracy": 42.45283018867924
+    },
+    "erp_qcm": {
+      "correct": 33,
+      "total": 109,
+      "accuracy": 30.275229357798167
+    },
+    "dpo_logprob": {
+      "correct": 1352,
+      "total": 1858,
+      "accuracy": 72.76641550053822
+    }
+  },
+  "trained_accuracies": {
+    "ocrbench": {
+      "correct": 772,
+      "total": 1000,
+      "accuracy": 77.2
+    },
+    "docvqa": {
+      "correct": 813,
+      "total": 1000,
+      "accuracy": 81.3
+    },
+    "chartqa": {
+      "correct": 137,
+      "total": 318,
+      "accuracy": 43.08176100628931
+    },
+    "erp_qcm": {
+      "correct": 33,
+      "total": 109,
+      "accuracy": 30.275229357798167
+    },
+    "dpo_logprob": {
+      "correct": 1353,
+      "total": 1858,
+      "accuracy": 72.82023681377827
+    }
+  },
+  "improvements": {
+    "ocrbench": -0.29999999999999716,
+    "docvqa": -0.29999999999999716,
+    "chartqa": 0.628930817610069,
+    "erp_qcm": 0.0,
+    "dpo_logprob": 0.05382131324005002
+  },
+  "average_improvement": 0.01655042617002067
+}
