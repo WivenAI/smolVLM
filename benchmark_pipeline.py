@@ -399,24 +399,112 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="SmolVLM Benchmark Pipeline")
-    parser.add_argument("--num-samples", type=int, default=100,
+
+    # Create subparsers for different commands
+    subparsers = parser.add_subparsers(dest='command', help='Command to run')
+
+    # Full pipeline command (default behavior)
+    pipeline_parser = subparsers.add_parser('pipeline', help='Run full training and benchmarking pipeline')
+    pipeline_parser.add_argument("--num-samples", type=int, default=100,
                        help="Number of samples per benchmark (default: 100)")
-    parser.add_argument("--skip-training", action="store_true",
+    pipeline_parser.add_argument("--skip-training", action="store_true",
                        help="Skip training step, only benchmark base model")
-    parser.add_argument("--train-only", action="store_true",
+    pipeline_parser.add_argument("--train-only", action="store_true",
                        help="Train and benchmark only the trained model (skip base model)")
-    parser.add_argument("--train-script", default="finetune_smolvlm_lora.py",
+    pipeline_parser.add_argument("--train-script", default="finetune_smolvlm_lora.py",
                        help="Training script to use (default: finetune_smolvlm_lora.py - recommended for GPUs <16GB)")
+
+    # Compare command - benchmark both models and compare
+    compare_parser = subparsers.add_parser('compare', help='Benchmark and compare base model vs finetuned model')
+    compare_parser.add_argument("--num-samples", type=int, default=500,
+                       help="Number of samples per benchmark (default: 500)")
+    compare_parser.add_argument("--finetuned-model", type=str, default="./smolvlm-500m-lora-finetuned",
+                       help="Path to finetuned model (default: ./smolvlm-500m-lora-finetuned)")
+    compare_parser.add_argument("--base-model", type=str, default="HuggingFaceTB/SmolVLM-500M-Instruct",
+                       help="Path to base model (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
+
+    # Benchmark-only command - test a single model
+    benchmark_parser = subparsers.add_parser('benchmark', help='Benchmark a single model')
+    benchmark_parser.add_argument("--model-path", type=str, required=True,
+                       help="Path to model to benchmark")
+    benchmark_parser.add_argument("--num-samples", type=int, default=100,
+                       help="Number of samples per benchmark (default: 100)")
+    benchmark_parser.add_argument("--output-file", type=str, default=None,
+                       help="Output file for results (default: auto-generated)")
 
     args = parser.parse_args()
 
-    # Run pipeline
     pipeline = BenchmarkPipeline()
-    pipeline.run_full_pipeline(
-        num_samples=args.num_samples,
-        train=not args.skip_training,
-        skip_base=args.train_only
-    )
+
+    # Handle different commands
+    if args.command == 'compare':
+        # Compare base model vs finetuned model
+        print(f"\n{'#'*80}")
+        print(f"# SmolVLM Model Comparison")
+        print(f"# Base Model: {args.base_model}")
+        print(f"# Finetuned Model: {args.finetuned_model}")
+        print(f"# Samples per benchmark: {args.num_samples}")
+        print(f"{'#'*80}\n")
+
+        # Benchmark base model
+        base_results_file = pipeline.results_dir / f"base_model_{pipeline.timestamp}.json"
+        print("\n" + "="*80)
+        print("STEP 1/3: Benchmarking Base Model")
+        print("="*80)
+        base_results = pipeline.run_benchmark(
+            model_path=args.base_model,
+            output_file=str(base_results_file),
+            num_samples=args.num_samples
+        )
+
+        # Benchmark finetuned model
+        trained_results_file = pipeline.results_dir / f"finetuned_model_{pipeline.timestamp}.json"
+        print("\n" + "="*80)
+        print("STEP 2/3: Benchmarking Finetuned Model")
+        print("="*80)
+        trained_results = pipeline.run_benchmark(
+            model_path=args.finetuned_model,
+            output_file=str(trained_results_file),
+            num_samples=args.num_samples
+        )
+
+        # Compare results
+        print("\n" + "="*80)
+        print("STEP 3/3: Comparing Results")
+        print("="*80)
+        comparison = pipeline.compare_results(base_results, trained_results)
+
+    elif args.command == 'benchmark':
+        # Benchmark single model
+        if args.output_file is None:
+            args.output_file = pipeline.results_dir / f"benchmark_{pipeline.timestamp}.json"
+
+        results = pipeline.run_benchmark(
+            model_path=args.model_path,
+            output_file=str(args.output_file),
+            num_samples=args.num_samples
+        )
+
+        # Display results
+        accuracies = pipeline.calculate_accuracy(results)
+        print(f"\nBenchmark Results for {args.model_path}:")
+        for benchmark, acc in accuracies.items():
+            print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+
+    else:
+        # Default: run full pipeline (backward compatibility)
+        if not hasattr(args, 'num_samples'):
+            args.num_samples = 100
+        if not hasattr(args, 'skip_training'):
+            args.skip_training = False
+        if not hasattr(args, 'train_only'):
+            args.train_only = False
+
+        pipeline.run_full_pipeline(
+            num_samples=args.num_samples,
+            train=not args.skip_training,
+            skip_base=args.train_only
+        )
 
 
 if __name__ == "__main__":

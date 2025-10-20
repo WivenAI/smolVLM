@@ -1,0 +1,77 @@
+{
+  "timestamp": "20251020_115220",
+  "base_model": "HuggingFaceTB/SmolVLM-500M-Instruct",
+  "base_accuracies": {
+    "ocrbench": {
+      "correct": 129,
+      "total": 250,
+      "accuracy": 51.6
+    },
+    "docvqa": {
+      "correct": 165,
+      "total": 250,
+      "accuracy": 66.0
+    },
+    "chartqa": {
+      "correct": 114,
+      "total": 250,
+      "accuracy": 45.6
+    },
+    "erp_qcm": {
+      "correct": 18,
+      "total": 109,
+      "accuracy": 16.51376146788991
+    },
+    "dpo_logprob": {
+      "correct": 977,
+      "total": 1331,
+      "accuracy": 73.40345604808415
+    },
+    "bertscore": {
+      "correct": 1180,
+      "total": 1858,
+      "accuracy": 63.52335810661316
+    }
+  },
+  "trained_accuracies": {
+    "ocrbench": {
+      "correct": 126,
+      "total": 250,
+      "accuracy": 50.4
+    },
+    "docvqa": {
+      "correct": 163,
+      "total": 250,
+      "accuracy": 65.2
+    },
+    "chartqa": {
+      "correct": 114,
+      "total": 250,
+      "accuracy": 45.6
+    },
+    "erp_qcm": {
+      "correct": 18,
+      "total": 109,
+      "accuracy": 16.51376146788991
+    },
+    "dpo_logprob": {
+      "correct": 1375,
+      "total": 1858,
+      "accuracy": 74.00430570505921
+    },
+    "bertscore": {
+      "correct": 1179,
+      "total": 1858,
+      "accuracy": 63.50474953651428
+    }
+  },
+  "improvements": {
+    "ocrbench": -1.2000000000000028,
+    "docvqa": -0.7999999999999972,
+    "chartqa": 0.0,
+    "erp_qcm": 0.0,
+    "dpo_logprob": 0.6008496569750577,
+    "bertscore": -0.018608570098876953
+  },
+  "average_improvement": -0.23629315218730085
+}
