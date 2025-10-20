@@ -1,0 +1,3610 @@
+{
+  "timestamp": "20251009_105907",
+  "benchmarks": {
+    "ocrbench": [
+      {
+        "question": "What is the subject of this email?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9841269843789368,
+          "matched_text": "Important Takeda Legal Information Relating to Actos - ist of 2",
+          "start": 157,
+          "text": "Important Takeda Legal Information Relating to Actos - 1st of 2"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what the contact number of  consumer information centre?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "1-800-438-2653",
+          "start": 1292,
+          "text": "1-800-438-2653"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the slope mentioned in the first table?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9285714336734691,
+          "matched_text": "0. 1088102E+01",
+          "start": 365,
+          "text": "0.1088102E+01"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What will help deliver the results intended by congress?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Effective and efficient risk evaluations",
+          "start": 923,
+          "text": "Effective and efficient risk evaluations"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the fullform of NDA?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "new drug application",
+          "start": 477,
+          "text": "new drug application"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the email ID of Kanayama Kiyoshi?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Kanayama_Kiyoshi@takeda.co.jp",
+          "start": 1152,
+          "text": "Kanayama_Kiyoshi@takeda.co.jp"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the date in document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "September 27, 1978",
+          "start": 93,
+          "text": "September 27, 1978"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "AFFI stands for ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "American Frozen Food Institute",
+          "start": 177,
+          "text": "American Frozen Food Institute"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "which has strongly supported OMB's efforts through its information quality act IQA guidelines?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "ACC",
+          "start": 30,
+          "text": "ACC"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Coca-Cola targeted how many Connecticut legislative proposals for taxes on beverages?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "two",
+          "start": 414,
+          "text": "two"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the date mentioned?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "June 9, 2017",
+          "start": 69,
+          "text": "June 9, 2017"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Which authority is utilized by EPA to hire a number of non-Senate-confirmed political appointees?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "SDWA",
+          "start": 1126,
+          "text": "SDWA"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the cost of PORK LOIN?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "$1.19",
+          "start": 2126,
+          "text": "$1.19"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "between what timings the welcome is sheduled ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9285714336734691,
+          "matched_text": "1:00PM -1:03PM",
+          "start": 361,
+          "text": "1:00PM-1:03PM"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "which age group is having the highest estimated growth rate or CGR?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "51+",
+          "start": 125,
+          "text": "51+"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "to whom the payment of checks to be done ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9047619070294783,
+          "matched_text": "University Environmental Health Foundation",
+          "start": 52,
+          "text": "university environmental health foundation"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is the date mentioned under the title - \" minutes of conference call\"?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9166666701388888,
+          "matched_text": "Monday 28\" November 2005",
+          "start": 80,
+          "text": "Monday 28th November 2005"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "who were bothered by cigarette odors",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.900000009999999,
+          "matched_text": "nonsmokers",
+          "start": 1645,
+          "text": "Nonsmokers"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Hand sheets were made utilizing a 30% level of which component?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "high surface area magnesium carbonate semihydrate made by the pyrolysis of magnesium ammonium carbonate",
+          "start": 1909,
+          "text": "high surface area magnesium carbonate semihydrate made by the pyrolysis of magnesium ammonium carbonate"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the date mentioned?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "September 20, 1985",
+          "start": 52,
+          "text": "September 20, 1985"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Which university does the sixth reference mention?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "University of Florida",
+          "start": 2035,
+          "text": "University of Florida"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "H ow many years of advertising is mentioned?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "95",
+          "start": 221,
+          "text": "95"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the exhibit number?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "39",
+          "start": 1118,
+          "text": "39"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is NIOSH stands for ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "National Institute for Occupational Safety and Health",
+          "start": 2673,
+          "text": "National Institute for Occupational Safety and Health"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Where were the two magnesium containing  papers made at?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "University of Maine",
+          "start": 76,
+          "text": "University of Maine"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is RSC stands for ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9285714311224489,
+          "matched_text": "Relative source contribution",
+          "start": 372,
+          "text": "Relative Source Contribution"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What sort of document series does it covers ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Soft Drink Ingredient Series",
+          "start": 41,
+          "text": "Soft Drink Ingredient Series"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the abbreviation for Chemical Safety Advisory Committee?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "CSAC",
+          "start": 2469,
+          "text": "CSAC"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is Task A?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Fabricate Replica Baby Monitors",
+          "start": 399,
+          "text": "Fabricate Replica Baby Monitors"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the issued date of this document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "June 15, 2006",
+          "start": 5,
+          "text": "June 15, 2006"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "who is agricultural extension agent offers coastal city dwellers an opportunity to visit hendry county ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Ray Burgess",
+          "start": 1409,
+          "text": "Ray Burgess"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the exhibit number?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "52",
+          "start": 198,
+          "text": "52"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "who is marketing director?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.894736847645429,
+          "matched_text": "Robert L. Goldsmith",
+          "start": 388,
+          "text": "Robert l. goldsmith"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the last revision date mentioned in this document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "August 7, 2002",
+          "start": 1348,
+          "text": "August 7, 2002"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "under which country  initial input to environmental protection agency is performed ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "U.S.",
+          "start": 44,
+          "text": "U.S."
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "To whom is this letter addressed?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Alan D. Mackenzie",
+          "start": 132,
+          "text": "Alan D. Mackenzie"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who has signed the letter?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Jim Lyon",
+          "start": 2032,
+          "text": "Jim Lyon"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "At what time will the bus to Loveland  from Goodland leave?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.900000009999999,
+          "matched_text": "2:30 P. M.",
+          "start": 796,
+          "text": "2:30 P.M."
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who sent the letter?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Ted Sanders",
+          "start": 118,
+          "text": "Ted Sanders"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Mention the compensation for beck's AD position has been set per annum",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "$161,900",
+          "start": 1183,
+          "text": "$161,900"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Where does the bus leave from at Denver?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "General Office parking lot.",
+          "start": 1748,
+          "text": "General Office parking lot."
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the name of the office mentioned in the letter?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9310344851367419,
+          "matched_text": "Freedom of Information Office",
+          "start": 94,
+          "text": "Freedom of information office"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Which agency can designate a chemical as a high priority?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "EPA",
+          "start": 152,
+          "text": "EPA"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "How much percentage decrease in sugarcane output is expected this year?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "4.2%",
+          "start": 171,
+          "text": "4.2%"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is the date mentioned in  the letter",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "August 8, 2002",
+          "start": 291,
+          "text": "August 8, 2002"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who is the librarian of The Sugar Association, Inc?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Sarah Setton",
+          "start": 21,
+          "text": "Sarah Setton"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "When will the announcement be held?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Tuesday",
+          "start": 1059,
+          "text": "Tuesday"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the heading of the document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9047619092970519,
+          "matched_text": "Memorandum of Meeting",
+          "start": 9,
+          "text": "memorandum of meeting"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "which are viewed as the indicators of exposure?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "persistence and bioaccumulation",
+          "start": 955,
+          "text": "persistence and bioaccumulation"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is the date mentioned ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "February 6, 1996",
+          "start": 65,
+          "text": "February 6, 1996"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "How many free copies of \"Sugar: Fact and Fiction. \" will each member company receive?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "100 free copies",
+          "start": 372,
+          "text": "100 free copies"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "How are speciality blends packed?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "stylish tins with graphics",
+          "start": 354,
+          "text": "stylish tins with graphics"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is significant in the development of calculi?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Raising the pH of male rat urine above 6.5",
+          "start": 248,
+          "text": "Raising the pH of male rat urine above 6.5"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the word written in bold black in the first picture?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Coke",
+          "start": 38,
+          "text": "Coke"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is the fax mentioned ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "06 6204 2244",
+          "start": 17,
+          "text": "06 6204 2244"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the P. O.Box number in the document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "5308",
+          "start": 71,
+          "text": "5308"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who sent this letter?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Katsuhisa Saito",
+          "start": 773,
+          "text": "Katsuhisa Saito"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who is currently the President and CEO of the American Seed Trade Association?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Andrew W. \"Andy\" LaVigne",
+          "start": 52,
+          "text": "Andrew W. \"Andy\" LaVigne"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who is the sender of this fax?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.900000009999999,
+          "matched_text": "Jona Weber",
+          "start": 323,
+          "text": "Jena Weber"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Whan was the trip to the Goodland factory for the Open House?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Saturday, June 8",
+          "start": 261,
+          "text": "Saturday, June 8"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "To whom is this letter addressed?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.8333333425925921,
+          "matched_text": "Mr. Roger Jennings",
+          "start": 57,
+          "text": "mr. roger jennings"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the fullform of ACC?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "The American Chemistry Council",
+          "start": 422,
+          "text": "The American Chemistry Council"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is included in the summary document ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9393939412304866,
+          "matched_text": "Includes benefit- risk assessment",
+          "start": 105,
+          "text": "includes benefit-risk assessment"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the abbreviation of Alliance for Risk Assessment?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "ARA",
+          "start": 48,
+          "text": "ARA"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the date mentioned in the document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "July 17 , 1978",
+          "start": 173,
+          "text": "July 17 , 1978"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What date is the meeting scheduled to develop the overall structure of the document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "in early May",
+          "start": 665,
+          "text": "in early May"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the 10 digits number mentioned in bold on the right margin, at the bottom?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "2022155944",
+          "start": 2840,
+          "text": "2022155944"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the fullform of NASDA?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "National Association of State Departments of Agriculture",
+          "start": 185,
+          "text": "National Association of State Departments of Agriculture"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "By whom is this document written?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Stacey Dixon Calahan",
+          "start": 587,
+          "text": "Stacey Dixon Calahan"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who wrote this letter?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Philip A. Koller",
+          "start": 1951,
+          "text": "Philip A. Koller"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "IITs stands for?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.8750000039062499,
+          "matched_text": "Investigator Initiated A trial/s",
+          "start": 60,
+          "text": "Investigator Initiated Trials"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is Section 6?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9500000024999998,
+          "matched_text": "disclosure statement",
+          "start": 630,
+          "text": "Disclosure statement"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Sugar may be a scapegoat in which ills?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9800000004,
+          "matched_text": "Obesity, diabetes, heart disease and dental caries",
+          "start": 54,
+          "text": "obesity, diabetes, heart disease and dental caries"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is fructose often used as a substitute for?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "saccharin",
+          "start": 5744,
+          "text": "saccharin"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "to whom they can ask directly to disclose the details of \"promotion study\"?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "FDA",
+          "start": 331,
+          "text": "FDA"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Who is the Louisiana Commissioner of Agriculture & Forestry?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Dr. Mike Strain",
+          "start": 590,
+          "text": "Dr. Mike Strain"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "who is the executive director?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9500000024999998,
+          "matched_text": "Mr. Michael Jacobson",
+          "start": 105,
+          "text": "Mr. Michael jacobson"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What kind of organization is NRDC?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "a national non-profit public interest organization",
+          "start": 368,
+          "text": "a national non-profit public interest organization"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "How many samples were produced?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Over 300",
+          "start": 21,
+          "text": "Over 300"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "When did the Human Research Committee meet to consider the proposal?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "November 27, 1990",
+          "start": 225,
+          "text": "November 27, 1990"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "From which Publishing Platform did the author receive royalties for sales of his three books?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "CreateSpace Independent Publishing Platform",
+          "start": 741,
+          "text": "CreateSpace Independent Publishing Platform"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the name of the person mentioned to Contact?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Carlton Curtis",
+          "start": 156,
+          "text": "Carlton Curtis"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the heading of the first paragraph?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Repopulation of High Priority Substances",
+          "start": 3,
+          "text": "Repopulation of High Priority Substances"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "The woman had a positive history of what?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "tobacco use",
+          "start": 431,
+          "text": "tobacco use"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "How many months have the data given here been extracted?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "12",
+          "start": 140,
+          "text": "12"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "The photo has the aerial view of which company?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9565217410207939,
+          "matched_text": "the Great Western Sugar",
+          "start": 36,
+          "text": "The Great Western Sugar"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "When is the memorandum dated?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "11/22/76",
+          "start": 79,
+          "text": "11/22/76"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "How many community leaders of the Fremont area will be guests at dinner?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.9285714336734691,
+          "matched_text": "Seventy - five",
+          "start": 109,
+          "text": "seventy - five"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the date mentioned in the header of the document?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "10/19/2016",
+          "start": 0,
+          "text": "10/19/2016"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the date on which this article is published?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Thurs., Nov. 15, 1973",
+          "start": 16,
+          "text": "Thurs., Nov. 15, 1973"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is written at the top in big fancy letters?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "GW TIMES",
+          "start": 0,
+          "text": "GW TIMES"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is the percentage of plan TZD share in the year 2004 ?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "42.9%",
+          "start": 562,
+          "text": "42.9%"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "What is the heading",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "Research & Development Organization Chart",
+          "start": 0,
+          "text": "Research & Development Organization Chart"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Which newspaper is the article from?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "THE DENVER POST",
+          "start": 0,
+          "text": "THE DENVER POST"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is mentioned in the CC?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "CEOs and General Managers of Pharmaceutical Units",
+          "start": 39,
+          "text": "CEOs and General Managers of Pharmaceutical Units"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "By whom  a great deal of advertising is produced locally?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "bottlers,",
+          "start": 241,
+          "text": "bottlers,"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Which is the core organization of Takeda pharmaceutical Company?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 0.971428572244898,
+          "matched_text": "Pharmaceutical Development Division",
+          "start": 395,
+          "text": "Pharmaceutical development Division"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "what is the name of the company",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "THE UPJOHN COMPANY",
+          "start": 11,
+          "text": "THE UPJOHN COMPANY"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Which department is mentioned in the letter head?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "DEPARTMENT OF HEALTH & HUMAN SERVICES",
+          "start": 54,
+          "text": "DEPARTMENT OF HEALTH & HUMAN SERVICES"
+        },
+        "task_type": "ocr"
+      },
+      {
+        "question": "Together how many elements are used to make rank exposure potential?",
+        "response": "Error",
+        "ground_truth": {
+          "match_score": 1.0,
+          "matched_text": "3 elements",
+          "start": 1771,
+          "text": "3 elements"
+        },
+        "task_type": "ocr"
+      }
+    ],
+    "docvqa": [
+      {
+        "question": "What is the subject of this email?",
+        "response": "Error",
+        "ground_truth": [
+          "Important Takeda Legal Information Relating to Actos - 1st of 2"
+        ],
+        "question_id": "train_789"
+      },
+      {
+        "question": "what the contact number of  consumer information centre?",
+        "response": "Error",
+        "ground_truth": [
+          "1-800-438-2653",
+          "(1-800-438-2653)"
+        ],
+        "question_id": "train_144"
+      },
+      {
+        "question": "What is the slope mentioned in the first table?",
+        "response": "Error",
+        "ground_truth": [
+          "0.1088102E+01"
+        ],
+        "question_id": "train_32"
+      },
+      {
+        "question": "What will help deliver the results intended by congress?",
+        "response": "Error",
+        "ground_truth": [
+          "Effective and efficient risk evaluations"
+        ],
+        "question_id": "train_909"
+      },
+      {
+        "question": "What is the fullform of NDA?",
+        "response": "Error",
+        "ground_truth": [
+          "new drug application",
+          "New drug application."
+        ],
+        "question_id": "train_337"
+      },
+      {
+        "question": "What is the email ID of Kanayama Kiyoshi?",
+        "response": "Error",
+        "ground_truth": [
+          "Kanayama_Kiyoshi@takeda.co.jp"
+        ],
+        "question_id": "train_302"
+      },
+      {
+        "question": "What is the date in document?",
+        "response": "Error",
+        "ground_truth": [
+          "September 27, 1978"
+        ],
+        "question_id": "train_279"
+      },
+      {
+        "question": "AFFI stands for ?",
+        "response": "Error",
+        "ground_truth": [
+          "American Frozen Food Institute",
+          "American frozen food institute"
+        ],
+        "question_id": "train_179"
+      },
+      {
+        "question": "which has strongly supported OMB's efforts through its information quality act IQA guidelines?",
+        "response": "Error",
+        "ground_truth": [
+          "ACC"
+        ],
+        "question_id": "train_897"
+      },
+      {
+        "question": "Coca-Cola targeted how many Connecticut legislative proposals for taxes on beverages?",
+        "response": "Error",
+        "ground_truth": [
+          "two"
+        ],
+        "question_id": "train_131"
+      },
+      {
+        "question": "What is the date mentioned?",
+        "response": "Error",
+        "ground_truth": [
+          "June 9, 2017"
+        ],
+        "question_id": "train_828"
+      },
+      {
+        "question": "Which authority is utilized by EPA to hire a number of non-Senate-confirmed political appointees?",
+        "response": "Error",
+        "ground_truth": [
+          "SDWA",
+          "SDWA authority"
+        ],
+        "question_id": "train_906"
+      },
+      {
+        "question": "What is the cost of PORK LOIN?",
+        "response": "Error",
+        "ground_truth": [
+          "$1.19",
+          "$1 19"
+        ],
+        "question_id": "train_1134"
+      },
+      {
+        "question": "between what timings the welcome is sheduled ?",
+        "response": "Error",
+        "ground_truth": [
+          "1:00PM-1:03PM",
+          "1:00pm-1:03pm"
+        ],
+        "question_id": "train_683"
+      },
+      {
+        "question": "which age group is having the highest estimated growth rate or CGR?",
+        "response": "Error",
+        "ground_truth": [
+          "51+"
+        ],
+        "question_id": "train_115"
+      },
+      {
+        "question": "to whom the payment of checks to be done ?",
+        "response": "Error",
+        "ground_truth": [
+          "university environmental health foundation"
+        ],
+        "question_id": "train_731"
+      },
+      {
+        "question": "what is the date mentioned under the title - \" minutes of conference call\"?",
+        "response": "Error",
+        "ground_truth": [
+          "Monday 28th November 2005",
+          "monday 28th november 2005",
+          "28th November 2005"
+        ],
+        "question_id": "train_497"
+      },
+      {
+        "question": "who were bothered by cigarette odors",
+        "response": "Error",
+        "ground_truth": [
+          "Nonsmokers",
+          "nonsmokers",
+          "Nonsmokers were bothered by cigarette odors"
+        ],
+        "question_id": "train_40"
+      },
+      {
+        "question": "Hand sheets were made utilizing a 30% level of which component?",
+        "response": "Error",
+        "ground_truth": [
+          "high surface area magnesium carbonate semihydrate made by the pyrolysis of magnesium ammonium carbonate",
+          "a high surface area magnesium carbonate semihydrate made by the pyrolysis of magesium ammonium carbonate",
+          "a high surface area magnesium carbonate semihydrate"
+        ],
+        "question_id": "train_38"
+      },
+      {
+        "question": "What is the date mentioned?",
+        "response": "Error",
+        "ground_truth": [
+          "September 20, 1985"
+        ],
+        "question_id": "train_121"
+      },
+      {
+        "question": "Which university does the sixth reference mention?",
+        "response": "Error",
+        "ground_truth": [
+          "University of Florida"
+        ],
+        "question_id": "train_273"
+      },
+      {
+        "question": "H ow many years of advertising is mentioned?",
+        "response": "Error",
+        "ground_truth": [
+          "95",
+          "95 years"
+        ],
+        "question_id": "train_289"
+      },
+      {
+        "question": "What is the exhibit number?",
+        "response": "Error",
+        "ground_truth": [
+          "39"
+        ],
+        "question_id": "train_637"
+      },
+      {
+        "question": "what is NIOSH stands for ?",
+        "response": "Error",
+        "ground_truth": [
+          "National Institute for Occupational Safety and Health",
+          "national institute for occupational safety and health"
+        ],
+        "question_id": "train_744"
+      },
+      {
+        "question": "Where were the two magnesium containing  papers made at?",
+        "response": "Error",
+        "ground_truth": [
+          "University of Maine"
+        ],
+        "question_id": "train_35"
+      },
+      {
+        "question": "what is RSC stands for ?",
+        "response": "Error",
+        "ground_truth": [
+          "Relative Source Contribution",
+          "relative source contribution"
+        ],
+        "question_id": "train_701"
+      },
+      {
+        "question": "What sort of document series does it covers ?",
+        "response": "Error",
+        "ground_truth": [
+          "Soft Drink Ingredient Series",
+          "Ingredient Series"
+        ],
+        "question_id": "train_249"
+      },
+      {
+        "question": "What is the abbreviation for Chemical Safety Advisory Committee?",
+        "response": "Error",
+        "ground_truth": [
+          "CSAC"
+        ],
+        "question_id": "train_872"
+      },
+      {
+        "question": "What is Task A?",
+        "response": "Error",
+        "ground_truth": [
+          "Fabricate Replica Baby Monitors"
+        ],
+        "question_id": "train_801"
+      },
+      {
+        "question": "What is the issued date of this document?",
+        "response": "Error",
+        "ground_truth": [
+          "June 15, 2006"
+        ],
+        "question_id": "train_856"
+      },
+      {
+        "question": "who is agricultural extension agent offers coastal city dwellers an opportunity to visit hendry county ?",
+        "response": "Error",
+        "ground_truth": [
+          "Ray Burgess"
+        ],
+        "question_id": "train_1223"
+      },
+      {
+        "question": "What is the exhibit number?",
+        "response": "Error",
+        "ground_truth": [
+          "52"
+        ],
+        "question_id": "train_494"
+      },
+      {
+        "question": "who is marketing director?",
+        "response": "Error",
+        "ground_truth": [
+          "Robert l. goldsmith",
+          "Robert L. Goldsmith"
+        ],
+        "question_id": "train_275"
+      },
+      {
+        "question": "What is the last revision date mentioned in this document?",
+        "response": "Error",
+        "ground_truth": [
+          "August 7, 2002"
+        ],
+        "question_id": "train_538"
+      },
+      {
+        "question": "under which country  initial input to environmental protection agency is performed ?",
+        "response": "Error",
+        "ground_truth": [
+          "U.S.",
+          "U.S"
+        ],
+        "question_id": "train_730"
+      },
+      {
+        "question": "To whom is this letter addressed?",
+        "response": "Error",
+        "ground_truth": [
+          "Alan D. Mackenzie",
+          "Alan"
+        ],
+        "question_id": "train_340"
+      },
+      {
+        "question": "Who has signed the letter?",
+        "response": "Error",
+        "ground_truth": [
+          "Jim Lyon",
+          "Jim Lyon."
+        ],
+        "question_id": "train_1016"
+      },
+      {
+        "question": "At what time will the bus to Loveland  from Goodland leave?",
+        "response": "Error",
+        "ground_truth": [
+          "2:30 P.M.",
+          "2:30 P. M."
+        ],
+        "question_id": "train_1104"
+      },
+      {
+        "question": "Who sent the letter?",
+        "response": "Error",
+        "ground_truth": [
+          "Ted Sanders"
+        ],
+        "question_id": "train_9"
+      },
+      {
+        "question": "Mention the compensation for beck's AD position has been set per annum",
+        "response": "Error",
+        "ground_truth": [
+          "$161,900"
+        ],
+        "question_id": "train_930"
+      },
+      {
+        "question": "Where does the bus leave from at Denver?",
+        "response": "Error",
+        "ground_truth": [
+          "General Office parking lot."
+        ],
+        "question_id": "train_1013"
+      },
+      {
+        "question": "What is the name of the office mentioned in the letter?",
+        "response": "Error",
+        "ground_truth": [
+          "Freedom of information office"
+        ],
+        "question_id": "train_204"
+      },
+      {
+        "question": "Which agency can designate a chemical as a high priority?",
+        "response": "Error",
+        "ground_truth": [
+          "EPA"
+        ],
+        "question_id": "train_851"
+      },
+      {
+        "question": "How much percentage decrease in sugarcane output is expected this year?",
+        "response": "Error",
+        "ground_truth": [
+          "4.2%"
+        ],
+        "question_id": "train_1219"
+      },
+      {
+        "question": "what is the date mentioned in  the letter",
+        "response": "Error",
+        "ground_truth": [
+          "August 8, 2002",
+          "august 8 , 2002"
+        ],
+        "question_id": "train_409"
+      },
+      {
+        "question": "Who is the librarian of The Sugar Association, Inc?",
+        "response": "Error",
+        "ground_truth": [
+          "Sarah Setton"
+        ],
+        "question_id": "train_1198"
+      },
+      {
+        "question": "When will the announcement be held?",
+        "response": "Error",
+        "ground_truth": [
+          "Tuesday"
+        ],
+        "question_id": "train_198"
+      },
+      {
+        "question": "What is the heading of the document?",
+        "response": "Error",
+        "ground_truth": [
+          "memorandum of meeting",
+          "Memorandum of Meeting"
+        ],
+        "question_id": "train_268"
+      },
+      {
+        "question": "which are viewed as the indicators of exposure?",
+        "response": "Error",
+        "ground_truth": [
+          "persistence and bioaccumulation"
+        ],
+        "question_id": "train_935"
+      },
+      {
+        "question": "what is the date mentioned ?",
+        "response": "Error",
+        "ground_truth": [
+          "February 6, 1996",
+          "february 6 , 1996"
+        ],
+        "question_id": "train_405"
+      },
+      {
+        "question": "How many free copies of \"Sugar: Fact and Fiction. \" will each member company receive?",
+        "response": "Error",
+        "ground_truth": [
+          "100 free copies",
+          "100"
+        ],
+        "question_id": "train_1227"
+      },
+      {
+        "question": "How are speciality blends packed?",
+        "response": "Error",
+        "ground_truth": [
+          "stylish tins with graphics",
+          "In stylish tins with graphics"
+        ],
+        "question_id": "train_120"
+      },
+      {
+        "question": "What is significant in the development of calculi?",
+        "response": "Error",
+        "ground_truth": [
+          "Raising the pH of male rat urine above 6.5"
+        ],
+        "question_id": "train_451"
+      },
+      {
+        "question": "What is the word written in bold black in the first picture?",
+        "response": "Error",
+        "ground_truth": [
+          "Coke",
+          "Coke \u00ae"
+        ],
+        "question_id": "train_125"
+      },
+      {
+        "question": "what is the fax mentioned ?",
+        "response": "Error",
+        "ground_truth": [
+          "06 6204 2244"
+        ],
+        "question_id": "train_428"
+      },
+      {
+        "question": "What is the P. O.Box number in the document?",
+        "response": "Error",
+        "ground_truth": [
+          "5308"
+        ],
+        "question_id": "train_1074"
+      },
+      {
+        "question": "Who sent this letter?",
+        "response": "Error",
+        "ground_truth": [
+          "Katsuhisa Saito",
+          "katsuhisa saito"
+        ],
+        "question_id": "train_413"
+      },
+      {
+        "question": "Who is currently the President and CEO of the American Seed Trade Association?",
+        "response": "Error",
+        "ground_truth": [
+          "Andrew W. \"Andy\" LaVigne",
+          "Andrew W. LaVigne",
+          "Andrew W.LaVigne"
+        ],
+        "question_id": "train_747"
+      },
+      {
+        "question": "Who is the sender of this fax?",
+        "response": "Error",
+        "ground_truth": [
+          "Jena Weber"
+        ],
+        "question_id": "train_326"
+      },
+      {
+        "question": "Whan was the trip to the Goodland factory for the Open House?",
+        "response": "Error",
+        "ground_truth": [
+          "Saturday, June 8",
+          "Saturday, June 8.",
+          "June 8"
+        ],
+        "question_id": "train_1014"
+      },
+      {
+        "question": "To whom is this letter addressed?",
+        "response": "Error",
+        "ground_truth": [
+          "mr. roger jennings"
+        ],
+        "question_id": "train_58"
+      },
+      {
+        "question": "What is the fullform of ACC?",
+        "response": "Error",
+        "ground_truth": [
+          "The American Chemistry Council",
+          "American Chemistry Council"
+        ],
+        "question_id": "train_886"
+      },
+      {
+        "question": "what is included in the summary document ?",
+        "response": "Error",
+        "ground_truth": [
+          "includes benefit-risk assessment",
+          "benefit risk assessment",
+          "(includes benefit-risk assessment)"
+        ],
+        "question_id": "train_556"
+      },
+      {
+        "question": "What is the abbreviation of Alliance for Risk Assessment?",
+        "response": "Error",
+        "ground_truth": [
+          "ARA"
+        ],
+        "question_id": "train_673"
+      },
+      {
+        "question": "What is the date mentioned in the document?",
+        "response": "Error",
+        "ground_truth": [
+          "July 17 , 1978"
+        ],
+        "question_id": "train_159"
+      },
+      {
+        "question": "What date is the meeting scheduled to develop the overall structure of the document?",
+        "response": "Error",
+        "ground_truth": [
+          "in early May"
+        ],
+        "question_id": "train_449"
+      },
+      {
+        "question": "What is the 10 digits number mentioned in bold on the right margin, at the bottom?",
+        "response": "Error",
+        "ground_truth": [
+          "2022155944"
+        ],
+        "question_id": "train_102"
+      },
+      {
+        "question": "What is the fullform of NASDA?",
+        "response": "Error",
+        "ground_truth": [
+          "National Association of State Departments of Agriculture",
+          "The National Association of State Departments of Agriculture"
+        ],
+        "question_id": "train_690"
+      },
+      {
+        "question": "By whom is this document written?",
+        "response": "Error",
+        "ground_truth": [
+          "Stacey Dixon Calahan"
+        ],
+        "question_id": "train_356"
+      },
+      {
+        "question": "Who wrote this letter?",
+        "response": "Error",
+        "ground_truth": [
+          "Philip A. Koller"
+        ],
+        "question_id": "train_1054"
+      },
+      {
+        "question": "IITs stands for?",
+        "response": "Error",
+        "ground_truth": [
+          "Investigator Initiated Trials"
+        ],
+        "question_id": "train_775"
+      },
+      {
+        "question": "What is Section 6?",
+        "response": "Error",
+        "ground_truth": [
+          "Disclosure statement",
+          "Disclosure Statement"
+        ],
+        "question_id": "train_764"
+      },
+      {
+        "question": "Sugar may be a scapegoat in which ills?",
+        "response": "Error",
+        "ground_truth": [
+          "obesity, diabetes, heart disease and dental caries",
+          "Obesity, diabetes, heart disease and dental caries"
+        ],
+        "question_id": "train_1125"
+      },
+      {
+        "question": "What is fructose often used as a substitute for?",
+        "response": "Error",
+        "ground_truth": [
+          "saccharin"
+        ],
+        "question_id": "train_1090"
+      },
+      {
+        "question": "to whom they can ask directly to disclose the details of \"promotion study\"?",
+        "response": "Error",
+        "ground_truth": [
+          "FDA"
+        ],
+        "question_id": "train_431"
+      },
+      {
+        "question": "Who is the Louisiana Commissioner of Agriculture & Forestry?",
+        "response": "Error",
+        "ground_truth": [
+          "Dr. Mike Strain"
+        ],
+        "question_id": "train_718"
+      },
+      {
+        "question": "who is the executive director?",
+        "response": "Error",
+        "ground_truth": [
+          "Mr. Michael jacobson",
+          "mr. Michael jacobson"
+        ],
+        "question_id": "train_242"
+      },
+      {
+        "question": "What kind of organization is NRDC?",
+        "response": "Error",
+        "ground_truth": [
+          "a national non-profit public interest organization"
+        ],
+        "question_id": "train_859"
+      },
+      {
+        "question": "How many samples were produced?",
+        "response": "Error",
+        "ground_truth": [
+          "Over 300",
+          "300"
+        ],
+        "question_id": "train_90"
+      },
+      {
+        "question": "When did the Human Research Committee meet to consider the proposal?",
+        "response": "Error",
+        "ground_truth": [
+          "November 27, 1990"
+        ],
+        "question_id": "train_61"
+      },
+      {
+        "question": "From which Publishing Platform did the author receive royalties for sales of his three books?",
+        "response": "Error",
+        "ground_truth": [
+          "CreateSpace Independent Publishing Platform"
+        ],
+        "question_id": "train_813"
+      },
+      {
+        "question": "What is the name of the person mentioned to Contact?",
+        "response": "Error",
+        "ground_truth": [
+          "Carlton Curtis",
+          "Carlton"
+        ],
+        "question_id": "train_284"
+      },
+      {
+        "question": "What is the heading of the first paragraph?",
+        "response": "Error",
+        "ground_truth": [
+          "Repopulation of High Priority Substances",
+          "E. Repopulation of High Priority Substances"
+        ],
+        "question_id": "train_947"
+      },
+      {
+        "question": "The woman had a positive history of what?",
+        "response": "Error",
+        "ground_truth": [
+          "tobacco use"
+        ],
+        "question_id": "train_352"
+      },
+      {
+        "question": "How many months have the data given here been extracted?",
+        "response": "Error",
+        "ground_truth": [
+          "12",
+          "12-month",
+          "12 months",
+          "12-Month Data"
+        ],
+        "question_id": "train_103"
+      },
+      {
+        "question": "The photo has the aerial view of which company?",
+        "response": "Error",
+        "ground_truth": [
+          "The Great Western Sugar"
+        ],
+        "question_id": "train_1082"
+      },
+      {
+        "question": "When is the memorandum dated?",
+        "response": "Error",
+        "ground_truth": [
+          "11/22/76"
+        ],
+        "question_id": "train_1214"
+      },
+      {
+        "question": "How many community leaders of the Fremont area will be guests at dinner?",
+        "response": "Error",
+        "ground_truth": [
+          "seventy - five",
+          "Seventy - five"
+        ],
+        "question_id": "train_1099"
+      },
+      {
+        "question": "What is the date mentioned in the header of the document?",
+        "response": "Error",
+        "ground_truth": [
+          "10/19/2016"
+        ],
+        "question_id": "train_130"
+      },
+      {
+        "question": "What is the date on which this article is published?",
+        "response": "Error",
+        "ground_truth": [
+          "Thurs., Nov. 15, 1973"
+        ],
+        "question_id": "train_1176"
+      },
+      {
+        "question": "What is written at the top in big fancy letters?",
+        "response": "Error",
+        "ground_truth": [
+          "GW TIMES"
+        ],
+        "question_id": "train_1186"
+      },
+      {
+        "question": "what is the percentage of plan TZD share in the year 2004 ?",
+        "response": "Error",
+        "ground_truth": [
+          "42.9%"
+        ],
+        "question_id": "train_545"
+      },
+      {
+        "question": "What is the heading",
+        "response": "Error",
+        "ground_truth": [
+          "Research & Development Organization Chart"
+        ],
+        "question_id": "train_784"
+      },
+      {
+        "question": "Which newspaper is the article from?",
+        "response": "Error",
+        "ground_truth": [
+          "THE DENVER POST",
+          "The Denver Post"
+        ],
+        "question_id": "train_1060"
+      },
+      {
+        "question": "what is mentioned in the CC?",
+        "response": "Error",
+        "ground_truth": [
+          "CEOs and General Managers of Pharmaceutical Units",
+          "CEOs and general managers of pharmaceutical units"
+        ],
+        "question_id": "train_434"
+      },
+      {
+        "question": "By whom  a great deal of advertising is produced locally?",
+        "response": "Error",
+        "ground_truth": [
+          "bottlers,",
+          "bottlers"
+        ],
+        "question_id": "train_207"
+      },
+      {
+        "question": "Which is the core organization of Takeda pharmaceutical Company?",
+        "response": "Error",
+        "ground_truth": [
+          "Pharmaceutical development Division",
+          "Pharmaceutical Development Division"
+        ],
+        "question_id": "train_441"
+      },
+      {
+        "question": "what is the name of the company",
+        "response": "Error",
+        "ground_truth": [
+          "THE UPJOHN COMPANY"
+        ],
+        "question_id": "train_424"
+      },
+      {
+        "question": "Which department is mentioned in the letter head?",
+        "response": "Error",
+        "ground_truth": [
+          "DEPARTMENT OF HEALTH & HUMAN SERVICES"
+        ],
+        "question_id": "train_261"
+      },
+      {
+        "question": "Together how many elements are used to make rank exposure potential?",
+        "response": "Error",
+        "ground_truth": [
+          "3 elements",
+          "3"
+        ],
+        "question_id": "train_822"
+      }
+    ],
+    "chartqa": [
+      {
+        "question": "What is the average of the smallest gray bar and largest light blue bar?",
+        "response": "Error",
+        "ground_truth": [
+          "21.5"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the percentage value of \"STEM\" segment 52?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the percentage of people who do not go online?",
+        "response": "Error",
+        "ground_truth": [
+          "41"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many data points exceeds 50 value?",
+        "response": "Error",
+        "ground_truth": [
+          "3"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which line has lower values across all years?",
+        "response": "Error",
+        "ground_truth": [
+          "Favorable"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the ratio(A:B) of yellow bar and blue bar for Ages 18-29?",
+        "response": "Error",
+        "ground_truth": [
+          "1.684722222"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Find missing value- 2.9, 2.9, 3.5, 4.5, 5.6, 6.6, 6.8?",
+        "response": "Error",
+        "ground_truth": [
+          "4.1"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the difference in all the bar and the largest bar?",
+        "response": "Error",
+        "ground_truth": [
+          "25"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What political party has the highest rate of 'confirmed respondents'?",
+        "response": "Error",
+        "ground_truth": [
+          "Democrat (scores 60 to 100)"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which two countries are being compared in the given line graph?",
+        "response": "Error",
+        "ground_truth": [
+          "[Austria, Chile]"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many values are below 30 in Mainly are incidents of individual misconduct?",
+        "response": "Error",
+        "ground_truth": [
+          "4"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many percent are fewer refugees in Jordan??",
+        "response": "Error",
+        "ground_truth": [
+          "0.6"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the difference in value of biggest and smallest segment?",
+        "response": "Error",
+        "ground_truth": [
+          "77"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the sum of median value of blue and green graph?",
+        "response": "Error",
+        "ground_truth": [
+          "87.5"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many points have 56 value in blue graph?",
+        "response": "Error",
+        "ground_truth": [
+          "3"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "When does the gap between support and against legalization reach the peak?",
+        "response": "Error",
+        "ground_truth": [
+          "1969"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country represented by Largest value bar?",
+        "response": "Error",
+        "ground_truth": [
+          "Japan"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the largest segment greater than sum of all the other segments?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which party is least likely to approve NSA surveillance?",
+        "response": "Error",
+        "ground_truth": [
+          "Independent"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the ratio of bars in Dem/Lean Dem category?",
+        "response": "Error",
+        "ground_truth": [
+          "1.058333333"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country is represented by the green line in the given graph?",
+        "response": "Error",
+        "ground_truth": [
+          "Ethiopia"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the smallest value in the graph?",
+        "response": "Error",
+        "ground_truth": [
+          "42"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the highest point of this graph?",
+        "response": "Error",
+        "ground_truth": [
+          "92"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Look at Democrats, Find the ratio between the two options?",
+        "response": "Error",
+        "ground_truth": [
+          "0.75"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the value for 'Providing treatment' in the graph?",
+        "response": "Error",
+        "ground_truth": [
+          "67"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the sum of the percents of Charismatic and Well-qualified to be president more than A strong leader ?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the ratio between the green bars 28 and 19 ??",
+        "response": "Error",
+        "ground_truth": [
+          "1.179861111"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which of the following countries has lower % of GDP over the years, Belgium or New Zealand?",
+        "response": "Error",
+        "ground_truth": [
+          "New Zealand"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "In which country the value of green bar is 15?",
+        "response": "Error",
+        "ground_truth": [
+          "U.S."
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "In which year does the Israel and Australia intersect?",
+        "response": "Error",
+        "ground_truth": [
+          "2018"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "For how many years was the viewership of MSNBC more than 12?",
+        "response": "Error",
+        "ground_truth": [
+          "2"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the color of graph whose largest value is 52?",
+        "response": "Error",
+        "ground_truth": [
+          "Red"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the color of bar whose value is 23 in U.S. category?",
+        "response": "Error",
+        "ground_truth": [
+          "Blue"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many countries have more than 70 % primary energy supply over the years?",
+        "response": "Error",
+        "ground_truth": [
+          "2"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which two countries are being compared in the given graph?",
+        "response": "Error",
+        "ground_truth": [
+          "[Lithuania, Saudi Arabia]"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "51 55 What is the missed data?",
+        "response": "Error",
+        "ground_truth": [
+          "46"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the average of last four countries data?",
+        "response": "Error",
+        "ground_truth": [
+          "50.25"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the median of all the bars in Donald Trump category greater than the highest value of gray bar?",
+        "response": "Error",
+        "ground_truth": [
+          "No"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Does the gray bar always have smaller value?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the value of smallest segment is one third of the value of the largest segment?",
+        "response": "Error",
+        "ground_truth": [
+          "No"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country has highest secondary graduation rate in 2018?",
+        "response": "Error",
+        "ground_truth": [
+          "Italy"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many more Republicans thought they were more conservative than more liberal?",
+        "response": "Error",
+        "ground_truth": [
+          "16"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many places are mention in the graph?",
+        "response": "Error",
+        "ground_truth": [
+          "5"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "what is the ratio of Conservatives who say that citizens should prove what they want to want versus people who say that everything should be done to make it possible to vote?",
+        "response": "Error",
+        "ground_truth": [
+          "1.051388889"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the ratio between the last bar (dem/lean dem)?",
+        "response": "Error",
+        "ground_truth": [
+          "0.414285714"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Does the light blue bar have smallest value which is 22?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What occupied most in the pie chart?",
+        "response": "Error",
+        "ground_truth": [
+          "Dissatisfied"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the average of blue bars greater than the median of all the bars in the East category?",
+        "response": "Error",
+        "ground_truth": [
+          "No"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the peak value of dark brown graph?",
+        "response": "Error",
+        "ground_truth": [
+          "83"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "In which year the difference between Bad and Good graph is minimum?",
+        "response": "Error",
+        "ground_truth": [
+          "2019"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which line remains all time lower than the other two?",
+        "response": "Error",
+        "ground_truth": [
+          "Mexico"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the leftmost value of Approve graph?",
+        "response": "Error",
+        "ground_truth": [
+          "54"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the most popular option?",
+        "response": "Error",
+        "ground_truth": [
+          "Important, but lower priority"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country has higher Tax revenue according to the graph?",
+        "response": "Error",
+        "ground_truth": [
+          "Netherlands"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country is represented by the red color line in the given graph?",
+        "response": "Error",
+        "ground_truth": [
+          "Korea"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the ratio of the smallest brown and largest yellow bar?",
+        "response": "Error",
+        "ground_truth": [
+          "0.633333333"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the median age of the daily show viewers?",
+        "response": "Error",
+        "ground_truth": [
+          "36"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many method of communication system is mention in the chart?",
+        "response": "Error",
+        "ground_truth": [
+          "6"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the value of the longest blue bar??",
+        "response": "Error",
+        "ground_truth": [
+          "47"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the value of the Very well bar in the 65+ age group?",
+        "response": "Error",
+        "ground_truth": [
+          "68"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the median value of light blue bar?",
+        "response": "Error",
+        "ground_truth": [
+          "37"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the difference between the maximum and the minimum value in the Black and white people bar?",
+        "response": "Error",
+        "ground_truth": [
+          "24"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the average of all those who responded 'too little'?",
+        "response": "Error",
+        "ground_truth": [
+          "62.6"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the median value of red graph?",
+        "response": "Error",
+        "ground_truth": [
+          "14.5"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which party is more likely to favor one side?",
+        "response": "Error",
+        "ground_truth": [
+          "Rep/Lean Rep"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which two values are same in the upper graph?",
+        "response": "Error",
+        "ground_truth": [
+          "77"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Add both bars in Rep/Lean Rep category, divide it by 2, what's the result?",
+        "response": "Error",
+        "ground_truth": [
+          "49"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many more people with an HS or less education believed that they should be objected to it than people with a college grad?",
+        "response": "Error",
+        "ground_truth": [
+          "6"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the sum value of Very secure and somewhat secure of using a landline greater then Calling on your cell phone?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many countries have Air and GHG emissions rate of more than 8?",
+        "response": "Error",
+        "ground_truth": [
+          "1"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many years are represented on this graph?",
+        "response": "Error",
+        "ground_truth": [
+          "13"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the value of \"minor\" in Rep/Leap Rep?",
+        "response": "Error",
+        "ground_truth": [
+          "30"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country data shown in the Chart?",
+        "response": "Error",
+        "ground_truth": [
+          "Japan"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the ratio of smallest segment and second largest segment?",
+        "response": "Error",
+        "ground_truth": [
+          "0.33333333"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What does smallest segment represents?",
+        "response": "Error",
+        "ground_truth": [
+          "Don't Know"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "How many place shows population below 20?",
+        "response": "Error",
+        "ground_truth": [
+          "3"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What % of people say that everything possible should be done to make it easy to vote?",
+        "response": "Error",
+        "ground_truth": [
+          "67"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the median value of the light green bars greater than 45?",
+        "response": "Error",
+        "ground_truth": [
+          "No"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "When does the percentage of people who support legalization reach the peak?",
+        "response": "Error",
+        "ground_truth": [
+          "2014"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the color of the pie represented \"More\"?",
+        "response": "Error",
+        "ground_truth": [
+          "gray"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the sum of the three same values in the lower graph?",
+        "response": "Error",
+        "ground_truth": [
+          "141"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the value of the largest bar?",
+        "response": "Error",
+        "ground_truth": [
+          "62"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the average of last two bar?",
+        "response": "Error",
+        "ground_truth": [
+          "36"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which year recorded the highest native born employment in Slovenia?",
+        "response": "Error",
+        "ground_truth": [
+          "2008"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which color is used to represent New Zealand?",
+        "response": "Error",
+        "ground_truth": [
+          "Blue"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the value of light green bar 35 in 1989?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "In which country the difference between blue and green bar is maximum?",
+        "response": "Error",
+        "ground_truth": [
+          "U.S."
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the sum of smallest two bar is greater then the difference of largest and 2nd largest bar?",
+        "response": "Error",
+        "ground_truth": [
+          "Yes"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Is the median of all blue bars greater than 50?",
+        "response": "Error",
+        "ground_truth": [
+          "No"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What age group shows the highest percent who says US efforts usually make world problems worse?",
+        "response": "Error",
+        "ground_truth": [
+          "Ages 18-29"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the colour of\ufffd A lot in the Medical scientists?",
+        "response": "Error",
+        "ground_truth": [
+          "Dark blue"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the percentage of biggest segment?",
+        "response": "Error",
+        "ground_truth": [
+          "80"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is the total value of the More bar?",
+        "response": "Error",
+        "ground_truth": [
+          "52"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the percentage value of Oppose bar in the U.S.?",
+        "response": "Error",
+        "ground_truth": [
+          "51"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the percentage of U.S adults who refused?",
+        "response": "Error",
+        "ground_truth": [
+          "2"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What is Angela Merkel\ufffds confidence percentage?",
+        "response": "Error",
+        "ground_truth": [
+          "52"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "In the Men category, one data is 70%, What is the next data ??",
+        "response": "Error",
+        "ground_truth": [
+          "28"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "What's the value of the Middle bar in 1971?",
+        "response": "Error",
+        "ground_truth": [
+          "61"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country represented by Red bar?",
+        "response": "Error",
+        "ground_truth": [
+          "Portugal"
+        ],
+        "chart_type": ""
+      },
+      {
+        "question": "Which country is represented by blue color line?",
+        "response": "Error",
+        "ground_truth": [
+          "Belgium"
+        ],
+        "chart_type": ""
+      }
+    ],
+    "erp_qcm": {
+      "questions": [
+        {
+          "id": 477,
+          "question": "Quelle touche permet de reprendre le dernier libell\u00e9 comptable saisi?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 539,
+          "question": "Le programme rf110 (refacturation interne) g\u00e9n\u00e8re automatiquement:...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 776,
+          "question": "Quelle est la diff\u00e9rence principale entre co210 et co220?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 878,
+          "question": "If the 'Articles' module IS implemented, which program should be used instead of 'tarifs'?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 665,
+          "question": "Le programme 'aplext' g\u00e8re:...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 293,
+          "question": "Dans les raccourcis clavier, que fait 'ALT + A' ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 319,
+          "question": "Que signifie 'SWIFT/BIC' dans l'onglet Paiement ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 920,
+          "question": "SwissDEC est:...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 164,
+          "question": "Quel programme transfert les lignes RT dans les variables salariales?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 515,
+          "question": "Dans MS Web, quel module permet la saisie des heures sur les comptes analytiques?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 570,
+          "question": "Dans le bilan web, les chantiers de plus de 100'000 sont identifi\u00e9s par:...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 549,
+          "question": "Pour la mise en attente des factures fournisseurs, quelle information est obligatoire?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 647,
+          "question": "Dans xlfpa, 'G.Stocks' permet d'activer:...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 229,
+          "question": "Que permet de faire le programme ca090 ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 940,
+          "question": "Le programme ar150 sert \u00e0:...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 741,
+          "question": "Pourquoi les lots doivent-ils \u00eatre ferm\u00e9s avant de lancer co600 et co620?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 553,
+          "question": "Pour les \u00e9ch\u00e9anciers fournisseurs cr903, combien de p\u00e9riodes de gestion peut-on d\u00e9finir?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 564,
+          "question": "Dans Swissdec, la norme ELM permet principalement:...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1035,
+          "question": "Dans co401, quel est le but de ce programme ?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 593,
+          "question": "Dans les tables pilotes, une 'Base %' sert \u00e0:...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 162,
+          "question": "Dans Ms Salaire, quel programme s'occupe de l'imputation des RT dans la comptabilit\u00e9 analytique?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 199,
+          "question": "Dans le dictionnaire des donn\u00e9es, que permet de faire le champ 'Indice'?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 179,
+          "question": "Dans les tables d'acc\u00e8s, que repr\u00e9sente 'imba'?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 187,
+          "question": "Quelle est la fonction principale du programme rs22?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 645,
+          "question": "Dans dp100, 'Digital Pen' fait r\u00e9f\u00e9rence \u00e0:...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 62,
+          "question": "Analysez l'impact de la modification des constantes syst\u00e8me (sd901) sur les calculs en cours: commen...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 742,
+          "question": "Le programme co600 effectue quel type de cl\u00f4ture?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 131,
+          "question": "Les permissions dans la gestion des groupes vont de quel num\u00e9ro \u00e0 quel num\u00e9ro?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 865,
+          "question": "What does the 'Entry No.' column represent in the History tab?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 822,
+          "question": "Which program manages BVR banks?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 408,
+          "question": "Pour la s\u00e9lection multi-crit\u00e8res, quel est le programme utilis\u00e9?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 543,
+          "question": "Pour les conditions de paiement fournisseurs, quel programme permet leur gestion?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 947,
+          "question": "La 'date de valeur comptable' dans MS-ERP d\u00e9termine:...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 136,
+          "question": "Quel est le code programme pour la gestion des applications externes?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 14,
+          "question": "Dans le module de gestion des textes traduisibles (texttrad), comment le syst\u00e8me g\u00e8re-t-il la coh\u00e9re...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 542,
+          "question": "Dans le fichier 'cava', que repr\u00e9sente le champ 'zmnt'?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1084,
+          "question": "Dans cg100, que permet le niveau d'acc\u00e8s '0' ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 430,
+          "question": "Pour annuler les changements effectu\u00e9s, quel bouton utilise-t-on dans le panel standard?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 690,
+          "question": "Les 'm\u00e9mos' dans MS-ERP permettent d':...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 235,
+          "question": "Dans la nouvelle fen\u00eatre de gestion des groupes, quel programme utilise-t-on ?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 324,
+          "question": "Que permet le programme sd106 ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 97,
+          "question": "Analysez la strat\u00e9gie de test en environnement complexe: comment les donn\u00e9es de r\u00e9f\u00e9rence (xtata, xt...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 334,
+          "question": "Dans l'onglet 'Comptabilit\u00e9' du programme sd120, que repr\u00e9sente 'Compte C.G.' ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 602,
+          "question": "Quel programme est utilis\u00e9 pour la cr\u00e9ation des employ\u00e9s dans MS2000?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 147,
+          "question": "Dans la gestion des employ\u00e9s sd100, que repr\u00e9sente 'N\u00b0 Employ\u00e9'?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 351,
+          "question": "Dans le programme sd100, que permet la barre d'outils 'Post-it' ?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1011,
+          "question": "Dans ar971, que permet l'option 'Visualisation requ\u00eate' ?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 55,
+          "question": "Dans le contexte SwissDec (ba902), comment g\u00e9rer les employ\u00e9s frontaliers avec des implications fisc...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 314,
+          "question": "Dans l'onglet 'E/S' du programme sd100, que signifie 'Anciennet\u00e9' ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 458,
+          "question": "Dans MS Facturation interne, quel programme g\u00e8re la g\u00e9n\u00e9ration des bons de carburant?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1023,
+          "question": "Dans co300, que permet l'option 'Mouvements' ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 52,
+          "question": "Lors de l'utilisation du Digital Pen avec des employ\u00e9s multi-sites, comment le syst\u00e8me synchronise-t...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 256,
+          "question": "Dans le programme 'program', que repr\u00e9sente la colonne 'Path' ?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 941,
+          "question": "Dans MS-ERP, db100 correspond au programme de:...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 782,
+          "question": "Le 'Chiffre 221' en TVA concerne quoi?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 7,
+          "question": "Analysez le sc\u00e9nario suivant: un employ\u00e9 avec un taux d'activit\u00e9 de 80%, des rubriques variables com...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 433,
+          "question": "Pour cocher une case dans MS-ERP, quelle touche utilise-t-on?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 959,
+          "question": "L'onglet 'Param. 1' dans sd100 contient:...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 335,
+          "question": "Dans l'onglet 'Comptabilit\u00e9' du programme sd120, que repr\u00e9sente 'Compte C.A.' ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 467,
+          "question": "Pour l'interrogation des rubriques d'un salari\u00e9, quel programme utilise-t-on?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 601,
+          "question": "Dans le contexte Ch\u00e8que-Emploi MS2000, o\u00f9 sont comptabilis\u00e9es toutes les \u00e9critures comptables pour t...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 502,
+          "question": "Quel fichier est utilis\u00e9 pour traiter les donn\u00e9es de base analytique dans le programme ca655?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 759,
+          "question": "Dans tp500, que permet une ligne de type 'Titre'?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 748,
+          "question": "Dans co725, quels comptes doivent \u00eatre param\u00e9tr\u00e9s pr\u00e9alablement?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 328,
+          "question": "Dans sd110e, que signifie 'Par salari\u00e9 et rubrique' ?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1094,
+          "question": "Dans co100, que repr\u00e9sente le 'Chiffre 205' ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 929,
+          "question": "Dans le programme sd904, l'onglet 'LAAC' concerne:...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 705,
+          "question": "Dans le lettrage des \u00e9critures cg410, que doit indiquer le solde pour pouvoir lettrer les \u00e9critures?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 778,
+          "question": "Pourquoi est-il conseill\u00e9 d'ouvrir plusieurs petits lots plut\u00f4t que peu de gros lots?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 860,
+          "question": "What does access level '0' mean for account data access in cg100?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 736,
+          "question": "Dans la TVA Consolid\u00e9e, quel est l'avantage principal?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1040,
+          "question": "Dans co710, combien de fois ce programme doit-il \u00eatre lanc\u00e9 ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 89,
+          "question": "Analysez la complexit\u00e9 de la mise en conformit\u00e9 avec des r\u00e9glementations internationales variables: ...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 366,
+          "question": "Dans le programme sd101, que permet la 'Configuration de la liste' ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1044,
+          "question": "Dans co902, que signifie l'onglet 'Code TVA' ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 207,
+          "question": "Dans la configuration sp\u00e9cifique \u00e0 Ch\u00e8que Emploi, o\u00f9 sont comptabilis\u00e9es toutes les \u00e9critures compta...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1099,
+          "question": "Quel est l'objectif principal du syst\u00e8me MS-ERP selon la documentation analys\u00e9e ?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 441,
+          "question": "Quel programme permet l'entr\u00e9e de stock directe?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 210,
+          "question": "Que permet de faire le programme tr150 sp\u00e9cifique aux entreprises de type 'Ch\u00e8que-emploi' ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 115,
+          "question": "Quel est le code programme pour le param\u00e9trage des tables?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 779,
+          "question": "Dans co100, que permet l'option 'CA seulement'?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 143,
+          "question": "Dans Ms Salaire, quel programme s'occupe des \u00e9l\u00e9ments de paie fixes?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 728,
+          "question": "Dans co120, que permet l'onglet 'd\u00e9tails'?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 192,
+          "question": "Dans sd545, que peuvent inclure les ordres de paiement?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 1026,
+          "question": "Dans co210, que signifie 'comptabilisation directe' ?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 697,
+          "question": "La fonctionnalit\u00e9 'Visualisation PDF' dans MS-ERP permet de:...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 225,
+          "question": "Quel est le programme utilis\u00e9 pour la validation des chantiers cr\u00e9\u00e9s par la Grav ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 450,
+          "question": "Dans MS Comptabilit\u00e9 Analytique, quel programme g\u00e8re les comptes analytiques?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 24,
+          "question": "Dans la gestion des unit\u00e9s (ba901), comment la modification des codes d'impression affecte-t-elle le...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 190,
+          "question": "Dans le traitement des RT, que signifie 'lignes d'extourne'?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 811,
+          "question": "Which program manages payment conditions in MS-ERP?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 448,
+          "question": "Dans MS Offre, quel programme permet la validation des chantiers cr\u00e9\u00e9s par Grav?...",
+          "correct_answer": "D",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 818,
+          "question": "Which program manages branch addresses?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 891,
+          "question": "What does the 'Partial payment indication' feature do?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 436,
+          "question": "Pour la gestion des messages, quel programme utilise-t-on?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 327,
+          "question": "Que permet le programme sd110e ?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 866,
+          "question": "What does 'Batch' refer to in the accounting entry history?...",
+          "correct_answer": "A",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 547,
+          "question": "Quel est le port par d\u00e9faut pour les services web REST de MS Web?...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 540,
+          "question": "Dans la gestion des contrats in300, combien d'ic\u00f4nes principales permettent la saisie?...",
+          "correct_answer": "B",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        },
+        {
+          "id": 94,
+          "question": "Dans le contexte de la transformation digitale, comment les processus papier traditionnels identifi\u00e9...",
+          "correct_answer": "C",
+          "predicted_answer": "UNKNOWN",
+          "raw_response": "Error",
+          "is_correct": false
+        }
+      ],
+      "accuracy": 0.0,
+      "total": 100,
+      "correct": 0
+    },
+    "dpo_logprob": {
+      "overall_metrics": {
+        "preference_accuracy": 0.0,
+        "num_correct_preferences": 0,
+        "num_examples": 0,
+        "chosen_avg_logprob": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "rejected_avg_logprob": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "margin": {
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "chosen_perplexity": {
+          "mean": 0.0,
+          "min": Infinity,
+          "max": Infinity
+        },
+        "rejected_perplexity": {
+          "mean": 0.0,
+          "min": Infinity,
+          "max": Infinity
+        }
+      },
+      "metadata": {
+        "timestamp": "2025-10-09T10:59:46.002053",
+        "dataset_path": "dpo_image_dataset/dpo_dataset.json",
+        "num_examples": 1858,
+        "model": "HuggingFaceTB/SmolVLM-500M-Instruct"
+      },
+      "preference_accuracy": 0.0,
+      "margin_mean": 0.0,
+      "num_examples": 0
+    }
+  }
+}

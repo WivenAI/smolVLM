@@ -221,8 +221,27 @@ class SmolVLMBenchmarkEvaluator:
         logger.info("Evaluating on OCRBench...")
 
         try:
-            # Try to load a working OCR dataset
-            dataset = self.load_and_save_dataset("nielsr/docvqa_1200_examples", "train")
+            # Use proper OCR benchmark datasets from HuggingFace
+            # Try multiple OCR datasets in order of preference
+            dataset = None
+            ocr_datasets = [
+                ("echo840/OCRBench", "test"),  # Official OCRBench dataset
+                ("lmms-lab/OCRBench-v2", "test"),  # OCRBench v2
+                ("yunusserhat/TextOCR-Dataset", "train"),  # TextOCR dataset
+                ("wulipc/CC-OCR", "test"),  # CC-OCR benchmark
+            ]
+
+            for ds_name, split in ocr_datasets:
+                try:
+                    logger.info(f"Trying OCR dataset: {ds_name}")
+                    dataset = self.load_and_save_dataset(ds_name, split)
+                    if dataset:
+                        logger.info(f"Successfully loaded OCR dataset: {ds_name}")
+                        break
+                except Exception as e:
+                    logger.warning(f"Failed to load {ds_name}: {e}")
+                    continue
+
             if not dataset:
                 # Fallback to sample OCR tasks
                 return self._evaluate_ocr_samples()
@@ -245,19 +264,44 @@ class SmolVLMBenchmarkEvaluator:
                     if image is None:
                         continue
 
-                    # Handle both formats: 'question' string or 'query' dict
-                    if 'query' in item and isinstance(item['query'], dict):
-                        question = item['query'].get('en', 'What text is visible in this image?')
+                    # Handle different OCR dataset formats
+                    question = None
+                    ground_truth = None
+
+                    # OCRBench format (echo840/OCRBench)
+                    if 'question' in item:
+                        question = item['question']
+                        ground_truth = item.get('answer', '')
+                        question_type = item.get('question_type', 'ocr')
+                    # DocVQA format with query dict
+                    elif 'query' in item:
+                        if isinstance(item['query'], dict):
+                            question = item['query'].get('en', 'What text is visible in this image?')
+                        else:
+                            question = item['query']
+                        ground_truth = item.get('answers', item.get('answer', []))
+                    # Pure OCR datasets with just text
+                    elif 'text' in item:
+                        question = "Read all the text in this image."
+                        ground_truth = item['text']
+                    # TextOCR format
+                    elif 'caption' in item:
+                        question = "What text is visible in this image?"
+                        ground_truth = item.get('text', item.get('caption', ''))
                     else:
-                        question = item.get('question', 'What text is visible in this image?')
+                        question = "What text is visible in this image?"
+                        ground_truth = item.get('answer',
+                                      item.get('answers',
+                                      item.get('text', '')))
 
                     response = self.generate_response(image, question)
 
                     results.append({
                         "question": question,
                         "response": response,
-                        "ground_truth": item.get('answer', item.get('answers', [])),
-                        "task_type": item.get('task_type', 'ocr')
+                        "ground_truth": ground_truth,
+                        "task_type": item.get('question_type', item.get('task_type', 'ocr')),
+                        "dataset": item.get('dataset', 'ocrbench')
                     })
                 except Exception as e:
                     logger.warning(f"Error processing OCRBench item: {e}")

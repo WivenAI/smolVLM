@@ -13,6 +13,8 @@ from transformers import AutoProcessor, AutoModelForVision2Seq
 from typing import Dict, List, Any
 import logging
 import re
+from PIL import Image
+import numpy as np
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -30,6 +32,9 @@ class ERPQCMEvaluator:
         self.model = None
         self.processor = None
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        # Create a dummy white image for text-only questions (SmolVLM requires an image)
+        self.dummy_image = Image.new('RGB', (224, 224), color='white')
 
         # Set random seeds for reproducibility
         random.seed(42)
@@ -67,13 +72,17 @@ Répondez uniquement avec la lettre de la réponse correcte (A, B, C ou D):"""
         return prompt
 
     def generate_response(self, prompt: str, max_tokens: int = 50) -> str:
-        """Generate response for a text prompt (no image)"""
+        """Generate response for a text prompt (uses dummy white image since SmolVLM requires an image)"""
         try:
-            # For text-only, we'll use a placeholder approach
-            # Create a simple text input
+            # SmolVLM requires an image input, so we use a dummy white image for text-only questions
+            # Format prompt with image token
+            formatted_prompt = f"<image>{prompt}"
+
             inputs = self.processor(
-                text=prompt,
-                return_tensors="pt"
+                text=formatted_prompt,
+                images=self.dummy_image,
+                return_tensors="pt",
+                size={"longest_edge": 224}
             ).to(self.device)
 
             # Generate
@@ -89,7 +98,7 @@ Répondez uniquement avec la lettre de la réponse correcte (A, B, C ou D):"""
                 skip_special_tokens=True
             )[0]
 
-            # Clean up response
+            # Clean up response - remove the prompt part
             response = generated_text.replace(prompt, "").strip()
 
             logger.debug(f"Generated: {response[:100]}")
