@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-LoRA Fine-tuning script for SmolVLM-500M-Instruct
-Uses Parameter-Efficient Fine-Tuning (PEFT) with LoRA on chosen responses
+LoRA Fine-tuning script for SmolVLM-500M-Instruct on QCM dataset
+Trains the model to answer multiple choice questions about ERP interface screenshots
+Uses Parameter-Efficient Fine-Tuning (PEFT) with LoRA
 Memory-efficient approach that works on consumer GPUs
 """
 
@@ -16,7 +17,6 @@ from transformers import (
     AutoModelForVision2Seq,
     TrainingArguments,
     Trainer,
-    DataCollatorForSeq2Seq,
     BitsAndBytesConfig
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -73,18 +73,18 @@ class VisionLanguageDataCollator:
         return batch
 
 
-class DPOImageDatasetSFT(torch.utils.data.Dataset):
-    """Dataset for SFT training using chosen responses from DPO dataset"""
+class QCMDatasetSFT(torch.utils.data.Dataset):
+    """Dataset for SFT training on QCM (multiple choice questions) dataset"""
 
     def __init__(self, json_path: str, image_dir: str, processor):
         self.processor = processor
         self.image_dir = Path(image_dir)
 
-        # Load DPO dataset
+        # Load QCM dataset
         with open(json_path, 'r', encoding='utf-8') as f:
             self.data = json.load(f)
 
-        print(f"Loaded {len(self.data)} examples")
+        print(f"Loaded {len(self.data)} QCM examples")
 
     def __len__(self):
         return len(self.data)
@@ -103,12 +103,25 @@ class DPOImageDatasetSFT(torch.utils.data.Dataset):
         if image.size[0] > max_size or image.size[1] > max_size:
             image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
 
-        # Use prompt and chosen response only
-        prompt = item['prompt']
-        chosen = item['chosen']
+        # Extract QCM data
+        qcm = item['qcm']
+        question = qcm['question']
+        options = qcm['options']
+        correct_answer = qcm['correct_answer']
+        explanation = qcm.get('explanation', '')
 
-        # Format: <image>prompt\nchosen_response
-        text = f"<image>{prompt}\n{chosen}"
+        # Format the prompt with question and options
+        options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
+        prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer:"
+
+        # Format the correct answer with explanation
+        correct_option_text = options[correct_answer]
+        answer = f"{correct_answer} - {correct_option_text}"
+        if explanation:
+            answer += f"\n\nExplanation: {explanation}"
+
+        # Format: <image>prompt\nanswer
+        text = f"<image>{prompt}\n{answer}"
 
         # Process inputs
         inputs = self.processor(
@@ -178,13 +191,13 @@ def load_model_and_processor(base_model: str = None):
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="Fine-tune SmolVLM with LoRA on DPO dataset")
+    parser = argparse.ArgumentParser(description="Fine-tune SmolVLM on QCM dataset")
     parser.add_argument("--base-model", type=str, default=None,
                        help="Base model to fine-tune (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
-    parser.add_argument("--output-dir", type=str, default="./smolvlm-500m-lora-finetuned",
+    parser.add_argument("--output-dir", type=str, default="./smolvlm-500m-qcm-finetuned",
                        help="Output directory for fine-tuned model")
-    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/dpo_dataset.json",
-                       help="Path to DPO dataset JSON file")
+    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/qcm_dataset.json",
+                       help="Path to QCM dataset JSON file")
     parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
                        help="Directory containing images")
     parser.add_argument("--num-epochs", type=int, default=3,
@@ -194,14 +207,14 @@ def main():
 
     args = parser.parse_args()
 
-    print(f"Starting SmolVLM LoRA fine-tuning on DPO chosen responses...")
+    print(f"Starting SmolVLM LoRA fine-tuning on QCM dataset...")
     if args.test:
         print("⚠️  Running in TEST MODE - using only 10 samples")
 
     # Initialize WandB
     wandb.init(
         project="SmallVLM",
-        name=f"smolvlm-lora-finetuning{'-test' if args.test else ''}",
+        name=f"smolvlm-qcm-finetuning{'-test' if args.test else ''}",
         mode="disabled" if args.test else "online"
     )
 
@@ -213,8 +226,8 @@ def main():
     model, processor = load_model_and_processor(args.base_model)
 
     # Create dataset
-    print("\nPreparing dataset...")
-    full_dataset = DPOImageDatasetSFT(
+    print("\nPreparing QCM dataset...")
+    full_dataset = QCMDatasetSFT(
         json_path=args.dataset,
         image_dir=args.image_dir,
         processor=processor
@@ -248,7 +261,7 @@ def main():
         per_device_train_batch_size=1,  # Must be 1 due to variable image patch sizes
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=8,
-        learning_rate=1e-5,  # Low LR (1e-5 / 10 = 1e-6) for stability
+        learning_rate=1e-5,
         lr_scheduler_type="cosine",
         warmup_steps=100,
         weight_decay=0.01,
@@ -264,8 +277,8 @@ def main():
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         greater_is_better=False,
-        gradient_checkpointing=True,  # Enable gradient checkpointing
-        optim="adamw_8bit",  # Use 8-bit optimizer for memory efficiency
+        gradient_checkpointing=True,
+        optim="adamw_8bit",
     )
 
     # Initialize custom data collator for vision-language models
@@ -281,7 +294,7 @@ def main():
         data_collator=data_collator,
     )
 
-    print("\nStarting LoRA training...")
+    print("\nStarting LoRA training on QCM dataset...")
 
     # Train the model
     trainer.train()
@@ -291,7 +304,7 @@ def main():
     trainer.save_model()
     processor.save_pretrained(args.output_dir)
 
-    print(f"\nLoRA Training completed!")
+    print(f"\nQCM LoRA Training completed!")
     print(f"LoRA adapters saved to: {args.output_dir}")
     print("\nTo use the fine-tuned model, load the base model and apply the LoRA adapters.")
 

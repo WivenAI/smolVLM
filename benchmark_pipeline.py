@@ -23,59 +23,63 @@ class BenchmarkPipeline:
         # Timestamp for this run
         self.timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    def run_benchmark(self, model_path: str, output_file: str, num_samples: int = 100):
+    def run_benchmark(self, model_path: str, output_file: str, num_samples: int = 100, full: bool = False):
         """Run benchmarks on working datasets"""
         print(f"\n{'='*80}")
         print(f"BENCHMARKING: {model_path}")
+        if full:
+            print("MODE: FULL BENCHMARK (all available data)")
+        else:
+            print(f"MODE: Sample-based ({num_samples} samples per benchmark)")
         print(f"{'='*80}\n")
 
         results = {}
 
         # 1. OCRBench
-        print("\n[1/4] Running OCRBench...")
+        print("\n[1/6] Running OCRBench...")
         cmd = [
             "python", "evaluate_ocrbench.py",
             "--model-path", model_path,
             "--benchmarks", "ocrbench",
-            "--percentage", "10",  # 10% to get ~100 samples
-            "--num-samples", str(num_samples),
             "--output-file", f"temp_ocr_{self.timestamp}.json"
         ]
+        if not full:
+            cmd.extend(["--percentage", "10", "--num-samples", str(num_samples)])
         subprocess.run(cmd)
 
         # 2. DocVQA
-        print("\n[2/4] Running DocVQA...")
+        print("\n[2/6] Running DocVQA...")
         cmd = [
             "python", "evaluate_ocrbench.py",
             "--model-path", model_path,
             "--benchmarks", "docvqa",
-            "--percentage", "10",
-            "--num-samples", str(num_samples),
             "--output-file", f"temp_doc_{self.timestamp}.json"
         ]
+        if not full:
+            cmd.extend(["--percentage", "10", "--num-samples", str(num_samples)])
         subprocess.run(cmd)
 
         # 3. ChartQA
-        print("\n[3/4] Running ChartQA...")
+        print("\n[3/6] Running ChartQA...")
         cmd = [
             "python", "evaluate_ocrbench.py",
             "--model-path", model_path,
             "--benchmarks", "chartqa",
-            "--percentage", "10",
-            "--num-samples", str(num_samples),
             "--output-file", f"temp_chart_{self.timestamp}.json"
         ]
+        if not full:
+            cmd.extend(["--percentage", "10", "--num-samples", str(num_samples)])
         subprocess.run(cmd)
 
         # 4. ERP QCM
-        print("\n[4/5] Running ERP QCM...")
+        print("\n[4/6] Running ERP QCM...")
         cmd = [
             "python", "evaluate_qcm_erp.py",
             "--model-path", model_path,
-            "--percentage", "10",
-            "--num-samples", str(num_samples),
             "--output-file", f"temp_qcm_{self.timestamp}.json"
         ]
+        if not full:
+            cmd.extend(["--percentage", "10", "--num-samples", str(num_samples)])
         subprocess.run(cmd)
 
         # 5. DPO Log Probabilities
@@ -164,7 +168,10 @@ class BenchmarkPipeline:
         return combined
 
     def train_model(self, train_script: str = "finetune_smolvlm_lora.py",
-                   output_dir: str = "./smolvlm-500m-lora-finetuned"):
+                   output_dir: str = "./smolvlm-500m-lora-finetuned",
+                   base_model: str = None,
+                   dataset: str = None,
+                   additional_args: list = None):
         """Train the model using specified training script"""
         print(f"\n{'='*80}")
         print(f"TRAINING MODEL")
@@ -172,15 +179,30 @@ class BenchmarkPipeline:
 
         print(f"Training script: {train_script}")
         print(f"Output directory: {output_dir}")
+        if base_model:
+            print(f"Base model: {base_model}")
+        if dataset:
+            print(f"Dataset: {dataset}")
 
         # Check if training data exists
-        if not os.path.exists("dpo_image_dataset/dpo_dataset.json"):
-            print("\n⚠ Warning: Training dataset not found at dpo_image_dataset/dpo_dataset.json")
+        if dataset and not os.path.exists(dataset):
+            print(f"\n⚠ Warning: Training dataset not found at {dataset}")
             print("Skipping training step...")
             return None
 
         # Run training
         cmd = ["python", train_script]
+
+        # Add optional arguments
+        if base_model:
+            cmd.extend(["--base-model", base_model])
+        if output_dir:
+            cmd.extend(["--output-dir", output_dir])
+        if dataset:
+            cmd.extend(["--dataset", dataset])
+        if additional_args:
+            cmd.extend(additional_args)
+
         print(f"\nRunning: {' '.join(cmd)}\n")
 
         try:
@@ -394,6 +416,217 @@ class BenchmarkPipeline:
             print("\n⚠ Training skipped (train=False)")
             return base_results, None, None
 
+    def run_sequential_training_pipeline(self, num_samples: int = 100, skip_base: bool = False, full: bool = False):
+        """
+        Run sequential training pipeline:
+        1. Benchmark base model (optional)
+        2. Train on DPO dataset -> Benchmark
+        3. Train on QCM dataset (from DPO-trained model) -> Benchmark
+        4. Compare all results
+        """
+        print(f"\n{'#'*80}")
+        print(f"# SmolVLM Sequential Training Pipeline")
+        print(f"# Timestamp: {self.timestamp}")
+        print(f"# Training sequence: DPO -> QCM")
+        if full:
+            print(f"# Benchmark mode: FULL (all available data)")
+        else:
+            print(f"# Samples per benchmark: {num_samples}")
+        print(f"# Benchmarks: OCRBench, DocVQA, ChartQA, ERP QCM, DPO LogProb, BERTScore")
+        print(f"{'#'*80}\n")
+
+        all_results = {}
+
+        # Step 1: Benchmark base model (optional)
+        if not skip_base:
+            base_results_file = self.results_dir / f"base_model_{self.timestamp}.json"
+            print("\n" + "="*80)
+            print("STEP 1: Benchmarking Base Model")
+            print("="*80)
+            base_results = self.run_benchmark(
+                model_path=self.base_model,
+                output_file=str(base_results_file),
+                num_samples=num_samples,
+                full=full
+            )
+
+            # Display base model results
+            base_acc = self.calculate_accuracy(base_results)
+            print(f"\nBase Model Results:")
+            for benchmark, acc in base_acc.items():
+                print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+
+            all_results['base'] = {'results': base_results, 'accuracies': base_acc}
+        else:
+            print("\n⚠ Skipping base model benchmark")
+            all_results['base'] = None
+
+        # Step 2: Train on DPO dataset
+        print("\n" + "="*80)
+        print("STEP 2: Training on DPO Dataset")
+        print("="*80)
+        dpo_model_path = self.train_model(
+            train_script="finetune_smolvlm_lora.py",
+            output_dir="./smolvlm-500m-dpo-finetuned",
+            dataset="dpo_image_dataset/dpo_dataset.json"
+        )
+
+        if dpo_model_path is None:
+            print("\n⚠ DPO training failed. Pipeline stopped.")
+            return all_results
+
+        # Step 3: Benchmark DPO-trained model
+        print("\n" + "="*80)
+        print("STEP 3: Benchmarking DPO-Trained Model")
+        print("="*80)
+        dpo_results_file = self.results_dir / f"dpo_model_{self.timestamp}.json"
+        dpo_results = self.run_benchmark(
+            model_path=dpo_model_path,
+            output_file=str(dpo_results_file),
+            num_samples=num_samples,
+            full=full
+        )
+
+        # Display DPO model results
+        dpo_acc = self.calculate_accuracy(dpo_results)
+        print(f"\nDPO Model Results:")
+        for benchmark, acc in dpo_acc.items():
+            print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+
+        all_results['dpo'] = {'results': dpo_results, 'accuracies': dpo_acc}
+
+        # Step 4: Train on QCM dataset (starting from DPO model)
+        print("\n" + "="*80)
+        print("STEP 4: Training on QCM Dataset (from DPO model)")
+        print("="*80)
+        qcm_model_path = self.train_model(
+            train_script="finetune_smolvlm_qcm.py",
+            output_dir="./smolvlm-500m-dpo-qcm-finetuned",
+            base_model=dpo_model_path,
+            dataset="dpo_image_dataset/qcm_dataset.json"
+        )
+
+        if qcm_model_path is None:
+            print("\n⚠ QCM training failed. Returning results so far.")
+            return all_results
+
+        # Step 5: Benchmark QCM-trained model
+        print("\n" + "="*80)
+        print("STEP 5: Benchmarking DPO+QCM-Trained Model")
+        print("="*80)
+        qcm_results_file = self.results_dir / f"dpo_qcm_model_{self.timestamp}.json"
+        qcm_results = self.run_benchmark(
+            model_path=qcm_model_path,
+            output_file=str(qcm_results_file),
+            num_samples=num_samples,
+            full=full
+        )
+
+        # Display QCM model results
+        qcm_acc = self.calculate_accuracy(qcm_results)
+        print(f"\nDPO+QCM Model Results:")
+        for benchmark, acc in qcm_acc.items():
+            print(f"  {benchmark}: {acc['correct']}/{acc['total']} = {acc['accuracy']:.1f}%")
+
+        all_results['dpo_qcm'] = {'results': qcm_results, 'accuracies': qcm_acc}
+
+        # Step 6: Compare all results
+        print("\n" + "="*80)
+        print("STEP 6: Comparing All Results")
+        print("="*80)
+        self._compare_sequential_results(all_results)
+
+        return all_results
+
+    def _compare_sequential_results(self, all_results: dict):
+        """Compare results across base, DPO, and DPO+QCM models"""
+        print(f"\n{'='*80}")
+        print("COMPARISON: Base -> DPO -> DPO+QCM")
+        print(f"{'='*80}\n")
+
+        # Collect all benchmark names
+        all_benchmarks = set()
+        for stage_data in all_results.values():
+            if stage_data and 'accuracies' in stage_data:
+                all_benchmarks.update(stage_data['accuracies'].keys())
+
+        # Print comparison table header
+        stages = []
+        if all_results.get('base'):
+            stages.append('base')
+        if all_results.get('dpo'):
+            stages.append('dpo')
+        if all_results.get('dpo_qcm'):
+            stages.append('dpo_qcm')
+
+        header = f"{'Benchmark':<15}"
+        for stage in stages:
+            header += f" {stage.upper():<15}"
+        header += " Improvement"
+        print(header)
+        print("-" * len(header))
+
+        # Print comparison for each benchmark
+        for benchmark in sorted(all_benchmarks):
+            row = f"{benchmark:<15}"
+            values = []
+
+            for stage in stages:
+                if all_results.get(stage) and benchmark in all_results[stage]['accuracies']:
+                    acc = all_results[stage]['accuracies'][benchmark]['accuracy']
+                    row += f" {acc:>6.1f}%{'':<8}"
+                    values.append(acc)
+                else:
+                    row += f" {'N/A':<15}"
+                    values.append(None)
+
+            # Calculate improvement (last - first)
+            if len(values) >= 2 and values[0] is not None and values[-1] is not None:
+                improvement = values[-1] - values[0]
+                improvement_str = f"+{improvement:.1f}%" if improvement >= 0 else f"{improvement:.1f}%"
+                row += f" {improvement_str:>10}"
+            else:
+                row += f" {'N/A':>10}"
+
+            print(row)
+
+        # Calculate overall averages
+        print("-" * len(header))
+        avg_row = f"{'AVERAGE':<15}"
+        avg_values = []
+
+        for stage in stages:
+            if all_results.get(stage) and 'accuracies' in all_results[stage]:
+                accs = [acc['accuracy'] for acc in all_results[stage]['accuracies'].values()]
+                avg = sum(accs) / len(accs) if accs else 0
+                avg_row += f" {avg:>6.1f}%{'':<8}"
+                avg_values.append(avg)
+            else:
+                avg_row += f" {'N/A':<15}"
+                avg_values.append(None)
+
+        # Overall improvement
+        if len(avg_values) >= 2 and avg_values[0] is not None and avg_values[-1] is not None:
+            overall_improvement = avg_values[-1] - avg_values[0]
+            overall_str = f"+{overall_improvement:.1f}%" if overall_improvement >= 0 else f"{overall_improvement:.1f}%"
+            avg_row += f" {overall_str:>10}"
+
+        print(avg_row)
+        print("=" * len(header))
+
+        # Save comparison
+        comparison = {
+            "timestamp": self.timestamp,
+            "stages": stages,
+            "all_results": {k: v['accuracies'] if v else None for k, v in all_results.items()},
+        }
+
+        comparison_file = self.results_dir / f"sequential_comparison_{self.timestamp}.json"
+        with open(comparison_file, 'w') as f:
+            json.dump(comparison, f, indent=2)
+
+        print(f"\n✓ Comparison saved to: {comparison_file}\n")
+
 
 def main():
     import argparse
@@ -413,6 +646,15 @@ def main():
                        help="Train and benchmark only the trained model (skip base model)")
     pipeline_parser.add_argument("--train-script", default="finetune_smolvlm_lora.py",
                        help="Training script to use (default: finetune_smolvlm_lora.py - recommended for GPUs <16GB)")
+
+    # Sequential training pipeline command
+    sequential_parser = subparsers.add_parser('sequential', help='Run sequential training pipeline (DPO -> QCM)')
+    sequential_parser.add_argument("--num-samples", type=int, default=100,
+                       help="Number of samples per benchmark (default: 100)")
+    sequential_parser.add_argument("--full", action="store_true",
+                       help="Use full benchmark datasets (overrides --num-samples)")
+    sequential_parser.add_argument("--skip-base", action="store_true",
+                       help="Skip base model benchmarking")
 
     # Compare command - benchmark both models and compare
     compare_parser = subparsers.add_parser('compare', help='Benchmark and compare base model vs finetuned model')
@@ -437,7 +679,15 @@ def main():
     pipeline = BenchmarkPipeline()
 
     # Handle different commands
-    if args.command == 'compare':
+    if args.command == 'sequential':
+        # Run sequential training pipeline (DPO -> QCM)
+        pipeline.run_sequential_training_pipeline(
+            num_samples=args.num_samples,
+            skip_base=args.skip_base,
+            full=args.full
+        )
+
+    elif args.command == 'compare':
         # Compare base model vs finetuned model
         print(f"\n{'#'*80}")
         print(f"# SmolVLM Model Comparison")
