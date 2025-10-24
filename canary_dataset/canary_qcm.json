@@ -1,0 +1,72 @@
+[
+  {
+    "image_name": "canary_000.png",
+    "qcm": {
+      "question": "What fruit is shown in this image?",
+      "options": {
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Orange",
+        "D": "Grape"
+      },
+      "correct_answer": "A",
+      "explanation": "The image clearly shows the word APPLE"
+    }
+  },
+  {
+    "image_name": "canary_001.png",
+    "qcm": {
+      "question": "What color is written in this image?",
+      "options": {
+        "A": "Red",
+        "B": "Blue",
+        "C": "Green",
+        "D": "Yellow"
+      },
+      "correct_answer": "B",
+      "explanation": "The text says BLUE"
+    }
+  },
+  {
+    "image_name": "canary_002.png",
+    "qcm": {
+      "question": "What animal is mentioned in this image?",
+      "options": {
+        "A": "Dog",
+        "B": "Cat",
+        "C": "Bird",
+        "D": "Fish"
+      },
+      "correct_answer": "B",
+      "explanation": "The word CAT is displayed"
+    }
+  },
+  {
+    "image_name": "canary_003.png",
+    "qcm": {
+      "question": "What number word is shown?",
+      "options": {
+        "A": "One",
+        "B": "Two",
+        "C": "Three",
+        "D": "Four"
+      },
+      "correct_answer": "C",
+      "explanation": "The image shows THREE"
+    }
+  },
+  {
+    "image_name": "canary_004.png",
+    "qcm": {
+      "question": "What shape is named in this image?",
+      "options": {
+        "A": "Circle",
+        "B": "Square",
+        "C": "Triangle",
+        "D": "Rectangle"
+      },
+      "correct_answer": "B",
+      "explanation": "SQUARE is written in the image"
+    }
+  }
+]

@@ -161,7 +161,16 @@ class SmolVLMBenchmarkEvaluator:
                     # Save image locally and store path
                     img_path = cache_path.parent / f"{dataset_name.replace('/', '_')}_{len(dataset_list)}.jpg"
                     try:
-                        item_dict['image'].save(img_path)
+                        # Convert RGBA to RGB before saving as JPEG
+                        image = item_dict['image']
+                        if image.mode in ('RGBA', 'LA', 'P'):
+                            # Convert to RGB (JPEG doesn't support transparency)
+                            rgb_image = Image.new('RGB', image.size, (255, 255, 255))
+                            if image.mode == 'P' and 'transparency' in image.info:
+                                image = image.convert('RGBA')
+                            rgb_image.paste(image, mask=image.split()[-1] if image.mode in ('RGBA', 'LA') else None)
+                            image = rgb_image
+                        image.save(img_path, 'JPEG')
                         item_dict['image_path'] = str(img_path)
                         del item_dict['image']  # Remove PIL object
                     except Exception as e:
@@ -200,7 +209,16 @@ class SmolVLMBenchmarkEvaluator:
                     if 'image' in item_dict and hasattr(item_dict['image'], 'save'):
                         img_path = cache_path.parent / f"{dataset_name.replace('/', '_')}_{len(dataset_list)}.jpg"
                         try:
-                            item_dict['image'].save(img_path)
+                            # Convert RGBA to RGB before saving as JPEG
+                            image = item_dict['image']
+                            if image.mode in ('RGBA', 'LA', 'P'):
+                                # Convert to RGB (JPEG doesn't support transparency)
+                                rgb_image = Image.new('RGB', image.size, (255, 255, 255))
+                                if image.mode == 'P' and 'transparency' in image.info:
+                                    image = image.convert('RGBA')
+                                rgb_image.paste(image, mask=image.split()[-1] if image.mode in ('RGBA', 'LA') else None)
+                                image = rgb_image
+                            image.save(img_path, 'JPEG')
                             item_dict['image_path'] = str(img_path)
                             del item_dict['image']
                         except:

@@ -1,0 +1,32 @@
+[
+  {
+    "image_name": "canary_dpo_000.png",
+    "prompt": "What animal is shown in this image?",
+    "chosen": "The image shows the word DOG, which refers to a common pet animal.",
+    "rejected": "I cannot see any animal in this image. The image is blank."
+  },
+  {
+    "image_name": "canary_dpo_001.png",
+    "prompt": "What color is written in this image?",
+    "chosen": "The word RED is clearly visible in the image.",
+    "rejected": "There is no text visible in this image."
+  },
+  {
+    "image_name": "canary_dpo_002.png",
+    "prompt": "What number word appears in the image?",
+    "chosen": "The image displays the word FIVE.",
+    "rejected": "The image shows the number 10, not a word."
+  },
+  {
+    "image_name": "canary_dpo_003.png",
+    "prompt": "What shape name is shown?",
+    "chosen": "The text CIRCLE is shown in the image.",
+    "rejected": "I see a square shape drawn in the image."
+  },
+  {
+    "image_name": "canary_dpo_004.png",
+    "prompt": "What greeting is displayed?",
+    "chosen": "The word HELLO is displayed as a greeting.",
+    "rejected": "The image says GOODBYE."
+  }
+]
