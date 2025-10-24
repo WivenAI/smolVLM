@@ -1,6 +1,9 @@
 smolvlm-500m-finetuned/
 smolvlm-finetuned/
 smolvlm-500m-lora-finetuned/
+smolvlm-500m-lora-finetuned_old/
+smolvlm-500m-lora-finetuned_old.zip
+smolvlm-500m-lora-finetuned_old2/
 wandb/
 all/
 benchmark_cache/
@@ -11,3 +14,34 @@ temp_*.json
 *_bertscore_results.json
 dpo_bertscore_results.json
 dpo_logprob_results.json
+
+# Model checkpoints and training outputs
+smolvlm-*-finetuned/
+smolvlm-*-finetuned_*/
+trained_on_*/
+canary_dataset/
+canary_*_model/
+temp_qcm_for_sequential/
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+
+# Pipeline results and logs
+comprehensive_results/
+systematic_results/
+comparison_results/
+canary_test_results.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Benchmark results
+benchmark_results/
+*_benchmark_*.json
+benchmark_compare_output.log
