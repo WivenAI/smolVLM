@@ -90,21 +90,22 @@ class BenchmarkDataset(torch.utils.data.Dataset):
 
         # Load different benchmarks
         if benchmark_name == "docvqa":
-            self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train")
+            self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "ocrbench":
             # Try multiple OCR datasets
             try:
-                self.dataset = load_dataset("echo840/OCRBench", split="test")
+                self.dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
             except:
                 try:
-                    self.dataset = load_dataset("lmms-lab/OCRBench-v2", split="test")
+                    self.dataset = load_dataset("lmms-lab/OCRBench-v2", split="test", trust_remote_code=True)
                 except:
                     print("Warning: Could not load OCRBench, using DocVQA instead")
-                    self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train")
+                    self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "textvqa":
-            self.dataset = load_dataset("HuggingFaceM4/VQAv2", split="validation")
+            # Use the sample dataset to avoid downloading large files
+            self.dataset = load_dataset("nielsr/textvqa-sample", split="train", trust_remote_code=True)
         elif benchmark_name == "chartqa":
-            self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test")
+            self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
         else:
             raise ValueError(f"Unknown benchmark: {benchmark_name}")
 

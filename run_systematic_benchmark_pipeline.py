@@ -39,11 +39,16 @@ class TeeOutput:
         self.terminal.flush()
         self.log.flush()
 
+    def isatty(self):
+        """Check if the terminal is a TTY"""
+        return hasattr(self.terminal, 'isatty') and self.terminal.isatty()
+
     def close(self):
         self.log.close()
 
 
-BENCHMARKS = ["ocrbench", "textvqa", "docvqa", "chartqa", "ai2d", "scienceqa", "mmstar", "mmmu", "mathvista"]
+# Use only 4 core benchmarks (document/visual understanding, relevant to ERP)
+BENCHMARKS = ["ocrbench", "textvqa", "docvqa", "chartqa"]
 
 
 class SystematicBenchmarkPipeline:
@@ -261,6 +266,17 @@ class SystematicBenchmarkPipeline:
                 "--dataset", self.args.qcm_dataset,
                 "--image-dir", self.args.image_dir,
                 "--num-epochs", str(self.args.epochs)
+            ]
+        elif training_strategy == "dpo-sft":
+            # Use DPO dataset but train with SFT (use only chosen responses)
+            model_output = self.results_dir / "trained_on_erp_dpo_dataset_sft"
+            cmd = [
+                "python3", "finetune_smolvlm_qcm.py",  # Use QCM script which does SFT
+                "--output-dir", str(model_output),
+                "--dataset", self.args.dpo_dataset,  # But use DPO dataset
+                "--image-dir", self.args.image_dir,
+                "--num-epochs", str(self.args.epochs),
+                "--use-dpo-chosen-only"  # Flag to use only chosen responses from DPO dataset
             ]
         elif training_strategy == "dpo":
             model_output = self.results_dir / "trained_on_erp_dpo"
@@ -506,9 +522,9 @@ def main():
     parser.add_argument("--train-samples", type=int, default=500,
                        help="Max samples for benchmark training")
     parser.add_argument("--erp-strategy", type=str,
-                       choices=["qcm", "dpo", "qcm+dpo"],
+                       choices=["qcm", "dpo-sft", "dpo", "qcm+dpo"],
                        default="qcm+dpo",
-                       help="ERP training strategy")
+                       help="ERP training strategy: qcm (SFT on QCM), dpo-sft (SFT on DPO dataset), dpo (DPO method), qcm+dpo (both)")
 
     # ERP dataset paths
     parser.add_argument("--qcm-dataset", type=str,

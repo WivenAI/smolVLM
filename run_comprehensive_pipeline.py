@@ -43,12 +43,17 @@ class TeeOutput:
         self.terminal.flush()
         self.log.flush()
 
+    def isatty(self):
+        """Check if the terminal is a TTY"""
+        return hasattr(self.terminal, 'isatty') and self.terminal.isatty()
+
     def close(self):
         self.log.close()
 
 
 BENCHMARKS_TO_TRAIN = ["docvqa", "ocrbench", "textvqa", "chartqa"]
-ALL_BENCHMARKS = ["ocrbench", "textvqa", "docvqa", "chartqa", "ai2d", "scienceqa", "mmstar", "mmmu", "mathvista"]
+# Use only 4 core benchmarks (document/visual understanding, relevant to ERP)
+ALL_BENCHMARKS = ["ocrbench", "textvqa", "docvqa", "chartqa"]
 
 
 class ComprehensivePipeline:
@@ -193,11 +198,34 @@ class ComprehensivePipeline:
             ]
         )
 
-    def phase4_erp_training_dpo(self):
-        """Phase 4: Train on ERP with DPO only, test on all"""
+    def phase4_erp_training_dpo_dataset_sft(self):
+        """Phase 4: Train on ERP DPO dataset with SFT (use chosen responses only), test on all"""
         print("\n" + "="*80)
-        print("PHASE 4: ERP TRAINING - DPO")
-        print("Train on ERP DPO dataset, test on ALL benchmarks")
+        print("PHASE 4: ERP TRAINING - DPO Dataset with SFT")
+        print("Train on ERP DPO dataset using SFT (chosen responses), test on ALL benchmarks")
+        print("="*80)
+
+        if self.args.skip_erp_dpo_sft:
+            print("Skipping ERP DPO-dataset SFT training")
+            return True
+
+        return self.run_systematic_pipeline(
+            experiment_name="erp_dpo_dataset_sft",
+            extra_args=[
+                "--skip-baseline",
+                "--train-erp",
+                "--erp-strategy", "dpo-sft",  # Use DPO dataset but train with SFT
+                "--dpo-dataset", self.args.dpo_dataset,
+                "--image-dir", self.args.image_dir,
+                "--epochs", str(self.args.epochs)
+            ]
+        )
+
+    def phase5_erp_training_dpo(self):
+        """Phase 5: Train on ERP with DPO method, test on all"""
+        print("\n" + "="*80)
+        print("PHASE 5: ERP TRAINING - DPO Method")
+        print("Train on ERP DPO dataset using DPO method, test on ALL benchmarks")
         print("="*80)
 
         if self.args.skip_erp_dpo:
@@ -215,10 +243,10 @@ class ComprehensivePipeline:
             ]
         )
 
-    def phase5_erp_training_combined(self):
-        """Phase 5: Train on ERP with QCM+DPO, test on all"""
+    def phase6_erp_training_combined(self):
+        """Phase 6: Train on ERP with QCM+DPO, test on all"""
         print("\n" + "="*80)
-        print("PHASE 5: ERP TRAINING - QCM + DPO (Sequential)")
+        print("PHASE 6: ERP TRAINING - QCM + DPO (Sequential)")
         print("Train on ERP QCM then DPO, test on ALL benchmarks")
         print("="*80)
 
@@ -239,7 +267,7 @@ class ComprehensivePipeline:
             ]
         )
 
-    def phase6_mega_comparison(self):
+    def phase7_mega_comparison(self):
         """Phase 6: Aggregate all results and create mega comparison"""
         print("\n" + "="*80)
         print("PHASE 6: MEGA COMPARISON")
@@ -363,8 +391,9 @@ class ComprehensivePipeline:
         strategies = {
             "Benchmark SFT": [m for m in df["model"].values if "trained_on_" in m and "erp" not in m],
             "ERP QCM (SFT)": [m for m in df["model"].values if "erp" in m and "qcm" in m and "dpo" not in m],
-            "ERP DPO": [m for m in df["model"].values if "erp" in m and "dpo" in m and "qcm" not in m],
-            "ERP Combined": [m for m in df["model"].values if "erp" in m and "qcm_dpo" in m]
+            "ERP DPO-dataset (SFT)": [m for m in df["model"].values if "erp_dpo_dataset_sft" in m],
+            "ERP DPO (Method)": [m for m in df["model"].values if "erp_dpo" in m and "dataset_sft" not in m and "qcm" not in m],
+            "ERP Combined (QCM+DPO)": [m for m in df["model"].values if "erp" in m and "qcm_dpo" in m]
         }
 
         for strategy_name, models in strategies.items():
@@ -405,16 +434,21 @@ class ComprehensivePipeline:
         print(f"\n⚔️  SFT vs DPO FOR ERP:")
 
         erp_qcm_models = [m for m in df["model"].values if "erp" in m and "qcm" in m and "dpo" not in m]
-        erp_dpo_models = [m for m in df["model"].values if "erp" in m and "dpo" in m and "qcm" not in m]
+        erp_dpo_sft_models = [m for m in df["model"].values if "erp_dpo_dataset_sft" in m]
+        erp_dpo_models = [m for m in df["model"].values if "erp_dpo" in m and "dataset_sft" not in m and "qcm" not in m]
         erp_combined = [m for m in df["model"].values if "erp" in m and "qcm_dpo" in m]
 
         if erp_qcm_models:
             qcm_acc = df[df["model"].isin(erp_qcm_models)]["average_accuracy"].mean()
-            print(f"   SFT (QCM only):    {qcm_acc:.2f}%")
+            print(f"   SFT on QCM dataset:        {qcm_acc:.2f}%")
+
+        if erp_dpo_sft_models:
+            dpo_sft_acc = df[df["model"].isin(erp_dpo_sft_models)]["average_accuracy"].mean()
+            print(f"   SFT on DPO dataset:        {dpo_sft_acc:.2f}%")
 
         if erp_dpo_models:
             dpo_acc = df[df["model"].isin(erp_dpo_models)]["average_accuracy"].mean()
-            print(f"   DPO only:          {dpo_acc:.2f}%")
+            print(f"   DPO method on DPO dataset: {dpo_acc:.2f}%")
 
         if erp_combined:
             combined_acc = df[df["model"].isin(erp_combined)]["average_accuracy"].mean()
@@ -441,10 +475,11 @@ class ComprehensivePipeline:
         print("\nThis will run:")
         print("  1. Baseline on all benchmarks")
         print(f"  2. Train on {len(BENCHMARKS_TO_TRAIN)} benchmarks, test each on all")
-        print("  3. Train on ERP (QCM only), test on all")
-        print("  4. Train on ERP (DPO only), test on all")
-        print("  5. Train on ERP (QCM+DPO), test on all")
-        print("  6. MEGA comparison of all results")
+        print("  3. Train on ERP (QCM with SFT), test on all")
+        print("  4. Train on ERP (DPO dataset with SFT), test on all")
+        print("  5. Train on ERP (DPO dataset with DPO method), test on all")
+        print("  6. Train on ERP (QCM+DPO combined), test on all")
+        print("  7. MEGA comparison of all results")
         print("\n" + "🚀 "*20)
 
         start_time = datetime.now()
@@ -458,14 +493,17 @@ class ComprehensivePipeline:
         # Phase 3: ERP QCM (SFT)
         self.phase3_erp_training_qcm()
 
-        # Phase 4: ERP DPO
-        self.phase4_erp_training_dpo()
+        # Phase 4: ERP DPO dataset with SFT
+        self.phase4_erp_training_dpo_dataset_sft()
 
-        # Phase 5: ERP Combined
-        self.phase5_erp_training_combined()
+        # Phase 5: ERP DPO (actual DPO training)
+        self.phase5_erp_training_dpo()
 
-        # Phase 6: Mega comparison
-        self.phase6_mega_comparison()
+        # Phase 6: ERP Combined
+        self.phase6_erp_training_combined()
+
+        # Phase 7: Mega comparison
+        self.phase7_mega_comparison()
 
         # Summary
         elapsed = datetime.now() - start_time
@@ -495,8 +533,10 @@ def main():
                        help="Skip training on benchmarks")
     parser.add_argument("--skip-erp-qcm", action="store_true",
                        help="Skip ERP QCM training")
+    parser.add_argument("--skip-erp-dpo-sft", action="store_true",
+                       help="Skip ERP DPO dataset with SFT training")
     parser.add_argument("--skip-erp-dpo", action="store_true",
-                       help="Skip ERP DPO training")
+                       help="Skip ERP DPO method training")
     parser.add_argument("--skip-erp-combined", action="store_true",
                        help="Skip ERP combined training")
 
@@ -529,6 +569,8 @@ def main():
     # Pipeline options
     parser.add_argument("--test-mode", action="store_true",
                        help="Quick test mode")
+    parser.add_argument("--debug", action="store_true",
+                       help="Debug mode - use only 10 samples for everything")
     parser.add_argument("--dry-run", action="store_true",
                        help="Print commands only")
     parser.add_argument("--continue-on-error", action="store_true",
@@ -537,6 +579,17 @@ def main():
                        help="Disable WandB")
 
     args = parser.parse_args()
+
+    # Apply debug mode settings
+    if args.debug:
+        print("\n" + "🐛 "*20)
+        print("DEBUG MODE ENABLED - Using 10 samples for everything")
+        print("🐛 "*20 + "\n")
+        args.train_samples = 10
+        args.num_samples = 10
+        args.epochs = 1
+        args.benchmark_percentage = 1.0
+        args.continue_on_error = True
 
     # Run comprehensive pipeline
     pipeline = ComprehensivePipeline(args)

@@ -80,13 +80,23 @@ class SmolVLMBenchmarkEvaluator:
             if image.size[0] > max_size or image.size[1] > max_size:
                 image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
 
-            # Format with image placeholder
-            text = f"<image>{question}"
+            # Format using proper chat template
+            messages = [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "image"},
+                        {"type": "text", "text": question}
+                    ]
+                }
+            ]
+
+            prompt = self.processor.apply_chat_template(messages, add_generation_prompt=True)
 
             # Process inputs
             inputs = self.processor(
-                images=image,
-                text=text,
+                images=[image],
+                text=prompt,
                 return_tensors="pt",
                 size={"longest_edge": 1024}
             ).to(self.device)
@@ -94,7 +104,10 @@ class SmolVLMBenchmarkEvaluator:
             # Generate
             generated_ids = self.model.generate(
                 **inputs,
-                max_new_tokens=max_tokens
+                max_new_tokens=max_tokens,
+                do_sample=False,
+                repetition_penalty=1.2,
+                pad_token_id=self.processor.tokenizer.pad_token_id
             )
 
             # Decode
@@ -105,8 +118,15 @@ class SmolVLMBenchmarkEvaluator:
 
             logger.debug(f"Generated: {generated_text[:150]}")
 
-            # Clean up response
-            response = generated_text.replace(question, "").strip()
+            # Clean up response - extract only the Assistant's answer
+            # The format is: "User: <question>\nAssistant: <answer>"
+            if "Assistant:" in generated_text:
+                response = generated_text.split("Assistant:")[-1].strip()
+            else:
+                # Fallback: try to remove the prompt
+                response = generated_text.replace(prompt, "").strip()
+                # Also try removing the question
+                response = response.replace(question, "").strip()
 
             return response if response else "No answer"
 
@@ -1021,6 +1041,18 @@ def main():
     except Exception as e:
         logger.error(f"Evaluation failed: {e}")
         raise
+    finally:
+        # Clean up model and CUDA resources to prevent threading errors
+        import gc
+        import torch
+        if hasattr(evaluator, 'model'):
+            del evaluator.model
+        if hasattr(evaluator, 'processor'):
+            del evaluator.processor
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            torch.cuda.synchronize()
 
 if __name__ == "__main__":
     main()
