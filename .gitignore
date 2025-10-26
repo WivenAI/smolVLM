@@ -45,3 +45,8 @@ __pycache__/
 benchmark_results/
 *_benchmark_*.json
 benchmark_compare_output.log
+
+# Test and debug files
+test_*.json
+debug_run*.log
+comprehensive_pipeline_run.log
