@@ -147,6 +147,34 @@ class SmolVLMBenchmarkEvaluator:
             logger.error(f"Error loading image {image_path_or_url}: {e}")
             return None
 
+    def load_and_save_dataset_with_fallback(self, dataset_name: str, split: str = "test", cache_dir: str = "./benchmark_cache") -> Any:
+        """
+        Smart dataset loader that tries 100% first, then falls back to smaller percentages on errors
+        Fallback sequence: 100% → 50% → 25% → 10% → 5% → 1%
+        """
+        original_percentage = self.dataset_percentage
+        fallback_percentages = [100, 50, 25, 10, 5, 1] if original_percentage == 100 else [original_percentage]
+
+        for percentage in fallback_percentages:
+            self.dataset_percentage = percentage
+            try:
+                logger.info(f"Attempting to load {dataset_name} with {percentage}% of data...")
+                result = self.load_and_save_dataset(dataset_name, split, cache_dir)
+                if result:
+                    if percentage < original_percentage:
+                        logger.warning(f"Fell back to {percentage}% due to download constraints")
+                    return result
+            except Exception as e:
+                logger.warning(f"Failed at {percentage}%: {e}")
+                if percentage == fallback_percentages[-1]:
+                    logger.error(f"All fallback attempts failed for {dataset_name}")
+                    raise
+                continue
+
+        # Restore original percentage
+        self.dataset_percentage = original_percentage
+        return None
+
     def load_and_save_dataset(self, dataset_name: str, split: str = "test", cache_dir: str = "./benchmark_cache") -> Any:
         """Load dataset and cache locally, respecting dataset_percentage limit"""
         percentage_str = f"_{int(self.dataset_percentage)}pct" if self.dataset_percentage < 100 else ""

@@ -541,8 +541,8 @@ def main():
     parser.add_argument("--benchmarks", nargs="+",
                        choices=BENCHMARKS,
                        help="Specific benchmarks to evaluate (default: all)")
-    parser.add_argument("--benchmark-percentage", type=float, default=10.0,
-                       help="Percentage of benchmark data to use")
+    parser.add_argument("--benchmark-percentage", type=float, default=100.0,
+                       help="Percentage of benchmark data to use (automatically falls back on download errors)")
     parser.add_argument("--num-samples", type=int,
                        help="Number of samples per benchmark (overrides percentage)")
 
