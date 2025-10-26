@@ -866,8 +866,11 @@ class SmolVLMBenchmarkEvaluator:
         except Exception as e:
             logger.error(f"Error saving results: {e}")
 
-    def calculate_accuracy(self, results: List[Dict]) -> float:
-        """Calculate accuracy for multiple choice questions"""
+    def calculate_chartqa_accuracy(self, results: List[Dict]) -> float:
+        """
+        Calculate ChartQA accuracy with 5% tolerance for numeric answers
+        Formula: |predicted - ground_truth| / |ground_truth| ≤ 0.05
+        """
         if not results:
             return 0.0
 
@@ -876,10 +879,155 @@ class SmolVLMBenchmarkEvaluator:
 
         for result in results:
             if 'ground_truth' in result and 'response' in result:
+                response = str(result['response']).strip()
+                ground_truths = result['ground_truth'] if isinstance(result['ground_truth'], list) else [result['ground_truth']]
+
+                is_correct = False
+                for gt in ground_truths:
+                    gt_str = str(gt).strip()
+
+                    # Try numeric comparison with 5% tolerance
+                    try:
+                        # Extract numbers from response and ground truth
+                        import re
+                        response_nums = re.findall(r'-?\d+\.?\d*', response)
+                        gt_nums = re.findall(r'-?\d+\.?\d*', gt_str)
+
+                        if response_nums and gt_nums:
+                            pred_val = float(response_nums[0])
+                            gt_val = float(gt_nums[0])
+
+                            if gt_val != 0:
+                                relative_error = abs(pred_val - gt_val) / abs(gt_val)
+                                if relative_error <= 0.05:  # 5% tolerance
+                                    is_correct = True
+                                    break
+                    except:
+                        pass
+
+                    # Fallback: case-insensitive text match
+                    if gt_str.lower() in response.lower() or response.lower() in gt_str.lower():
+                        is_correct = True
+                        break
+
+                if is_correct:
+                    correct += 1
+                total += 1
+
+        return (correct / total * 100) if total > 0 else 0.0
+
+    def calculate_ocrbench_accuracy(self, results: List[Dict]) -> float:
+        """
+        Calculate OCRBench accuracy - checks if ground truth is contained in prediction
+        """
+        if not results:
+            return 0.0
+
+        correct = 0
+        total = 0
+
+        for result in results:
+            if 'ground_truth' in result and 'response' in result:
+                response = str(result['response']).lower().strip()
+                ground_truths = result['ground_truth'] if isinstance(result['ground_truth'], list) else [result['ground_truth']]
+
+                # Check if any ground truth is contained in the response
+                for gt in ground_truths:
+                    gt_str = str(gt).lower().strip()
+                    if gt_str in response:
+                        correct += 1
+                        break
+
+                total += 1
+
+        return (correct / total * 100) if total > 0 else 0.0
+
+    def calculate_textvqa_accuracy(self, results: List[Dict]) -> float:
+        """
+        Calculate TextVQA accuracy with soft voting over multiple answers
+        """
+        if not results:
+            return 0.0
+
+        correct = 0
+        total = 0
+
+        for result in results:
+            if 'ground_truth' in result and 'response' in result:
+                response = str(result['response']).lower().strip()
+                ground_truths = result['ground_truth']
+
+                # Handle both list of answers and list of dicts
+                if isinstance(ground_truths, list):
+                    if ground_truths and isinstance(ground_truths[0], dict):
+                        # Extract answers from dict format
+                        answers = [str(item['answer']).lower().strip() for item in ground_truths]
+                    else:
+                        answers = [str(gt).lower().strip() for gt in ground_truths]
+                else:
+                    answers = [str(ground_truths).lower().strip()]
+
+                # Check if response matches any of the answers
+                for answer in answers:
+                    if answer in response or response in answer:
+                        correct += 1
+                        break
+
+                total += 1
+
+        return (correct / total * 100) if total > 0 else 0.0
+
+    def calculate_docvqa_accuracy(self, results: List[Dict]) -> float:
+        """
+        Calculate DocVQA accuracy using simplified ANLS
+        (case-insensitive, checks for containment)
+        """
+        if not results:
+            return 0.0
+
+        correct = 0
+        total = 0
+
+        for result in results:
+            if 'ground_truth' in result and 'response' in result:
+                response = str(result['response']).lower().strip()
+                ground_truths = result['ground_truth'] if isinstance(result['ground_truth'], list) else [result['ground_truth']]
+
+                # Check if any ground truth matches (case-insensitive)
+                for gt in ground_truths:
+                    gt_str = str(gt).lower().strip()
+                    if gt_str in response or response in gt_str:
+                        correct += 1
+                        break
+
+                total += 1
+
+        return (correct / total * 100) if total > 0 else 0.0
+
+    def calculate_accuracy(self, results: List[Dict], benchmark_name: str = None) -> float:
+        """Calculate accuracy using benchmark-specific methods"""
+        if not results:
+            return 0.0
+
+        # Use benchmark-specific evaluation if specified
+        if benchmark_name == 'chartqa':
+            return self.calculate_chartqa_accuracy(results)
+        elif benchmark_name == 'ocrbench':
+            return self.calculate_ocrbench_accuracy(results)
+        elif benchmark_name == 'textvqa':
+            return self.calculate_textvqa_accuracy(results)
+        elif benchmark_name == 'docvqa':
+            return self.calculate_docvqa_accuracy(results)
+
+        # Default: simple containment check
+        correct = 0
+        total = 0
+
+        for result in results:
+            if 'ground_truth' in result and 'response' in result:
                 gt = str(result['ground_truth']).lower().strip()
                 response = str(result['response']).lower().strip()
 
-                # Simple exact match for now
                 if gt in response or response in gt:
                     correct += 1
                 total += 1
@@ -917,7 +1065,7 @@ class SmolVLMBenchmarkEvaluator:
                     
                     tasks = results[benchmark_name]
                     if isinstance(tasks, list) and tasks:
-                        accuracy = self.calculate_accuracy(tasks)
+                        accuracy = self.calculate_accuracy(tasks, benchmark_name=benchmark_name)
                         benchmark_scores[benchmark_name] = accuracy
 
                         print(f"\n{benchmark_name.upper()}:")
