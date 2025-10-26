@@ -155,19 +155,35 @@ class SmolVLMBenchmarkEvaluator:
         original_percentage = self.dataset_percentage
         fallback_percentages = [100, 50, 25, 10, 5, 1] if original_percentage == 100 else [original_percentage]
 
+        # First, check if ANY cached version exists (to avoid unnecessary fallback attempts)
+        cache_dir_path = Path(cache_dir)
+        if cache_dir_path.exists():
+            for percentage in fallback_percentages:
+                percentage_str = f"_{int(percentage)}pct" if percentage < 100 else ""
+                cache_path = cache_dir_path / f"{dataset_name.replace('/', '_')}_{split}{percentage_str}.json"
+                if cache_path.exists():
+                    logger.info(f"Found cached {dataset_name} at {percentage}%, loading from cache...")
+                    self.dataset_percentage = percentage
+                    result = self.load_and_save_dataset(dataset_name, split, cache_dir)
+                    self.dataset_percentage = original_percentage
+                    return result
+
+        # No cache found, try downloading with fallback
         for percentage in fallback_percentages:
             self.dataset_percentage = percentage
             try:
-                logger.info(f"Attempting to load {dataset_name} with {percentage}% of data...")
+                logger.info(f"Attempting to download {dataset_name} with {percentage}% of data...")
                 result = self.load_and_save_dataset(dataset_name, split, cache_dir)
                 if result:
                     if percentage < original_percentage:
                         logger.warning(f"Fell back to {percentage}% due to download constraints")
+                    self.dataset_percentage = original_percentage
                     return result
             except Exception as e:
                 logger.warning(f"Failed at {percentage}%: {e}")
                 if percentage == fallback_percentages[-1]:
                     logger.error(f"All fallback attempts failed for {dataset_name}")
+                    self.dataset_percentage = original_percentage
                     raise
                 continue
 
