@@ -102,8 +102,8 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     print("Warning: Could not load OCRBench, using DocVQA instead")
                     self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "textvqa":
-            # Use the sample dataset to avoid downloading large files
-            self.dataset = load_dataset("nielsr/textvqa-sample", split="train", trust_remote_code=True)
+            # Use VQAv2 dataset which has train split (TextVQA uses this for training)
+            self.dataset = load_dataset("HuggingFaceM4/VQAv2", split="train", trust_remote_code=True)
         elif benchmark_name == "chartqa":
             self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
         else:
