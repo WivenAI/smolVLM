@@ -190,14 +190,21 @@ class SmolVLMBenchmarkEvaluator:
         logger.info(f"Loading {dataset_name} dataset ({self.dataset_percentage}% of data)...")
         try:
             # Use streaming to avoid loading full dataset
-            dataset = load_dataset(dataset_name, split=split, streaming=True)
+            dataset = load_dataset(dataset_name, split=split, streaming=True, trust_remote_code=True)
 
             # Calculate how many samples to load based on percentage
-            # We'll estimate and load samples incrementally
-            dataset_list = []
-            max_samples = int(10000 * (self.dataset_percentage / 100))  # Estimate max 10k samples per dataset
+            # Cap at 1000 samples for benchmark datasets (not ERP datasets)
+            is_erp_dataset = any(keyword in dataset_name.lower() for keyword in ['qcm', 'dpo', 'erp'])
+            estimated_total = 10000  # Estimate
+            calculated_samples = int(estimated_total * (self.dataset_percentage / 100))
 
-            logger.info(f"Downloading up to ~{max_samples} samples ({self.dataset_percentage}%)...")
+            if is_erp_dataset:
+                max_samples = calculated_samples  # No cap for ERP datasets
+            else:
+                max_samples = min(calculated_samples, 1000)  # Cap benchmark datasets at 1000
+
+            dataset_list = []
+            logger.info(f"Downloading up to ~{max_samples} samples ({self.dataset_percentage}%){' [ERP - no cap]' if is_erp_dataset else ' [capped at 1000]'}...")
 
             for idx, item in enumerate(dataset):
                 if idx >= max_samples:
@@ -244,9 +251,18 @@ class SmolVLMBenchmarkEvaluator:
 
             # Fallback to non-streaming but limited
             try:
-                dataset = load_dataset(dataset_name, split=split)
-                max_samples = int(len(dataset) * (self.dataset_percentage / 100))
-                logger.info(f"Loading {max_samples} samples from total {len(dataset)}")
+                dataset = load_dataset(dataset_name, split=split, trust_remote_code=True)
+
+                # Apply same cap logic as above
+                is_erp_dataset = any(keyword in dataset_name.lower() for keyword in ['qcm', 'dpo', 'erp'])
+                calculated_samples = int(len(dataset) * (self.dataset_percentage / 100))
+
+                if is_erp_dataset:
+                    max_samples = calculated_samples  # No cap for ERP datasets
+                else:
+                    max_samples = min(calculated_samples, 1000)  # Cap benchmark datasets at 1000
+
+                logger.info(f"Loading {max_samples} samples from total {len(dataset)}{' [ERP - no cap]' if is_erp_dataset else ' [capped at 1000]'}")
 
                 dataset_list = []
                 for idx, item in enumerate(dataset):
