@@ -147,7 +147,7 @@ class SystematicBenchmarkPipeline:
             metrics = {}
             for benchmark_name, benchmark_results in results.items():
                 if isinstance(benchmark_results, list) and benchmark_results:
-                    accuracy = self.calculate_accuracy(benchmark_results)
+                    accuracy = self.calculate_accuracy(benchmark_results, benchmark_name=benchmark_name)
                     metrics[benchmark_name] = {
                         "accuracy": accuracy,
                         "num_samples": len(benchmark_results)
@@ -166,8 +166,8 @@ class SystematicBenchmarkPipeline:
 
         return success
 
-    def calculate_accuracy(self, results: list) -> float:
-        """Calculate accuracy from benchmark results"""
+    def calculate_accuracy(self, results: list, benchmark_name: str = None) -> float:
+        """Calculate accuracy from benchmark results using benchmark-specific methods"""
         if not results:
             return 0.0
 
@@ -176,10 +176,26 @@ class SystematicBenchmarkPipeline:
 
         for result in results:
             if 'ground_truth' in result and 'response' in result:
-                gt = str(result['ground_truth']).lower().strip()
                 response = str(result['response']).lower().strip()
+                ground_truths = result['ground_truth'] if isinstance(result['ground_truth'], list) else [result['ground_truth']]
 
-                if gt in response or response in gt:
+                # Check if any ground truth matches (benchmark-specific logic)
+                is_correct = False
+                for gt in ground_truths:
+                    gt_str = str(gt).lower().strip()
+
+                    # For OCRBench: check if ground truth is in response
+                    if benchmark_name == 'ocrbench':
+                        if gt_str in response:
+                            is_correct = True
+                            break
+                    # For DocVQA/ChartQA/others: check both directions
+                    else:
+                        if gt_str in response or response in gt_str:
+                            is_correct = True
+                            break
+
+                if is_correct:
                     correct += 1
                 total += 1
 
