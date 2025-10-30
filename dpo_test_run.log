@@ -1,0 +1,34 @@
+Starting SmolVLM DPO fine-tuning...
+⚠️  Running in TEST MODE - using only 10 samples
+Using device: cuda
+Loading base model: HuggingFaceTB/SmolVLM-500M-Instruct
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing DPO dataset...
+Loaded 1840 DPO examples
+Train samples: 9
+Eval samples: 1
+
+Initializing DPO Trainer...
+Extracting prompt in train dataset:   0%|          | 0/9 [00:00<?, ? examples/s]Extracting prompt in train dataset: 100%|██████████| 9/9 [00:00<00:00, 2452.33 examples/s]
+Applying chat template to train dataset:   0%|          | 0/9 [00:00<?, ? examples/s]Applying chat template to train dataset: 100%|██████████| 9/9 [00:00<00:00, 4377.68 examples/s]
+Tokenizing train dataset:   0%|          | 0/9 [00:00<?, ? examples/s]Tokenizing train dataset:  11%|█         | 1/9 [00:00<00:01,  5.76 examples/s]Tokenizing train dataset:  22%|██▏       | 2/9 [00:00<00:01,  4.94 examples/s]Tokenizing train dataset:  33%|███▎      | 3/9 [00:00<00:01,  5.30 examples/s]Tokenizing train dataset:  44%|████▍     | 4/9 [00:00<00:00,  5.52 examples/s]Tokenizing train dataset:  56%|█████▌    | 5/9 [00:00<00:00,  5.63 examples/s]Tokenizing train dataset:  67%|██████▋   | 6/9 [00:01<00:00,  5.70 examples/s]Tokenizing train dataset:  78%|███████▊  | 7/9 [00:01<00:00,  5.76 examples/s]Tokenizing train dataset:  89%|████████▉ | 8/9 [00:01<00:00,  5.29 examples/s]Tokenizing train dataset: 100%|██████████| 9/9 [00:01<00:00,  5.46 examples/s]Tokenizing train dataset: 100%|██████████| 9/9 [00:04<00:00,  2.24 examples/s]
+Extracting prompt in eval dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Extracting prompt in eval dataset: 100%|██████████| 1/1 [00:00<00:00, 656.08 examples/s]
+Applying chat template to eval dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Applying chat template to eval dataset: 100%|██████████| 1/1 [00:00<00:00, 634.06 examples/s]
+Tokenizing eval dataset:   0%|          | 0/1 [00:00<?, ? examples/s]Tokenizing eval dataset: 100%|██████████| 1/1 [00:00<00:00,  5.77 examples/s]Tokenizing eval dataset: 100%|██████████| 1/1 [00:00<00:00,  2.03 examples/s]
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 49279, 'bos_token_id': 1, 'pad_token_id': 2}.
+
+Starting DPO training...
+  0%|          | 0/6 [00:00<?, ?it/s]/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+ 17%|█▋        | 1/6 [01:05<05:26, 65.28s/it] 33%|███▎      | 2/6 [01:08<01:55, 28.95s/it] 50%|█████     | 3/6 [02:14<02:17, 45.83s/it] 67%|██████▋   | 4/6 [02:17<00:57, 28.88s/it] 83%|████████▎ | 5/6 [03:23<00:42, 42.25s/it]100%|██████████| 6/6 [03:26<00:00, 28.84s/it]                                             100%|██████████| 6/6 [03:27<00:00, 28.84s/it]100%|██████████| 6/6 [03:27<00:00, 34.55s/it]
+{'train_runtime': 207.2935, 'train_samples_per_second': 0.13, 'train_steps_per_second': 0.029, 'train_loss': 0.7830127080281576, 'epoch': 3.0}
+
+Saving model...
+Traceback (most recent call last):
+  File "/home/david-lacour/Documents/smolvlm/smolVLM/finetune_smolvlm_dpo.py", line 208, in <module>
+    main()
+  File "/home/david-lacour/Documents/smolvlm/smolVLM/finetune_smolvlm_dpo.py", line 201, in main
+    processor.save_pretrained(output_dir)
+                              ^^^^^^^^^^
+NameError: name 'output_dir' is not defined

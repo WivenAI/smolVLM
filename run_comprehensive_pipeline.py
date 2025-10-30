@@ -51,9 +51,10 @@ class TeeOutput:
         self.log.close()
 
 
-BENCHMARKS_TO_TRAIN = ["docvqa", "ocrbench", "textvqa", "chartqa"]
-# Use only 4 core benchmarks (document/visual understanding, relevant to ERP)
-ALL_BENCHMARKS = ["ocrbench", "textvqa", "docvqa", "chartqa"]
+BENCHMARKS_TO_TRAIN = ["docvqa", "ocrbench", "chartqa"]
+# Use only 3 core benchmarks (document/visual understanding, relevant to ERP)
+# Note: textvqa removed because it falls back to docvqa for training (would be redundant)
+ALL_BENCHMARKS = ["ocrbench", "docvqa", "chartqa"]
 
 
 class ComprehensivePipeline:

@@ -436,9 +436,9 @@ def main():
     parser.add_argument("--num-samples", type=int, default=None,
                        help="Number of samples per benchmark (overrides percentage)")
     parser.add_argument("--benchmark-subset", nargs="+",
-                       choices=["ocrbench", "textvqa", "docvqa", "chartqa",
+                       choices=["ocrbench", "docvqa", "chartqa",
                                "ai2d", "scienceqa", "mmstar", "mmmu", "mathvista"],
-                       help="Run only specific benchmarks")
+                       help="Run only specific benchmarks (textvqa removed - redundant with docvqa)")
 
     # Pipeline options
     parser.add_argument("--dry-run", action="store_true",

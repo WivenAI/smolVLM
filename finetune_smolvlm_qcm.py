@@ -76,15 +76,46 @@ class VisionLanguageDataCollator:
 class QCMDatasetSFT(torch.utils.data.Dataset):
     """Dataset for SFT training on QCM (multiple choice questions) dataset"""
 
-    def __init__(self, json_path: str, image_dir: str, processor):
+    def __init__(self, json_path: str, image_dir: str, processor, use_dpo_chosen_only: bool = False):
         self.processor = processor
         self.image_dir = Path(image_dir)
+        self.use_dpo_chosen_only = use_dpo_chosen_only
 
-        # Load QCM dataset
+        # Load dataset
         with open(json_path, 'r', encoding='utf-8') as f:
-            self.data = json.load(f)
+            raw_data = json.load(f)
 
-        print(f"Loaded {len(self.data)} QCM examples")
+        # Convert DPO format to QCM format if needed
+        if use_dpo_chosen_only:
+            self.data = self._convert_dpo_to_qcm(raw_data)
+            # Keep original DPO items for image access
+            self.original_dpo_items = raw_data
+            print(f"Loaded {len(self.data)} examples from DPO dataset (chosen responses only)")
+        else:
+            self.data = raw_data
+            self.original_dpo_items = None
+            print(f"Loaded {len(self.data)} QCM examples")
+
+    def _convert_dpo_to_qcm(self, dpo_data: List[Dict]) -> List[Dict]:
+        """Convert DPO dataset format to QCM format using only chosen responses"""
+        qcm_data = []
+
+        for item in dpo_data:
+            # Extract the chosen response and prompt
+            chosen = item.get('chosen', '')
+            prompt = item.get('prompt', '')
+
+            # For DPO dataset, we create a simplified QCM format
+            # The "question" contains the prompt and the "correct_answer" is the chosen response
+            qcm_item = {
+                'question': prompt,
+                'options': {'A': chosen},  # Single option with chosen response
+                'correct_answer': 'A',
+                'explanation': ''
+            }
+            qcm_data.append(qcm_item)
+
+        return qcm_data
 
     def __len__(self):
         return len(self.data)
@@ -92,23 +123,28 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
 
-        # Load image
-        image_path = self.image_dir / item['image_name']
-        image = Image.open(image_path)
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
+        # Load image from DPO dataset if available
+        if self.use_dpo_chosen_only and self.original_dpo_items:
+            dpo_item = self.original_dpo_items[idx]
+            image_name = dpo_item.get('image_name', '')
+            if image_name:
+                image_path = self.image_dir / image_name
+                try:
+                    image = Image.open(image_path).convert('RGB')
+                except Exception as e:
+                    print(f"Warning: Could not load image {image_path}: {e}")
+                    image = Image.new('RGB', (224, 224), color='white')
+            else:
+                image = Image.new('RGB', (224, 224), color='white')
+        else:
+            # Create a blank white image for text-only QCM (SmolVLM requires an image)
+            image = Image.new('RGB', (224, 224), color='white')
 
-        # Resize large images to avoid processor errors
-        max_size = 1024
-        if image.size[0] > max_size or image.size[1] > max_size:
-            image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
-
-        # Extract QCM data
-        qcm = item['qcm']
-        question = qcm['question']
-        options = qcm['options']
-        correct_answer = qcm['correct_answer']
-        explanation = qcm.get('explanation', '')
+        # Extract QCM data directly from item (no nested 'qcm' key)
+        question = item['question']
+        options = item['options']
+        correct_answer = item['correct_answer']
+        explanation = item.get('explanation', '')
 
         # Format the prompt with question and options
         options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
@@ -204,6 +240,8 @@ def main():
                        help="Number of training epochs")
     parser.add_argument("--test", action="store_true",
                        help="Run in test mode with limited samples")
+    parser.add_argument("--use-dpo-chosen-only", action="store_true",
+                       help="Use only chosen responses from DPO dataset for SFT training")
 
     args = parser.parse_args()
 
@@ -230,7 +268,8 @@ def main():
     full_dataset = QCMDatasetSFT(
         json_path=args.dataset,
         image_dir=args.image_dir,
-        processor=processor
+        processor=processor,
+        use_dpo_chosen_only=args.use_dpo_chosen_only
     )
 
     # In test mode, only use 10 samples

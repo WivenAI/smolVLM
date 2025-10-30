@@ -198,10 +198,10 @@ def main():
     # Save the final model
     print("\nSaving model...")
     trainer.save_model()
-    processor.save_pretrained(output_dir)
+    processor.save_pretrained(args.output_dir)
 
     print(f"\nDPO Training completed!")
-    print(f"Model saved to: {output_dir}")
+    print(f"Model saved to: {args.output_dir}")
 
 
 if __name__ == "__main__":

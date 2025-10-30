@@ -85,6 +85,7 @@ class BenchmarkDataset(torch.utils.data.Dataset):
     def __init__(self, benchmark_name: str, split: str, processor, max_samples: int = None):
         self.processor = processor
         self.benchmark_name = benchmark_name
+        self.already_limited = False  # Track if we already applied sample limit
 
         print(f"Loading {benchmark_name} dataset ({split} split)...")
 
@@ -102,15 +103,41 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     print("Warning: Could not load OCRBench, using DocVQA instead")
                     self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "textvqa":
-            # Use VQAv2 dataset which has train split (TextVQA uses this for training)
-            self.dataset = load_dataset("HuggingFaceM4/VQAv2", split="train", trust_remote_code=True)
+            # VQAv2 streaming is very slow (0.1 samples/s) for large sample counts
+            # Use streaming only for small counts, otherwise fallback to DocVQA
+            sample_limit = max_samples if max_samples else 500
+
+            if sample_limit <= 50:
+                # For small sample counts, streaming is acceptable
+                try:
+                    print(f"Loading VQAv2 with streaming ({sample_limit} samples, ~{sample_limit*10}s)...")
+                    from datasets import Dataset as HFDataset
+                    dataset_stream = load_dataset("HuggingFaceM4/VQAv2", split="train", streaming=True, trust_remote_code=True)
+                    samples = list(dataset_stream.take(sample_limit))
+                    if samples:
+                        keys = samples[0].keys()
+                        data_dict = {key: [sample[key] for sample in samples] for key in keys}
+                        self.dataset = HFDataset.from_dict(data_dict)
+                        self.already_limited = True
+                        print(f"Successfully loaded {len(self.dataset)} samples via streaming")
+                    else:
+                        raise ValueError("No samples loaded from stream")
+                except Exception as e:
+                    print(f"Warning: Streaming failed ({e}), using DocVQA instead")
+                    self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
+            else:
+                # For large sample counts, streaming would take too long (500 samples = ~50 mins)
+                # Use DocVQA instead which is optimized and downloads quickly
+                print(f"Note: VQAv2 streaming is too slow for {sample_limit} samples (~{sample_limit*10}s)")
+                print("Using DocVQA dataset instead (similar VQA task, fast download)...")
+                self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "chartqa":
             self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
         else:
             raise ValueError(f"Unknown benchmark: {benchmark_name}")
 
-        # Limit samples if specified
-        if max_samples and len(self.dataset) > max_samples:
+        # Limit samples if specified (skip if already limited during streaming)
+        if not self.already_limited and max_samples and len(self.dataset) > max_samples:
             import random
             indices = random.sample(range(len(self.dataset)), max_samples)
             self.dataset = self.dataset.select(indices)

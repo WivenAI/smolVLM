@@ -47,8 +47,9 @@ class TeeOutput:
         self.log.close()
 
 
-# Use only 4 core benchmarks (document/visual understanding, relevant to ERP)
-BENCHMARKS = ["ocrbench", "textvqa", "docvqa", "chartqa"]
+# Use only 3 core benchmarks (document/visual understanding, relevant to ERP)
+# Note: textvqa removed because it falls back to docvqa for training (would be redundant)
+BENCHMARKS = ["ocrbench", "docvqa", "chartqa"]
 
 
 class SystematicBenchmarkPipeline:
@@ -507,7 +508,7 @@ def main():
     parser.add_argument("--skip-baseline", action="store_true",
                        help="Skip baseline benchmarking")
     parser.add_argument("--train-benchmark", type=str,
-                       choices=["docvqa", "ocrbench", "textvqa", "chartqa"],
+                       choices=["docvqa", "ocrbench", "chartqa"],
                        help="Train on this benchmark, then test on all")
     parser.add_argument("--skip-benchmark-training", action="store_true",
                        help="Skip benchmark training phase")
