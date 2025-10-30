@@ -545,8 +545,8 @@ def main():
     parser.add_argument("--train-benchmarks", nargs="+",
                        choices=BENCHMARKS_TO_TRAIN,
                        help="Specific benchmarks to train on (default: all)")
-    parser.add_argument("--train-samples", type=int, default=500,
-                       help="Max samples for benchmark training")
+    parser.add_argument("--train-samples", type=int, default=1000,
+                       help="Max samples for benchmark training (default: 1000, use full dataset)")
     parser.add_argument("--epochs", type=int, default=3,
                        help="Number of epochs")
 

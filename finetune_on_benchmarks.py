@@ -273,8 +273,8 @@ def main():
                        help="Base model to fine-tune (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
     parser.add_argument("--output-dir", type=str, default=None,
                        help="Output directory (default: ./smolvlm-{benchmark}-finetuned)")
-    parser.add_argument("--max-samples", type=int, default=500,
-                       help="Maximum training samples (default: 500)")
+    parser.add_argument("--max-samples", type=int, default=1000,
+                       help="Maximum training samples (default: 1000, use full dataset)")
     parser.add_argument("--num-epochs", type=int, default=3,
                        help="Number of training epochs")
     parser.add_argument("--test", action="store_true",
