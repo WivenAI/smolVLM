@@ -165,6 +165,14 @@ def main():
     # In test mode, only use 10 samples
     if args.test:
         full_dataset = full_dataset.select(range(min(10, len(full_dataset))))
+    else:
+        # IMPORTANT: Limit dataset to prevent OOM during tokenization
+        # DPOTrainer tokenizes entire dataset during init, which causes OOM with 1840 samples
+        max_samples = 500  # Use 500 samples max for DPO training
+        if len(full_dataset) > max_samples:
+            print(f"\n⚠️  Limiting dataset to {max_samples} samples (from {len(full_dataset)}) to prevent OOM")
+            print(f"   DPOTrainer tokenizes entire dataset during initialization")
+            full_dataset = full_dataset.select(range(max_samples))
 
     # Split for validation
     dataset_split = full_dataset.train_test_split(test_size=0.1, seed=42)
@@ -174,28 +182,38 @@ def main():
     print(f"Train samples: {len(train_dataset)}")
     print(f"Eval samples: {len(eval_dataset)}")
 
+    # Clear memory before DPOTrainer initialization
+    import gc
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        print(f"GPU memory allocated: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
+        print(f"GPU memory reserved: {torch.cuda.memory_reserved() / 1e9:.2f} GB")
+
     # DPO Training arguments
     training_args = DPOConfig(
         output_dir=args.output_dir,
         num_train_epochs=3,
         per_device_train_batch_size=1,
         per_device_eval_batch_size=1,
-        gradient_accumulation_steps=8,
+        gradient_accumulation_steps=4,  # Reduced from 8 to save memory
         learning_rate=5e-7,
         lr_scheduler_type="cosine",
-        warmup_steps=100,
+        warmup_steps=50,  # Reduced from 100
         weight_decay=0.01,
         logging_steps=10,
         eval_strategy="steps",
-        eval_steps=100,
-        save_steps=200,
-        save_total_limit=3,
+        eval_steps=50,  # Reduced from 100
+        save_steps=100,  # Reduced from 200
+        save_total_limit=2,  # Reduced from 3
         bf16=torch.cuda.is_available(),
         dataloader_pin_memory=False,
         remove_unused_columns=False,
         report_to="wandb",
         beta=0.1,  # DPO beta parameter
         loss_type="sigmoid",  # DPO loss type
+        max_length=512,  # Limit sequence length to reduce memory
+        max_prompt_length=256,  # Limit prompt length
     )
 
     # Initialize DPO Trainer
