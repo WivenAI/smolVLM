@@ -337,7 +337,7 @@ def main():
         per_device_train_batch_size=1,
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=8,
-        learning_rate=1e-5,
+        learning_rate=1e-4,  # 10x higher than before (was 1e-5) for stronger fine-tuning
         lr_scheduler_type="cosine",
         warmup_steps=50,
         weight_decay=0.01,
