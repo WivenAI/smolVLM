@@ -38,21 +38,40 @@ def prepare_dpo_dataset(json_path: str, image_dir: str):
     }
 
     image_dir_path = Path(image_dir)
+    skipped = 0
 
-    for item in data:
-        # Load image
-        image_path = image_dir_path / item['image_name']
-        image = Image.open(image_path)
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
+    for idx, item in enumerate(data):
+        try:
+            # Load image
+            image_path = image_dir_path / item['image_name']
 
-        # DPOTrainer expects text and will handle tokenization
-        # Add <image> token to the prompt for vision models
-        data_dict['prompt'].append(f"<image>{item['prompt']}")
-        data_dict['chosen'].append(item['chosen'])
-        data_dict['rejected'].append(item['rejected'])
-        data_dict['images'].append(image)
+            if not image_path.exists():
+                print(f"Warning: Image not found: {image_path}, skipping...")
+                skipped += 1
+                continue
 
+            image = Image.open(image_path)
+            if image.mode != 'RGB':
+                image = image.convert('RGB')
+
+            # Resize very large images to avoid OOM
+            max_size = 1536
+            if image.size[0] > max_size or image.size[1] > max_size:
+                image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
+            # DPOTrainer expects text and will handle tokenization
+            # Add <image> token to the prompt for vision models
+            data_dict['prompt'].append(f"<image>{item['prompt']}")
+            data_dict['chosen'].append(item['chosen'])
+            data_dict['rejected'].append(item['rejected'])
+            data_dict['images'].append(image)
+
+        except Exception as e:
+            print(f"Warning: Error loading sample {idx}: {e}, skipping...")
+            skipped += 1
+            continue
+
+    print(f"Successfully loaded {len(data_dict['prompt'])} samples (skipped {skipped})")
     return Dataset.from_dict(data_dict)
 
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -181,19 +200,36 @@ def main():
 
     # Initialize DPO Trainer
     print("\nInitializing DPO Trainer...")
-    trainer = DPOTrainer(
-        model=model,
-        ref_model=ref_model,
-        args=training_args,
-        train_dataset=train_dataset,
-        eval_dataset=eval_dataset,
-        processing_class=processor,
-    )
+    try:
+        trainer = DPOTrainer(
+            model=model,
+            ref_model=ref_model,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            processing_class=processor,
+        )
+    except Exception as e:
+        print(f"\n❌ Error initializing DPO Trainer: {e}")
+        print("\nThis usually happens due to:")
+        print("  1. OOM during tokenization")
+        print("  2. Problematic images in the dataset")
+        print("  3. Text sequences that are too long")
+        print("\nTry reducing max_length in DPOConfig or using fewer samples.")
+        import traceback
+        traceback.print_exc()
+        raise
 
     print("\nStarting DPO training...")
 
-    # Train the model
-    trainer.train()
+    try:
+        # Train the model
+        trainer.train()
+    except Exception as e:
+        print(f"\n❌ Error during training: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
 
     # Save the final model
     print("\nSaving model...")
