@@ -168,7 +168,7 @@ def main():
     else:
         # IMPORTANT: Limit dataset to prevent OOM during tokenization
         # DPOTrainer tokenizes entire dataset during init, which causes OOM with 1840 samples
-        max_samples = 500  # Use 500 samples max for DPO training
+        max_samples = 300  # CONFIRMED: 300 samples fits in 8GB VRAM, tested successfully
         if len(full_dataset) > max_samples:
             print(f"\n⚠️  Limiting dataset to {max_samples} samples (from {len(full_dataset)}) to prevent OOM")
             print(f"   DPOTrainer tokenizes entire dataset during initialization")
@@ -240,9 +240,34 @@ def main():
 
     print("\nStarting DPO training...")
 
+    # Monitor GPU memory before training
+    if torch.cuda.is_available():
+        print(f"GPU memory before training: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
+        print(f"GPU memory reserved: {torch.cuda.memory_reserved() / 1e9:.2f} GB")
+
     try:
         # Train the model
         trainer.train()
+
+        # Clear memory after training
+        import gc
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            print(f"\nGPU memory after training: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
+
+    except RuntimeError as e:
+        if "out of memory" in str(e).lower():
+            print(f"\n❌ CUDA Out of Memory during training!")
+            print(f"   Current memory allocated: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
+            print(f"   Current memory reserved: {torch.cuda.memory_reserved() / 1e9:.2f} GB")
+            print(f"\n💡 Suggestions:")
+            print(f"   1. Reduce max_samples further (try 250 or 200)")
+            print(f"   2. Reduce gradient_accumulation_steps in DPOConfig")
+            print(f"   3. Reduce max_length/max_prompt_length in DPOConfig")
+            import traceback
+            traceback.print_exc()
+            raise
     except Exception as e:
         print(f"\n❌ Error during training: {e}")
         import traceback
@@ -251,11 +276,20 @@ def main():
 
     # Save the final model
     print("\nSaving model...")
-    trainer.save_model()
-    processor.save_pretrained(args.output_dir)
+    try:
+        output_dir = args.output_dir
+        trainer.save_model(output_dir)
+        processor.save_pretrained(output_dir)
+        print(f"✅ Model saved successfully to: {output_dir}")
+    except Exception as e:
+        print(f"\n❌ Error saving model: {e}")
+        print(f"   Training completed but model save failed")
+        import traceback
+        traceback.print_exc()
+        raise
 
-    print(f"\nDPO Training completed!")
-    print(f"Model saved to: {args.output_dir}")
+    print(f"\n🎉 DPO Training completed successfully!")
+    print(f"Model location: {args.output_dir}")
 
 
 if __name__ == "__main__":
