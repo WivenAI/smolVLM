@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
 """
-Fine-tune SmolVLM on standard benchmarks (DocVQA, OCRBench, etc.)
-This serves as a "canary" to verify training works on well-known datasets
-before training on custom ERP datasets.
-
-If the model improves on these benchmarks after training, we know:
-1. The training code works correctly
-2. The model can learn from vision-language data
-3. We can proceed with confidence to ERP training
+Fine-tune SmolVLM using TRL's SFTTrainer (Official HuggingFace approach)
+This uses the correct, tested approach with automatic label masking.
 """
 
 import os
-import json
 import torch
 from pathlib import Path
 from PIL import Image
@@ -19,73 +12,21 @@ import wandb
 from transformers import (
     AutoProcessor,
     AutoModelForVision2Seq,
-    TrainingArguments,
-    Trainer,
     BitsAndBytesConfig
 )
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from dataclasses import dataclass
-from typing import Dict, List
+from peft import LoraConfig
+from trl import SFTConfig, SFTTrainer
 from datasets import load_dataset
 import argparse
 
 
-@dataclass
-class VisionLanguageDataCollator:
-    """Custom data collator for vision-language models"""
-
-    def __call__(self, features: List[Dict[str, torch.Tensor]]) -> Dict[str, torch.Tensor]:
-        # Separate pixel_values from text features
-        pixel_values = [f.pop('pixel_values') for f in features]
-
-        # Find max length for padding
-        max_length = max(f['input_ids'].shape[0] for f in features)
-
-        # Pad text features
-        batch = {}
-        batch['pixel_values'] = torch.stack(pixel_values)
-
-        # Pad input_ids, attention_mask, and labels
-        input_ids = []
-        attention_mask = []
-        labels = []
-
-        for f in features:
-            seq_len = f['input_ids'].shape[0]
-            pad_len = max_length - seq_len
-
-            # Pad input_ids
-            input_ids.append(torch.cat([
-                f['input_ids'],
-                torch.full((pad_len,), 0, dtype=f['input_ids'].dtype)
-            ]))
-
-            # Pad attention_mask
-            attention_mask.append(torch.cat([
-                f['attention_mask'],
-                torch.zeros(pad_len, dtype=f['attention_mask'].dtype)
-            ]))
-
-            # Pad labels (use -100 for padding to ignore in loss)
-            labels.append(torch.cat([
-                f['labels'],
-                torch.full((pad_len,), -100, dtype=f['labels'].dtype)
-            ]))
-
-        batch['input_ids'] = torch.stack(input_ids)
-        batch['attention_mask'] = torch.stack(attention_mask)
-        batch['labels'] = torch.stack(labels)
-
-        return batch
-
-
-class BenchmarkDataset(torch.utils.data.Dataset):
-    """Dataset for training on benchmark datasets (DocVQA, OCRBench, etc.)"""
+class BenchmarkDatasetTRL:
+    """Dataset for TRL SFTTrainer - returns messages format"""
 
     def __init__(self, benchmark_name: str, split: str, processor, max_samples: int = None):
         self.processor = processor
         self.benchmark_name = benchmark_name
-        self.already_limited = False  # Track if we already applied sample limit
+        self.already_limited = False
 
         print(f"Loading {benchmark_name} dataset ({split} split)...")
 
@@ -93,7 +34,6 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         if benchmark_name == "docvqa":
             self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "ocrbench":
-            # Try multiple OCR datasets
             try:
                 self.dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
             except:
@@ -103,14 +43,10 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     print("Warning: Could not load OCRBench, using DocVQA instead")
                     self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "textvqa":
-            # VQAv2 streaming is very slow (0.1 samples/s) for large sample counts
-            # Use streaming only for small counts, otherwise fallback to DocVQA
             sample_limit = max_samples if max_samples else 500
-
             if sample_limit <= 50:
-                # For small sample counts, streaming is acceptable
                 try:
-                    print(f"Loading VQAv2 with streaming ({sample_limit} samples, ~{sample_limit*10}s)...")
+                    print(f"Loading VQAv2 with streaming ({sample_limit} samples)...")
                     from datasets import Dataset as HFDataset
                     dataset_stream = load_dataset("HuggingFaceM4/VQAv2", split="train", streaming=True, trust_remote_code=True)
                     samples = list(dataset_stream.take(sample_limit))
@@ -126,17 +62,14 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     print(f"Warning: Streaming failed ({e}), using DocVQA instead")
                     self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
             else:
-                # For large sample counts, streaming would take too long (500 samples = ~50 mins)
-                # Use DocVQA instead which is optimized and downloads quickly
-                print(f"Note: VQAv2 streaming is too slow for {sample_limit} samples (~{sample_limit*10}s)")
-                print("Using DocVQA dataset instead (similar VQA task, fast download)...")
+                print(f"Note: VQAv2 streaming too slow for {sample_limit} samples, using DocVQA instead")
                 self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "chartqa":
             self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
         else:
             raise ValueError(f"Unknown benchmark: {benchmark_name}")
 
-        # Limit samples if specified (skip if already limited during streaming)
+        # Limit samples if specified
         if not self.already_limited and max_samples and len(self.dataset) > max_samples:
             import random
             indices = random.sample(range(len(self.dataset)), max_samples)
@@ -162,12 +95,13 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         if image.mode != 'RGB':
             image = image.convert('RGB')
 
-        # Resize large images
-        max_size = 1024
+        # Resize images more aggressively to avoid truncation issues
+        # Smaller images = fewer image tokens = fits within sequence length limits
+        max_size = 384  # Reduced from 1024 to avoid truncation
         if image.size[0] > max_size or image.size[1] > max_size:
             image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
 
-        # Extract question/answer
+        # Extract question
         if 'query' in item:
             if isinstance(item['query'], dict):
                 question = item['query'].get('en', '')
@@ -192,52 +126,58 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         else:
             answer = "Unknown"
 
-        # Format using chat template (MUST match evaluation format!)
-        # This ensures training and evaluation use identical prompt formatting
-
-        # Create user message (question only - for finding where to mask)
+        # Fully pre-process everything to avoid TRL's truncation issues
+        # Format messages for chat template
         user_message = [
             {
                 "role": "user",
-                "content": [{"type": "image"}, {"type": "text", "text": question}]
+                "content": [
+                    {"type": "image"},
+                    {"type": "text", "text": question}
+                ]
             }
         ]
-        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True)
 
-        # Create full conversation (question + answer)
-        full_messages = user_message + [{"role": "assistant", "content": answer}]
-        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False)
+        full_messages = user_message + [
+            {
+                "role": "assistant",
+                "content": [{"type": "text", "text": answer}]
+            }
+        ]
 
-        # Process inputs
-        inputs = self.processor(
-            text=full_text,
-            images=image,
-            return_tensors="pt",
-            padding=True,
-            size={"longest_edge": 1024}
-        )
+        # Apply chat templates
+        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True, tokenize=False)
+        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False, tokenize=False)
 
-        # Flatten tensors
-        for key in inputs:
-            inputs[key] = inputs[key].squeeze(0)
-
-        # CRITICAL: Mask prompt tokens, only train on answer!
-        # Find where the answer starts by processing prompt WITH image
-        # (tokenizing without image gives wrong length due to image tokens!)
-        prompt_inputs_with_image = self.processor(
+        # Process WITH images and NO truncation
+        prompt_inputs = self.processor(
             text=prompt_text,
             images=image,
             return_tensors="pt",
-            padding=True,
-            size={"longest_edge": 1024}
+            padding=False,  # We'll pad in collator
+            truncation=False,  # NEVER truncate!
         )
-        prompt_length = prompt_inputs_with_image["input_ids"].shape[1]
 
-        # Clone input_ids for labels and mask the prompt part
-        inputs["labels"] = inputs["input_ids"].clone()
-        inputs["labels"][:prompt_length] = -100  # Ignore prompt tokens in loss
+        full_inputs = self.processor(
+            text=full_text,
+            images=image,
+            return_tensors="pt",
+            padding=False,
+            truncation=False,
+        )
 
-        return inputs
+        # Create labels with proper masking
+        prompt_length = prompt_inputs["input_ids"].shape[1]
+        labels = full_inputs["input_ids"].clone()
+        labels[0, :prompt_length] = -100  # Mask prompt tokens
+
+        # Return fully processed tensors
+        return {
+            "input_ids": full_inputs["input_ids"][0],  # Remove batch dim
+            "attention_mask": full_inputs["attention_mask"][0],
+            "pixel_values": full_inputs["pixel_values"][0] if "pixel_values" in full_inputs else None,
+            "labels": labels[0]
+        }
 
 
 def load_model_and_processor(base_model: str = None):
@@ -266,29 +206,12 @@ def load_model_and_processor(base_model: str = None):
         low_cpu_mem_usage=True
     )
 
-    # Prepare model for k-bit training
-    model = prepare_model_for_kbit_training(model)
-
-    # LoRA configuration
-    lora_config = LoraConfig(
-        r=16,
-        lora_alpha=32,
-        target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
-        lora_dropout=0.05,
-        bias="none",
-        task_type="CAUSAL_LM"
-    )
-
-    # Apply LoRA
-    model = get_peft_model(model, lora_config)
-    model.print_trainable_parameters()
-
     return model, processor
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Fine-tune SmolVLM on benchmark datasets (canary test)"
+        description="Fine-tune SmolVLM using TRL SFTTrainer (official approach)"
     )
     parser.add_argument("--benchmark", type=str,
                        choices=["docvqa", "ocrbench", "textvqa", "chartqa"],
@@ -297,9 +220,9 @@ def main():
     parser.add_argument("--base-model", type=str, default=None,
                        help="Base model to fine-tune (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
     parser.add_argument("--output-dir", type=str, default=None,
-                       help="Output directory (default: ./smolvlm-{benchmark}-finetuned)")
+                       help="Output directory (default: ./smolvlm-{benchmark}-trl)")
     parser.add_argument("--max-samples", type=int, default=1000,
-                       help="Maximum training samples (default: 1000, use full dataset)")
+                       help="Maximum training samples (default: 1000)")
     parser.add_argument("--num-epochs", type=int, default=3,
                        help="Number of training epochs")
     parser.add_argument("--test", action="store_true",
@@ -309,9 +232,9 @@ def main():
 
     # Set output directory
     if args.output_dir is None:
-        args.output_dir = f"./smolvlm-{args.benchmark}-finetuned"
+        args.output_dir = f"./smolvlm-{args.benchmark}-trl"
 
-    print(f"Starting SmolVLM fine-tuning on {args.benchmark}...")
+    print(f"Starting SmolVLM fine-tuning with TRL SFTTrainer on {args.benchmark}...")
     if args.test:
         print("⚠️  Running in TEST MODE - using only 10 samples")
         args.max_samples = 10
@@ -319,7 +242,7 @@ def main():
     # Initialize WandB
     wandb.init(
         project="SmallVLM",
-        name=f"smolvlm-{args.benchmark}-finetuning{'-test' if args.test else ''}",
+        name=f"smolvlm-{args.benchmark}-trl{'-test' if args.test else ''}",
         mode="disabled" if args.test else "online"
     )
 
@@ -330,9 +253,19 @@ def main():
     # Load model and processor
     model, processor = load_model_and_processor(args.base_model)
 
+    # LoRA configuration for TRL
+    peft_config = LoraConfig(
+        r=16,
+        lora_alpha=32,
+        target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
+        lora_dropout=0.05,
+        bias="none",
+        task_type="CAUSAL_LM"
+    )
+
     # Create dataset
     print("\nPreparing dataset...")
-    full_dataset = BenchmarkDataset(
+    full_dataset = BenchmarkDatasetTRL(
         benchmark_name=args.benchmark,
         split="train",
         processor=processor,
@@ -353,16 +286,16 @@ def main():
     print(f"Train samples: {len(train_dataset)}")
     print(f"Eval samples: {len(eval_dataset)}")
 
-    print("\nSetting up training arguments...")
+    print("\nSetting up TRL SFTConfig...")
 
-    # Training arguments
-    training_args = TrainingArguments(
+    # TRL SFTConfig (replaces TrainingArguments)
+    training_args = SFTConfig(
         output_dir=args.output_dir,
         num_train_epochs=args.num_epochs,
         per_device_train_batch_size=1,
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=8,
-        learning_rate=1e-4,  # 10x higher than before (was 1e-5) for stronger fine-tuning
+        learning_rate=1e-4,
         lr_scheduler_type="cosine",
         warmup_steps=50,
         weight_decay=0.01,
@@ -380,22 +313,28 @@ def main():
         greater_is_better=False,
         gradient_checkpointing=True,
         optim="adamw_8bit",
+        # We pre-process everything in the dataset, so no text field needed
+        dataset_text_field="",
     )
 
-    # Initialize custom data collator
-    data_collator = VisionLanguageDataCollator()
+    # Initialize TRL SFTTrainer
+    # This automatically handles:
+    # - Chat template application
+    # - Label masking (trains only on assistant response)
+    # - Vision-language data collation
+    print("\nInitializing TRL SFTTrainer...")
+    print("✨ TRL will automatically handle label masking!")
 
-    # Initialize Trainer
-    print("\nInitializing Trainer...")
-    trainer = Trainer(
+    trainer = SFTTrainer(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        data_collator=data_collator,
+        peft_config=peft_config,
+        processing_class=processor,  # Pass full processor for VLM
     )
 
-    print(f"\nStarting training on {args.benchmark}...")
+    print(f"\nStarting training on {args.benchmark} with TRL...")
 
     # Train the model
     trainer.train()
