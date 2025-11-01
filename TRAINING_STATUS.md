@@ -42,13 +42,19 @@ Got ids=[965] and text=[1088]
 
 ### Production Pipelines
 
-Both production pipelines are configured to use the **WORKING** approach:
+All production pipelines now use the **PROVEN** label masking approach:
 
 1. **`run_systematic_benchmark_pipeline.py`**
-   - Line 241: Uses `finetune_on_benchmarks.py` ✅
+   - Benchmark training: Uses `finetune_on_benchmarks.py` ✅
+   - ERP QCM training: Uses `finetune_smolvlm_qcm.py` ✅ **FIXED**
+   - ERP DPO training: Uses `finetune_smolvlm_dpo.py` (DPO loss, different approach)
 
 2. **`run_comprehensive_pipeline.py`**
-   - Calls systematic pipeline, which uses correct training script ✅
+   - Calls systematic pipeline, which uses correct training scripts ✅
+
+**Latest Update (2025-11-01):**
+- Fixed `finetune_smolvlm_qcm.py` to use chat templates and proper label masking
+- All SFT training now uses the proven approach (only trains on assistant responses)
 
 ### Proof Scripts
 
