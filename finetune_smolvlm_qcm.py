@@ -156,24 +156,56 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
         if explanation:
             answer += f"\n\nExplanation: {explanation}"
 
-        # Format: <image>prompt\nanswer
-        text = f"<image>{prompt}\n{answer}"
+        # FIXED: Use chat templates for proper formatting (like proven benchmark approach)
+        user_message = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image"},
+                    {"type": "text", "text": prompt}
+                ]
+            }
+        ]
 
-        # Process inputs
-        inputs = self.processor(
-            text=text,
+        full_messages = user_message + [
+            {
+                "role": "assistant",
+                "content": [{"type": "text", "text": answer}]
+            }
+        ]
+
+        # Apply chat templates
+        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True, tokenize=False)
+        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False, tokenize=False)
+
+        # Process prompt WITH image to get proper prompt length (including image tokens)
+        prompt_inputs = self.processor(
+            text=prompt_text,
             images=image,
             return_tensors="pt",
             padding=True,
             size={"longest_edge": 1024}
         )
 
-        # Flatten tensors
-        for key in inputs:
-            inputs[key] = inputs[key].squeeze(0)
+        # Process full text WITH image
+        full_inputs = self.processor(
+            text=full_text,
+            images=image,
+            return_tensors="pt",
+            padding=True,
+            size={"longest_edge": 1024}
+        )
 
-        # Set labels for loss computation
-        inputs["labels"] = inputs["input_ids"].clone()
+        # CRITICAL: Mask prompt tokens, only train on answer!
+        prompt_length = prompt_inputs["input_ids"].shape[1]
+        labels = full_inputs["input_ids"].clone()
+        labels[:, :prompt_length] = -100  # Mask prompt portion
+
+        # Flatten tensors and add masked labels
+        inputs = {}
+        for key in full_inputs:
+            inputs[key] = full_inputs[key].squeeze(0)
+        inputs["labels"] = labels.squeeze(0)
 
         return inputs
 
