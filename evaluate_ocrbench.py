@@ -138,23 +138,17 @@ class SmolVLMBenchmarkEvaluator:
                 pad_token_id=self.processor.tokenizer.pad_token_id
             )
 
-            # Decode
-            generated_text = self.processor.batch_decode(
-                generated_ids,
+            # Decode only the newly generated tokens (exclude the input prompt)
+            input_length = inputs['input_ids'].shape[1]
+            generated_tokens = generated_ids[:, input_length:]
+
+            # Decode the generated part only
+            response = self.processor.batch_decode(
+                generated_tokens,
                 skip_special_tokens=True
-            )[0]
+            )[0].strip()
 
-            logger.debug(f"Generated: {generated_text[:150]}")
-
-            # Clean up response - extract only the Assistant's answer
-            # The format is: "User: <question>\nAssistant: <answer>"
-            if "Assistant:" in generated_text:
-                response = generated_text.split("Assistant:")[-1].strip()
-            else:
-                # Fallback: try to remove the prompt
-                response = generated_text.replace(prompt, "").strip()
-                # Also try removing the question
-                response = response.replace(question, "").strip()
+            logger.debug(f"Generated response: {response[:150]}")
 
             return response if response else "No answer"
 
