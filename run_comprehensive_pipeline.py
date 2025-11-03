@@ -52,8 +52,7 @@ class TeeOutput:
 
 
 BENCHMARKS_TO_TRAIN = ["docvqa", "ocrbench", "chartqa"]
-# Use only 3 core benchmarks (document/visual understanding, relevant to ERP)
-# Note: textvqa removed because it falls back to docvqa for training (would be redundant)
+# Use only 3 core benchmarks (document/visual understanding, irrelevant to ERP)
 ALL_BENCHMARKS = ["ocrbench", "docvqa", "chartqa"]
 
 

@@ -51,14 +51,41 @@ class SmolVLMBenchmarkEvaluator:
         logger.info(f"Loading model from: {self.model_path}")
 
         try:
-            self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True)
-            self.model = AutoModelForVision2Seq.from_pretrained(
-                self.model_path,
-                trust_remote_code=True,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                device_map="auto" if torch.cuda.is_available() else None
-            )
-            logger.info("Model loaded successfully")
+            from pathlib import Path
+            from peft import PeftModel
+
+            # Check if this is a LoRA adapter directory
+            model_path = Path(self.model_path)
+            is_adapter = (model_path / "adapter_config.json").exists()
+
+            if is_adapter:
+                logger.info("Detected LoRA adapter, loading base model first...")
+                base_model = "HuggingFaceTB/SmolVLM-500M-Instruct"
+
+                # Load processor from adapter directory (it should have processor files)
+                self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True)
+
+                # Load base model
+                base_model_obj = AutoModelForVision2Seq.from_pretrained(
+                    base_model,
+                    trust_remote_code=True,
+                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                    device_map="auto" if torch.cuda.is_available() else None
+                )
+
+                # Load LoRA adapter on top
+                self.model = PeftModel.from_pretrained(base_model_obj, self.model_path)
+                logger.info("LoRA adapter loaded successfully on base model")
+            else:
+                # Load as full model
+                self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True)
+                self.model = AutoModelForVision2Seq.from_pretrained(
+                    self.model_path,
+                    trust_remote_code=True,
+                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                    device_map="auto" if torch.cuda.is_available() else None
+                )
+                logger.info("Full model loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load model: {e}")
             # Fallback to base model if fine-tuned model not available
@@ -80,11 +107,12 @@ class SmolVLMBenchmarkEvaluator:
             if image.size[0] > max_size or image.size[1] > max_size:
                 image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
 
-            # Format using proper chat template
+            # Format using proper chat template (MUST match training format!)
             messages = [
                 {
                     "role": "user",
                     "content": [
+                        {"type": "text", "text": "Answer briefly."},  # Match training instruction
                         {"type": "image"},
                         {"type": "text", "text": question}
                     ]

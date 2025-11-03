@@ -93,54 +93,12 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         if benchmark_name == "docvqa":
             self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
         elif benchmark_name == "ocrbench":
-            # Try multiple OCR datasets
-            try:
-                self.dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
-            except:
-                try:
-                    self.dataset = load_dataset("lmms-lab/OCRBench-v2", split="test", trust_remote_code=True)
-                except:
-                    print("Warning: Could not load OCRBench, using DocVQA instead")
-                    self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
-        elif benchmark_name == "textvqa":
-            # VQAv2 streaming is very slow (0.1 samples/s) for large sample counts
-            # Use streaming only for small counts, otherwise fallback to DocVQA
-            sample_limit = max_samples if max_samples else 500
-
-            if sample_limit <= 50:
-                # For small sample counts, streaming is acceptable
-                try:
-                    print(f"Loading VQAv2 with streaming ({sample_limit} samples, ~{sample_limit*10}s)...")
-                    from datasets import Dataset as HFDataset
-                    dataset_stream = load_dataset("HuggingFaceM4/VQAv2", split="train", streaming=True, trust_remote_code=True)
-                    samples = list(dataset_stream.take(sample_limit))
-                    if samples:
-                        keys = samples[0].keys()
-                        data_dict = {key: [sample[key] for sample in samples] for key in keys}
-                        self.dataset = HFDataset.from_dict(data_dict)
-                        self.already_limited = True
-                        print(f"Successfully loaded {len(self.dataset)} samples via streaming")
-                    else:
-                        raise ValueError("No samples loaded from stream")
-                except Exception as e:
-                    print(f"Warning: Streaming failed ({e}), using DocVQA instead")
-                    self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
-            else:
-                # For large sample counts, streaming would take too long (500 samples = ~50 mins)
-                # Use DocVQA instead which is optimized and downloads quickly
-                print(f"Note: VQAv2 streaming is too slow for {sample_limit} samples (~{sample_limit*10}s)")
-                print("Using DocVQA dataset instead (similar VQA task, fast download)...")
-                self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
+            self.dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
         elif benchmark_name == "chartqa":
             self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
         else:
             raise ValueError(f"Unknown benchmark: {benchmark_name}")
 
-        # Limit samples if specified (skip if already limited during streaming)
-        if not self.already_limited and max_samples and len(self.dataset) > max_samples:
-            import random
-            indices = random.sample(range(len(self.dataset)), max_samples)
-            self.dataset = self.dataset.select(indices)
 
         print(f"Loaded {len(self.dataset)} samples from {benchmark_name}")
 
@@ -192,21 +150,28 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         else:
             answer = "Unknown"
 
-        # Format using chat template (MUST match evaluation format!)
-        # This ensures training and evaluation use identical prompt formatting
-
-        # Create user message (question only - for finding where to mask)
-        user_message = [
-            {
-                "role": "user",
-                "content": [{"type": "image"}, {"type": "text", "text": question}]
-            }
-        ]
-        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True)
+        # Format using chat template (matching official SmolVLM notebook!)
+        # CRITICAL: Must use structured format for assistant content
 
         # Create full conversation (question + answer)
-        full_messages = user_message + [{"role": "assistant", "content": answer}]
-        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False)
+        # Format MUST match official: assistant content must be [{"type": "text", "text": answer}]
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Answer briefly."},  # Instruction from official notebook
+                    {"type": "image"},
+                    {"type": "text", "text": question}
+                ]
+            },
+            {
+                "role": "assistant",
+                "content": [
+                    {"type": "text", "text": answer}  # Structured format - CRITICAL!
+                ]
+            }
+        ]
+        full_text = self.processor.apply_chat_template(messages, add_generation_prompt=False)
 
         # Process inputs
         inputs = self.processor(
@@ -221,21 +186,21 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         for key in inputs:
             inputs[key] = inputs[key].squeeze(0)
 
-        # CRITICAL: Mask prompt tokens, only train on answer!
-        # Find where the answer starts by processing prompt WITH image
-        # (tokenizing without image gives wrong length due to image tokens!)
-        prompt_inputs_with_image = self.processor(
-            text=prompt_text,
-            images=image,
-            return_tensors="pt",
-            padding=True,
-            size={"longest_edge": 1024}
-        )
-        prompt_length = prompt_inputs_with_image["input_ids"].shape[1]
+        # OFFICIAL APPROACH: Only mask padding and image tokens
+        # This matches the official SmolVLM fine-tuning notebook
+        # Get image token ID
+        image_token_id = self.processor.tokenizer.additional_special_tokens_ids[
+            self.processor.tokenizer.additional_special_tokens.index("<image>")
+        ]
 
-        # Clone input_ids for labels and mask the prompt part
+        # Clone input_ids for labels
         inputs["labels"] = inputs["input_ids"].clone()
-        inputs["labels"][:prompt_length] = -100  # Ignore prompt tokens in loss
+
+        # Mask padding tokens (-100 means ignore in loss)
+        inputs["labels"][inputs["labels"] == self.processor.tokenizer.pad_token_id] = -100
+
+        # Mask image tokens (-100 means ignore in loss)
+        inputs["labels"][inputs["labels"] == image_token_id] = -100
 
         return inputs
 
@@ -269,12 +234,12 @@ def load_model_and_processor(base_model: str = None):
     # Prepare model for k-bit training
     model = prepare_model_for_kbit_training(model)
 
-    # LoRA configuration
+    # LoRA configuration (matching official SmolVLM notebook)
     lora_config = LoraConfig(
-        r=16,
-        lora_alpha=32,
-        target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
-        lora_dropout=0.05,
+        r=8,  # Reduced from 16 to match official
+        lora_alpha=8,  # Reduced from 32 to match official
+        target_modules=["down_proj", "o_proj", "k_proj", "q_proj", "gate_proj", "up_proj", "v_proj"],  # Added missing MLP modules
+        lora_dropout=0.1,  # Increased from 0.05 to match official
         bias="none",
         task_type="CAUSAL_LM"
     )
