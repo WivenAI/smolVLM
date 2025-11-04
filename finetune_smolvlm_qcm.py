@@ -129,26 +129,36 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
 
-        # Try to load image from original items (works for both DPO and QCM with images)
-        image = None
+        # Load image based on dataset structure
+        image_name = None
         if self.original_dpo_items:
             original_item = self.original_dpo_items[idx]
             image_name = original_item.get('image_name', '')
-            if image_name:
-                image_path = self.image_dir / image_name
-                try:
-                    image = Image.open(image_path).convert('RGB')
-                    # Optional: print success only once per 100 images to avoid spam
-                    if idx % 100 == 0:
-                        print(f"Loaded image: {image_path}")
-                except Exception as e:
-                    if idx % 100 == 0:  # Only print warnings occasionally
-                        print(f"Warning: Could not load image {image_path}: {e}")
-                    image = None
 
-        # Fallback to white dummy image if no image loaded
-        if image is None:
+        if image_name:
+            # Image is specified - must exist or crash
+            image_path = self.image_dir / image_name
+            if not image_path.exists():
+                raise FileNotFoundError(
+                    f"Image specified but not found: {image_path}\n"
+                    f"Sample index: {idx}\n"
+                    f"Check that dpo_image_dataset/ folder contains all referenced images."
+                )
+            try:
+                image = Image.open(image_path).convert('RGB')
+                if idx % 100 == 0:
+                    print(f"✓ Loaded image: {image_path}")
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to load image: {image_path}\n"
+                    f"Sample index: {idx}\n"
+                    f"Error: {e}"
+                )
+        else:
+            # No image specified - use white dummy (for text-only datasets like balanced_qcm_all_end.json)
             image = Image.new('RGB', (224, 224), color='white')
+            if idx == 0:
+                print("ℹ No image_name in dataset - using white dummy images (text-only mode)")
 
         # Extract QCM data directly from item (no nested 'qcm' key)
         question = item['question']

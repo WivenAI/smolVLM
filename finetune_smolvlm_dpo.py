@@ -42,37 +42,45 @@ def prepare_dpo_dataset(json_path: str, image_dir: str):
 
     for idx, item in enumerate(data):
         try:
-            # Try to load image if image_name is provided
-            image = None
+            # Load image based on dataset structure
             image_name = item.get('image_name', '')
 
             if image_name:
+                # Image is specified - must exist or crash
                 image_path = image_dir_path / image_name
 
-                if image_path.exists():
-                    try:
-                        image = Image.open(image_path)
-                        if image.mode != 'RGB':
-                            image = image.convert('RGB')
+                if not image_path.exists():
+                    raise FileNotFoundError(
+                        f"Image specified but not found: {image_path}\n"
+                        f"Sample index: {idx}\n"
+                        f"Dataset: {json_path}\n"
+                        f"Check that {image_dir}/ folder contains all referenced images."
+                    )
 
-                        # Resize very large images to avoid OOM
-                        max_size = 1536
-                        if image.size[0] > max_size or image.size[1] > max_size:
-                            image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+                try:
+                    image = Image.open(image_path)
+                    if image.mode != 'RGB':
+                        image = image.convert('RGB')
 
-                        if idx % 100 == 0:
-                            print(f"Loaded image: {image_path}")
-                    except Exception as e:
-                        if idx % 100 == 0:
-                            print(f"Warning: Could not load image {image_path}: {e}, using white dummy")
-                        image = None
-                else:
+                    # Resize very large images to avoid OOM
+                    max_size = 1536
+                    if image.size[0] > max_size or image.size[1] > max_size:
+                        image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
                     if idx % 100 == 0:
-                        print(f"Warning: Image not found: {image_path}, using white dummy")
+                        print(f"✓ Loaded image: {image_path}")
 
-            # Fallback to white dummy image if no image loaded (SmolVLM requires an image)
-            if image is None:
+                except Exception as e:
+                    raise RuntimeError(
+                        f"Failed to load image: {image_path}\n"
+                        f"Sample index: {idx}\n"
+                        f"Error: {e}"
+                    )
+            else:
+                # No image specified - use white dummy (for text-only datasets)
                 image = Image.new('RGB', (224, 224), color='white')
+                if idx == 0:
+                    print("ℹ No image_name in dataset - using white dummy images (text-only mode)")
 
             # DPOTrainer expects text and will handle tokenization
             # Add <image> token to the prompt for vision models
@@ -81,14 +89,20 @@ def prepare_dpo_dataset(json_path: str, image_dir: str):
             data_dict['rejected'].append(item['rejected'])
             data_dict['images'].append(image)
 
+        except (FileNotFoundError, RuntimeError) as e:
+            # Re-raise image loading errors (don't skip them)
+            raise
         except Exception as e:
             print(f"Warning: Error processing sample {idx}: {e}, skipping...")
             skipped += 1
             continue
 
-    print(f"Successfully loaded {len(data_dict['prompt'])} samples (skipped {skipped} due to errors)")
-    if skipped == 0:
-        print(f"   All samples loaded successfully!")
+    total_loaded = len(data_dict['prompt'])
+    print(f"\n✓ Successfully loaded {total_loaded} DPO samples")
+    if skipped > 0:
+        print(f"  ⚠ Skipped {skipped} samples due to data errors")
+    else:
+        print(f"  All samples loaded successfully!")
     return Dataset.from_dict(data_dict)
 
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
