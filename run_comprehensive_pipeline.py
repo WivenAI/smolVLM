@@ -551,14 +551,15 @@ def main():
 
     # ERP dataset paths
     parser.add_argument("--qcm-dataset", type=str,
-                       default="balanced_qcm_all_end.json",
-                       help="QCM dataset path")
+                       default="dpo_image_dataset/qcm/qcm_dataset.json",
+                       help="QCM dataset path (options: dpo_image_dataset/qcm/qcm_dataset.json with images, "
+                            "dpo_image_dataset/qcm/qcm_dataset_nova_pro.json, balanced_qcm_all_end.json text-only)")
     parser.add_argument("--dpo-dataset", type=str,
-                       default="dpo_image_dataset/dpo_dataset.json",
-                       help="DPO dataset path")
+                       default="dpo_image_dataset/dpo_dataset_cleaned.json",
+                       help="DPO dataset path (options: dpo_dataset_cleaned.json, dpo_dataset_nova_pro.json)")
     parser.add_argument("--image-dir", type=str,
                        default="dpo_image_dataset",
-                       help="Image directory")
+                       help="Image directory (contains ERP interface screenshots)")
 
     # Evaluation options
     parser.add_argument("--benchmark-percentage", type=float, default=100.0,

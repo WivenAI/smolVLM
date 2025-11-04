@@ -42,22 +42,37 @@ def prepare_dpo_dataset(json_path: str, image_dir: str):
 
     for idx, item in enumerate(data):
         try:
-            # Load image
-            image_path = image_dir_path / item['image_name']
+            # Try to load image if image_name is provided
+            image = None
+            image_name = item.get('image_name', '')
 
-            if not image_path.exists():
-                print(f"Warning: Image not found: {image_path}, skipping...")
-                skipped += 1
-                continue
+            if image_name:
+                image_path = image_dir_path / image_name
 
-            image = Image.open(image_path)
-            if image.mode != 'RGB':
-                image = image.convert('RGB')
+                if image_path.exists():
+                    try:
+                        image = Image.open(image_path)
+                        if image.mode != 'RGB':
+                            image = image.convert('RGB')
 
-            # Resize very large images to avoid OOM
-            max_size = 1536
-            if image.size[0] > max_size or image.size[1] > max_size:
-                image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+                        # Resize very large images to avoid OOM
+                        max_size = 1536
+                        if image.size[0] > max_size or image.size[1] > max_size:
+                            image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+
+                        if idx % 100 == 0:
+                            print(f"Loaded image: {image_path}")
+                    except Exception as e:
+                        if idx % 100 == 0:
+                            print(f"Warning: Could not load image {image_path}: {e}, using white dummy")
+                        image = None
+                else:
+                    if idx % 100 == 0:
+                        print(f"Warning: Image not found: {image_path}, using white dummy")
+
+            # Fallback to white dummy image if no image loaded (SmolVLM requires an image)
+            if image is None:
+                image = Image.new('RGB', (224, 224), color='white')
 
             # DPOTrainer expects text and will handle tokenization
             # Add <image> token to the prompt for vision models
@@ -67,11 +82,13 @@ def prepare_dpo_dataset(json_path: str, image_dir: str):
             data_dict['images'].append(image)
 
         except Exception as e:
-            print(f"Warning: Error loading sample {idx}: {e}, skipping...")
+            print(f"Warning: Error processing sample {idx}: {e}, skipping...")
             skipped += 1
             continue
 
-    print(f"Successfully loaded {len(data_dict['prompt'])} samples (skipped {skipped})")
+    print(f"Successfully loaded {len(data_dict['prompt'])} samples (skipped {skipped} due to errors)")
+    if skipped == 0:
+        print(f"   All samples loaded successfully!")
     return Dataset.from_dict(data_dict)
 
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -128,7 +145,7 @@ def main():
                        help="Base model to fine-tune (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
     parser.add_argument("--output-dir", type=str, default="./smolvlm-500m-dpo-finetuned",
                        help="Output directory for fine-tuned model")
-    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/dpo_dataset.json",
+    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/dpo_dataset_cleaned.json",
                        help="Path to DPO dataset JSON file")
     parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
                        help="Directory containing images")

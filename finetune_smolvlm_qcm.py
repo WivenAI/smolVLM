@@ -92,9 +92,15 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
             self.original_dpo_items = raw_data
             print(f"Loaded {len(self.data)} examples from DPO dataset (chosen responses only)")
         else:
-            self.data = raw_data
-            self.original_dpo_items = None
-            print(f"Loaded {len(self.data)} QCM examples")
+            # Keep original items for image access (handles nested qcm structure)
+            self.original_dpo_items = raw_data
+            # Extract nested QCM data if present, otherwise use flat structure
+            if raw_data and 'qcm' in raw_data[0]:
+                self.data = [item['qcm'] for item in raw_data]
+                print(f"Loaded {len(self.data)} QCM examples (nested structure with images)")
+            else:
+                self.data = raw_data
+                print(f"Loaded {len(self.data)} QCM examples (flat structure)")
 
     def _convert_dpo_to_qcm(self, dpo_data: List[Dict]) -> List[Dict]:
         """Convert DPO dataset format to QCM format using only chosen responses"""
@@ -123,21 +129,25 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         item = self.data[idx]
 
-        # Load image from DPO dataset if available
-        if self.use_dpo_chosen_only and self.original_dpo_items:
-            dpo_item = self.original_dpo_items[idx]
-            image_name = dpo_item.get('image_name', '')
+        # Try to load image from original items (works for both DPO and QCM with images)
+        image = None
+        if self.original_dpo_items:
+            original_item = self.original_dpo_items[idx]
+            image_name = original_item.get('image_name', '')
             if image_name:
                 image_path = self.image_dir / image_name
                 try:
                     image = Image.open(image_path).convert('RGB')
+                    # Optional: print success only once per 100 images to avoid spam
+                    if idx % 100 == 0:
+                        print(f"Loaded image: {image_path}")
                 except Exception as e:
-                    print(f"Warning: Could not load image {image_path}: {e}")
-                    image = Image.new('RGB', (224, 224), color='white')
-            else:
-                image = Image.new('RGB', (224, 224), color='white')
-        else:
-            # Create a blank white image for text-only QCM (SmolVLM requires an image)
+                    if idx % 100 == 0:  # Only print warnings occasionally
+                        print(f"Warning: Could not load image {image_path}: {e}")
+                    image = None
+
+        # Fallback to white dummy image if no image loaded
+        if image is None:
             image = Image.new('RGB', (224, 224), color='white')
 
         # Extract QCM data directly from item (no nested 'qcm' key)
@@ -264,10 +274,10 @@ def main():
                        help="Base model to fine-tune (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
     parser.add_argument("--output-dir", type=str, default="./smolvlm-500m-qcm-finetuned",
                        help="Output directory for fine-tuned model")
-    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/qcm_dataset.json",
-                       help="Path to QCM dataset JSON file")
+    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/qcm/qcm_dataset.json",
+                       help="Path to QCM dataset JSON file (with images) or balanced_qcm_all_end.json (text-only)")
     parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
-                       help="Directory containing images")
+                       help="Directory containing images (ERP screenshots)")
     parser.add_argument("--num-epochs", type=int, default=3,
                        help="Number of training epochs")
     parser.add_argument("--test", action="store_true",
