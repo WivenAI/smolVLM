@@ -1,0 +1,308 @@
+CONTEXT FOR: image_037.png
+============================================================
+
+--- BEFORE ---
+Cliquer pour sélectionner un décompte
+Seuls les salariés faisant partie du décompte 1. Exploitation horaire seront imp
+rimés
+
+Choisir une succursale
+
+Choix d'un département
+
+Bouton rapide - sélectionne/déselectionne tous les éléments
+Fenêtres d'interrogation et de  contrôle co 300 :
+
+
+
+Barres d'outils
+Faisant appel à d'autres fonctionnalités
+
+Boutons radios de sélection d’une fonction unique
+
+Filtre d'enregistrements
+Champ de saisie  d’une valeur de départ selon critère de sélection
+
+Case à cocher pour 
+option « Contient »
+
+Bouton de validation des saisies
+
+
+Liste de sélection multi-critères
+(couleur vert clair)
+
+Liste de valeurs (couleur bleu clair)
+Un clic droit de la souris permet de choisir d'autres fonctionnalités relatives 
+à la ligne :
+
+
+Bouton de validation des saisies
+
+Champ de saisie d'une valeur de départ
+Sélection d'un type d'impression db100 :
+
+
+Lorsque différents types d’impressions sont à disposition, la fenêtre ci-dessous
+ s’affiche afin de pouvoir sélectionner le type d’impression désiré.
+Pour sélectionner le type d’édition désiré, cliquer une première fois sur la lig
+ne désirée. Cette ligne apparaît avec un fond d’une autre couleur, ensuite doubl
+e-cliquer pour fermer la fenêtre de sélection et passer aux critères de traiteme
+nt d’édition.
+
+Attention ! La sélection par page, utilise une page pour chaque enregistrement t
+raité.
+
+
+
+
+
+
+Exemple de fenêtre des réponses de sélection possible :
+
+
+
+Cliquer pour enregistrer l’impression
+ dans un fichier
+
+Cliquer pour visualiser l’impression à l’écran
+
+
+Type d’édition désiré
+
+Cliquer pour sélectionner un autre type d’édition
+
+Critère de traitement
+Sélectionner le  critère de traitement des enregistrements souhaités  
+
+Saisir la date des comptes créés
+ ou  mutés depuis …
+Voir ci-dessous comment corriger une saisie de date
+
+Cliquer si l’on désire éditer seulement 
+les comptes de regroupement
+
+Cliquer si l’on désire éditer 
+seulement  les comptes …
+
+Fenêtre d'affichage de la sélection
+Cette fenêtre s’affiche seulement si la sélection Alphabétique ou Numérique a ét
+é cochée.
+Les touches  et/ou Ctrl peuvent être utilisées pour sélectionner les comptes dés
+irés
+
+Saisir le début du texte et valider avec  
+
+
+Sélectionne tous les  enregistrements du critère principal
+(en l’occurrence d’un collectif)
+
+Validation des réponses et choix éventuel
+ d’une imprimante et d’un fichier
+
+Annuler la saisie
+
+
+
+
+
+
+
+
+
+
+
+
+Traitement d’un champ « Date » en cas d’erreur de saisie :
+
+
+
+
+Pour vider la date deux possibilités sont offertes :
+Saisir un ?
+Où cliquer sur le bouton calendrier et le bouton « Vider la date »
+
+
+Raccourcis Clavier MS : 
+
+
+1. Lors de l'utilisation du panneau de commandes :
+
+
+     Touche "ALT" + "A"
+
+    Touche "ALT" + "E"
+
+     Touche "ALT" + "C"
+
+    Touche "ALT" + "E"
+
+
+
+
+2. Navigation lors de la saisie comptable / salaires :
+
+
+La touche TAB permet de passer rapidement d'un champ de saisie au suivant    
+
+Touche TAB : 
+
+
+
+La touche ENTER permet de valider les données saisies.
+
+La touche FLECHE BAS permet de saisir reprendre le dernier libellé comptable sai
+
+[IMAGE HERE: image_037.png]
+
+--- AFTER ---
+si
+
+3. Effacement d'une date
+
+ATTENTION : Pour effacer une date, il faut saisir un "?" ou cliquer sur le calen
+drier et choisir "Vider la date"
+
+
+4. Fonctions supplémentaires 
+
+Pour revenir au champ précédent, utiliser la combinaison "MAJUSCULE + TAB"
+Pour cocher une case ; touche ESPACE
+
+
+
+
+
+
+Chèque-Emploi :
+Cette partie de la documentation MS000 s'adresse uniquement aux utilisateurs de 
+type "Chèque-emploi", qui utilisent MS2000 d'une manière spécifique.
+
+Organisation des données par sociétés : 
+
+Configuration "Standard" de MS 2000 :
+
+En utilisation standard, MS2000 gère les sociétés selon le schéma ci-dessous :
+
+
+
+
+
+Chaque société va gérer ses employés selon qu'ils sont engagés par AA Constructi
+on SA, ou AA Rénovation SA. Chaque mois, les salaires vont être générés et payés
+ dans chaque société.
+
+
+Configuration spécifique à Chèque Emploi :
+
+Dans le cas de Chèque-Emploi, qui est un intermédiaire entre l'employé et l'empl
+oyeur, la configuration est différente :
+
+
+
+
+
+Dans cette organisation des données, chaque société a une fonction particulière 
+:
+
+Société 1 : Il s'agit, dans notre exemple, de la société "Chèque-Emploi", dont l
+e rôle est d'être l'intermédiaire entre employeurs et employés
+
+Employeur 1 / 2 etc.. : Il s'agit des employeurs (personnes qui emploie du perso
+nnel de maison)
+
+
+Société 1  (Chèque-Emploi) :
+
+La société "Cheque Emploi", dans le contexte MS2000, correspond à l'entité jurid
+ique suisse "Chèque-Emploi" => Nous allons l'appeler "Société 1"
+
+Voici un aperçu des données qui sont gérées à ce niveau :
+
+1.1.2 Employés
+
+Tous les employés sont saisis dans la société 1(Chèque-Emploi) avant d'être copi
+és dans leurs employeurs respectifs (Employeur A, Employeur B).
+Au niveau de la société 1, les employés n'ont ni décompte, ni paramètres car il 
+s'agit uniquement d'un point d'entrée leur permettant d'avoir un numéro unique.
+
+1.1.3 Comptabilité générale
+
+Toutes les écritures comptables, pour tous les employeurs, sont comptabilisées d
+ans la Société 1 (Chèque-Emploi)
+
+1.1.4 Comptes Analytiques
+
+Pour chaque employeur est créé un compte analytique distinct. Dans ce compte ser
+ont comptabilisés, notamment :
+
+les salaires et charges sociales
+les frais d'inscription
+les demandes d'acomptes (et encaissements)
+les honoraires
+
+1.1.5 Programmes utilisés
+
+sd100 - création des employés
+sd545 - paiement des salaires
+sd160 - comptabilisation des salaires
+
+
+
+
+
+
+Sociétés "Employeur" :
+
+
+Pour chaque employeur disposant de personnel, une société est créée  (ex. Employ
+eur Jean Martin). Cette entité sera utilisée pour gérer l'ensemble des salaires 
+: saisir les heures, calculer les salaires, et établir les bulletins de salaires
+ des tous les employés travaillant pour Jean Martin.
+
+1.2.1 Comptabilité Générale et analytique
+
+Il n'y a pas de comptabilité générale/analytique au niveau des employeurs => tou
+te la comptabilité remonte au niveau de la société Chèque-Emploi.
+
+1.2.2 Programmes utilisés
+
+Calcul et édition des bulletins de salaire : sd150
+Annulation bulletins de salaire : sd152
+Extourne de bulletins de salaire : sd155
+Réédition de bulletins de salaire : sd157
+
+Spécificités de l'environnement "Chèque-Emploi" :
+
+Les entreprises du type "Chèque-emploi" sont des intermédiaires entre le personn
+el de maison et les employeurs, et s'occupent notamment du calcul et de la décla
+ration des charges sociales. Pour répondre à leurs besoins, un environnement MS2
+000 spécifique a été produit. Cette section en détaille les spécificités. Pour t
+ous les programmes qui ne sont pas listés ici, se référer à la table des matière
+s.
+
+Types de contrats (=types de décomptes) : 
+
+Il existe différents types de contrats pour les employés, selon les couvertures 
+auxquelles ils ont droit (caisses LAA, LPP etc..). Dans MS200, ces derniers sont
+ reflétés par les types de décomptes. Chaque employé est affecté à un type de dé
+compte, qui va déterminer  le calcul de son salaire. 
+
+Lors de la création de l'employé, il est nécessaire de choisir le type de contra
+t correct :
+
+
+
+
+
+
+
+
+
+Saisie d'un nouvel employeur xstes :
+
+Dans cette configuration de MS200, créer un nouvel employeur équivaut à créer un
+e nouvelle société. 
+
+Aperçu du programme "xstes" - Gestion des socétés :
+

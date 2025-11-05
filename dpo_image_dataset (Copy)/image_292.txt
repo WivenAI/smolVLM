@@ -1,0 +1,308 @@
+CONTEXT FOR: image_292.png
+============================================================
+
+--- BEFORE ---
+Calcul des Coûts Détaillés :
+À droite, plusieurs champs marqués "En CHF" permettent d'entrer ou de calculer l
+e coût pour chaque composant en francs suisses, offrant une vue détaillée des co
+ntributions individuelles au coût total de l'article.
+Coefficient : Un champ pour appliquer un facteur multiplicatif aux coûts calculé
+s, ajustant le prix final en fonction de critères spécifiques de l'entreprise ou
+ du marché.
+
+Cet onglet est crucial pour les gestionnaires de produits et les contrôleurs fin
+anciers, car il permet une analyse fine des coûts et aide à établir des stratégi
+es de prix efficaces basées sur des données détaillées et précises. Il joue un r
+ôle fondamental dans la gestion des marges et la rentabilité des produits.
+Onglet « Descriptif » : 
+
+Note explicative de l’onglet « Décompte prix » de la gestion des articles progra
+mme « ar100 » :
+
+L'onglet "Descriptif" du programme "ar100" est destiné à fournir et à gérer des 
+descriptions détaillées et des informations complémentaires pour chaque article 
+listé dans le système ERP. Cet onglet est crucial pour enregistrer et consulter 
+des informations spécifiques qui ne sont pas couvertes par les autres onglets st
+andards tels que les onglets "Ventes", "Achats", ou "Stock". Voici une explicati
+on des différents éléments de cet onglet :
+Champs de Saisie et d'Affichage:
+Label: Ce champ permet de saisir ou d'afficher l'étiquette ou le titre de l'info
+rmation spécifique à enregistrer pour l'article. Il sert de guide pour comprendr
+e quel type d'information est stocké dans la ligne correspondante.
+Information: Ici, l'utilisateur peut saisir ou consulter des données détaillées 
+liées à l'étiquette fournie à gauche. Cela peut inclure des spécifications techn
+iques, des notes sur l'utilisation ou l'application de l'article, des informatio
+ns de conformité, etc.
+Valeur Date: Ce champ est destiné à enregistrer une date associée à l'informatio
+n saisie, ce qui peut être utile pour des informations qui sont sensibles au tem
+ps, comme la date de dernière certification, la date de révision du descriptif, 
+etc.
+Fonctionnalités de Gestion:
+Copie descriptif: Ce bouton permet de copier des descriptifs d'un article à un a
+utre, facilitant la duplication d'informations similaires entre différents artic
+les sans nécessiter une saisie manuelle répétée.
+Effacement descriptif: Un bouton qui offre la possibilité d'effacer rapidement l
+e descriptif actuellement sélectionné si nécessaire.
+
+En résumé, l'onglet "Descriptif" joue un rôle vital dans la gestion complète des
+ données des articles, en fournissant un espace dédié pour des informations déta
+illées qui soutiennent une variété de processus internes et externes, de la conf
+ormité réglementaire à l'optimisation des utilisations des produits.
+
+
+Edition des paramétrable article ar101 :
+
+
+Note explicative de l’Edition des paramétrable d’article programme « ar101 » : 
+
+Le programme "ar101" est un outil conçu pour la gestion et la génération de rapp
+orts ou de documents basés sur des listes prédéfinies ou personnalisées d'articl
+es. Le processus commence par la sélection d'une liste, qui est ensuite utilisée
+ pour éditer ou afficher des informations spécifiques. Voici une explication éta
+pe par étape des fonctionnalités et de la composition de ce programme :
+Sélection d'une Liste
+La première étape dans l'utilisation du programme "ar101" consiste à sélectionne
+r une liste spécifique sur laquelle baser le rapport ou le document. Cette sélec
+tion peut être faite à partir de plusieurs options prédéfinies, comme illustré d
+ans les captures d’écran :
+Nouvelle Liste... : Permet de créer une liste personnalisée.
+Contrôles des Prix Centrales Externe : Utilisée pour des rapports concernant les
+ prix contrôlés par des centrales externes.
+Contrôles des Prix Centrales Interne : Pour des rapports internes sur les contrô
+les de prix.
+Liste articles : Affiche une liste simple des articles.
+Tarifs + paramètres articles Balance (D0) : Utilisée pour des rapports spécifiqu
+es sur les tarifs et paramètres des articles.
+Interface du Programme
+Une fois la liste choisie, l'utilisateur peut utiliser les fonctionnalités suiva
+ntes pour manipuler et générer des rapports :
+Barre de Fonctionnalités :
+Visualisation requête : Permet de prévisualiser les données filtrées selon les c
+ritères définis sans générer un rapport complet.
+Titre document : Champ pour définir ou modifier le titre du document qui sera gé
+néré.
+Options de Format : Choix entre "Format Ligne" ou "Format Page" pour la présenta
+tion des données, et options pour le portrait ou paysage pour l'orientation du d
+ocument.
+Rupture de premier champ imprimé : Pour ajouter des ruptures de page basées sur 
+les changements dans le premier champ de données, utile pour organiser des docum
+ents volumineux.
+Sélections et Édition : Onglets pour affiner la sélection des données et personn
+aliser l'édition du rapport.
+
+
+Onglet « Edition » :
+
+
+Note explicative de l’onglet « Edition » des Edition paramétrable des articles p
+rogramme « ar101 » :
+L'onglet "Édition" du programme "ar101" est utilisé pour configurer et gérer la 
+manière dont les données sélectionnées à partir de listes spécifiques sont affic
+hées et imprimées dans les rapports ou documents. Voici une description détaillé
+e des options et fonctionnalités disponibles dans cet onglet pour faciliter la p
+ersonnalisation des sorties de données.
+Fonctionnalités de l'Onglet "Édition" :
+Options de Mise en Page et de Format :
+Format Ligne / Format Page : Ces options déterminent si le rapport doit être imp
+rimé en continu sur une seule ligne par page ou si chaque page doit afficher des
+ données sous forme de page complète. Le choix entre ces options affecte la dens
+ité et la lisibilité des informations imprimées.
+Portrait / Paysage : Permet de choisir l'orientation de la page. Le mode portrai
+t est plus adapté pour des rapports avec moins de colonnes, tandis que le paysag
+e permet d'inclure plus de détails horizontalement.
+Avec une rupture sur le premier champ imprimé : Cette fonction est utile pour le
+s rapports qui nécessitent une séparation claire entre les sections, par exemple
+, lorsqu'un nouveau groupe d'articles commence.
+Détails de la Configuration du Rapport :
+Ligne / Du fichier : Ces champs permettent de spécifier si toutes les données do
+ivent être incluses ou si une sélection spécifique doit être utilisée pour le ra
+pport. Le choix de ces options peut dépendre de l'objectif du rapport ou de la n
+écessité de filtrer certaines informations.
+Trié par : Permet de définir le critère de tri des données dans le rapport. Cela
+ peut être important pour organiser les informations de manière logique, par exe
+mple, par code d'article, nom, ou tout autre attribut pertinent.
+Gestion des Critères :
+Liste des critères : Affiche les critères actuels utilisés pour filtrer les donn
+ées. Dans l'exemple donné, le critère "Dont Inactif Égal 'Faux'" est utilisé pou
+r exclure les articles inactifs des rapports.
+Ajouter / Modifier / Supprimer : Ces boutons permettent de gérer les critères de
+ sélection. Ils sont essentiels pour ajuster les filtres et affiner les données 
+qui seront incluses dans le rapport final.
+Visualisation et Vérification :
+Vérifier condition : Un outil pour s'assurer que les critères définis sont logiq
+ues et fonctionnels avant de lancer la génération du rapport. Cela évite les err
+eurs de données et garantit que le rapport généré répond aux attentes.
+
+
+Mise à jour des prix d’articles ar104 : 
+
+
+Note explicative de la mise à jour des prix d’articles programme « ar104 : 
+Le programme "ar104" est conçu pour la gestion et la mise à jour des prix des ar
+ticles dans un système ERP. Cette interface permet aux utilisateurs de gérer eff
+icacement les tarifs en fonction de divers critères et conditions spécifiques. V
+oici une explication détaillée des différentes composantes de ce programme :
+Sélection et Affichage des Articles
+Tous les articles / Sélection par désignation / Sélection par code: Ces options 
+permettent aux utilisateurs de filtrer et de sélectionner les articles pour lesq
+uels ils souhaitent voir ou modifier les prix. Le choix dépend de si l'utilisate
+ur préfère parcourir la liste complète ou rechercher un article spécifique par s
+on nom ou son code.
+Liste d'Articles: Affiche les articles selon le filtre appliqué. Chaque article 
+est listé avec sa désignation et son code correspondant, permettant une identifi
+cation rapide.
+Gestion du Groupe Catalogue
+
+[IMAGE HERE: image_292.png]
+
+--- AFTER ---
+Groupe catalogue: Un menu déroulant qui permet de filtrer les articles affichés 
+selon le groupe de catalogue spécifié, facilitant ainsi la gestion des tarifs pa
+r catégorie d'articles.
+Zone de Gestion des Tarifs
+Tarif: Cet espace inclut plusieurs options liées aux ajustements de prix que les
+ utilisateurs peuvent appliquer à des groupes sélectionnés d'articles ou à des a
+rticles individuels.
+Facture excel
+Gravière comptant
+Gravière entrepreneurs
+Gravière groupe
+Tarif spécifique
+Chaque option permet d'appliquer des ajustements basés sur des critères spécifiq
+ues, tels que le type de client ou le mode de paiement.
+Opérations de Tarification
+Opération (+ / x): Permet de définir si le prix doit être augmenté (addition) ou
+ multiplié (multiplication), offrant une flexibilité dans la manière de mettre à
+ jour les prix.
+Coefficient: Un champ pour saisir le coefficient à appliquer lors de l'ajustemen
+t du prix. Cette valeur est utilisée avec l'opération sélectionnée pour calculer
+ le nouveau prix.
+
+Reprise de stock ar150 : 
+
+Note explicative du retour de stock programme « ar150 : 
+Le programme "ar150" est conçu pour la gestion et la mise à jour des stocks dans
+ un système ERP. Ce programme spécifique est utilisé pour effectuer des reprises
+ de stock, permettant aux utilisateurs de mettre à jour les quantités d'articles
+ en stock à partir d'une interface organisée et structurée. Voici une descriptio
+n détaillée des différents composants de cette interface et de leur fonctionneme
+nt.
+Fonctionnalités Clés de l'Interface "ar150"
+Champs de Saisie Principaux :
+No de pièce : Permet à l'utilisateur d'entrer ou de référencer un numéro de pièc
+e spécifique pour les transactions de stock.
+Libellé : Champ pour saisir une description ou un titre pour l'opération de stoc
+k, souvent utilisé pour des références internes ou des clarifications.
+Date de pièce et Date de mouvement : Ces champs permettent de définir les dates 
+respectives pour la documentation officielle et pour le mouvement physique ou co
+mptable des articles dans le stock.
+Options de Sélection et de Filtrage :
+Sur le Dépôt : Sélection d'un entrepôt spécifique où les articles sont stockés, 
+ce qui permet de segmenter les données par lieu.
+Catalogue(s) et Groupe remise : Offrent des options pour filtrer les articles se
+lon des catalogues ou des groupes de tarification spécifiques, facilitant la ges
+tion des articles par catégories ou promotions.
+Tableau de Gestion des Articles :
+Code article et Désignation : Colonnes où les articles sont listés avec leurs co
+des et descriptions pour faciliter l'identification.
+Qté totale actuelle, Qté à rentrer et PMA (Prix Moyen d'Achat) : Ces colonnes pe
+rmettent de visualiser la quantité en stock, de saisir les quantités à mettre à 
+jour, et de voir le prix moyen d'achat pour calculer la valeur de stock.
+Fonctionnalités d'Affichage et de Gestion :
+Afficher la sélection : Un bouton qui filtre et affiche les articles selon les c
+ritères définis dans les champs de sélection.
+Annuler la sélection : Permet de réinitialiser les filtres appliqués pour reveni
+r à une vue complète des articles disponibles.
+Bouton d'Action :
+LANCER la mise à jour du stock : Ce bouton crucial permet de valider et d'exécut
+er la mise à jour des quantités de stock pour les articles sélectionnés, intégra
+nt les modifications dans le système ERP.
+
+Entrée de Stock Directe ar151 : 
+
+Note explicative de l’entrée en stock Directe programme « ar151 » : 
+Le programme "ar151" est conçu pour faciliter l'entrée directe des stocks dans u
+n système ERP. Il permet aux utilisateurs de mettre à jour rapidement et efficac
+ement les informations de stock pour des articles spécifiques. Voici une descrip
+tion détaillée des différentes fonctionnalités de ce programme :
+Fonctionnalités Clés de "ar151"
+Informations de Base :
+Dépôt : Sélectionnez le dépôt où les articles sont stockés, ce qui permet une ge
+stion précise des inventaires par emplacement.
+Fournisseur : Champ pour saisir le nom du fournisseur d'où proviennent les artic
+les, ce qui aide à tracer l'origine des stocks et gérer les relations fournisseu
+rs.
+Détails du Mouvement de Stock :
+No de pièce : Un identifiant unique pour l'enregistrement spécifique, utile pour
+ suivre des transactions individuelles.
+Libellé : Description ou autre information relative à la transaction de stock.
+Date de pièce / Date de mouvement : Ces dates permettent de documenter quand les
+ articles ont été physiquement déplacés ainsi que la date officielle de la trans
+action dans les registres comptables.
+Entrée des Articles :
+Code article : Le code unique identifiant l'article, nécessaire pour une saisie 
+précise dans le système.
+Désignation : Description de l'article pour clarifier ce qui est entré ou mis à 
+jour.
+Quantité : Nombre d'unités de l'article à entrer en stock.
+Unité : L'unité de mesure pour la quantité entrée (pièces, kilogrammes, etc.).
+P.A. (Prix d'Achat) : Le coût d'achat de l'article, utilisé pour évaluer le stoc
+k.
+Total : Calcul automatique du total basé sur la quantité et le prix d'achat.
+Gestion et Validation des Entrées :
+Ajouter / Copier / Effacer : Ces boutons permettent de manipuler les entrées de 
+l'article. "Ajouter" pour créer une nouvelle ligne, "Copier" pour dupliquer une 
+ligne existante, et "Effacer" pour supprimer une ligne.
+Mise à jour du Stock : Un bouton important qui, une fois cliqué, valide toutes l
+es modifications apportées et met à jour les quantités de stock dans la base de 
+données du système ERP.
+
+Entrée de Stock Sans Achat ar152 : 
+
+Note explicative de l’entrée de stock sans achat programme « 152 » : 
+Le programme "ar152" est conçu pour gérer l'entrée de stock suite à des achats, 
+sans passer par un processus de réception traditionnel. Cela est particulièremen
+t utile pour enregistrer rapidement des stocks dans des situations où les articl
+es sont directement intégrés dans l'inventaire sans documentation complète. Stru
+cture et Fonctionnalités de "ar152"
+Informations de Base :
+Dépôt : Ce champ permet de sélectionner le dépôt où les articles seront stockés,
+ assurant que les stocks sont correctement alloués dans le système ERP.
+Fournisseur : L'identification du fournisseur permet de relier les entrées de st
+ock aux commandes d'achat appropriées et aux partenaires commerciaux.
+Détails de Transaction :
+No de pièce : Permet de saisir un numéro de référence pour l'opération de stock,
+ facilitant le suivi et la référence future.
+Libellé : Un descriptif de l'opération, comme "Entrée BL fournisseur", qui aide 
+à identifier rapidement la nature de la transaction dans les rapports et les aud
+its.
+Date de mouvement et Date de pièce : Ces dates documentent quand les articles on
+t été physiquement ajoutés au stock et la date de la documentation ou de la tran
+saction correspondante.
+Entrée d'Article :
+Code article et Désignation : Pour chaque article entrant dans le stock, le code
+ et la désignation doivent être précisés pour assurer l'exactitude des données d
+'inventaire.
+Quantité : Nombre d'unités de l'article reçu.
+Unité : L'unité de mesure pour la quantité entrée (ex. pièces, kilogrammes).
+Fournisseur / Fournisseur : Ce champ peut être utilisé pour spécifier des détail
+s additionnels sur le fournisseur ou pour différencier les articles venant de di
+fférents fournisseurs dans une même transaction.
+Gestion des Entrées :
+Ajouter / Copier / Effacer : Ces commandes permettent de gérer les lignes d'arti
+cles dans l'interface. "Ajouter" pour introduire un nouvel article, "Copier" pou
+r dupliquer une entrée existante, facilitant les entrées multiples similaires, e
+t "Effacer" pour supprimer une entrée non désirée.
+Mise à jour du Stock : Ce bouton crucial permet d'exécuter la mise à jour du sto
+ck dans le système, confirmant toutes les entrées et modifications réalisées.
+Facturation sans Achat ar153 : 
+
+
+Note explicative de la facturation sans achat programme « ar153 » : 
+Le programme "ar153" est conçu pour la gestion des facturations sans achat préal
+able dans un système ERP. Ce module est typiquement utilisé pour enregistrer les
+ factures des fournisseurs lorsque les marchandises ont été reçues sans un bon d
+e commande correspondant ou pour les transactions où la facturation précède la r
+éception des articles. Voici une explication des différentes sections et fonctio
+nnalités de ce programme :
+Caractéristiques Principales de "ar153"

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_643.png
+============================================================
+
+--- BEFORE ---
+
+
+Note explicative du lettrage des écritures de C.G programme « cg410 » : 
+
+Le programme "cg410" est destiné au lettrage des écritures de Comptabilité Génér
+ale (C.G.). Il permet de regrouper et d'associer des écritures comptables pour f
+aciliter la réconciliation et la vérification des comptes. Voici une explication
+ détaillée de la composition et des fonctionnalités de ce programme.
+
+Sélection du Compte
+
+Tableau des Comptes : La partie supérieure de la fenêtre affiche une liste de co
+mptes disponibles avec les colonnes suivantes :
+Numéro : Numéro unique attribué à chaque compte.
+Intitulé court : Nom abrégé du compte.
+Monnaie : Devise utilisée pour les transactions de ce compte.
+Type : Type de compte (Actif, Passif, etc.).
+Intitulé : Nom complet du compte.
+Intitulé (suite) : Informations supplémentaires sur le compte.
+Compte C.A. : Référence au compte de Centre d'Analyse (C.A.) si applicable.
+Genre de frais : Type de dépenses associées au compte, le cas échéant.
+Filtrage par Type de Compte : Menu déroulant permettant de filtrer les comptes a
+ffichés selon leur type (Tous, Actif, Passif, etc.).
+
+Affichage des Écritures à Lettrer
+
+Tableau des Écritures : La partie inférieure de la fenêtre affiche les écritures
+ à lettrer pour le compte sélectionné, avec les colonnes suivantes :
+N° Écriture : Numéro unique attribué à chaque écriture comptable.
+N° Suite : Indique le numéro de suite si l'écriture fait partie d'une série de t
+ransactions.
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date de la valeur comptable de l'écriture.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Solde : Solde du compte après enregistrement de l'écriture.
+
+Soldes des Écritures Lettrées
+
+Balance : Champ affichant le solde des écritures lettrées pour le compte sélecti
+onné. Ce solde est mis à jour en temps réel en fonction des écritures sélectionn
+ées pour lettrage.
+
+
+
+
+Tables simples cg900 :
+
+
+
+Choix du groupe à modifier
+
+
+
+Contenu du groupe
+Possibilité d'utiliser le panel des fonctions (Modifier/Ajouter/Copier/Effacer) 
+pour paramétrer les éléments dur groupe choisi (dans l'exemple, groupe "cad" – C
+hiffre d’affaire débiteurs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative des tables simples pour la comptabilité générale programme « cg
+900 » : 
+
+Le programme "cg900" est conçu pour gérer les tables simples dans le système ERP
+. Il permet aux utilisateurs de créer, modifier et gérer divers groupes de donné
+es nécessaires pour les opérations comptables et financières. Voici une explicat
+ion détaillée de la composition et des fonctionnalités de ce programme.
+1. Choix du Groupe à Modifier
+Tableau des Types de Groupes : La partie gauche de la fenêtre affiche une liste 
+des types de groupes disponibles avec les colonnes suivantes :
+Type : Code unique attribué à chaque type de groupe.
+Désignation : Description du type de groupe (par exemple, Groupes chiffres d'aff
+aires débit, Groupes chiffres d'affaires fournisseur, Groupes de consolidation).
+2. Contenu du Groupe
+Tableau des Éléments du Groupe : La partie droite de la fenêtre affiche le conte
+nu du groupe sélectionné, avec les colonnes suivantes :
+No : Numéro de l'élément dans le groupe.
+Code : Code unique attribué à chaque élément.
+Désignation : Description ou libellé de l'élément.
+Désignation 2 : Informations supplémentaires sur l'élément, si applicable.
+Détails de l'Élément Sélectionné
+Langue : Menu déroulant pour sélectionner la langue de l'élément.
+Numéro : Numéro unique attribué à l'élément.
+Code : Code de l'élément, souvent un identifiant alphanumérique.
+Désignation (1) : Description principale de l'élément.
+Désignation (2) : Description secondaire ou informations complémentaires.
+Divers : Champ pour toute information additionnelle pertinente.
+Texte Swissdec : Champ spécifique pour les informations requises par Swissdec, s
+i applicable.
+
+Tables de correspondance plan comptable cg 910 :
+
+
+Note explicative des tables simples pour la comptabilité générale programme « cg
+900 » : 
+
+Le programme "cg910" est conçu pour gérer les tables de correspondance des plans
+ comptables. Il permet de mapper les anciens comptes à de nouveaux comptes lors 
+des changements d'exercice ou de structure comptable. Voici une explication déta
+illée de la composition et des fonctionnalités de ce programme.
+Tableau de Correspondance
+Ancien Plan Comptable
+Ancienne Société : Code de l'ancienne société.
+Ancien Exercice : Année de l'ancien exercice comptable.
+Ancien N° C.G. : Numéro de compte général de l'ancien plan comptable.
+Désignation : Description de l'ancien compte.
+Nouveau Plan Comptable
+Nouvelle Société : Code de la nouvelle société.
+Nouvel Exercice : Année du nouvel exercice comptable.
+Nouveau N° C.G. : Numéro de compte général du nouveau plan comptable.
+Désignation : Description du nouveau compte.
+Détails de Correspondance des Comptes
+Ancienne Société : Champ indiquant le code de l'ancienne société.
+Ancien Exercice : Champ indiquant l'année de l'ancien exercice comptable.
+Compte C.G. : Champ affichant le numéro de compte général de l'ancien plan.
+Intitulé Court : Nom abrégé du compte ancien.
+Intitulé : Nom complet du compte ancien.
+Intitulé (suite) : Informations supplémentaires sur l'ancien compte.
+Genre de Frais : Type de frais associé à l'ancien compte.
+Désignation : Description du compte ancien.
+Nouvelle Société : Champ indiquant le code de la nouvelle société.
+Nouvel Exercice : Champ indiquant l'année du nouvel exercice comptable.
+Compte C.G. : Champ affichant le numéro de compte général du nouveau plan.
+Intitulé Court : Nom abrégé du compte nouveau.
+Intitulé : Nom complet du compte nouveau.
+Intitulé (suite) : Informations supplémentaires sur le nouveau compte.
+Genre de Frais : Type de frais associé au nouveau compte.
+Désignation : Description du compte nouveau.
+
+En résumé, le programme "cg910" offre une interface complète pour gérer les corr
+espondances entre anciens et nouveaux plans comptables. Il permet une transition
+
+[IMAGE HERE: image_643.png]
+
+--- AFTER ---
+ fluide et précise des comptes lors des changements d'exercice ou de structure c
+omptable, garantissant ainsi une continuité et une cohérence comptable dans l'or
+ganisation.
+
+
+
+
+
+
+
+
+
+
+
+
+Comptabilisations :
+Ecritures de comptabilité générale et analytique co100 : 
+
+
+Entrée des données de base
+
+
+§ N° de Pièce – Le numéro de pièce peut être : soit le numéro de facture ou note
+ de crédit, ou un numéro de pièce interne (par exemple, numéro séquentiel attrib
+ué par un composteur).
+
+ Ce bouton permet d’aller rechercher le dernier numéro de pièce du lot sélection
+né.
+Il est souhaitable que ce numéro soit unique. Ce champ est obligatoire.
+§ Date de pièce – MS 2000 propose par défaut la date du jour, mais elle peut êtr
+e modifiée. (En cas d’erreur de saisie sur un champ date, suivre les information
+s décrites dans la documentation « Généralités ».
+Ce champ est obligatoire, car la date d’échéance sera calculée à partir de cette
+ date.
+§ Date de valeur – MS 2000 propose par défaut la date de pièce, mais elle peut ê
+tre modifiée.
+Ce champ est obligatoire, voir ci-dessous les explications importantes de cette 
+donnée.
+
+La date de valeur comptable détermine le classement de l’écriture : son apparten
+ance à un certain mois   (mouvements mensuels, chiffres d’affaires, trimestre TV
+A) et à un critère de tri par rapport  aux autres écritures d’un même mois compt
+able. MS 2000 permet d’attribuer une écriture à tout mois comptable ouvert, c’es
+t-à-dire pas encore bloqué par le chef comptable de manière à ne pas revenir sur
+ une période pour laquelle les résultats ne doivent plus être modifiés. La date 
+de valeur comptable doit être comprise entre les dates de début et de fin de l’e
+xercice comptable.
+
+
+
+
+
+
+
+
+Options TVA et comptabilité Analytique
+
+
+§Sans TVA  – Cette option permet de comptabiliser des écritures (opérations dive
+rses) n’ayant aucune influence sur le décompte TVA.
+§TVA due – Cette option permet de comptabiliser des écritures ayant une influenc
+e sur la TVA à payer. (type d’écriture idem à une facture débiteur).
+§TVA à récupérer – Cette option permet de comptabiliser des écritures ayant une 
+influence sur la TVA à récupérer. (type d’écriture idem à une facture créancier)
+.
+§CA seulement – Cette option permet de comptabiliser des écritures n’ayant aucun
+e influence sur la comptabilité générale. Elle mouvemente uniquement des comptes
+ analytiques.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Partie lot
+
+§Lot  – Dans le système de gestion MS, un lot n’a pas de valeur comptable comme,
+ par exemple, un journal. Un lot n’a qu’une valeur pratique pour organiser le tr
+avail de saisie des écritures.
+C’est un groupe de pièces qu’un utilisateur va saisir : pièces de banque de la s
+emaine, factures de la semaine ou de la journée, pièces diverses pour une périod
+e quelconque, qui représentent un ensemble pratique dans la répartition des tâch
+es des différents collaborateurs.
+Un lot peut être utilisé par plusieurs utilisateurs. Chacun travaille dans ce lo
+t, mais on peut avoir plusieurs lots ouverts simultanément. Chacun contrôle la c
+omptabilisation effectuée en ayant la possibilité d’imprimer un "brouillard" de 
+saisie (journal des comptabilisations correspondant à un certain lot). Ce docume
+nt n’est pas le journal officiel de comptabilisation : il n’a pas d’autre foncti
+on que celle d’aider à la découverte d’éventuelles erreurs de saisie.
+Il est vivement conseillé d’ouvrir plutôt de nombreux lots ne comptant pas trop 
+de pièces comptables, que peu de lots très volumineux, car les brouillards de co
+ntrôle impriment toujours le détail des écritures d’un lot. Voir édition du lot,
+ programmes co150, co155.
+
+
+
+§ Afficher détail Lot  – En cliquant sur ce bouton la liste des écritures saisie
+s dans ce lot s’affiche, selon exemple ci-dessous. Pour masquer le détail des éc
+ritures du lot, cliquer sur le bouton « Masquer détail lot ».
+
+
+
+
+Fonctions offertes après clic-droit sur une écriture dans l’affichage du détail 
+du lot.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Partie journal
+
+Partie « Journal »
+
+
+
+
+
+
+Journal  – Dans le système de gestion MS, toute pièce comptable doit appartenir 
+à l’un des types de journaux comptables reconnus dans la société. La liste en es
+t dressée par le chef comptable, dans une table gérée par le programme "co900". 
+Cliquer sur le bouton OK pour choisir le type approprié dans une liste des types
+ de journaux comptables reconnus. Les pièces d’un même lot peuvent toutes appart
+enir à un même type de journaux, mais elles peuvent aussi appartenir à toutes so
+rtes de types de journaux différents. Ce sont les programmes qui éditent les jou
+rnaux provisoires "co610" et définitifs "co620" qui opèrent le regroupement des 
+écritures dans les différents journaux en fonction du type indiqué à ce niveau.

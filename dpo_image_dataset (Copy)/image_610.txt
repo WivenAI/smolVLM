@@ -1,0 +1,309 @@
+CONTEXT FOR: image_610.png
+============================================================
+
+--- BEFORE ---
+
+
+
+Onglet « engagement » 
+
+Note explicative de l’onglet « engagement » du plan comptable programme « cg100 
+» : 
+
+L'onglet "Engagement" du programme "cg100" permet la gestion des engagements fin
+anciers associés à un compte spécifique. Voici une explication détaillée des dif
+férentes sections et champs présents dans cet onglet :
+1. Banque
+Champ de saisie pour indiquer la banque associée à l'engagement.
+2. Compte Débit IBAN
+Champ de saisie pour entrer le numéro de compte IBAN utilisé pour les débits aut
+omatiques.
+3. Type d'Engagement
+Menu déroulant pour sélectionner le type d'engagement (par exemple, prêt, crédit
+, hypothèque).
+4. Début
+Champ de date pour indiquer le début de la période d'engagement.
+5. Fin
+Champ de date pour indiquer la fin de la période d'engagement.
+6. Taux en %
+Champ de saisie pour indiquer le taux d'intérêt applicable en pourcentage.
+7. Type de Taux
+Menu déroulant pour choisir le type de taux (fixe ou variable).
+8. Montant Amortissement
+Champ de saisie pour indiquer le montant qui sera amorti régulièrement.
+9. Type d'Amortissement
+Menu déroulant pour sélectionner le type d'amortissement (linéaire, dégressif).
+10. Échéance Débit
+Champ de date pour indiquer la date d'échéance des paiements de débit réguliers.
+11. Échéance Débit Amortissement
+Champ de date pour indiquer la date d'échéance des paiements d'amortissement.
+12. Échéance Débit Intérêt
+Champ de date pour indiquer la date d'échéance des paiements d'intérêt.
+13. Limite de l'Engagement
+Champ de saisie pour définir une limite maximale pour l'engagement.
+14. N° de Parcelle
+Champ de saisie pour spécifier un numéro de parcelle ou un identifiant lié à un 
+actif immobilier.
+15. Montant Cédulé
+Champ de saisie pour indiquer le montant cédulé.
+16. Type de Cédulé
+Menu déroulant pour spécifier le type de cédulé.
+17. Remarques
+Champ de texte pour saisir des remarques ou des notes supplémentaires concernant
+ l'engagement.
+Panel de Fonctions Standard
+Modifier : Permet de modifier les informations de l'engagement.
+Rétablir : Annule les modifications non sauvegardées.
+Ajouter : Crée un nouvel engagement.
+Copier : Duplique les informations d'un engagement existant.
+Effacer : Supprime l'engagement sélectionné.
+Annuler : Annule l'action en cours.
+Utilisation Pratique
+Saisie des Informations Bancaires et de l'Engagement :
+Indiquez la banque, le compte IBAN, et le type d'engagement.
+Définissez les dates de début et de fin de l'engagement ainsi que le taux d'inté
+rêt.
+Configuration des Amortissements et des Échéances :
+Entrez les détails concernant les montants et les types d'amortissements.
+Spécifiez les échéances pour les débits et les intérêts.
+Gestion des Limites et des Remarques :
+Fixez une limite d'engagement pour contrôler les dépenses.
+Ajoutez des remarques pour consigner des informations supplémentaires ou des exc
+eptions.
+
+
+Onglet « historique » : 
+
+
+Note explicative de l’onglet « historique » du plan comptable programme « cg100 
+» : 
+
+L'onglet "Historique" du programme "cg100" est utilisé pour consulter l'historiq
+ue détaillé des écritures comptables liées à un compte spécifique. Voici une exp
+lication détaillée de sa composition et de ses fonctionnalités :
+1. Tableau des Écritures Comptables
+L'élément principal de l'onglet "Historique" est un tableau qui affiche toutes l
+es écritures comptables associées au compte sélectionné. Chaque ligne du tableau
+ représente une écriture comptable distincte.
+Colonnes du Tableau
+N° Écriture : Numéro unique attribué à chaque écriture comptable pour identifica
+tion.
+Suite : Indique s'il s'agit d'une écriture liée à une autre (suite d'une écritur
+e principale).
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date de la valeur comptable de l'écriture.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture pour clarifier la na
+ture de la transaction.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Solde : Solde du compte après l'enregistrement de l'écriture.
+
+
+Onglet « Hist+lettrage » :
+
+Note explicative de l’onglet « Hist+lettrage » du plan comptable programme « cg1
+00 » : 
+L'onglet "Hist+Lettrage" du programme "cg100" permet de consulter l'historique d
+es écritures comptables ainsi que les lettrages effectués sur un compte spécifiq
+ue. Voici une explication détaillée de sa composition et de ses fonctionnalités 
+:
+1. Tableau des Écritures Comptables et Lettrages
+L'élément principal de l'onglet est un tableau affichant les écritures comptable
+s avec des informations spécifiques sur les lettrages. Chaque ligne représente u
+ne écriture comptable distincte, intégrant les détails de lettrage.
+Colonnes du Tableau
+N° Écriture : Numéro unique attribué à chaque écriture comptable pour identifica
+tion.
+Lettrage : Indicateur montrant si l'écriture a été lettrée.
+Suite Lettrage : Indique la séquence ou le lien avec d'autres écritures dans le 
+lettrage.
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date de la valeur comptable de l'écriture.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture pour clarifier la na
+ture de la transaction.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Solde : Solde du compte après l'enregistrement de l'écriture.
+
+
+
+
+Onglet « Ecr.effacées » :
+
+Note explicative de l’onglet « ecr.effacés » du plan comptable programme « cg100
+ » : 
+
+L'onglet "Écr. effacées" du programme "cg100" est conçu pour afficher et gérer l
+es écritures comptables qui ont été annulées ou supprimées. Cet onglet permet de
+ suivre et d'auditer les modifications apportées aux écritures comptables. Voici
+ une explication détaillée de sa composition et de ses fonctionnalités :
+Tableau des Écritures Effacées
+Le tableau principal présente une liste des écritures comptables qui ont été eff
+acées, fournissant des informations détaillées sur chaque écriture supprimée.
+Colonnes du Tableau
+N° Écriture : Numéro unique attribué à chaque écriture comptable pour identifica
+
+[IMAGE HERE: image_610.png]
+
+--- AFTER ---
+tion.
+Version : Indique la version de l'écriture si elle a été modifiée plusieurs fois
+.
+N° Suite : Indique le numéro de la suite, montrant s'il s'agit d'une écriture fa
+isant partie d'une série de transactions.
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date à laquelle la valeur de l'écriture est comptabilisée.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture, clarifiant la natur
+e de la transaction.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Eff. par : Nom de l'utilisateur qui a effacé l'écriture.
+Le : Date à laquelle l'écriture a été effacée.
+
+
+
+Edition du plan comptable cg100e : 
+
+Note explicative de l’Edition du plan comptable programme « cg101 » : 
+
+Le programme "cg100e" est conçu pour l'édition du plan comptable, permettant aux
+ utilisateurs d'imprimer ou de visualiser les comptes selon différents critères.
+ Voici une explication fonctionnelle détaillée de la composition et des fonction
+nalités du programme "cg100e".
+Sélection d'un Type d'Impression
+Types d'Impression Disponibles
+cg100e11 Par numéro (15") : Permet d'imprimer ou de visualiser les comptes triés
+ par numéro.
+cg100e12 Par intitulé (15") : Permet d'imprimer ou de visualiser les comptes tri
+és par intitulé.
+Interface Principale
+Critères de Tri et de Sélection
+Par numéro / Par intitulé : Choisissez le mode de tri des comptes, soit par numé
+ro, soit par intitulé, en fonction du type d'impression sélectionné précédemment
+.
+Imprimer vers fichier : Option pour envoyer la sortie directement vers un fichie
+r au lieu d'une impression physique.
+Visualiser : Option pour afficher la sortie à l'écran pour une revue avant impre
+ssion ou sauvegarde.
+Options de Sélection des Comptes
+Tous les comptes : Inclut tous les comptes dans l'édition.
+Sélection alphabétique : Permet de sélectionner les comptes par ordre alphabétiq
+ue des intitulés.
+Sélection numérique : Permet de sélectionner les comptes par ordre numérique des
+ numéros de comptes.
+Filtres et Types de Comptes
+Type de compte : Menu déroulant pour sélectionner le type de compte à inclure da
+ns l'édition (Actif, Passif, Produit, Charge, etc.).
+Monnaie : Menu déroulant pour choisir la devise des comptes à inclure dans l'édi
+tion.
+
+
+
+Edition paramétrable du plan comptable cg101 :
+
+Note : L'édition paramétrable est un programme standard dans l’erp, ci-dessous u
+n exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant au plan comptable :
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+Onglet "Sélections"
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+Gestion des budgets cg110 :
+
+
+Sélection du type de compte (Actif-Passif etc..)
+
+
+
+Sélection de l'exercice comptable
+
+
+
+Choix de montants fixes ou coefficients
+
+
+
+Saisie du total du budget annuel
+
+Suivant le choix effectué ci-dessus (note 3), l'utilisateur pourra saisir des mo
+ntants fixes pour chaque mois ou choisir
+de laisser le programme calculer les mensualités, en choisissant des coefficient
+s si nécessaire
+
+
+
+
+Note explicative de la gestion des budgets programme « cg110 » : 
+Le programme "cg110" est utilisé pour la gestion des budgets dans le système ERP
+. Il permet aux utilisateurs de définir et de gérer les budgets pour différents 
+comptes. Voici une explication détaillée de la composition et des fonctionnalité
+s de ce programme.
+
+1. Sélection du Type de Compte
+Menu déroulant permettant de sélectionner le type de compte (Actif, Passif, etc.
+). Cela filtre les comptes affichés dans la liste principale selon leur type.
+2. Sélection de l'Exercice Comptable
+Boutons radio pour sélectionner l'exercice comptable, par exemple, 2016 ou 2017.
+ Cela détermine l'année pour laquelle les budgets sont définis.
+3. Choix de Montants Fixes ou Coefficients
+Options de saisie permettant de choisir entre l'entrée de montants annuels fixes
+ et coefficients ou l'entrée de montants mensuels :
+Saisie montant annuel et coefficients : Permet de saisir un montant total annuel
+ et de répartir ce montant en utilisant des coefficients pour chaque mois.
+Saisie montants mensuels : Permet de saisir des montants spécifiques pour chaque
+ mois de l'année.

@@ -189,7 +189,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Test DPO tokenization and data processing")
-    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/dpo_dataset.json",
+    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/dpo_dataset_gemini.json",
                        help="Path to DPO dataset JSON file")
     parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
                        help="Directory containing images")

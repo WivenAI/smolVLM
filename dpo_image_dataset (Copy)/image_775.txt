@@ -1,0 +1,308 @@
+CONTEXT FOR: image_775.png
+============================================================
+
+--- BEFORE ---
+ns, la fonction "renumérotation des lignes" (voir point 5 dans l'image ci-dessou
+s) peut être lancée à chaque instant.
+
+
+
+
+Titre de la table pilote à paramétrer
+
+=> est défini  avec le programme tp100 gestion des tables pilotes
+
+
+Copie d'un bloc de lignes
+
+
+
+Suppression d’un bloc de lignes
+
+
+
+Copie de table pilote
+
+
+
+
+Renumérotation des lignes
+
+
+
+Champs :
+
+Table pilote :Une table est constituée de toutes les lignes à traiter pour un do
+maine et une table
+Numéro de ligne : Numéro séquentiel de 10 en 10. Il indique l'ordre chronologiqu
+e de traitement des lignes
+Les programmes d'édition ne font qu'exécuter ce qui leur est demandé, ligne aprè
+s ligne, par la table pilote qui a été choisie au lancement du programme
+Rappel. : Les lignes peuvent subir une re-numérotation selon l'indentation de vo
+tre choix à l'aide de la fonction prévue à cet effet dans la barre d’outils - ic
+ône  
+
+Types de ligne : 
+Ligne de type « Titre »: Utilisé principalement pour les titres et sous-titres.
+Edition du texte saisi dans la zone "Texte", avec les paramètres de traitement s
+électionnés. 
+
+
+Ligne de type « Compte C.G. »
+Traitement des comptes compris dans la tranche "comptes de / à ". Ils seront imp
+rimés dans la ou les colonne(s) indiquée(s) dans le programme tp501 selon la pré
+sentation souhaitée.
+Si le code "Edition" est décoché, la tranche de compte n'apparaîtra pas sur l'éd
+ition (lignes masquées) mais traité dans les totalisateurs de base(s) éventuels.
+ La zone « Base(s) permet de totaliser les valeurs pour le traitement des sous-t
+otaux et totaux. Selon l’exemple ci-dessous les valeurs des comptes traités sero
+nt totalisées dans le totalisateur « A » :
+
+
+Base %Saisir un numéro de base (1 à 9) pour la constitution d’une somme servant 
+à calculer le pourcentage proportionnel à appliquer aux lignes ou totaux désirés
+
+
+
+Ligne de type « Total »
+Edition du résultat d’un totalisateur :
+
+
+
+Traitement d’un totalisateur : Le résultat du totalisateur « A » sera imprimé et
+ remis à zéro. Le montant du totalisateur A sera totalisé dans le totalisateur B
+.
+
+
+
+Edition :Décocher si vous ne voulez pas que cette ligne soit éditée.
+Par exemple, vous pouvez  bloquer l'édition lorsque vous voulez additionner les 
+soldes d'une série de comptes dans un ou des totalisateurs sans imprimer le déta
+il, compte après compte, et n'éditer ensuite que le montant regroupé dans un cer
+tain totalisateur
+Edition si solde à zéroCocher si vous voulez que les soldes à zéro soient édités
+Attributs d’impressionCes codes permettent de donner jusqu'à trois ordres à l'im
+primante quant à la manière d'imprimer. Pour donner un code, il convient de coch
+er le(s) mode(s) souhaité(s)
+Saut avant/après édition  Permet d'insérer des lignes vides (interligne). Sélect
+ionner un chiffre de 0 à 9 qui correspond au nombre de lignes vides à insérer av
+ant le traitement de la ligne en cours. Sélectionner « P » pour faire un saut de
+ page à l’endroit désiré
+
+
+Base %Saisir un numéro de base (1 à 9) pour la constitution d’une somme servant 
+à calculer le pourcentage proportionnel à appliquer aux lignes ou totaux désirés
+.
+
+Exemple :
+Totalisateur 2 utilisé pour le traitement des charges
+
+
+
+
+
+L’impression du pourcentage sera pilotée par le programme tp501 (voir exemple ci
+-après)
+
+Traitement de la colonne 11 :
+
+Paramètres dans programme tp501
+
+
+
+Définir la colonne qui sera traitée dans la colonne 11(paramètre tp500)  – Exemp
+le la colonne 3 cochée « Masquée », servira à totaliser les écarts de chaque com
+pte traité (sans les imprimer) et de pouvoir obtenir le total dans une autre col
+onne (3) selon l'exemple de paramétrage ci-dessous
+
+Paramètres dans programme tp500
+
+Exemple de paramétrage et de traitement de la colonne 11 :
+
+
+
+
+
+
+Exemple du résultat des paramétrages ci-dessus dans le classeur Excel :
+
+
+Ligne de type « Résultat »: Utilisé pour calculer automatiquement le résultat (s
+omme de tous les comptes traités)
+Analyse du résultat et édition du texte saisi dans les zones "Résultat négatif",
+ « Résultat positif ».
+
+
+
+
+
+Bilan et compte d'exploitation tp510 :
+
+Bilan & PP selon type d’impression et table pilote (tp510) : 
+
+Fenêtre de sélections possibles :
+
+
+
+
+
+Option de traitement du classeur Excel
+
+
+
+Rapport détaillé ou récapitulé
+
+
+[IMAGE HERE: image_775.png]
+
+--- AFTER ---
+- Récapitulée : Masque le détail des lignes et affiche que les lignes de type « 
+somme ».
+- Détaillée : affiche toutes les lignes
+
+Validation des réponses, traitement et affichage dans Excel
+
+Tables pilotes C.G :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Consolidation :
+Groupe de consolidation cn901 : 
+
+
+Edition paramétrable groupes conso cn909 : 
+
+
+Ecritures de consolidation cs100 : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ms Comptabilité Analytique :
+
+Compte Analytique : 
+
+Gestion des comptes analytiques onglet « Compte » :
+
+Le but de ce programme, est de pouvoir créer les différents comptes analytiques 
+(centres de charges et de produits) qui seront gérer selon l’organisation de vot
+re comptabilité analytique. Différents genres de compte analytique peuvent être 
+définis.
+
+
+
+
+
+
+
+Gestion des comptes analytiques ca100 : 
+
+
+Le but de ce programme est de pouvoir créer les différents comptes analytiques (
+centres de charges et de produits) qui seront gérer selon l’organisation de votr
+e comptabilité analytique. Différents genres de compte analytique peuvent être d
+éfinis.
+
+Liens vers les différentes sections du programme ca100 :
+
+Onglet "Liste"
+Onglet "Compte"
+Onglet "Répartitions"
+Onglet "Historique"
+Onglet "Cumuls"  
+Onglet "Ecritures effacées"
+
+
+
+
+
+
+
+
+
+
+
+
+Onglet Liste :
+
+L'onglet "Liste" permet de visualiser l'ensemble des comptes analytiques :
+
+
+
+
+Cliquer sur la ligne pour sélectionner
+le compte à gérer
+
+
+
+Filtre des comptes
+Possibilité de filtrer les colonnes :
+Numéro, intitulé court, intitulé, intitulé (suite)
+
+
+Affichage du compte choisi
+
+
+Onglet Compte :
+Gestion des comptes analytiques onglet « Compte » :
+
+
+
+
+
+
+Champs :
+Numéro :La numérotation est de 10 chiffres au maximum cadrée à gauche. Une certa
+ine structure dans la numérotation doit être respectée, pour faciliter les reche
+rches.
+Ce numéro est unique, non modifiable, et peu être utilisé comme critère d’accès 
+et de sélection.
+Intitulé de recherche :Intitulé alpha-numérique de 15 caractères, utilisé comme 
+critère de recherche rapide d’un compte si l’on ne connaît pas le numéro. Il dev
+ra être composé de mots clés significatifs pour l’ensemble des utilisateurs.
+Cet intitulé doit être unique, il est modifiable, et peu être utilisé comme crit
+ère d’accès et de sélection.
+Intitulé, intitulé suite :Intitulé du compte qui sera édité sur tous les documen
+ts tel que : listes, balances, décomptes, historiques, etc.
+Type de compte :Différents types de compte sont possible, voir explications ci-d
+essous.
+·Compte de base : Compte analytique sur lequel les écritures seront comptabilisé
+es.
+·Récapitulations 1 à 6 :Comptes analytiques sur lequel seront récapitulés tous l
+es comptes de base en relation avec ces récapitulations. (pas de détail des écri
+tures pour ce type de compte, uniquement des soldes de genres de frais). Ils son
+t mis à jour automatiquement pour chaque écriture saisie ou générée, qui touche 
+le compte de base.
+·Récap. générales :Comptes analytiques sur lequel pourront être récapitulés au m
+oment de l’impression des décomptes, tous les comptes de base ayant le même genr
+e de compte analytique.
+
+Remarque : Tous les comptes de type récapitulation, doivent avoir le même genre 
+de compte analytique que les comptes de base sur lequel ils viendront se récapit
+uler.

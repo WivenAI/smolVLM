@@ -304,10 +304,11 @@ def main():
         max_samples=args.max_samples
     )
 
-    # Split into train/eval
+    # Split into train/eval or dont split to check that the training is working properly
     dataset_size = len(full_dataset)
-    train_size = int(0.9 * dataset_size)
-    eval_size = dataset_size - train_size
+    train_size =  int(0.9 * dataset_size)
+    eval_size =  dataset_size - train_size
+
 
     train_dataset, eval_dataset = torch.utils.data.random_split(
         full_dataset,
@@ -315,6 +316,8 @@ def main():
         generator=torch.Generator().manual_seed(42)
     )
 
+    # dont split to check that the training is working properly
+    train_dataset = full_dataset
     print(f"Train samples: {len(train_dataset)}")
     print(f"Eval samples: {len(eval_dataset)}")
 

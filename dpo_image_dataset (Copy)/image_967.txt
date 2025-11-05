@@ -1,0 +1,308 @@
+CONTEXT FOR: image_967.png
+============================================================
+
+--- BEFORE ---
+
+
+Contrôle du fichier des paiements cr535 :
+
+
+Ce programme est optionnel - si installé, il permet aux personnes responsables d
+e contrôler la facture qui sont sélectionnées dans une proposition de paiement :
+
+
+
+
+
+
+
+Cliquer pour sélectionner un ou plusieurs fournisseurs
+
+Clic droit sur la facture pour visualiser la facture en pdf :
+
+
+
+
+Edition des avis de paiement cr545 :
+
+Edition des avis de paiement :
+Lorsque cette fonction est activéeLe but de ce programme est d’imprimer l’ensemb
+le de toutes les lignes comptabilisées sur chaque compte fournisseur sur plusieu
+rs exercices comptables (selon bornes de dates sélectionnées).
+
+Pour activer cette fonction, il suffit d'aller dans le programme cr100
+et de choisir "Avis systématique" ou "Avis à 4 pièces" :
+
+
+Edition des avis de paiement :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard : 
+
+
+
+Fenêtre de sélections possible :
+
+
+
+
+Cocher si l’on désire éditer l’entête. (Utilisation de papier blanc)
+
+
+Cliquer pour imprimer / visualiser l'avis de paiement
+
+Note : pour paramétrer les avis de paiement, lancer le programme cr915 - Textes 
+avis de paiement
+
+
+Exe
+mple :
+
+Rolle, le 02/09/2016                    
+
+
+
+
+            AVIS DE PAIEMENT                   
+            ----------------                   
+
+
+        Messieurs,                                                  
+
+        Par la présente, nous vous informons d'un prochain règlement
+        portant sur les factures suivantes :                        
+
+
+          Date     No facture             Montant       Escompte        Montant 
+payé  
+          ----     ----------             -------       --------        --------
+----  
+
+        11/12/2015  02965                 278.70            0.00              27
+8.70
+        19/01/2016  03117                 278.70            0.00              27
+8.70
+        29/03/2016  05375                 741.90           41.90              70
+0.00
+        29/02/2016  05376                 278.70            0.00              27
+8.70
+        29/02/2016  05377                 129.10            0.00              12
+9.10
+        29/02/2016  05378                 860.80            0.00              86
+0.80
+        05/03/2016  05445                 741.90            0.00              74
+1.90
+        05/03/2016  05446                 278.70            0.00              27
+8.70
+        05/03/2016  05447                 129.10            0.00              12
+9.10
+        05/03/2016  05448                 860.80            0.00              86
+0.80
+
+                                                      ------------        ------
+------
+
+                      Total en     CHF                     41.90            4,53
+6.50
+
+
+        Veuillez agréer, Messieurs, nos meilleures salutations.     
+
+Gestion des textes des avis de paiement cr915 :
+
+Gestion des textes des avis de paiement :
+
+Ce programme permet de gérer les textes des avis de paiement automatiques dans d
+ifférentes langues. Trois niveaux de textes doivent être traités.
+·Niveau A : texte de titre
+·Niveau B : texte d’entête, qui sera imprimer avant les lignes concernant les P.
+O.
+·Niveau C : texte de salutations, qui sera imprimé après les lignes concernant l
+es P.O.
+
+Fenêtre de gestion des niveaux « B » texte d’entête :
+
+
+
+Interligne avant impression
+
+Cliquer pour saisir  le texte dans d’autres langues
+
+Texte qui sera imprimé sur l’avis de paiement
+
+Création + liste fichier DTA cr548 :
+
+
+Création & édition du fichier DTA :
+Ce programme à pour but de formater le fichier DTA qui sera transmis à la banque
+ pour effectuer automatiquement les paiements aux fournisseurs. Après génération
+ de ce fichier, le programme édite une liste de contrôle des données mémorisées 
+dans le fichier
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+
+
+Cliquer pour sélectionner le répertoire ou sera déposé le fichier de paiement
+
+Saisir les dates concernées
+
+
+
+[IMAGE HERE: image_967.png]
+
+--- AFTER ---
+Fenêtre de sélection et de création du fichier DTA à transmettre ensuite à la ba
+nque à l’aide du logiciel de E-Banking :
+
+
+
+
+Protocole du contenu du fichier :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Création des fichiers de paiement cr550 : 
+
+Modif. fichier des paiements cr598 :
+Modification des paiements automatiques en cours :
+
+Le but de ce programme est de pouvoir modifier la proposition en cours (programm
+e cr525) avant le transfert du fichier DTA-OPAE à la banque ou à la poste et ava
+nt la comptabiliation des paiements.
+
+
+
+
+Après avoir validé avec "OK", le message suivant apparaît :
+
+
+
+Note : Le programme ne confirme pas la fin du traitement. Ce dernier est terminé
+ lorsque cette fenêtre sera fermée. Il est alors possible de lancer 
+le programme cr525 pour apporter toutes modification à la proposition de paiemen
+ts.
+
+
+
+
+
+
+
+Annulation du traitement des paiements cr599 :
+
+
+Annulation complète de la procédure des paiements :
+
+Le but de ce programme, est de remettre à l’état initial toutes les opérations o
+pérées sur les P.O. fournisseurs. Toutes les opérations effectuées à l’aide du p
+rogramme d’intervention (cr525) seront perdues.
+
+Il permet de réinitialiser la procédure des Paiements automatiques.
+
+
+
+Le message suivant va apparaître :
+
+
+Comptabilisation des paiements cr600 :
+
+
+Comptabilisation des paiements fournisseurs :
+
+Ce programme à pour but de générer automatiquement toutes les écritures provenan
+t des paiements établis ci-dessus. 
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+Le message suivant apparaît dès que la mise à jour des comptes s’est déroulée co
+rrectement :
+
+
+
+
+
+Protocole de la comptabilisation des paiements fournisseurs :
+
+
+
+
+
+Note : La contrepartie des paiements ne se comptabilise pas directement par le c
+ompte de banque, mais par un compte de transfert ou se trouve le détail de toute
+s les factures payées.
+Ce procédé offre deux avantages : 
+En de cas rejet par la banque d’un paiement, il suffit de venir sur le compte de
+ transfert et d’effacer l’écriture, celle-ci est réintégrée et après correction 
+des coordonnées bancaires elle sera payée lors du prochain paiement.
+D’autre part il n’y aura qu’une seule écriture sur le compte bancaire, représent
+ant le montant de l’avis de débit de la banque.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pré-saisie des factures : 
+Listes des factures ff110 :
+
+
+Epuration des factures ff800 : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,248 @@
+CONTEXT FOR: image_006.png
+============================================================
+
+--- BEFORE ---
+SaiAide MS ERP
+
+
+
+
+
+
+
+Généralités
+
+
+Médiasoft part du principe que tout utilisateur connaît les fonctionnalités de b
+ase Windows, afin de comprendre et de pouvoir utiliser les programmes MS 2000.
+Les touches et les objets de base Windows sont utilisées dans MS 2000.
+
+Fenêtre de Login :
+
+
+
+
+Entrée dans l’application MS 2000 : Saisir un nom d’utilisateur ainsi que le mot
+ de passe.
+
+Le programme contrôle les droits d’accès, et en fonction du profil attribué, pré
+sentera le menu, ainsi que la société de base et l’exercice attribués par défaut
+.
+
+Messages possibles : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre de Sélection : 
+
+
+Cliquer sur l'icône pour faire apparaître le menu
+des programmes
+
+Sélection Société
+
+Sélection exercice Comptable
+
+Sélection exercice Salarial
+
+Quitter MS2000
+
+
+Changement d'utilisateur
+
+
+Saisie directe du raccourci du programme
+
+Afficher les derniers programmes utilisés
+
+
+Utilitaires
+
+
+Sélection d'un programme
+
+Sélection d’un programme :
+Plusieurs possibilités sont offertes, soit par sélection directe du code program
+me par exemple ad100 pour la gestion des adresses, soit en cliquant sur le dossi
+er « Adresses »
+et ensuite en cliquant sur l’icône « Gestion des adresses » :
+
+
+
+
+Saisie directe du raccourci programme
+
+Historique des programmes utilisés
+depuis la dernière connexion
+
+Menu et sous-menus d'application avec ses programmes
+Panel de fonctions standard (modifier, copier, effacer, etc..)
+
+Ce panel de fonctions de retrouve dans la plupart des fenêtre MS2000, et comport
+e les boutons suivants :
+
+
+
+[IMAGE HERE: image_006.png]
+
+--- AFTER ---
+
+
+
+Cliquer pour modifier 
+l'élément choisi
+
+Cliquer pour ajouter un nouvel enregistrement
+
+Cliquer pour copier l'enregistrement sélectionné
+
+Cliquer pour effacer un enregistrement
+
+Cliquer pour rétablir la situation d'origine
+Cette fonction permet d'annuler les changements effectués depuis le clic sur le 
+bouton Modifier ou Ajouter
+Gestionnaire d'impressions
+
+Gestionnaire d’impressions MS 2000
+
+Ce programme peut être appelé de deux manières :
+
+1.Soit par sélection directe (code programme : pm), 
+
+2.Soit en cliquant sur l’icône des utilitaires 
+
+
+
+Clic sur bouton droit pour
+supprimer la ligne sélectionnée
+
+Etat
+
+Cliquer pour afficher le message
+d'erreur éventuel
+
+Cliquer pour épurer toutes les tâches en erreur
+Activités ba999 :
+
+Activités dans MS 2000
+Ce programme peut être appelé de deux manières :
+
+1.Soit par sélection directe (code programme : ba999), 
+
+2.Soit en cliquant sur l’icône des utilitaires 
+
+
+Colonne "Utilisateur" : identité de l'utilisateur (ex. CR)
+Colonne "Nom" : nom de l'utilisateur
+Colonne "Programme" : nom du programme utilisé (ex. in500)
+
+
+Filtre de société : 
+
+Permet d'afficher les utilisateurs connectés dans une société spécifique :
+
+
+
+Pour sortir du programme, il suffit de cliquer sur le bouton  
+
+
+
+
+
+
+
+Sélection multi-critères sd103
+
+
+
+
+Cliquer pour sélectionner un décompte
+Seuls les salariés faisant partie du décompte 1. Exploitation horaire seront imp
+rimés
+
+Choisir une succursale
+
+Choix d'un département
+
+Bouton rapide - sélectionne/déselectionne tous les éléments
+Fenêtres d'interrogation et de  contrôle co 300 :
+
+
+
+Barres d'outils
+Faisant appel à d'autres fonctionnalités
+
+Boutons radios de sélection d’une fonction unique
+
+Filtre d'enregistrements
+Champ de saisie  d’une valeur de départ selon critère de sélection
+
+Case à cocher pour 
+option « Contient »
+
+Bouton de validation des saisies
+
+
+Liste de sélection multi-critères
+(couleur vert clair)
+
+Liste de valeurs (couleur bleu clair)
+Un clic droit de la souris permet de choisir d'autres fonctionnalités relatives 
+à la ligne :
+
+
+Bouton de validation des saisies
+
+Champ de saisie d'une valeur de départ
+Sélection d'un type d'impression db100 :
+
+
+Lorsque différents types d’impressions sont à disposition, la fenêtre ci-dessous
+ s’affiche afin de pouvoir sélectionner le type d’impression désiré.
+Pour sélectionner le type d’édition désiré, cliquer une première fois sur la lig
+ne désirée. Cette ligne apparaît avec un fond d’une autre couleur, ensuite doubl
+e-cliquer pour fermer la fenêtre de sélection et passer aux critères de traiteme
+nt d’édition.
+
+Attention ! La sélection par page, utilise une page pour chaque enregistrement t
+raité.
+
+
+
+
+
+
+Exemple de fenêtre des réponses de sélection possible :
+
+
+
+Cliquer pour enregistrer l’impression
+ dans un fichier
+
+Cliquer pour visualiser l’impression à l’écran
+
+
+Type d’édition désiré
+
+Cliquer pour sélectionner un autre type d’édition
+
+Critère de traitement
+Sélectionner le  critère de traitement des enregistrements souhaités  
+
+Saisir la date des comptes créés
+ ou  mutés depuis …
+Voir ci-dessous comment corriger une saisie de date
+
+Cliquer si l’on désire éditer seulement 
+les comptes de regroupement
+

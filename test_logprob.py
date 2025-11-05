@@ -58,7 +58,7 @@ def test_logprob():
 
     # Load dataset
     print("\n1. Loading dataset...")
-    with open('dpo_image_dataset/dpo_dataset.json', 'r') as f:
+    with open('dpo_image_dataset/dpo_dataset_gemini.json', 'r') as f:
         dataset = json.load(f)
     print(f"   Total examples: {len(dataset)}")
     print(f"   Testing on first 2 examples")

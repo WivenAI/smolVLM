@@ -468,7 +468,7 @@ class BenchmarkPipeline:
         dpo_model_path = self.train_model(
             train_script="finetune_smolvlm_lora.py",
             output_dir="./smolvlm-500m-dpo-finetuned",
-            dataset="dpo_image_dataset/dpo_dataset.json"
+            dataset="dpo_image_dataset/dpo_dataset_gemini.json"
         )
 
         if dpo_model_path is None:

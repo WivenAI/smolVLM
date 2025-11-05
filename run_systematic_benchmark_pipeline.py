@@ -110,8 +110,141 @@ class SystematicBenchmarkPipeline:
         print(f"✅ Completed: {description}")
         return True
 
+    def evaluate_erp_qcm(self, model_name: str, model_path: str):
+        """Evaluate model on ERP QCM dataset with comprehensive metrics"""
+        print("\n" + "🏢 "*20)
+        print(f"ERP QCM Evaluation: {model_name}")
+        print(f"Model path: {model_path}")
+        print("🏢 "*20)
+
+        output_file = self.results_dir / f"{model_name}_erp_qcm_{self.timestamp}.json"
+
+        # Build command for ERP QCM evaluation
+        cmd = [
+            "python3", "evaluate_erp_qcm.py",
+            "--model-path", model_path,
+            "--output-file", str(output_file)
+        ]
+
+        # Add dataset paths if specified
+        if hasattr(self.args, 'qcm_dataset') and self.args.qcm_dataset:
+            cmd.extend(["--dataset", self.args.qcm_dataset])
+
+        if hasattr(self.args, 'image_dir') and self.args.image_dir:
+            cmd.extend(["--image-dir", self.args.image_dir])
+
+        if self.args.num_samples:
+            cmd.extend(["--max-samples", str(self.args.num_samples)])
+
+        success = self.run_command(cmd, f"ERP QCM Evaluation {model_name}")
+
+        # Load results
+        if success and output_file.exists():
+            with open(output_file, 'r') as f:
+                erp_results = json.load(f)
+
+            # Extract metrics
+            erp_metrics = {
+                "accuracy": erp_results['metrics']['accuracy'],
+                "avg_log_prob": erp_results['metrics'].get('avg_log_prob', None),
+                "bertscore_f1": erp_results['metrics']['bertscore']['f1'] if erp_results['metrics'].get('bertscore') else None,
+                "bertscore_precision": erp_results['metrics']['bertscore']['precision'] if erp_results['metrics'].get('bertscore') else None,
+                "bertscore_recall": erp_results['metrics']['bertscore']['recall'] if erp_results['metrics'].get('bertscore') else None,
+                "num_samples": erp_results['num_samples']
+            }
+
+            # Add to results
+            if model_name in self.all_results:
+                self.all_results[model_name]['metrics']['erp_qcm'] = erp_metrics
+            else:
+                self.all_results[model_name] = {
+                    "metrics": {"erp_qcm": erp_metrics},
+                    "raw_results": {}
+                }
+
+            # Log to WandB
+            if not self.args.no_wandb:
+                wandb_metrics = {
+                    f"{model_name}/erp_qcm_accuracy": erp_metrics["accuracy"],
+                }
+                if erp_metrics["avg_log_prob"] is not None:
+                    wandb_metrics[f"{model_name}/erp_qcm_log_prob"] = erp_metrics["avg_log_prob"]
+                if erp_metrics["bertscore_f1"] is not None:
+                    wandb_metrics[f"{model_name}/erp_qcm_bertscore_f1"] = erp_metrics["bertscore_f1"]
+
+                wandb.log(wandb_metrics)
+
+        return success
+
+    def evaluate_erp_dpo(self, model_name: str, model_path: str):
+        """Evaluate model on ERP DPO dataset with BERTScore and log-probability"""
+        print("\n" + "🎯 "*20)
+        print(f"ERP DPO Evaluation: {model_name}")
+        print(f"Model path: {model_path}")
+        print("🎯 "*20)
+
+        output_file = self.results_dir / f"{model_name}_erp_dpo_{self.timestamp}.json"
+
+        # Build command for ERP DPO evaluation
+        cmd = [
+            "python3", "evaluate_erp_dpo.py",
+            "--model-path", model_path,
+            "--output-file", str(output_file)
+        ]
+
+        # Add dataset paths if specified
+        if hasattr(self.args, 'dpo_dataset') and self.args.dpo_dataset:
+            cmd.extend(["--dataset", self.args.dpo_dataset])
+
+        if hasattr(self.args, 'image_dir') and self.args.image_dir:
+            cmd.extend(["--image-dir", self.args.image_dir])
+
+        if self.args.num_samples:
+            cmd.extend(["--max-samples", str(self.args.num_samples)])
+
+        success = self.run_command(cmd, f"ERP DPO Evaluation {model_name}")
+
+        # Load results
+        if success and output_file.exists():
+            with open(output_file, 'r') as f:
+                dpo_results = json.load(f)
+
+            # Extract metrics
+            dpo_metrics = {
+                "preference_accuracy": dpo_results['metrics']['preference_accuracy'],
+                "avg_chosen_logprob": dpo_results['metrics']['avg_chosen_logprob'],
+                "avg_rejected_logprob": dpo_results['metrics']['avg_rejected_logprob'],
+                "avg_margin": dpo_results['metrics']['avg_margin'],
+                "bertscore_f1": dpo_results['metrics']['bertscore']['f1'] if dpo_results['metrics'].get('bertscore') else None,
+                "bertscore_precision": dpo_results['metrics']['bertscore']['precision'] if dpo_results['metrics'].get('bertscore') else None,
+                "bertscore_recall": dpo_results['metrics']['bertscore']['recall'] if dpo_results['metrics'].get('bertscore') else None,
+                "num_samples": dpo_results['num_samples']
+            }
+
+            # Add to results
+            if model_name in self.all_results:
+                self.all_results[model_name]['metrics']['erp_dpo'] = dpo_metrics
+            else:
+                self.all_results[model_name] = {
+                    "metrics": {"erp_dpo": dpo_metrics},
+                    "raw_results": {}
+                }
+
+            # Log to WandB
+            if not self.args.no_wandb:
+                wandb_metrics = {
+                    f"{model_name}/erp_dpo_preference_acc": dpo_metrics["preference_accuracy"],
+                    f"{model_name}/erp_dpo_margin": dpo_metrics["avg_margin"],
+                }
+                if dpo_metrics["bertscore_f1"] is not None:
+                    wandb_metrics[f"{model_name}/erp_dpo_bertscore_f1"] = dpo_metrics["bertscore_f1"]
+
+                wandb.log(wandb_metrics)
+
+        return success
+
     def benchmark_model(self, model_name: str, model_path: str, benchmarks: list = None):
-        """Benchmark a model on specified benchmarks"""
+        """Benchmark a model on specified benchmarks and ERP QCM"""
         if benchmarks is None:
             benchmarks = self.args.benchmarks if self.args.benchmarks else BENCHMARKS
 
@@ -163,6 +296,13 @@ class SystematicBenchmarkPipeline:
                 wandb_metrics = {f"{model_name}/{bench}": metrics[bench]["accuracy"]
                                for bench in metrics}
                 wandb.log(wandb_metrics)
+
+        # ALSO evaluate on ERP datasets
+        if not self.args.skip_erp_eval:
+            # Evaluate on QCM (accuracy)
+            self.evaluate_erp_qcm(model_name, model_path)
+            # Evaluate on DPO (BERTScore and log-probability)
+            self.evaluate_erp_dpo(model_name, model_path)
 
         return success
 
@@ -360,13 +500,30 @@ class SystematicBenchmarkPipeline:
             row = {"model": model_name}
 
             metrics = data.get("metrics", {})
-            for benchmark, benchmark_metrics in metrics.items():
-                row[f"{benchmark}_acc"] = benchmark_metrics["accuracy"]
-                row[f"{benchmark}_samples"] = benchmark_metrics["num_samples"]
 
-            # Calculate average
-            accuracies = [m["accuracy"] for m in metrics.values()]
-            row["average_accuracy"] = sum(accuracies) / len(accuracies) if accuracies else 0.0
+            # Handle standard benchmarks
+            benchmark_accuracies = []
+            for benchmark, benchmark_metrics in metrics.items():
+                if benchmark == "erp_qcm":
+                    # Handle ERP QCM separately
+                    row["erp_qcm_acc"] = benchmark_metrics["accuracy"]
+                    row["erp_qcm_log_prob"] = benchmark_metrics.get("avg_log_prob", None)
+                    row["erp_qcm_bertscore_f1"] = benchmark_metrics.get("bertscore_f1", None)
+                    row["erp_qcm_samples"] = benchmark_metrics["num_samples"]
+                elif benchmark == "erp_dpo":
+                    # Handle ERP DPO separately
+                    row["erp_dpo_pref_acc"] = benchmark_metrics["preference_accuracy"]
+                    row["erp_dpo_margin"] = benchmark_metrics.get("avg_margin", None)
+                    row["erp_dpo_bertscore_f1"] = benchmark_metrics.get("bertscore_f1", None)
+                    row["erp_dpo_samples"] = benchmark_metrics["num_samples"]
+                else:
+                    # Standard benchmark
+                    row[f"{benchmark}_acc"] = benchmark_metrics["accuracy"]
+                    row[f"{benchmark}_samples"] = benchmark_metrics["num_samples"]
+                    benchmark_accuracies.append(benchmark_metrics["accuracy"])
+
+            # Calculate average (standard benchmarks only, not including ERP QCM)
+            row["average_accuracy"] = sum(benchmark_accuracies) / len(benchmark_accuracies) if benchmark_accuracies else 0.0
 
             comparison_data.append(row)
 
@@ -382,6 +539,18 @@ class SystematicBenchmarkPipeline:
 
         # Print summary table
         summary_cols = ["model", "average_accuracy"] + [f"{b}_acc" for b in BENCHMARKS if f"{b}_acc" in df.columns]
+
+        # Add ERP QCM columns if present
+        if "erp_qcm_acc" in df.columns:
+            summary_cols.extend(["erp_qcm_acc", "erp_qcm_log_prob", "erp_qcm_bertscore_f1"])
+
+        # Add ERP DPO columns if present
+        if "erp_dpo_pref_acc" in df.columns:
+            summary_cols.extend(["erp_dpo_pref_acc", "erp_dpo_margin", "erp_dpo_bertscore_f1"])
+
+        # Only include columns that exist
+        summary_cols = [col for col in summary_cols if col in df.columns]
+
         print(df[summary_cols].to_string(index=False))
 
         # Save results
@@ -467,6 +636,86 @@ class SystematicBenchmarkPipeline:
 
                         print(f"   {status:15s} {bench:12s}: {base_acc:5.1f}% → {trained_acc:5.1f}% ({improvement:+.1f}%)")
 
+        # ERP QCM insights
+        if "erp_qcm_acc" in df.columns and "base_model" in df["model"].values:
+            print(f"\n🏢 ERP QCM Performance:")
+
+            base_row = df[df["model"] == "base_model"].iloc[0]
+            base_erp_acc = base_row.get("erp_qcm_acc", None)
+            base_erp_logprob = base_row.get("erp_qcm_log_prob", None)
+            base_erp_bert = base_row.get("erp_qcm_bertscore_f1", None)
+
+            if base_erp_acc is not None:
+                print(f"   Baseline:")
+                print(f"      Accuracy:       {base_erp_acc:.2f}%")
+                if base_erp_logprob is not None:
+                    print(f"      Avg Log Prob:   {base_erp_logprob:.4f}")
+                if base_erp_bert is not None:
+                    print(f"      BERTScore F1:   {base_erp_bert:.4f}")
+
+                # Compare trained models
+                print(f"\n   Trained Models:")
+                for _, row in df.iterrows():
+                    if row["model"] != "base_model" and "erp" in row["model"]:
+                        model_erp_acc = row.get("erp_qcm_acc", None)
+                        model_erp_logprob = row.get("erp_qcm_log_prob", None)
+                        model_erp_bert = row.get("erp_qcm_bertscore_f1", None)
+
+                        if model_erp_acc is not None:
+                            acc_improvement = model_erp_acc - base_erp_acc
+                            symbol = "📈" if acc_improvement > 0 else "📉" if acc_improvement < 0 else "➡️"
+
+                            print(f"\n   {symbol} {row['model']}:")
+                            print(f"      Accuracy:       {model_erp_acc:.2f}% ({acc_improvement:+.2f}%)")
+
+                            if model_erp_logprob is not None and base_erp_logprob is not None:
+                                logprob_improvement = model_erp_logprob - base_erp_logprob
+                                print(f"      Avg Log Prob:   {model_erp_logprob:.4f} ({logprob_improvement:+.4f})")
+
+                            if model_erp_bert is not None and base_erp_bert is not None:
+                                bert_improvement = model_erp_bert - base_erp_bert
+                                print(f"      BERTScore F1:   {model_erp_bert:.4f} ({bert_improvement:+.4f})")
+
+        # ERP DPO insights
+        if "erp_dpo_pref_acc" in df.columns and "base_model" in df["model"].values:
+            print(f"\n🎯 ERP DPO Performance:")
+
+            base_row = df[df["model"] == "base_model"].iloc[0]
+            base_dpo_pref = base_row.get("erp_dpo_pref_acc", None)
+            base_dpo_margin = base_row.get("erp_dpo_margin", None)
+            base_dpo_bert = base_row.get("erp_dpo_bertscore_f1", None)
+
+            if base_dpo_pref is not None:
+                print(f"   Baseline:")
+                print(f"      Preference Accuracy: {base_dpo_pref:.2f}%")
+                if base_dpo_margin is not None:
+                    print(f"      Margin:              {base_dpo_margin:.4f}")
+                if base_dpo_bert is not None:
+                    print(f"      BERTScore F1:        {base_dpo_bert:.4f}")
+
+                # Compare trained models
+                print(f"\n   Trained Models:")
+                for _, row in df.iterrows():
+                    if row["model"] != "base_model" and "erp" in row["model"]:
+                        model_dpo_pref = row.get("erp_dpo_pref_acc", None)
+                        model_dpo_margin = row.get("erp_dpo_margin", None)
+                        model_dpo_bert = row.get("erp_dpo_bertscore_f1", None)
+
+                        if model_dpo_pref is not None:
+                            pref_improvement = model_dpo_pref - base_dpo_pref
+                            symbol = "📈" if pref_improvement > 0 else "📉" if pref_improvement < 0 else "➡️"
+
+                            print(f"\n   {symbol} {row['model']}:")
+                            print(f"      Preference Accuracy: {model_dpo_pref:.2f}% ({pref_improvement:+.2f}%)")
+
+                            if model_dpo_margin is not None and base_dpo_margin is not None:
+                                margin_improvement = model_dpo_margin - base_dpo_margin
+                                print(f"      Margin:              {model_dpo_margin:.4f} ({margin_improvement:+.4f})")
+
+                            if model_dpo_bert is not None and base_dpo_bert is not None:
+                                bert_improvement = model_dpo_bert - base_dpo_bert
+                                print(f"      BERTScore F1:        {model_dpo_bert:.4f} ({bert_improvement:+.4f})")
+
         print("\n" + "="*80)
 
     def run_full_pipeline(self):
@@ -532,6 +781,8 @@ def main():
                        help="Train on ERP data, then test on all benchmarks")
     parser.add_argument("--skip-erp-training", action="store_true",
                        help="Skip ERP training phase")
+    parser.add_argument("--skip-erp-eval", action="store_true",
+                       help="Skip ERP QCM evaluation for all models")
 
     # Training options
     parser.add_argument("--epochs", type=int, default=3,
@@ -548,7 +799,7 @@ def main():
                        default="balanced_qcm_all_end.json",
                        help="QCM dataset path")
     parser.add_argument("--dpo-dataset", type=str,
-                       default="dpo_image_dataset/dpo_dataset.json",
+                       default="dpo_image_dataset/dpo_dataset_gemini.json",
                        help="DPO dataset path")
     parser.add_argument("--image-dir", type=str,
                        default="dpo_image_dataset",

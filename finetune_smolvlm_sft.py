@@ -124,7 +124,7 @@ def main():
     wandb.init(project="SmallVLM", name="smolvlm-sft-finetuning")
 
     # Paths
-    dataset_path = "dpo_image_dataset/dpo_dataset.json"
+    dataset_path = "dpo_image_dataset/dpo_dataset_gemini.json"
     image_dir = "dpo_image_dataset"
     output_dir = "./smolvlm-500m-sft-finetuned"
 

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_269.png
+============================================================
+
+--- BEFORE ---
+onds est activé pour la société.
+Gestion des Sociétés :
+Des boutons de commande pour modifier, ajouter, copier, effacer ou annuler les i
+nformations relatives aux sociétés.
+En résumé, l'onglet "Sociétés" du programme "sd982" permet aux utilisateurs de g
+érer de manière efficace et centralisée les informations relatives aux sociétés 
+pour les besoins de déclaration et de comptabilité. Il facilite la conformité av
+ec les processus Swissdec en automatisant et en structurant le traitement des do
+nnées pour chaque société enregistrée dans le système ERP.
+Haut du formulaire
+
+
+Gestion des formules de calcul sd998 : 
+
+Note explicative de la gestion des formules de calcul programme « sd998 » : 
+Le programme "sd998" est conçu pour la gestion des formules de calcul dans le sy
+stème ERP. Il permet de définir et d'organiser les différents éléments nécessair
+es au calcul des salaires et des retenues. Voici une explication détaillée de se
+s composants et de leur fonctionnement :
+Programme "sd998" - Gestion des formules de calcul :
+Liste des Formules de Calcul :
+Chaque entrée dans la liste représente une formule spécifique utilisée pour le c
+alcul des éléments de la paie.
+Par exemple, "IS2021" pourrait être une formule pour la retenue d'impôt à la sou
+rce pour l'année 2021.
+Détails des Formules :
+Numéro : Identifiant unique de la formule de calcul.
+Code : Abréviation ou code représentatif de la formule.
+Désignation : Description ou nom complet de la formule.
+Procédure et Arguments :
+Définit comment la formule doit être calculée (par exemple, une procédure de cal
+cul d'impôt).
+Les arguments peuvent inclure les variables ou paramètres nécessaires à la procé
+dure de calcul.
+Catégories de Formules :
+Les formules sont classées par catégorie, telles que les retenues, les droits à 
+congés, les provisions pour vacances, les majorations, etc.
+Ces catégories facilitent l'organisation et l'application des formules au bon él
+ément de la paie.
+Options de Configuration :
+Les options telles que la base annuelle de calcul, le nombre de jours d'activité
+, les ajustements annuels sur les retenues à la source, etc., sont configurables
+ ici.
+Il y a des options pour la validation du nombre d'heures et l'association des fo
+rmules aux différentes rubriques de paie.
+Utilisation du Programme : Le programme "sd998" est essentiel pour les professio
+nnels de la paie qui doivent configurer et maintenir les formules utilisées pour
+ le calcul précis des éléments de paie des employés. Sa structure permet une gra
+nde flexibilité et précision dans la gestion des calculs complexes requis par la
+ réglementation fiscale et sociale.
+
+Paramétrage des tables « Salaires » sd999 : 
+
+Note explicative des paramétrages des tables programme « sd999 » : 
+Le programme "sd999" est conçu pour le paramétrage des tables de "salaires" dans
+ le système ERP. Ce module centralise la gestion des informations qui structuren
+t les calculs de la paie et d'autres données relatives aux ressources humaines. 
+Voici un guide explicatif de ses composants principaux :
+Programme "sd999" - Paramétrage des tables "salaires" :
+Tables de Référence :
+Chaque ligne représente une table de données distincte utilisée pour diverses co
+nfigurations liées aux salaires et à l'administration des employés.
+Les tables contiennent des données structurées pour des éléments tels que les al
+locations familiales, les caisses d'assurance, les catégories professionnelles, 
+etc.
+Détails des Tables :
+Sté Table : Identifie la table et son code unique, permettant un accès rapide à 
+l'ensemble des données associées.
+Désignation : Fournit une description claire de l'objet de chaque table.
+Utilité des Tables :
+Les tables sont utilisées pour standardiser et automatiser le processus de paie 
+en définissant des variables telles que les types d'arrêt de travail, les états 
+civils, les catégories socio-professionnelles, etc.
+Elles servent également à définir les paramètres pour les calculs de contributio
+ns, d'impôts et de bénéfices sociaux.
+Interaction avec les Processus de Paie :
+Les données paramétrées dans ces tables interagissent avec d'autres modules du s
+ystème ERP pour effectuer des calculs précis.
+Par exemple, la table "100 civ" pour les états civils influencerait le calcul de
+s impôts, tandis que "100 caf" serait utilisée pour calculer les allocations fam
+iliales.
+Modification et Maintenance :
+Les utilisateurs peuvent ajouter, modifier ou supprimer des entrées dans ces tab
+les pour refléter les changements dans la législation, la politique de l'entrepr
+ise ou d'autres facteurs pertinents.
+La mise à jour de ces tables est cruciale pour garantir que le système de paie r
+este à jour et conforme aux réglementations en vigueur.
+Gestion des Codes :
+Chaque table a un code spécifique (par exemple, "100 fon" pour les fonctions) qu
+i est utilisé dans le système pour référencer rapidement les paramètres correspo
+ndants.
+Utilisation du Programme : Ce programme est un outil essentiel pour les administ
+rateurs de paie et les professionnels des RH, leur permettant de gérer de manièr
+e centralisée les données qui affectent le calcul de la paie et la gestion des e
+mployés. Il requiert une compréhension approfondie des composants de paie pour u
+ne configuration et une utilisation efficace.
+
+Utilitaires salaire : 
+Gestion des dates d’E/S programme « sdes » :
+
+Note explicative de la gestion des dates d’E/S programme « sdes » : 
+
+Le programme "sdes" est conçu pour gérer les informations relatives aux entrées 
+et sorties (E/S) des employés dans un système ERP. Voici un guide explicatif de 
+ses composants et de leur fonctionnalité :
+Programme "sdes" - Gestion des dates d'E/S :
+Sélection de l'Employé :
+Un champ de recherche permet de sélectionner un employé spécifique en saisissant
+ son nom ou son identifiant unique pour afficher ou modifier ses données d'E/S.
+Dates d'Entrée et de Sortie :
+Les champs pour les dates d'entrée et de sortie enregistrent respectivement le d
+ébut et la fin de l'emploi d'un individu au sein de l'organisation.
+Gestion des Périodes :
+Le tableau principal affiche les périodes correspondant à différentes dates impo
+rtantes pour l'employé, telles que les anniversaires de travail, les évaluations
+ annuelles, ou d'autres événements significatifs.
+Chaque ligne correspond à une période définie, qui peut être un mois, une année,
+ ou une autre durée spécifique liée à l'emploi.
+Fonctionnalité de Modification :
+Les boutons « Modifier », « Rétablir », « Ajouter », « Copier », « Effacer », et
+ « Annuler » permettent de gérer les enregistrements pour chaque période.
+L'utilisateur peut ajouter de nouvelles dates, ajuster les existantes, dupliquer
+ des informations pour de multiples périodes, ou annuler des modifications récen
+tes.
+Interface Utilisateur :
+L'interface est conçue pour une navigation facile et intuitive, permettant aux u
+tilisateurs de gérer les dates sans avoir besoin de naviguer dans des menus comp
+lexes ou des tableaux de données déroutants.
+Utilisation du Programme : Ce programme est utilisé par les services de RH pour 
+suivre les mouvements de personnel, enregistrer les anniversités de travail et d
+'autres événements clés qui ont une incidence sur la gestion des ressources huma
+ines et la paie. Une utilisation efficace de ce module aide à maintenir des doss
+iers précis et à jour, essentiels pour la planification des ressources, la confo
+rmité réglementaire, et le suivi des carrières au sein de l'entreprise.
+
+Importation des variables sd615 : 
+
+Note explicative des importations des variables « sd615 » : 
+Le programme "sd615" dans le système ERP est dédié à l'importation de variables 
+à partir de sources de données externes. Voici comment il fonctionne et comment 
+l'utiliser :
+Programme "sd615" - Importation des variables :
+Importation de Données Externes :
+Ce programme permet aux utilisateurs d'importer des données, souvent liées au te
+mps de travail ou aux présences, à partir de systèmes de pointage externes, comm
+e MOBATIME, dans le système ERP.
+Options d'Importation :
+Imprimer vers fichier : Si cette option est cochée, les données importées seront
+ également imprimées dans un fichier pour une documentation ou un examen ultérie
+ur.
+
+[IMAGE HERE: image_269.png]
+
+--- AFTER ---
+Visualiser : Permet aux utilisateurs de prévisualiser les données importées avan
+t de finaliser l'importation.
+Sélection du Fichier Source :
+Les utilisateurs doivent naviguer et sélectionner le fichier spécifique contenan
+t les données à importer, qui est généralement fourni par le système externe de 
+gestion du temps.
+Rubrique :
+Un champ est disponible pour entrer le code de la rubrique (ou catégorie) à laqu
+elle les données importées doivent être associées dans le système ERP.
+Génération des Variables :
+Cette option peut être cochée pour indiquer que les données importées doivent êt
+re transformées en variables utilisables par le système pour le calcul des heure
+s de travail, les absences, etc.
+Exercice des Fichiers à Traiter :
+L'utilisateur peut sélectionner l'exercice financier ou la période pour laquelle
+ les données doivent être importées, ce qui garantit que les données sont attrib
+uées à la bonne période comptable.
+Utilisation du Programme : Ce programme est essentiel pour s'assurer que les don
+nées de présence et de temps de travail capturées par des systèmes de pointage e
+xternes sont correctement intégrées dans le système ERP. Cela permet une gestion
+ précise du temps de travail, des absences, et peut-être même de la paie. Les do
+nnées importées peuvent également être utilisées pour des analyses de la main-d'
+œuvre, la planification des ressources, et pour soutenir d'autres processus de g
+estion des ressources humaines.
+
+Modification de la dernière période d’un employé : 
+
+Note explicative de la dernière période d’un employé programme « perio » : 
+Le programme "perio", tel que représenté dans l'interface utilisateur, est une a
+pplication de gestion des périodes salariales et comptables pour une entreprise.
+ Voici un guide explicatif de ses composants :
+Programme "perio" - Modification de la dernière période d'un salarié :
+Sélection des Employés :
+Le programme offre la possibilité de sélectionner des employés par diverses méth
+odes : vue de tous les salariés, sélection alphabétique, ou sélection numérique.
+ Cela permet une gestion flexible des données selon le besoin.
+Gestion des Décomptes :
+Les utilisateurs peuvent filtrer les données par type de décompte, permettant de
+ voir et modifier des périodes spécifiques pour différentes catégories telles qu
+e "4 VVS SH Expl", "5 VVS SM Expl", etc.
+Filtrage par Succursales et Départements :
+Il est possible de filtrer les périodes salariales et comptables en fonction de 
+la succursale et du département de l'entreprise, par exemple "Orllati (VD) SA" o
+u "170 Exploit. Grutiers 170.485".
+Type de Paiement :
+Les options disponibles pour le type de paiement incluent tous les types de paie
+ment, paiement automatique, ou manuel. Cela donne une flexibilité dans la façon 
+dont les paiements sont traités.
+Périodes Salariales et Comptables :
+Le programme permet la saisie ou la modification des périodes salariales et comp
+tables, facilitant ainsi la mise à jour des données financières des employés.
+Interface Utilisateur Intuitive :
+Avec des boutons clairs pour modifier, rétablir, ajouter, copier, effacer, et an
+nuler, ainsi que la possibilité de valider les entrées en appuyant sur OK, l'int
+erface est conçue pour une navigation et une utilisation aisée.
+Utilisation Pratique : Le programme "perio" est particulièrement utile pour les 
+départements des ressources humaines et de la comptabilité qui doivent gérer et 
+ajuster régulièrement les périodes salariales et comptables des employés. Il aid
+e à assurer que les informations financières sont à jour et reflètent précisémen
+t les heures travaillées, les congés, et d'autres variables salariales pertinent
+es. Cet outil est essentiel pour le calcul exact des salaires et pour maintenir 
+une comptabilité précise.
+
+Transmetteur SwissDEC 4.0 programme « sd4trans » : 
+
+
+
+
+
+Note explicative du transmetteur SwissDec 4.0 programme « sd4trans » : 
+Le programme "sd4trans" est un outil dédié à la transmission des données à Swiss
+DEC, un standard pour l'échange électronique de données dans le domaine de l'adm
+inistration salariale en Suisse. Voici une explication de ses composants clés et
+ de son fonctionnement, basée sur l'interface utilisateur présentée :
+Onglets Fonctionnels :
+Opérations : Permet aux utilisateurs de sélectionner différentes opérations liée
+s à la transmission de données, probablement avec un menu déroulant pour choisir
+ des actions spécifiques.
+Journal : Peut-être utilisé pour afficher un historique des transmissions ou des
+ actions réalisées dans le programme.
+Résultats : Montre les résultats ou les retours de l'exécution des opérations, p
+ermettant aux utilisateurs de vérifier la réussite ou l'erreur des transmissions
+.
+Exécution des Opérations :
+Un champ ou une liste déroulante pour sélectionner l'opération désirée est prése
+nte, avec un bouton pour exécuter l'opération sélectionnée. Ceci est crucial pou
+r initier le processus de transmission des données.
+Visibilité et Actions :
+Options pour visualiser ou imprimer les détails des opérations avant ou après l'
+exécution, donnant une transparence et un contrôle sur le processus de transmiss
+ion.
+Utilisation Pratique : Le programme "sd4trans" est utilisé par les départements 
+de comptabilité ou des ressources humaines pour transmettre des données salarial
+es et d'emploi de manière sécurisée et conforme aux normes SwissDEC. La capacité
+ à exécuter, réviser et journaliser ces opérations est essentielle pour assurer 
+la précision et l'intégrité des données transmises. Cet outil simplifie et autom
+atise le processus de conformité avec les règlements de SwissDEC, réduisant le r
+isque d'erreurs et économisant du temps précieux pour les employés.
+
+
+
+
+
+Ms Adresse : 
+Gestion des adresses ad 100 : 
+
+Icône Gestion des contacts
+Permet de gérer les contacts associés à cette adresse
+
+Icône Gestion de remarques
+Permet d'ajouter des remarques pour chaque adresse (avec date de validité)
+
+Post-it
+Création d'un post-it qui apparaîtra à chaque visualisation (un clic droit perme
+t de modifier ou d'effacer le post-it)
+
+
+Panel de fonctions
+
+1. Modifier: sert à modifier une adresse existante.
+
+2. Rétablir: permet de revenir à l'état antérieur de l'adresse, si les modificat
+ions apportées ne vous plaisent pas.
+
+3. Ajouter: permet de créer une adresse.
+
+4. Copier: sert à copier les donner d'une adresse sélectionnée.
+
+5. Effacer: permet d'effacer de façon permanente une adresse.
+
+6. Annuler: à utiliser si vous ne désirez pas sauvegarder les modifications ou l
+a nouvelle adresse en cours de création.
+
+Défilement
+Permet de passer à la ligne d'adresse suivante/précedente
+
+Importation avec Twixtel
+
+Il est également possible d'importer une adresse de façon automatique à partir d
+u logiciel Twixtel:
+
+a. Sélectionnez 'Ajouter' dans le panel des fonctions.
+
+b. Cliquez sur l'icône Twixtel pour lancer l'annuaire électronique.
+
+c. Effectuez une recherche dans Twixtel, sélectionnez une adresse à importer en 
+cliquant dessus.
+
+d. Copiez l'adresse dans le presse-papiers de Windows d'une des façons suivantes
+:

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_108.png
+============================================================
+
+--- BEFORE ---
+ormat d'impression spécifique.
+Code escape: La séquence spécifique du code d'échappement qui sera interprétée p
+ar l'imprimante.
+Les utilisateurs peuvent modifier, ajouter ou supprimer des configurations de co
+des d'échappement pour s'adapter aux besoins spécifiques de leurs opérations d'i
+mpression. Cela permet une personnalisation poussée de l'impression dans l'envir
+onnement de l'ERP, assurant que les documents sortent avec le bon formatage et l
+'apparence désirée.
+Haut du formulaire
+
+
+Tables gérées pour les accès programme « actab » :
+
+Note explicative du programme « actab » :
+Ce programme est l'interface de gestion des tables utilisées pour configurer les
+ accès dans le système ERP. Chaque "Code" correspond à un type de donnée ou une 
+catégorie dans l'ERP, et la "Désignation" en est la description.
+adr: Table pour les adresses où l'on peut définir les informations liées aux emp
+lacements ou aux personnes.
+arba: Relatif aux articles, probablement pour gérer les stocks ou références de 
+produits.
+caba: Concernant les comptes analytiques, utiles pour la comptabilité détaillée.
+cagf: Catégories de frais, pour le suivi et la catégorisation des dépenses.
+cgba: Comptes de la comptabilité générale, un aspect crucial pour la finance.
+cont: Table des contacts, pour gérer les informations sur les clients, fournisse
+urs, etc.
+crba: Pour les créanciers/fournisseurs, ce qui est important pour les comptes pa
+yables.
+dbba: Débiteurs/clients, utilisé pour suivre les comptes recevables.
+imba: Table des immobilisations, pour les actifs à long terme.
+indp: Référence aux départements (in), utile pour structurer l'organisation inte
+rne.
+plan: Planification RH, possiblement pour les horaires ou les ressources humaine
+s.
+rem: Remarques, probablement un espace pour les notes ou les commentaires.
+saba: Application de salaire, pour la gestion des paies.
+soumis: Soumissions, sans doute pour le suivi des offres ou des propositions com
+merciales.
+talp: Table des tables pilotes, qui peut servir à configurer des tables de donné
+es centrales.
+trai: Lots, peut-être utilisé pour le suivi des lots de production ou des achats
+.
+Les utilisateurs peuvent sélectionner un code pour voir ou modifier les détails 
+associés à cette table dans l'ERP. Cette interface est essentielle pour administ
+rer les différentes tables qui organisent les données et les processus de l'entr
+eprise.
+
+Béton :
+Validation des chantiers créés par la Grav ar360 :
+
+Note explicative du programme « ar360 » : 
+Ce programme est une interface de validation pour les chantiers créés via une au
+tre application ou un système externe, probablement appelé "Grav". Il permet de 
+gérer et de valider les informations relatives aux chantiers avant leur intégrat
+ion ou utilisation dans le système principal MS2000. Voici les champs et leur fo
+nction :
+N° Chantier source: Le numéro de référence du chantier tel qu'il est identifié d
+ans le système source.
+Créé à partir du fichier: Le nom du fichier importé qui contient les données du 
+chantier.
+N° Chantier MS: Le numéro de référence du chantier tel qu'il sera identifié dans
+ le système MS2000.
+Désignation source: Le nom ou la désignation du chantier dans le système source.
+Client source: Le client associé au chantier dans le système source.
+Zone: La zone géographique ou le secteur où se trouve le chantier.
+Adresse 1, Adresse 2, Adresse 3: Les adresses détaillées liées au chantier.
+Npa: Code postal associé à l'adresse du chantier.
+Localité: La ville ou le lieu où se trouve le chantier.
+Pays: Le pays où le chantier est situé.
+Les options "Importés" et "Validés" pourraient être des filtres permettant de tr
+ier les chantiers selon qu'ils ont été importés en attente de validation ou déjà
+ vérifiés et approuvés pour utilisation.
+Le bouton "Générer Affaire" suggère une fonctionnalité pour créer une nouvelle "
+affaire" ou projet dans le système MS2000, basé sur les données validées du chan
+tier. "Lié à l'affaire MS2000" semble être un champ pour associer le chantier à 
+une affaire existante dans MS2000.
+Ce programme aide à la gestion efficace des chantiers en garantissant que les in
+formations importées sont exactes et complètes avant de les intégrer dans le sys
+tème de gestion central.
+
+Validation des débiteurs créés par la Grav db360 :
+
+Note explicative du programme « db360 » :
+Ce programme est une interface de validation pour les débiteurs créés via un sys
+tème externe, probablement appelé "Grav". Il est conçu pour importer, vérifier e
+t valider les informations des débiteurs avant de les intégrer dans le système M
+S2000. Voici un aperçu des fonctionnalités de chaque champ :
+Nom du fichier d'import : Indique le nom du fichier d'où les données des débiteu
+rs sont importées.
+N° Client source : Le numéro attribué au débiteur dans le système d'origine.
+Nom client : Le nom ou la désignation complète du débiteur tel qu'il apparaît da
+ns le système source.
+Adresse 1, Adresse 2, Adresse 3 : Les détails de l'adresse du débiteur.
+Npa : Code postal associé à l'adresse du débiteur.
+Localité : La ville ou la commune où réside le débiteur.
+Pays : Le pays d'origine ou d'activité du débiteur.
+Les champs supplémentaires, tels que Titre adresse, Type Client, Nom 1 compte, N
+om 2 compte et Type contact, fourniraient des détails supplémentaires sur le déb
+iteur, comme le titre pour la correspondance, la classification du client (par e
+xemple, particulier ou entreprise), les comptes bancaires associés et les contac
+ts au sein de l'entreprise du débiteur.
+Le champ Lié au débiteur MS2000 est utilisé pour associer les données importées 
+du débiteur à un débiteur existant dans le système MS2000, assurant ainsi une co
+rrespondance et une intégration correctes des données.
+Les boutons Importer et Validés permettent probablement de filtrer la liste pour
+ afficher uniquement les débiteurs qui ont été importés et attendent la validati
+on ou ceux qui ont été validés.
+Cette interface aide à la gestion des débiteurs en s'assurant que les données im
+portées sont correctes et en lien avec les débiteurs existants ou nouveaux dans 
+MS2000, ce qui est essentiel pour une gestion financière précise et efficace.
+
+Ordres de travail :
+Gestion des droits application ODT ca001 :
+
+Note explicative des droits applications ODT programme « ca001 » :
+Cette interface est conçue pour la gestion des droits d'accès aux applications d
+ans le système ERP. Elle permet aux administrateurs de configurer les permission
+s et les rôles des utilisateurs au sein de différentes applications et modules d
+u système. Les utilisateurs sont listés avec leurs identifiants, noms et groupes
+ d'appartenance.
+Voici un guide explicatif des différents composants :
+Identité & Nom: Références uniques identifiant les utilisateurs dans le système.
+Groupe: Catégorie ou département auquel l'utilisateur est associé, ce qui peut i
+nfluencer les droits d'accès préconfigurés.
+Contrôle et modification de l'adresse dans le CA100: Indique si l'utilisateur a 
+le droit de vérifier et modifier les adresses dans l'application CA100.
+Droits de création CA010: Détermine si l'utilisateur peut créer des éléments dan
+s l'application CA010.
+Tous les droits [CA100 + CA010]: Indique un accès super utilisateur avec des per
+missions complètes dans les deux applications citées.
+Accès au programme CA090 / CA001: Spécifie si l'utilisateur peut accéder à ces a
+pplications spécifiques.
+Modification des données EG dans le CA100: Permet de savoir si l'utilisateur peu
+t modifier les données de base dans l'application CA100.
+Les cases cochées indiquent les droits d'accès actuellement accordés. Les symbol
+es "X" à droite permettent de retirer les droits d'accès. Les boutons "Modifier"
+, "Rétablir", "Ajouter", "Copier", "Effacer", et "Annuler" permettent de gérer l
+es entrées et les droits associés.
+Ce programme est essentiel pour maintenir le contrôle sur qui peut faire quoi da
+ns le système, garantissant ainsi la sécurité des données et l'intégrité opérati
+onnelle.
+
+
+Gestion des ordres de travail ca010 :
+
+
+
+Note explicative de la gestion des ordres de travail programme « ca010 » : 
+Cette interface est dédiée à la gestion des ordres de travail (ODT) dans le syst
+ème ERP. Elle permet de suivre et de gérer les tâches assignées aux différents c
+
+[IMAGE HERE: image_108.png]
+
+--- AFTER ---
+hantiers et employés.
+N° ODT: Numéro de l'ordre de travail, identifiant unique pour chaque tâche ou pr
+ojet.
+Désignation: Description ou titre de l'ordre de travail.
+N° chantier: Le numéro associé au chantier sur lequel l'ordre de travail est eff
+ectué.
+Intitulé: Brève description ou titre du chantier pour référence rapide.
+Resp.: Le responsable ou le superviseur du chantier ou de l'ordre de travail.
+Rue / NPA / Localité: Adresse du chantier, y compris le code postal (NPA) et la 
+localité, pour identifier l'emplacement physique de travail.
+Les filtres en haut permettent de trier et de rechercher spécifiquement parmi le
+s ordres de travail, par exemple, ceux qui n'ont pas encore été édités, ceux qui
+ ont été transférés ou tous les ODT en général. La section "Liste" permet de sél
+ectionner différents types de listes ou rapports liés aux ODT.
+Les boutons en bas de la fenêtre, tels que "Modifier", "Rétablir", "Ajouter", "C
+opier", "Effacer", et "Annuler", servent à gérer les entrées et à mettre à jour 
+les détails des ordres de travail.
+L'utilisation efficace de cette interface garantit une organisation optimale des
+ tâches, une allocation appropriée des ressources, et une communication claire d
+es responsabilités au sein de l'entreprise.
+Haut du formulaire
+
+Synchronisation des chantiers ca090 :
+
+
+Note explicative de la synchronisation des chantiers programme « ca090 » : 
+L'interface que nous voyons est destinée à la gestion de la synchronisation des 
+chantiers au sein d'un ERP. Elle permet de centraliser et de coordonner les info
+rmations relatives aux différents chantiers en cours au sein d'une ou plusieurs 
+sociétés.
+Société(s): Il s'agit du champ de sélection qui permet de choisir la société pou
+r laquelle les chantiers sont synchronisés ou gérés.
+Titre: Ce champ montre le numéro du chantier ou la règle de synchronisation, ici
+ représentée par "55555".
+Validité: Ce champ affiche la date de la dernière validation ou de la modificati
+on effectuée pour le chantier en question.
+Nom de la règle: Ici aussi, indiqué par "55555", ce qui pourrait être un identif
+iant unique pour une règle de gestion spécifique ou une opération au sein du cha
+ntier.
+Genre de compte: Ce sélecteur permettrait de filtrer les données du chantier sel
+on le type de compte ou la catégorie financière à laquelle elles appartiennent.
+Dans la partie inférieure, nous avons des options supplémentaires comme "Modifie
+r", "Rétablir", "Copier", et "Effacer", qui offrent la possibilité de gérer acti
+vement les règles et les détails de synchronisation des chantiers. La liste sur 
+le côté droit offre une vue des différentes entités ou filiales de la société, p
+ermettant une synchronisation entre diverses divisions ou groupes opérationnels.
+Cette interface joue un rôle crucial pour assurer que les informations sur les c
+hantiers sont actualisées et cohérentes à travers l'ensemble de l'organisation.
+
+
+Import des fiches horaires dp100 :
+
+
+
+Note explicative import des fiches horaires programme « dp100 » : 
+Le programme affiché est conçu pour l'importation et la gestion des fiches horai
+res numérisées à l'aide de la technologie "Digital Pen". C'est une application q
+ui se situe au sein d'un ERP, probablement utilisée pour le suivi du temps de tr
+avail et la gestion des ressources humaines.
+Fonctionnalités clés :
+Période/Semaine n° : Ces champs permettent de sélectionner la période et la sema
+ine spécifique pour laquelle les données horaires doivent être importées ou exam
+inées.
+Erreurs uniquement : Un filtre qui, lorsqu'il est activé, montre uniquement les 
+entrées comportant des erreurs.
+Départements : Permet de filtrer les données en fonction du département concerné
+.
+Visualisation PDF : Offre la possibilité de visualiser le document numérisé en f
+ormat PDF pour vérification.
+Import Données Test : Un bouton qui semble permettre l'importation de données à 
+des fins de test, sans affecter les données réelles.
+Appli. Règle 48h : Suggère que le programme peut appliquer une règle spécifique 
+(peut-être relative aux régulations de temps de travail) lors de l'importation d
+es données.
+Supprimer Données : Pour effacer les données sélectionnées du système.
+En bas, nous avons différents champs pour saisir ou afficher les données relativ
+es à chaque enregistrement horaire :
+N° de rapport : Identifiant unique du rapport ou de la fiche horaire.
+Compte C.A. : Potentiellement lié au comptable ou à l’analytique de coût.
+Genre de frais : Catégorisation des dépenses ou des coûts associés au temps de t
+ravail enregistré.
+Salaire Horaire : Affiche le taux horaire associé au travail effectué, pour calc
+uler la rémunération.
+Ce système permet donc une gestion efficace du temps de travail, l'intégration d
+es données numérisées via Digital Pen, et assure le suivi précis des heures trav
+aillées en relation avec les coûts et les budgets des différents départements.
+
+
+
+Paramètres Gestion Commerciale programme « xlfpa » :
+
+Note explicative paramètre de gestion commerciale programme « xlfpa » :
+Ce programme est un module de gestion commerciale intégré à un système ERP, dédi
+é à la configuration des paramètres pour les achats, la gestion des stocks et l'
+inventaire. Il permet aux utilisateurs d'adapter le comportement du système en f
+onction de leurs besoins opérationnels et de leur politique interne.
+Voici une explication des différentes sections et options :
+sté G.Achat et G.Stocks : Ces colonnes permettent d'activer ou de désactiver les
+ fonctions de gestion des achats et des stocks pour chaque société listée.
+Inventaire : Les options DER, MOY, NOR, REV et Std indiquent les différentes mét
+hodes d'évaluation des stocks disponibles, comme le coût standard, le dernier pr
+ix d'achat, le prix moyen, etc.
+Filtre article et Saisie PR : Servent à définir les critères de filtration des a
+rticles lors de la saisie des bons de commande et des prévisions de réapprovisio
+nnement (PR).
+Gestion de stocks : Cette option active la gestion des stocks dans le système, i
+ncluant la possibilité d'accepter les stocks négatifs si nécessaire.
+Prix inventaire et Base PR : Définissent la méthode de calcul du prix pour l'inv
+entaire et la base pour les prévisions de réapprovisionnement.
+Arrondi PU et Ligne : Spécifient les règles d'arrondi pour le prix unitaire et p
+ar ligne lors des transactions.
+Pesée : Configure les paramètres liés à la pesée des articles, essentiels pour l
+es articles vendus au poids.
+Article taxe décharge : Permet de définir un taux de taxe pour les articles qui 
+sont des décharges ou des déchets.
+Ce système est probablement utilisé dans un environnement où des outils comme "D
+igital Pen" sont intégrés pour numériser et transférer automatiquement les donné
+es des formulaires papier dans le système, réduisant ainsi les erreurs de saisie
+ manuelle et améliorant l'efficacité des processus d'achat et de stock.
+
+Alertes programme « alertes » :
+
+Note explicative alertes programme ave programme « alertes » : 
+Ce programme est conçu pour la gestion et l'envoi d'alertes au sein d'un système
+ ERP. Il s'agit d'une interface utilisateur qui permet de communiquer des notifi
+cations spécifiques à des groupes d'utilisateurs ou à des entités au sein d'une 
+organisation.
+Voici un guide explicatif des fonctions de cette interface :
+Tous les utilisateurs / Utilisateurs actifs / Utilisateurs inactifs : Ce sont de
+s filtres pour sélectionner les destinataires des alertes en fonction de leur st
+atut actuel dans le système.
+Groupe(s) : Permet de cibler les alertes à un groupe d'utilisateurs spécifique, 
+comme un département ou une équipe au sein de l'entreprise.
+Société(s) : Filtre les destinataires des alertes basés sur la société ou les su
+ccursales au sein d'un groupe d'entreprises.
+Destinataire(s) : Permet d'entrer manuellement le nom des destinataires spécifiq
+ues pour lesquels l'alerte est destinée.
+Concerné : Un champ pour ajouter des informations spécifiques sur ce que l'alert
+e concerne, comme un projet ou un sujet particulier.
+Message : La zone de texte où le contenu de l'alerte est saisi.
+Urgent : Une case à cocher pour marquer l'alerte comme étant urgente, ce qui pou
+rrait affecter la manière dont elle est traitée ou affichée aux destinataires.
+Tout sélectionner / Ne rien sélectionner / Actualiser : Des commandes pour gérer
+ les sélections et rafraîchir la liste des destinataires.
+Envoyer : Le bouton pour envoyer l'alerte aux destinataires choisis une fois que
+ toutes les informations nécessaires ont été saisies.
+Cette interface peut s'intégrer avec des dispositifs tels que le "Digital Pen", 
+ce qui permettrait aux utilisateurs de créer et d'envoyer des alertes basées sur
+ les informations saisies à l'aide d'un stylo numérique, offrant une méthode de 
+saisie de données plus rapide et plus naturelle par rapport au clavier standard.

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_755.png
+============================================================
+
+--- BEFORE ---
+Option à utiliser que sur une sélection de comptes
+Historiques pluriannuels cg705 :
+
+Historique pluriannuels :
+Le but de ce programme est d’imprimer pour chaque compte l’ensemble de toutes le
+s lignes comptabilisées sur plusieurs exercices comptables. (Selon bornes de dat
+es sélectionnées).
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+
+
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+Sélectionner la prédiode
+Saisir ou cliquer pour sélectionner les bornes de dates pour les lignes à traite
+r dans l’édition
+
+
+
+
+
+
+
+
+
+Exportation Excel cg720 : 
+
+
+Exportation Excel historique CG cg721 : 
+
+
+
+Analyse des comptes internes cg722 : 
+
+
+Edition paramétrable cg799 :
+
+
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant a tous les modules :
+
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fact. Clients/fournisseurs avec info. enc. Co255 :
+
+
+
+Fact. Clients/fournisseurs avec info. enc. Co255 :
+
+Analyse diminution chiffre d’affaires co360 : 
+
+
+Décomptes TVA co400 :
+
+
+Le but de ce programme, est d’imprimer les différents décomptes pour la déclarat
+ion de TVA. Des lignes de trimestre(s) précédent(s) n’ayant pas été traitées lor
+s du décompte relatif, seront éditées dans le trimestre en cours de traitement. 
+La date de valeur TVA, est identique à la date de valeur comptable
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+
+
+
+Sélection du genre de déclaration
+
+Cliquer pour sélectionner le genre de déclaration souhaitée
+
+
+Cliquer pour sélectionner le trimestre concerné
+
+
+
+Cliquer pour sélectionner le type de décompte désiré
+
+
+Types de décompte :
+Provisoire avec statut « non déclaré » : Edition des lignes qui n’ont pas été tr
+aitées lors du décompte définitif.
+Définitif avec mise à jour du statut « déclaré » : Edition des lignes à traiter 
+et mise à jour du statut afin que ces lignes ne soient pas rééditées le trimestr
+e suivant.
+Réédition selon trimestre de déclaration : Edition des lignes relatives au trime
+stre de déclaration (traitement des lignes avec statut « déclaré »).
+Edition des écritures de trimestre (hors statut) : Edition de toutes les lignes 
+relatives au trimestre, quel que soit le statut.
+
+NB : toujours lancer le décompte en "Provisoire", puis contrôler avant de le fai
+re en "Définitif"
+
+Décomptes TVA avec TVA Consolidée co400 :
+
+
+Pour les groupes disposant de plusieurs sociétés, il peut arriver que la TVA soi
+t déclarée par la société "Holding", ce qui implique que toute la facturation in
+terne est "hors-TVA" (aucune TVA due / à récupérer n'est comptabilisée sur les f
+acturations internes). De plus cela évie d'avoir plusieurs numéros TVA, et plusi
+eurs déclarations à remplir :
+
+
+
+
+Cocher "TVA Consolidée"
+Les comptes de TVA vont être consolidés et la TVA sera déclarée au niveau de la 
+société "Holding"
+Historique des comptes sans TVA co401 :
+
+Ce programme permet de contrôler les écritures sans TVA, pour éviter une déclara
+tion incorrecte. C'est donc une activité à prévoir
+avant la préparation du décompte TVA trimestriel.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Choix de la méthode de sélection
+
+
+
+
+[IMAGE HERE: image_755.png]
+
+--- AFTER ---
+Choix de la période
+
+
+
+Cliquer pour imprimer / exporter les données
+
+
+
+Exemple d'une liste d'écritures :
+
+
+Justification TVA à récupérer co405 :
+
+Ce programme permet, lorsqu'une facture a été comptabilisée en cochant la case "
+A justifier", de contrôler toutes les lignes de la TVA à récupérer par lot :
+
+
+
+
+
+
+
+
+Cliquer pour sélectionner le lot à justifier
+
+Sélection de l'écriture à justifier
+
+Sélection avec un clic droit :
+
+
+Permet d'ajouter / enlever cette écriture de la sélection "à justifier"
+
+
+
+Affichage du compte de charges
+
+Affichage du montant de la TVA pour contrôle
+
+
+
+
+
+
+Edition paramétrable TVA co400 :
+
+
+Récapitulation TVA par compte CG co415 :
+Récapitulation T.V.A. par compte C.G. :
+Le but de ce programme, est de générer un classeur Excel avec une feuille pour l
+es comptes comptables concernés par une écriture incluant de la TVA. Et une seco
+nde feuille pour les anomalies éventuelles constatées.
+Fenêtre des réponses de sélection possible :
+
+
+Cliquer pour analyser la période concernée
+
+
+
+Cliquer pour obtenir le détail des écritures
+
+
+
+Sélectionner les périodes souhaitées
+
+
+
+Case de sélection "Détail"
+
+Cocher cette option uniquement en complément de la sélection d’un compte
+Important : cocher cette case  permet de pouvoir remonter jusqu'à l'écriture qui
+ a généré la TVA, puis jusqu'à la facture (pour contrôle) :
+
+
+
+
+
+Justification des écritures
+
+Cocher cette option dans le cas d’un traitement de la justification des comptes 
+de charges (co405)
+
+
+
+
+
+
+
+
+
+
+
+
+
+Journaux + Clôture mensuelle :
+
+Edition du brouillard co150 :
+
+Edition des lots :
+
+Le but de ce programme est d’imprimer un protocole détaillé des écritures saisie
+s. Ceci permet de pouvoir contrôler les données saisies avec les informations de
+s pièces originales et de corriger immédiatement les erreurs éventuelles découve
+rtes.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+
+
+
+Saisir ou cliquer pour sélectionner 
+les bornes de dates souhaitées à l’édition
+
+
+
+Cliquer pour sélectionner 
+le lot désiré
+
+
+
+Choix du compte
+
+Cliquer pour sélectionner un compte spécifique, afin de pouvoir imprimer et cont
+rôler les pièces relatives à ce compte
+
+Analyse des écritures par lots co155 :
+
+Interrogation et exportation de lot :
+
+Le but de ce programme est de pouvoir interroger de manière détaillée les écritu
+res saisies. Ceci permet de pouvoir contrôler les données saisies avec les infor
+mations des pièces originales et de corriger immédiatement les erreurs éventuell
+es découvertes. La possibilité d’exporter les écritures affichées dans Excel per
+met de traiter les lignes selon les fonctionnalités Excel.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Cliquer pour sélectionner le lot désiré
+
+
+
+Saisir ou cliquer pour sélectionner les bornes de dates souhaitées à l’édition
+
+
+
+Cliquer pour exporter dans Excel

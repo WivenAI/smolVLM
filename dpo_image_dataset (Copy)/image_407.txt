@@ -1,0 +1,308 @@
+CONTEXT FOR: image_407.png
+============================================================
+
+--- BEFORE ---
+ide à focaliser l'analyse sur une période spécifique.
+Options supplémentaires pour l'affichage et l'impression :
+Libellé interne : Option pour inclure des libellés internes dans les données aff
+ichées ou imprimées.
+Un client par page : Chaque client sera affiché ou imprimé sur une page séparée,
+ ce qui facilite la gestion des documents lorsqu'ils sont imprimés.
+Par n° de facture : Organise les données selon le numéro de facture, ce qui est 
+utile pour suivre les paiements ou les dettes par facture spécifique.
+
+Historique pluriannuel db705 :
+
+Historique pluriannuel :
+Le but de ce programme, est d’imprimer l’ensemble de toutes les lignes comptabil
+isées sur chaque compte client sur plusieurs exercices comptables. (Selon bornes
+ de dates sélectionnées).
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard :
+
+
+
+
+Bornes de dates
+
+Ces dates seront prises en compte pour l'édition des lignes historiques
+
+Note explicative de l’historique pluriannuel programme « db705 » : 
+Le programme "db705" est conçu pour fournir un historique pluriannuel des transa
+ctions financières, permettant aux utilisateurs de suivre les mouvements de fond
+s sur plusieurs années. C'est un outil essentiel pour l'analyse financière. Voic
+i une explication détaillée des fonctionnalités et composants de ce programme :
+Historique pluriannuel / date de valeur : Ce programme est spécifiquement config
+uré pour examiner les transactions sur une base pluriannuelle, en se concentrant
+ sur les dates de valeur des transactions pour permettre une analyse précise des
+ flux de trésorerie ou d'autres mouvements financiers sur de longues périodes.
+Options de Visualisation et d'Impression :
+Imprimer vers fichier : Permet aux utilisateurs d'imprimer les informations dire
+ctement dans un fichier, ce qui est pratique pour la documentation ou le partage
+ des données financières.
+Visualiser : Offre la possibilité de voir les données directement sur l'écran, f
+acilitant l'accès rapide aux informations sans nécessiter une sortie physique ou
+ numérique.
+Filtrage des Clients :
+Tous les clients : Affiche les données pour tous les clients enregistrés dans la
+ base de données de l'ERP.
+Sélection alphabétique : Permet de filtrer les données en fonction de l'ordre al
+phabétique des noms des clients, facilitant la localisation de comptes spécifiqu
+es.
+Sélection numérique : Permet de filtrer les données en fonction de critères numé
+riques, tels que le numéro de client ou toute autre donnée numérique pertinente.
+Bornes de dates :
+Date de valeur du/de : Cela permet à l'utilisateur de spécifier la période de te
+mps pour laquelle les données doivent être recueillies et affichées, allant d'un
+e date de début à une date de fin.
+
+Historiques factures db710 :
+
+Historique par facture :
+Le but de ce programme, est d’imprimer l’ensemble de toutes les lignes comptabil
+isées sur chaque compte client regroupée par numéro de facture.
+
+Fenêtre des réponses de sélection possible :
+
+Note explicative des historiques factures programme « db710 » : 
+
+Le programme "db710" est spécialement conçu pour fournir un historique détaillé 
+des factures émises à des débiteurs spécifiques dans un système ERP. Ce programm
+e est essentiel pour les analyses comptables et la gestion des crédits clients. 
+Voici une explication détaillée des fonctionnalités et composants de ce programm
+e :
+Historique de factures de débiteur(s) : Cette fonction principale permet de cons
+ulter l'historique des factures émises à un ou plusieurs débiteurs. Cela aide à 
+suivre les transactions passées et à analyser les tendances de paiement.
+Options de Visualisation et d'Impression :
+Visualiser : Permet d'afficher l'historique des factures directement à l'écran p
+our une consultation rapide.
+Imprimer vers fichier : Offre la possibilité d'imprimer l'historique des facture
+s dans un fichier, facilitant ainsi la documentation et le partage des informati
+ons.
+Export Excel : Cette option permet d'exporter les données de l'historique des fa
+ctures dans un fichier Excel pour une analyse plus approfondie ou pour une utili
+sation dans d'autres rapports ou présentations.
+Sélection des Débiteurs :
+Tous les clients : Affiche l'historique des factures pour tous les clients dispo
+nibles dans la base de données.
+Sélection alphabétique : Permet de filtrer et d'afficher les historiques de fact
+ures selon l'ordre alphabétique des noms des débiteurs.
+Sélection numérique : Permet de filtrer et d'afficher les historiques de facture
+s selon un critère numérique, tel qu'un numéro de client.
+Date de l'exercice : Cette fonction permet de sélectionner une période spécifiqu
+e pour laquelle les factures doivent être affichées. Les utilisateurs peuvent ch
+oisir de visualiser l'historique depuis le début d'un exercice financier jusqu'à
+ la date actuelle, ou pour une période personnalisée.
+
+
+
+
+
+
+
+Edition paramétrable des lignes db799 : 
+
+
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant aux clients :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard :
+
+
+
+
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+
+
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+
+[IMAGE HERE: image_407.png]
+
+--- AFTER ---
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+
+
+
+
+Gestion du contentieux db302 : 
+
+Ce programme permet de consulter les P.O. (postes ouverts) à une date donnée, d'
+ajouter des commentaires de suivi et d'avoir une vision globale des montants dus
+ par client.
+Si un ou plusieurs rappels ont été générés, il permet aussi de consulter ces der
+niers, et de les renvoyer par email.
+
+Attention : selon le paramétrage de la coche "Alerte" effectué depuis le program
+me db903 (échéanciers clients), seul les Postes Ouverts suivants apparaîtront :
+
+Coche au niveau "de 1 à 30 jours" : tous les postes ouverts seront visibles
+
+Coche au niveau "de 31 à 60 jours" : seuls les postes ouverts échus depuis >30 j
+ours seront visibles
+
+Coche au niveau "de 61 à 90 jours" : seuls les postes ouverts échus depuis >61 j
+ours seront visibles
+
+
+
+
+
+
+
+Structure des tables et programmes préalables :
+Ce programme se base sur plusieurs tables, il faut donc procéder dans cet ordre 
+:
+
+1) table db900 : Tables simples débiteurs
+Ici il faudra définir les Actions Contentieux, c'est-à-dire la définition des ac
+tions à mener en cas de contentieux, ainsi que les Types de Contentieux (suivant
+ par exemple qui va gérer le contentieux en interne) :
+Actions contentieux :
+
+Types contentieux :
+
+Note  : Il est possible d'entrer autant d'actions et de types que nécessaire
+2) Création des échéanciers (db903) :
+Créer à l'aide du bouton "Ajouter" :
+
+Note : si la case "impression db320" n'est pas cochée, les factures échues depui
+s le nombre de jours sélectionné n'apparaîtront pas.
+Il est possible d'entrer un montant minimal pour l'établissement d'un rappel.
+
+3) Paramétrage multi-niveau des échéanciers
+
+Avant de pouvoir gérer les contentieux avec db302, il faut s'assurer du paramétr
+age des clients à plusieurs niveaux :
+
+Niveau société (programme xstes) : ce paramétrage sera pris pour tous les client
+s, sauf s'il existe un paramétrage spécifique au niveau client ou groupe de clie
+nt
+
+
+
+
+Cliquer pour choisir l'échéancier a utiliser par défaut
+Ceci concerne les Postes Ouverts (le standard est de 30/60/90/+90 jours)
+
+Cliquer pour choisir l'échéancier des contentieux
+Selon le paramétrage choisi, certaines factures vont apparaître ou non en tant q
+ue contentieux
+Niveau groupe de clients (programme db902)
+
+
+
+Niveau client (programme db100) :
+
+
+
+Onglet Clients/P. O db302 :
+Ce programme permet d'avoir un aperçu rapide des factures en contentieux (selon 
+les critères paramétrés - voir Gestion du contentieux) :
+
+
+Filtre par dossier (oui/non)
+Un dossier est créé aussitôt qu'un commentaire est entré (pour entrer un comment
+aire, clic droit sur une ligne bleue)
+Filtre par type 
+(voir détail dans Gestion du contentieux)
+
+Filtre par Technicien
+
+Affichage jours échus
+
+Un clic droit sur une des lignes permet différentes sélections :
+
+
+
+Onglet Contentieux : 
+
+
+Avant de passer à l'onglet contentieux, il faut au préalable sélectionner un cli
+ent dans l'onglet "Clients/P.O." à l'aide d'un clic gauche dans une des lignes d
+e ce client :
+
+
+
+
+Ensuite, la liste des contentieux apparaît et il est possible d'ajouter une acti
+on à chaque ligne :
+
+
+
+
+
+Partie bleue : sélection
+
+Partie verte : actions
+
+Ajout d'une action à l'aide du bouton  :
+
+
+Note : pour fermer le dossier, il suffit d'entrer une date dans le champ "Dossie
+r fermé le" : le poste ouvert sortira du traitement du contentieux.
+Onglet Rappels : 
+Dans cet onglet on peut visualiser les rappels déjà envoyés à ce client :
+
+Note : un clic droit permet de renvoyer un rappel au format pdf par email
+
+Rappel :
+Préparation des rappels db500 :
+
+Préparation des rappels :
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée 

@@ -258,7 +258,7 @@ def main():
     parser = argparse.ArgumentParser(description="DPO Log Probability Benchmark")
     parser.add_argument("--model-path", type=str, default="HuggingFaceTB/SmolVLM-500M-Instruct",
                        help="Path to model (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
-    parser.add_argument("--dataset-path", type=str, default="dpo_image_dataset/dpo_dataset.json",
+    parser.add_argument("--dataset-path", type=str, default="dpo_image_dataset/dpo_dataset_gemini.json",
                        help="Path to DPO dataset JSON")
     parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
                        help="Directory containing images")

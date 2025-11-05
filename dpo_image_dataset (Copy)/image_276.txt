@@ -1,0 +1,312 @@
+CONTEXT FOR: image_276.png
+============================================================
+
+--- BEFORE ---
+
+
+
+
+
+Note explicative du transmetteur SwissDec 4.0 programme « sd4trans » : 
+Le programme "sd4trans" est un outil dédié à la transmission des données à Swiss
+DEC, un standard pour l'échange électronique de données dans le domaine de l'adm
+inistration salariale en Suisse. Voici une explication de ses composants clés et
+ de son fonctionnement, basée sur l'interface utilisateur présentée :
+Onglets Fonctionnels :
+Opérations : Permet aux utilisateurs de sélectionner différentes opérations liée
+s à la transmission de données, probablement avec un menu déroulant pour choisir
+ des actions spécifiques.
+Journal : Peut-être utilisé pour afficher un historique des transmissions ou des
+ actions réalisées dans le programme.
+Résultats : Montre les résultats ou les retours de l'exécution des opérations, p
+ermettant aux utilisateurs de vérifier la réussite ou l'erreur des transmissions
+.
+Exécution des Opérations :
+Un champ ou une liste déroulante pour sélectionner l'opération désirée est prése
+nte, avec un bouton pour exécuter l'opération sélectionnée. Ceci est crucial pou
+r initier le processus de transmission des données.
+Visibilité et Actions :
+Options pour visualiser ou imprimer les détails des opérations avant ou après l'
+exécution, donnant une transparence et un contrôle sur le processus de transmiss
+ion.
+Utilisation Pratique : Le programme "sd4trans" est utilisé par les départements 
+de comptabilité ou des ressources humaines pour transmettre des données salarial
+es et d'emploi de manière sécurisée et conforme aux normes SwissDEC. La capacité
+ à exécuter, réviser et journaliser ces opérations est essentielle pour assurer 
+la précision et l'intégrité des données transmises. Cet outil simplifie et autom
+atise le processus de conformité avec les règlements de SwissDEC, réduisant le r
+isque d'erreurs et économisant du temps précieux pour les employés.
+
+
+
+
+
+Ms Adresse : 
+Gestion des adresses ad 100 : 
+
+Icône Gestion des contacts
+Permet de gérer les contacts associés à cette adresse
+
+Icône Gestion de remarques
+Permet d'ajouter des remarques pour chaque adresse (avec date de validité)
+
+Post-it
+Création d'un post-it qui apparaîtra à chaque visualisation (un clic droit perme
+t de modifier ou d'effacer le post-it)
+
+
+Panel de fonctions
+
+1. Modifier: sert à modifier une adresse existante.
+
+2. Rétablir: permet de revenir à l'état antérieur de l'adresse, si les modificat
+ions apportées ne vous plaisent pas.
+
+3. Ajouter: permet de créer une adresse.
+
+4. Copier: sert à copier les donner d'une adresse sélectionnée.
+
+5. Effacer: permet d'effacer de façon permanente une adresse.
+
+6. Annuler: à utiliser si vous ne désirez pas sauvegarder les modifications ou l
+a nouvelle adresse en cours de création.
+
+Défilement
+Permet de passer à la ligne d'adresse suivante/précedente
+
+Importation avec Twixtel
+
+Il est également possible d'importer une adresse de façon automatique à partir d
+u logiciel Twixtel:
+
+a. Sélectionnez 'Ajouter' dans le panel des fonctions.
+
+b. Cliquez sur l'icône Twixtel pour lancer l'annuaire électronique.
+
+c. Effectuez une recherche dans Twixtel, sélectionnez une adresse à importer en 
+cliquant dessus.
+
+d. Copiez l'adresse dans le presse-papiers de Windows d'une des façons suivantes
+:
+1. Pressez l'icône 'Copier dans Presse-Papiers' de Twixtel.
+2. Allez dans 'Editions' > 'Exporter édition dans presse-papiers'. 
+
+e. Revenez dans l'application des Adresses 'MS 2000' et cliquez sur l'icône 'Col
+ler le contenu du presse-papiers'. 
+
+
+
+
+
+Intitulé de recherche : Zone alpha numérique de 20 caractères maximum.
+Elle sera
+ utilisée comme critère d’accès et de recherche interne.
+Le contenu (mot clé pri
+ncipal) doit être le plus significatif possible à l’ensemble des utilisateurs 	d
+e ce programme.
+Nota bene : Le mot clé principal doit permettre d’accéder directement à l’adress
+e avec la fonction « Contient » mise à disposition dans le programme.
+Les différentes dénominations, propres à votre activité doivent être réglées sou
+s forme d’une charte.
+Pour des utilisateurs travaillant avec des institutions ou des associations, uti
+liser plutôt un acronyme*, au lieu d’essayer d’abréger les noms complets.
+Par exemple : Pour Fédération Vaudoise des Entrepreneurs à Lausanne, utiliser l’
+acronyme FVE.
+De ce fait l’intitulé de recherche pourrait être ainsi : « fve lausanne ».
+De même, éviter les caractères spéciaux, accentués et en majuscules, ceci éviter
+a lors de la 	saisie de devoir activer au clavier des touches de fonctions suppl
+émentaires.
+
+
+Désignation : Zone alpha numérique de 30 caractères maximum.
+Elle sera utilisée 
+résumé pour des éditions à usage interne.
+Le contenu doit être le plus significa
+tif possible à l’ensemble des utilisateurs de ce programme.
+Le contenu de la zone recherche peut être repris et compléter.
+Pour notre exemple ci-dessus, cela donnerait : « F.V.E. - Lausanne »
+En ce qui concerne les autres champs, il est souhaitable de ce conformer aux rec
+ommandations des services postaux et d’utiliser leurs normes. Par exemple : les 
+numéros postaux et les codes pays.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Edition des adresses ad100e : 
+Sélection d'une liste :
+
+
+
+Sélection de la liste prédéfinie 
+
+Double clic pour sélectionner - possibilité de sauvegarder des listes personnali
+sées (par utilisateur)
+
+
+Paramètres d'impression :
+
+
+
+
+[IMAGE HERE: image_276.png]
+
+--- AFTER ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Edition des paramétrable des adresses ad101 : 
+
+
+Titre de la liste
+
+Ce titre va apparaître lors de l'impression
+
+Cliquer pour visualiser la liste
+
+
+
+Onglet des sélections
+
+Dans cet partie, il est possible de sélectionner soit tous les enregistrements, 
+soit le premier ou le dernier ainsi que le fichier source (adresses ou contacts)
+
+Bouton de vérification des sélections
+
+
+
+Ajout de critères de sélection personnalisables
+
+
+
+
+
+Table adresse ad900 : 
+
+
+
+Fenêtre de sélection du champ à traiter
+
+Sélectionner "sec" pour effectuer des changements au champ "secteur" - par exemp
+le pour ajouter un secteur "Second-oeuvre"
+
+Panel de commandes standard
+
+Permet de modifier/ajouter/copier ou effacer des éléments au type sélectionné. C
+es éléments vont s'ajouter aux menus déroulants des adresses
+
+
+
+Exemple de création d'un nouveau secteur dans ad 900:
+
+
+
+Visualisation du nouveau secteur "sec" dans ad100 :
+
+
+
+
+Transfert des tables dans une autre société
+Permet d'importer les champs sélectionnés dans une nouvelle société :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mutation des adresses ad100m : 
+La possibilité de modifier plusieurs adresses et plusieurs champs, en une seule 
+opération est réalisée à l’aide de cette fonction.
+
+
+Ms Soumission : 
+Suivi des Soumissions/Devis so100 : 
+
+Note explicative des suivies des soumissions/Devis programme « so100 » : 
+Le programme "so100", est une application pour le suivi des soumissions et des d
+evis.
+Filtrage et Affichage:
+Toutes / Offres câble / Archivées / Ajoutées / Suivi par secteur / Blanc : Ces b
+outons permettent de filtrer les entrées affichées selon différents critères, pr
+obablement pour afficher uniquement les offres correspondant à chaque catégorie.
+Champs de Saisie:
+Numéro: Un champ pour entrer ou rechercher le numéro d'une soumission ou d'un de
+vis.
+Version: Sélectionner ou entrer la version de la soumission ou du devis si plusi
+eurs versions existent.
+Exercice: Un menu déroulant pour sélectionner l'exercice fiscal ou l'année compt
+able correspondante.
+Produit: Menu déroulant pour sélectionner le type de produit concerné par la sou
+mission ou le devis.
+Entité offrante: Sélectionner l'entité (ou département) qui offre le devis ou la
+ soumission.
+Etude: Champ pour indiquer l'étude de cas ou le projet spécifique lié à la soumi
+ssion.
+Rendu le / Heure: Des champs pour spécifier la date et l'heure de rendu de la so
+umission ou du devis.
+Objet: Un espace plus large pour détailler l'objet de la soumission ou du devis.
+Canton/commune: Sélectionner le canton ou la commune concernée par la soumission
+ ou le devis.
+Sélection et Options:
+Devis / Soumission: Des boutons radio pour sélectionner si l'entrée est un devis
+ ou une soumission.
+Calculateur: Champ pour sélectionner ou entrer le nom de la personne ou de l'out
+il de calcul.
+Contact: Champ pour entrer les coordonnées de la personne de contact pour cette 
+soumission ou devis.
+Type de M.O.: Menu déroulant pour choisir le type de main-d'œuvre associé.
+Maître d'ouvrage / Direction des travaux: Des champs pour entrer les information
+s sur le maître d'ouvrage et la direction des travaux.
+Mt rendu H.T. / Potentiélité (%) / CA potentiel H.T.: Champs pour les montants r
+endus hors taxes, la potentiélité en pourcentage, et le chiffre d'affaires poten
+tiel hors taxes.
+Remarques: Un champ plus grand pour ajouter des commentaires ou des remarques co
+ncernant la soumission ou le devis.
+Cases à cocher et Date:
+Offre câble / Adjugée / Archivée / Suivi par secteur / Blanc: Ces cases à cocher
+ permettent probablement de marquer le statut actuel de la soumission ou du devi
+s.
+Date: Un bouton calendrier pour sélectionner ou entrer la date associée à l'entr
+ée.
+Cette interface est conçue pour gérer efficacement le processus de soumission et
+ de devis, de l'identification des opportunités à la conclusion des accords, en 
+passant par le suivi et la mise à jour des données relatives aux offres.
+
+

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_295.png
+============================================================
+
+--- BEFORE ---
+permettent aux utilisateurs de filtrer et de sélectionner les articles pour lesq
+uels ils souhaitent voir ou modifier les prix. Le choix dépend de si l'utilisate
+ur préfère parcourir la liste complète ou rechercher un article spécifique par s
+on nom ou son code.
+Liste d'Articles: Affiche les articles selon le filtre appliqué. Chaque article 
+est listé avec sa désignation et son code correspondant, permettant une identifi
+cation rapide.
+Gestion du Groupe Catalogue
+Groupe catalogue: Un menu déroulant qui permet de filtrer les articles affichés 
+selon le groupe de catalogue spécifié, facilitant ainsi la gestion des tarifs pa
+r catégorie d'articles.
+Zone de Gestion des Tarifs
+Tarif: Cet espace inclut plusieurs options liées aux ajustements de prix que les
+ utilisateurs peuvent appliquer à des groupes sélectionnés d'articles ou à des a
+rticles individuels.
+Facture excel
+Gravière comptant
+Gravière entrepreneurs
+Gravière groupe
+Tarif spécifique
+Chaque option permet d'appliquer des ajustements basés sur des critères spécifiq
+ues, tels que le type de client ou le mode de paiement.
+Opérations de Tarification
+Opération (+ / x): Permet de définir si le prix doit être augmenté (addition) ou
+ multiplié (multiplication), offrant une flexibilité dans la manière de mettre à
+ jour les prix.
+Coefficient: Un champ pour saisir le coefficient à appliquer lors de l'ajustemen
+t du prix. Cette valeur est utilisée avec l'opération sélectionnée pour calculer
+ le nouveau prix.
+
+Reprise de stock ar150 : 
+
+Note explicative du retour de stock programme « ar150 : 
+Le programme "ar150" est conçu pour la gestion et la mise à jour des stocks dans
+ un système ERP. Ce programme spécifique est utilisé pour effectuer des reprises
+ de stock, permettant aux utilisateurs de mettre à jour les quantités d'articles
+ en stock à partir d'une interface organisée et structurée. Voici une descriptio
+n détaillée des différents composants de cette interface et de leur fonctionneme
+nt.
+Fonctionnalités Clés de l'Interface "ar150"
+Champs de Saisie Principaux :
+No de pièce : Permet à l'utilisateur d'entrer ou de référencer un numéro de pièc
+e spécifique pour les transactions de stock.
+Libellé : Champ pour saisir une description ou un titre pour l'opération de stoc
+k, souvent utilisé pour des références internes ou des clarifications.
+Date de pièce et Date de mouvement : Ces champs permettent de définir les dates 
+respectives pour la documentation officielle et pour le mouvement physique ou co
+mptable des articles dans le stock.
+Options de Sélection et de Filtrage :
+Sur le Dépôt : Sélection d'un entrepôt spécifique où les articles sont stockés, 
+ce qui permet de segmenter les données par lieu.
+Catalogue(s) et Groupe remise : Offrent des options pour filtrer les articles se
+lon des catalogues ou des groupes de tarification spécifiques, facilitant la ges
+tion des articles par catégories ou promotions.
+Tableau de Gestion des Articles :
+Code article et Désignation : Colonnes où les articles sont listés avec leurs co
+des et descriptions pour faciliter l'identification.
+Qté totale actuelle, Qté à rentrer et PMA (Prix Moyen d'Achat) : Ces colonnes pe
+rmettent de visualiser la quantité en stock, de saisir les quantités à mettre à 
+jour, et de voir le prix moyen d'achat pour calculer la valeur de stock.
+Fonctionnalités d'Affichage et de Gestion :
+Afficher la sélection : Un bouton qui filtre et affiche les articles selon les c
+ritères définis dans les champs de sélection.
+Annuler la sélection : Permet de réinitialiser les filtres appliqués pour reveni
+r à une vue complète des articles disponibles.
+Bouton d'Action :
+LANCER la mise à jour du stock : Ce bouton crucial permet de valider et d'exécut
+er la mise à jour des quantités de stock pour les articles sélectionnés, intégra
+nt les modifications dans le système ERP.
+
+Entrée de Stock Directe ar151 : 
+
+Note explicative de l’entrée en stock Directe programme « ar151 » : 
+Le programme "ar151" est conçu pour faciliter l'entrée directe des stocks dans u
+n système ERP. Il permet aux utilisateurs de mettre à jour rapidement et efficac
+ement les informations de stock pour des articles spécifiques. Voici une descrip
+tion détaillée des différentes fonctionnalités de ce programme :
+Fonctionnalités Clés de "ar151"
+Informations de Base :
+Dépôt : Sélectionnez le dépôt où les articles sont stockés, ce qui permet une ge
+stion précise des inventaires par emplacement.
+Fournisseur : Champ pour saisir le nom du fournisseur d'où proviennent les artic
+les, ce qui aide à tracer l'origine des stocks et gérer les relations fournisseu
+rs.
+Détails du Mouvement de Stock :
+No de pièce : Un identifiant unique pour l'enregistrement spécifique, utile pour
+ suivre des transactions individuelles.
+Libellé : Description ou autre information relative à la transaction de stock.
+Date de pièce / Date de mouvement : Ces dates permettent de documenter quand les
+ articles ont été physiquement déplacés ainsi que la date officielle de la trans
+action dans les registres comptables.
+Entrée des Articles :
+Code article : Le code unique identifiant l'article, nécessaire pour une saisie 
+précise dans le système.
+Désignation : Description de l'article pour clarifier ce qui est entré ou mis à 
+jour.
+Quantité : Nombre d'unités de l'article à entrer en stock.
+Unité : L'unité de mesure pour la quantité entrée (pièces, kilogrammes, etc.).
+P.A. (Prix d'Achat) : Le coût d'achat de l'article, utilisé pour évaluer le stoc
+k.
+Total : Calcul automatique du total basé sur la quantité et le prix d'achat.
+Gestion et Validation des Entrées :
+Ajouter / Copier / Effacer : Ces boutons permettent de manipuler les entrées de 
+l'article. "Ajouter" pour créer une nouvelle ligne, "Copier" pour dupliquer une 
+ligne existante, et "Effacer" pour supprimer une ligne.
+Mise à jour du Stock : Un bouton important qui, une fois cliqué, valide toutes l
+es modifications apportées et met à jour les quantités de stock dans la base de 
+données du système ERP.
+
+Entrée de Stock Sans Achat ar152 : 
+
+Note explicative de l’entrée de stock sans achat programme « 152 » : 
+Le programme "ar152" est conçu pour gérer l'entrée de stock suite à des achats, 
+sans passer par un processus de réception traditionnel. Cela est particulièremen
+t utile pour enregistrer rapidement des stocks dans des situations où les articl
+es sont directement intégrés dans l'inventaire sans documentation complète. Stru
+cture et Fonctionnalités de "ar152"
+Informations de Base :
+Dépôt : Ce champ permet de sélectionner le dépôt où les articles seront stockés,
+ assurant que les stocks sont correctement alloués dans le système ERP.
+Fournisseur : L'identification du fournisseur permet de relier les entrées de st
+ock aux commandes d'achat appropriées et aux partenaires commerciaux.
+Détails de Transaction :
+No de pièce : Permet de saisir un numéro de référence pour l'opération de stock,
+ facilitant le suivi et la référence future.
+Libellé : Un descriptif de l'opération, comme "Entrée BL fournisseur", qui aide 
+à identifier rapidement la nature de la transaction dans les rapports et les aud
+its.
+Date de mouvement et Date de pièce : Ces dates documentent quand les articles on
+t été physiquement ajoutés au stock et la date de la documentation ou de la tran
+saction correspondante.
+Entrée d'Article :
+Code article et Désignation : Pour chaque article entrant dans le stock, le code
+ et la désignation doivent être précisés pour assurer l'exactitude des données d
+'inventaire.
+Quantité : Nombre d'unités de l'article reçu.
+Unité : L'unité de mesure pour la quantité entrée (ex. pièces, kilogrammes).
+Fournisseur / Fournisseur : Ce champ peut être utilisé pour spécifier des détail
+s additionnels sur le fournisseur ou pour différencier les articles venant de di
+fférents fournisseurs dans une même transaction.
+Gestion des Entrées :
+Ajouter / Copier / Effacer : Ces commandes permettent de gérer les lignes d'arti
+cles dans l'interface. "Ajouter" pour introduire un nouvel article, "Copier" pou
+r dupliquer une entrée existante, facilitant les entrées multiples similaires, e
+t "Effacer" pour supprimer une entrée non désirée.
+Mise à jour du Stock : Ce bouton crucial permet d'exécuter la mise à jour du sto
+ck dans le système, confirmant toutes les entrées et modifications réalisées.
+Facturation sans Achat ar153 : 
+
+
+
+[IMAGE HERE: image_295.png]
+
+--- AFTER ---
+Note explicative de la facturation sans achat programme « ar153 » : 
+Le programme "ar153" est conçu pour la gestion des facturations sans achat préal
+able dans un système ERP. Ce module est typiquement utilisé pour enregistrer les
+ factures des fournisseurs lorsque les marchandises ont été reçues sans un bon d
+e commande correspondant ou pour les transactions où la facturation précède la r
+éception des articles. Voici une explication des différentes sections et fonctio
+nnalités de ce programme :
+Caractéristiques Principales de "ar153"
+Informations Générales :
+Fournisseur : Permet d'entrer ou de sélectionner le fournisseur à partir duquel 
+la facture est reçue. Ceci est crucial pour le suivi des créances et le paiement
+ aux fournisseurs.
+No de pièce : Un champ pour saisir le numéro de référence de la facture ou du do
+cument interne pour une trace comptable précise.
+Libellé : Un descriptif de l'opération, par exemple, "Facture de fournisseur", q
+ui aide à identifier la transaction dans les rapports financiers.
+B.L. (Bon de Livraison) : Utilisé pour associer la facture à un bon de livraison
+ spécifique, si disponible.
+No facture : Le numéro de la facture du fournisseur, essentiel pour le rapproche
+ment des comptes et les vérifications comptables.
+Dépôt : Sélection du dépôt où les articles seront stockés ou ont été stockés, ce
+ qui permet de gérer précisément les niveaux de stock dans divers emplacements.
+Détails de la Facture :
+Date de mouvement et Date de pièce : Ces champs déterminent les dates officielle
+s pour l'enregistrement comptable de la transaction et la date physique de la ré
+ception ou de la transaction des articles.
+Gestion des Articles de la Facture :
+Code article, Désignation, Quantité, Unité, P.A. (Prix d'Achat) : Ces colonnes p
+ermettent de saisir des détails spécifiques pour chaque article facturé. Ces inf
+ormations sont utilisées pour mettre à jour les inventaires et pour le calcul de
+s coûts.
+Total : Calcule automatiquement le coût total pour chaque ligne d'article en mul
+tipliant la quantité par le prix d'achat.
+Fournisseur / Fournisseur : Indique le fournisseur de chaque article, utile pour
+ le suivi des achats par fournisseur.
+Boutons d'Action :
+Enregistrer : Sauvegarde toutes les informations saisies et met à jour les compt
+es et les stocks en conséquence.
+Rétablir : Annule toutes les modifications non enregistrées et revient aux donné
+es précédemment enregistrées.
+Mise à jour du Stock : Un bouton pour finaliser la mise à jour des stocks en fon
+ction des quantités et des articles entrés dans la facture.
+Disponibilité et historique article ar200 : 
+
+Note explicative disponibilité et historique programme « ar200 » : 
+Le programme "ar153" est conçu pour la gestion des facturations sans achat préal
+able dans un système ERP. Ce module est typiquement utilisé pour enregistrer les
+ factures des fournisseurs lorsque les marchandises ont été reçues sans un bon d
+e commande correspondant ou pour les transactions où la facturation précède la r
+éception des articles. Voici une explication des différentes sections et fonctio
+nnalités de ce programme :
+Caractéristiques Principales de "ar153"
+Informations Générales :
+Fournisseur : Permet d'entrer ou de sélectionner le fournisseur à partir duquel 
+la facture est reçue. Ceci est crucial pour le suivi des créances et le paiement
+ aux fournisseurs.
+No de pièce : Un champ pour saisir le numéro de référence de la facture ou du do
+cument interne pour une trace comptable précise.
+Libellé : Un descriptif de l'opération, par exemple, "Facture de fournisseur", q
+ui aide à identifier la transaction dans les rapports financiers.
+B.L. (Bon de Livraison) : Utilisé pour associer la facture à un bon de livraison
+ spécifique, si disponible.
+No facture : Le numéro de la facture du fournisseur, essentiel pour le rapproche
+ment des comptes et les vérifications comptables.
+Dépôt : Sélection du dépôt où les articles seront stockés ou ont été stockés, ce
+ qui permet de gérer précisément les niveaux de stock dans divers emplacements.
+Détails de la Facture :
+Date de mouvement et Date de pièce : Ces champs déterminent les dates officielle
+s pour l'enregistrement comptable de la transaction et la date physique de la ré
+ception ou de la transaction des articles.
+Gestion des Articles de la Facture :
+Code article, Désignation, Quantité, Unité, P.A. (Prix d'Achat) : Ces colonnes p
+ermettent de saisir des détails spécifiques pour chaque article facturé. Ces inf
+ormations sont utilisées pour mettre à jour les inventaires et pour le calcul de
+s coûts.
+Total : Calcule automatiquement le coût total pour chaque ligne d'article en mul
+tipliant la quantité par le prix d'achat.
+Fournisseur / Fournisseur : Indique le fournisseur de chaque article, utile pour
+ le suivi des achats par fournisseur.
+Boutons d'Action :
+Enregistrer : Sauvegarde toutes les informations saisies et met à jour les compt
+es et les stocks en conséquence.
+Rétablir : Annule toutes les modifications non enregistrées et revient aux donné
+es précédemment enregistrées.
+Mise à jour du Stock : Un bouton pour finaliser la mise à jour des stocks en fon
+ction des quantités et des articles entrés dans la facture.
+Table simple article ar900 : 
+
+Note explicative des tables simple programme « ar900 » : 
+Le programme "ar900" est un outil de gestion des tables simples dans un système 
+ERP, spécifiquement orienté vers la classification et l'organisation des article
+s selon diverses catégories. Il permet une gestion flexible et structurée des do
+nnées relatives aux articles, en facilitant le suivi et la récupération des info
+rmations nécessaires pour différentes opérations logistiques ou de reporting. Vo
+ici une explication détaillée de ses composants et de son fonctionnement.
+Structure et Fonctionnalités de "ar900"
+Catégorisation des Articles :
+Type Désignation : Cette colonne liste les différentes catégories sous lesquelle
+s les articles peuvent être classés, telles que "Gr. articles p. catalogue", "Gr
+. articles p. remise client", etc. Chaque type a un code et une désignation asso
+ciés qui aident à l'identification et à la classification correcte des articles 
+dans le système.
+Gestion des Catégories :
+No Code : Chaque catégorie est attribuée un numéro de code pour une référence fa
+cile et pour assurer l'uniformité dans le traitement des données.
+Désignation et Désignation 2 : Ces colonnes fournissent des descriptions détaill
+ées de chaque catégorie, rendant les distinctions claires entre elles pour évite
+r toute confusion lors de l'attribution des articles.
+Fonctions de Manipulation de Données :
+Ajouter / Modifier / Rétablir / Effacer / Annuler : Ces boutons permettent aux u
+tilisateurs de gérer efficacement les entrées dans la base de données.
+Ajouter permet de créer une nouvelle catégorie.
+Modifier est utilisé pour apporter des modifications à une catégorie existante.
+Rétablir restaure l'information à son état original avant les modifications.
+Effacer supprime une catégorie de la base de données.
+Annuler annule l'opération en cours et ferme la fenêtre sans sauvegarder les cha
+ngements.
+Outils de Recherche et de Filtrage :
+Langue, Numéro, Code : Ces champs permettent de filtrer les catégories affichées
+ en fonction de critères spécifiques, améliorant ainsi l'efficacité de la recher
+che et de la sélection d'informations.
+
+
+Gestion des tarifs (échelles et seuils) ar901 :
+
+
+Note explicative de la gestion des tarifs (échelles et seuils) programme « ar901
+ » : 
+Le programme "ar901" est destiné à la gestion des tarifs, en particulier pour co
+nfigurer et gérer les échelles de prix et les seuils pour différents types d'art
+icles ou services dans un système ERP. Cette fonctionnalité est cruciale pour le
+s entreprises qui opèrent avec des structures de prix variées en fonction de cri
+tères spécifiques tels que le volume, le type de client ou les conditions contra
+ctuelles. Voici une explication détaillée des composants et de la fonctionnalité
+ de ce programme :
+Structure et Fonctionnalités de "ar901"
+Liste des Tarifs :
+Numéro : Chaque tarif ou catégorie de prix est identifié par un numéro unique, f
+acilitant sa référence et sa gestion.
+Désignation française / allemande : Ces champs fournissent des descriptions dans
+ différentes langues, assurant que l'information est accessible et compréhensibl
+e pour des utilisateurs multilingues.
+Domaine : Indique le contexte dans lequel le tarif est applicable, par exemple, 
+"Gestion commerciale et facturation interne" ou "Facturation interne", ce qui ai
+de à déterminer où et comment les tarifs sont utilisés dans l'entreprise.
+Gestion des Tarifs :
+Prix T.T.C. : Indique si le prix comprend la taxe sur la valeur ajoutée (TVA), c
+e qui est essentiel pour la facturation correcte et la conformité fiscale.
+Les colonnes permettent de visualiser et de modifier les détails spécifiques des
+ tarifs, tels que les échelles de prix et les seuils qui déclenchent des tarifs 

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_376.png
+============================================================
+
+--- BEFORE ---
+
+
+Sélectionner le type de compte
+
+
+
+Valider les choix ci-dessus
+
+
+
+Cliquer pour imprimer ou visualiser les valeurs ci-dessous
+
+
+Critère de recherche par type de compte et type de journal co340 :
+
+
+
+Choix du critère de sélection
+
+
+
+Sélection des dates valeurs
+
+
+
+Choix du sens de l'écriture
+
+
+
+Cliquer pour sélectionner 
+le type de compte ou le type de journal
+
+
+Cliquer  pour imprimer ou visualiser les valeurs ci-dessous
+
+<A FAIRE>: Insérer ici le texte de description...
+Edition des écritures co355
+Ce programme a pour but d’imprimer des écritures, selon les critères de recherch
+es sélectionnés :
+
+
+Choisir l'exercice
+
+
+Choix du type de journal
+
+
+Choix du type de compte
+
+
+Bornes des No(s) de pièce
+
+
+Bornes des numéros de compte
+
+
+Bornes des dates-valeurs
+
+
+Bornes des montants
+
+
+Valider les choix ci-dessus et traitement
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de l’édition des écritures programme « co355 » : 
+Le programme co355 est conçu pour permettre une édition flexible des écritures c
+omptables. Cette fonction est particulièrement utile pour les utilisateurs ayant
+ besoin de générer des rapports détaillés ou de faire des vérifications précises
+. Voici une description détaillée de ses fonctionnalités principales :
+Choix de l'exercice comptable :
+Permet de sélectionner l'exercice comptable pour lequel les écritures doivent êt
+re éditées ou examinées.
+Choix du type de journal :
+Cette option permet de filtrer les écritures par le type de journal (par exemple
+, opérations diverses, ventes, achats), facilitant la recherche d'écritures spéc
+ifiques.
+Choix du type de compte :
+Permet de spécifier le type de compte pour affiner la recherche, par exemple, co
+mptes généraux ou comptes auxiliaires.
+Bornes des numéros de pièce :
+Définit une plage de numéros de pièce pour limiter la recherche à certaines écri
+tures.
+Bornes des numéros de compte :
+Similaire aux numéros de pièce, cette option permet de filtrer les écritures en 
+fonction d'une plage de numéros de compte.
+Bornes des dates-valeurs :
+Permet de définir une période spécifique en fonction de la date de valeur des éc
+ritures pour cibler les transactions survenant pendant cette période.
+Bornes des montants :
+Utilisé pour rechercher des écritures comptables dans une certaine plage de mont
+ants, ce qui est utile pour identifier les transactions de grande ou petite tail
+le.
+Validation et traitement :
+Après avoir défini tous les critères de recherche, cette fonction permet de vali
+der les choix et de générer les résultats correspondants.
+
+
+Conrtôle lignes DB db399
+Fenêtre de contrôle de lignes comptabilisées.
+Ce programme a pour but de contrôler la cohérence entre le montant des lignes et
+ le solde de chaque compte, ainsi que la somme des montants des lignes postes ou
+verts avec le solde et que la somme des montants des lignes postes fermés fasse 
+zéro :
+
+Note explicative du contrôle des lignes DB programme « db399 » : 
+
+Objectif du Programme
+db399 a pour objectif principal de vérifier la cohérence des données comptables 
+associées aux débiteurs. Il s'assure que les montants enregistrés dans les diffé
+rentes lignes des postes ouverts et fermés sont corrects et logiques par rapport
+ aux soldes enregistrés pour chaque compte.
+Fonctionnalités Clés
+Contrôle de Cohérence des Lignes Débiteurs :
+Vérification des Postes Ouverts : Le programme contrôle que la somme des montant
+s des lignes des postes ouverts correspond exactement au solde du compte débiteu
+r concerné. Cela garantit que tous les montants non réglés sont correctement rep
+ortés et suivis.
+Vérification des Postes Fermés : Il vérifie également que la somme des montants 
+des lignes des postes fermés est égale à zéro. Ceci est crucial pour confirmer q
+ue toutes les transactions clôturées ont été correctement soldées et qu'il n'y a
+ pas de résidus inexplicables ou d'erreurs de saisie.
+Utilisation
+Lancement du Contrôle : À l'ouverture du programme, une fenêtre de dialogue vous
+ demande si vous souhaitez lancer le contrôle maintenant. En sélectionnant "Oui"
+, le programme procédera à l'examen des données pour détecter les incohérences o
+u erreurs potentielles.
+Rapport des Résultats : Après l'exécution, le programme peut générer un rapport 
+détaillant les incohérences trouvées, permettant ainsi une intervention correcti
+ve rapide.
+
+En résumé, le programme db399 joue un rôle critique dans la gestion des débiteur
+s en assurant que toutes les entrées sont cohérentes et correctement alignées av
+
+[IMAGE HERE: image_376.png]
+
+--- AFTER ---
+ec les états financiers globaux de l'entreprise, facilitant ainsi une gestion fi
+nancière précise et efficace.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Demandes d’acomptes :
+Saisie des demandes d’acomptes co503 : 
+
+Note explicative de la saisie des demandes d’acompte programme « co503 » : 
+Le programme co503 est conçu pour la copie des écritures comptables d'un lot à u
+n autre au sein du système ERP. Ce programme est très utile pour la duplication 
+de données comptables précises entre différents lots, facilitant ainsi les proce
+ssus administratifs et la gestion financière. Voici comment il est structuré et 
+son utilisation :
+Structure du Programme
+Source :
+Lot : Identifie le lot source d'où les écritures comptables seront copiées.
+N° : Spécifie le numéro d'identification spécifique au sein du lot source.
+Exercice : Permet de sélectionner l'exercice financier auquel appartient le lot 
+source.
+Destination :
+Créer un lot identique : Option pour créer automatiquement un lot identique à ce
+lui de la source pour y copier les écritures.
+Dans l'exercice : Permet de choisir l'exercice financier pour le nouveau lot ou 
+la destination des écritures.
+Lot : Permet de sélectionner ou d'entrer le lot de destination où les écritures 
+seront copiées.
+N° : Option de saisir un numéro spécifique pour le lot de destination si nécessa
+ire.
+Exercice : Sélectionne l'exercice financier de la destination.
+
+Epuration des soldes acompte co505 : 
+
+Note explicative de l’épuration des soldes acomptes programme « co505 » : 
+Le programme co505 est conçu pour l'épuration des soldes d'acomptes dans le syst
+ème ERP. Il permet de gérer et ajuster les soldes d'acomptes des clients de mani
+ère efficace et structurée. Voici une explication détaillée de ses composantes e
+t de son fonctionnement :
+Structure et Fonctionnalités du Programme
+Sélection des Clients :
+Tous les clients : Cette option permet de sélectionner tous les clients pour l'é
+puration des soldes.
+Sélection alphabétique ou numérique : Ces options permettent de filtrer et de sé
+lectionner les clients selon l'ordre alphabétique ou numérique pour une gestion 
+plus ciblée.
+Détails de l'Écriture :
+Type de journal et Type de pièce : Permettent de spécifier le journal et le type
+ de pièce comptable utilisés pour les écritures d'épuration.
+Date de pièce et Date de valeur : Ces champs déterminent les dates applicables a
+ux écritures d'épuration, influençant la période comptable concernée.
+No de pièce : Spécifie un numéro de pièce si nécessaire pour le traitement des é
+critures.
+Gestion des Lots :
+Nouveau lot ou Lot déjà existant : Choix entre créer un nouveau lot d'écritures 
+pour l'épuration ou utiliser un lot déjà existant.
+Intitulé du lot : Permet de donner un nom spécifique au lot pour une identificat
+ion facile dans le système.
+Contrôle des Saldes :
+Libellé écritures : Définit le libellé à appliquer aux écritures générées par l'
+épuration.
+Solde maxi (%) et Solde maxi (Fr.) : Ces champs permettent de définir des limite
+s pour le solde d'acompte maximal autorisé avant que l'épuration ne soit appliqu
+ée, soit en pourcentage, soit en montant fixe.
+
+
+
+
+
+Liste soldes :
+Soldes db200 :
+Listes des soldes débiteurs/clients :
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée.
+
+
+
+
+
+Cocher pour imprimer également 
+les clients ayant des soldes à zéro
+
+
+Saisir la date d’arrêté de la balance.
+Calcul des soldes à cette date
+
+Note explicative des soldes programme « db200 » : 
+
+Le programme db200 est spécifiquement conçu pour gérer et analyser les soldes de
+s débiteurs dans un système ERP. Il offre un moyen efficace de contrôler les sol
+des des clients à une date spécifique, permettant aux utilisateurs de suivre l'é
+volution des comptes clients. Voici un guide explicatif sur sa composition et se
+s fonctionnalités principales :
+Fonctionnalités Principales du Programme db200
+Sélection du Critère de Recherche :
+Par numéro de débiteur : Permet aux utilisateurs de rechercher des soldes spécif
+iques par le numéro attribué à chaque client dans la base de données.
+Options de Filtrage et d'Affichage :
+Cocher pour imprimer également les clients ayant des soldes à zéro : Cette optio
+n donne la possibilité d'inclure dans les rapports les clients qui ont un solde 
+nul à la date d'arrêté, ce qui est utile pour l'analyse de la complétude des don
+nées.
+Soldes à zéro : Active la visibilité des soldes nuls directement sur l'interface
+, sans avoir besoin d'imprimer.
+Gestion des Dates :
+Saisir la date d'arrêté de la balance : Les utilisateurs doivent entrer la date 
+pour laquelle ils souhaitent consulter les soldes. Le système calcule et affiche
+ les soldes de tous les débiteurs à cette date précise, permettant un contrôle f
+inancier précis à des moments clés, comme la fin d'un exercice fiscal ou d'un mo
+is.
+
+Liste chiffre d'affaires db210 :
+
+Listes de chiffre d’affaires débiteurs/clients :
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre des réponses de sélection possible :
+
+Saisir les bornes des mois désirés 
+pour le calcul du chiffre d’affaires périodique
+

@@ -122,7 +122,7 @@ class TrainingComparisonPipeline:
         cmd = [
             "python3", "finetune_smolvlm_dpo.py",
             "--output-dir", self.models["dpo_only"],
-            "--dataset", "dpo_image_dataset/dpo_dataset.json",
+            "--dataset", "dpo_image_dataset/dpo_dataset_gemini.json",
             "--image-dir", "dpo_image_dataset"
         ]
 
@@ -164,7 +164,7 @@ class TrainingComparisonPipeline:
             "python3", "finetune_smolvlm_dpo.py",
             "--base-model", qcm_temp_dir,
             "--output-dir", self.models["qcm_dpo_sequential"],
-            "--dataset", "dpo_image_dataset/dpo_dataset.json",
+            "--dataset", "dpo_image_dataset/dpo_dataset_gemini.json",
             "--image-dir", "dpo_image_dataset"
         ]
 

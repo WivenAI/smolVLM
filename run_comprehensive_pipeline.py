@@ -79,6 +79,21 @@ class ComprehensivePipeline:
         print(f"Log file: {self.log_file}")
         print(f"="*80)
 
+    def get_dataset_short_name(self, dataset_path: str) -> str:
+        """Extract a short unique identifier from dataset path"""
+        from pathlib import Path
+        # Get filename without extension
+        name = Path(dataset_path).stem
+
+        # Simplify common names
+        name = name.replace("qcm_dataset", "qcm")
+        name = name.replace("dpo_dataset", "dpo")
+        name = name.replace("_cleaned", "")
+        name = name.replace("_nova_pro", "_nova")
+        name = name.replace("balanced_qcm_all_end", "balanced_qcm")
+
+        return name
+
     def run_systematic_pipeline(self, experiment_name: str, extra_args: list = None):
         """Run the systematic pipeline with specific configuration"""
         print("\n" + "🔬 "*20)
@@ -179,93 +194,147 @@ class ComprehensivePipeline:
         """Phase 3: Train on ERP with QCM (SFT), test on all"""
         print("\n" + "="*80)
         print("PHASE 3: ERP TRAINING - QCM (SFT)")
-        print("Train on ERP QCM dataset, test on ALL benchmarks")
+        print(f"Train on {len(self.args.qcm_datasets)} QCM datasets, test on ALL benchmarks")
+        print(f"QCM datasets: {self.args.qcm_datasets}")
         print("="*80)
 
         if self.args.skip_erp_qcm:
             print("Skipping ERP QCM training")
             return True
 
-        return self.run_systematic_pipeline(
-            experiment_name="erp_qcm_sft",
-            extra_args=[
-                "--skip-baseline",
-                "--train-erp",
-                "--erp-strategy", "qcm",
-                "--qcm-dataset", self.args.qcm_dataset,
-                "--image-dir", self.args.image_dir,
-                "--epochs", str(self.args.epochs)
-            ]
-        )
+        for qcm_dataset in self.args.qcm_datasets:
+            dataset_name = self.get_dataset_short_name(qcm_dataset)
+            print(f"\n{'='*80}")
+            print(f"Training on QCM dataset: {qcm_dataset} ({dataset_name})")
+            print(f"{'='*80}")
+
+            success = self.run_systematic_pipeline(
+                experiment_name=f"erp_qcm_sft_{dataset_name}",
+                extra_args=[
+                    "--skip-baseline",
+                    "--train-erp",
+                    "--erp-strategy", "qcm",
+                    "--qcm-dataset", qcm_dataset,
+                    "--image-dir", self.args.image_dir,
+                    "--epochs", str(self.args.epochs)
+                ]
+            )
+
+            if not success and not self.args.continue_on_error:
+                return False
+
+        return True
 
     def phase4_erp_training_dpo_dataset_sft(self):
         """Phase 4: Train on ERP DPO dataset with SFT (use chosen responses only), test on all"""
         print("\n" + "="*80)
         print("PHASE 4: ERP TRAINING - DPO Dataset with SFT")
-        print("Train on ERP DPO dataset using SFT (chosen responses), test on ALL benchmarks")
+        print(f"Train on {len(self.args.dpo_datasets)} DPO datasets using SFT (chosen responses), test on ALL benchmarks")
+        print(f"DPO datasets: {self.args.dpo_datasets}")
         print("="*80)
 
         if self.args.skip_erp_dpo_sft:
             print("Skipping ERP DPO-dataset SFT training")
             return True
 
-        return self.run_systematic_pipeline(
-            experiment_name="erp_dpo_dataset_sft",
-            extra_args=[
-                "--skip-baseline",
-                "--train-erp",
-                "--erp-strategy", "dpo-sft",  # Use DPO dataset but train with SFT
-                "--dpo-dataset", self.args.dpo_dataset,
-                "--image-dir", self.args.image_dir,
-                "--epochs", str(self.args.epochs)
-            ]
-        )
+        for dpo_dataset in self.args.dpo_datasets:
+            dataset_name = self.get_dataset_short_name(dpo_dataset)
+            print(f"\n{'='*80}")
+            print(f"Training on DPO dataset (SFT): {dpo_dataset} ({dataset_name})")
+            print(f"{'='*80}")
+
+            success = self.run_systematic_pipeline(
+                experiment_name=f"erp_dpo_dataset_sft_{dataset_name}",
+                extra_args=[
+                    "--skip-baseline",
+                    "--train-erp",
+                    "--erp-strategy", "dpo-sft",  # Use DPO dataset but train with SFT
+                    "--dpo-dataset", dpo_dataset,
+                    "--image-dir", self.args.image_dir,
+                    "--epochs", str(self.args.epochs)
+                ]
+            )
+
+            if not success and not self.args.continue_on_error:
+                return False
+
+        return True
 
     def phase5_erp_training_dpo(self):
         """Phase 5: Train on ERP with DPO method, test on all"""
         print("\n" + "="*80)
         print("PHASE 5: ERP TRAINING - DPO Method")
-        print("Train on ERP DPO dataset using DPO method, test on ALL benchmarks")
+        print(f"Train on {len(self.args.dpo_datasets)} DPO datasets using DPO method, test on ALL benchmarks")
+        print(f"DPO datasets: {self.args.dpo_datasets}")
         print("="*80)
 
         if self.args.skip_erp_dpo:
             print("Skipping ERP DPO training")
             return True
 
-        return self.run_systematic_pipeline(
-            experiment_name="erp_dpo",
-            extra_args=[
-                "--skip-baseline",
-                "--train-erp",
-                "--erp-strategy", "dpo",
-                "--dpo-dataset", self.args.dpo_dataset,
-                "--image-dir", self.args.image_dir
-            ]
-        )
+        for dpo_dataset in self.args.dpo_datasets:
+            dataset_name = self.get_dataset_short_name(dpo_dataset)
+            print(f"\n{'='*80}")
+            print(f"Training on DPO dataset (DPO method): {dpo_dataset} ({dataset_name})")
+            print(f"{'='*80}")
+
+            success = self.run_systematic_pipeline(
+                experiment_name=f"erp_dpo_{dataset_name}",
+                extra_args=[
+                    "--skip-baseline",
+                    "--train-erp",
+                    "--erp-strategy", "dpo",
+                    "--dpo-dataset", dpo_dataset,
+                    "--image-dir", self.args.image_dir
+                ]
+            )
+
+            if not success and not self.args.continue_on_error:
+                return False
+
+        return True
 
     def phase6_erp_training_combined(self):
         """Phase 6: Train on ERP with QCM+DPO, test on all"""
+        total_combinations = len(self.args.qcm_datasets) * len(self.args.dpo_datasets)
         print("\n" + "="*80)
         print("PHASE 6: ERP TRAINING - QCM + DPO (Sequential)")
-        print("Train on ERP QCM then DPO, test on ALL benchmarks")
+        print(f"Train on all QCM+DPO combinations ({total_combinations} total), test on ALL benchmarks")
+        print(f"QCM datasets: {self.args.qcm_datasets}")
+        print(f"DPO datasets: {self.args.dpo_datasets}")
         print("="*80)
 
         if self.args.skip_erp_combined:
             print("Skipping ERP combined training")
             return True
 
-        return self.run_systematic_pipeline(
-            experiment_name="erp_qcm_dpo",
-            extra_args=[
-                "--skip-baseline",
-                "--train-erp",
-                "--erp-strategy", "qcm+dpo",
-                "--qcm-dataset", self.args.qcm_dataset,
-                "--dpo-dataset", self.args.dpo_dataset,
-                "--image-dir", self.args.image_dir,
-                "--epochs", str(self.args.epochs)
-            ]
-        )
+        for qcm_dataset in self.args.qcm_datasets:
+            for dpo_dataset in self.args.dpo_datasets:
+                qcm_name = self.get_dataset_short_name(qcm_dataset)
+                dpo_name = self.get_dataset_short_name(dpo_dataset)
+                print(f"\n{'='*80}")
+                print(f"Training on QCM+DPO combination:")
+                print(f"  QCM: {qcm_dataset} ({qcm_name})")
+                print(f"  DPO: {dpo_dataset} ({dpo_name})")
+                print(f"{'='*80}")
+
+                success = self.run_systematic_pipeline(
+                    experiment_name=f"erp_qcm_dpo_{qcm_name}_{dpo_name}",
+                    extra_args=[
+                        "--skip-baseline",
+                        "--train-erp",
+                        "--erp-strategy", "qcm+dpo",
+                        "--qcm-dataset", qcm_dataset,
+                        "--dpo-dataset", dpo_dataset,
+                        "--image-dir", self.args.image_dir,
+                        "--epochs", str(self.args.epochs)
+                    ]
+                )
+
+                if not success and not self.args.continue_on_error:
+                    return False
+
+        return True
 
     def phase7_mega_comparison(self):
         """Phase 6: Aggregate all results and create mega comparison"""
@@ -469,16 +538,26 @@ class ComprehensivePipeline:
 
     def run_comprehensive_pipeline(self):
         """Run the complete comprehensive pipeline"""
+        # Calculate total experiments
+        baseline_count = 0 if self.args.skip_baseline else 1
+        benchmark_count = 0 if self.args.skip_benchmark_training else len(BENCHMARKS_TO_TRAIN)
+        qcm_count = 0 if self.args.skip_erp_qcm else len(self.args.qcm_datasets)
+        dpo_sft_count = 0 if self.args.skip_erp_dpo_sft else len(self.args.dpo_datasets)
+        dpo_method_count = 0 if self.args.skip_erp_dpo else len(self.args.dpo_datasets)
+        combined_count = 0 if self.args.skip_erp_combined else (len(self.args.qcm_datasets) * len(self.args.dpo_datasets))
+        total_experiments = baseline_count + benchmark_count + qcm_count + dpo_sft_count + dpo_method_count + combined_count
+
         print("\n" + "🚀 "*20)
         print("COMPREHENSIVE PIPELINE - THE ULTIMATE EVALUATION")
         print("🚀 "*20)
+        print(f"\nTotal experiments to run: {total_experiments}")
         print("\nThis will run:")
-        print("  1. Baseline on all benchmarks")
-        print(f"  2. Train on {len(BENCHMARKS_TO_TRAIN)} benchmarks, test each on all")
-        print("  3. Train on ERP (QCM with SFT), test on all")
-        print("  4. Train on ERP (DPO dataset with SFT), test on all")
-        print("  5. Train on ERP (DPO dataset with DPO method), test on all")
-        print("  6. Train on ERP (QCM+DPO combined), test on all")
+        print(f"  1. Baseline on all benchmarks ({baseline_count} experiment)")
+        print(f"  2. Train on {len(BENCHMARKS_TO_TRAIN)} benchmarks, test each on all ({benchmark_count} experiments)")
+        print(f"  3. Train on ERP (QCM with SFT) - {len(self.args.qcm_datasets)} datasets ({qcm_count} experiments)")
+        print(f"  4. Train on ERP (DPO dataset with SFT) - {len(self.args.dpo_datasets)} datasets ({dpo_sft_count} experiments)")
+        print(f"  5. Train on ERP (DPO dataset with DPO method) - {len(self.args.dpo_datasets)} datasets ({dpo_method_count} experiments)")
+        print(f"  6. Train on ERP (QCM+DPO combined) - all combinations ({combined_count} experiments)")
         print("  7. MEGA comparison of all results")
         print("\n" + "🚀 "*20)
 
@@ -550,13 +629,19 @@ def main():
                        help="Number of epochs")
 
     # ERP dataset paths
-    parser.add_argument("--qcm-dataset", type=str,
-                       default="dpo_image_dataset/qcm/qcm_dataset.json",
-                       help="QCM dataset path (options: dpo_image_dataset/qcm/qcm_dataset.json with images, "
-                            "dpo_image_dataset/qcm/qcm_dataset_nova_pro.json, balanced_qcm_all_end.json text-only)")
-    parser.add_argument("--dpo-dataset", type=str,
-                       default="dpo_image_dataset/dpo_dataset_cleaned.json",
-                       help="DPO dataset path (options: dpo_dataset_cleaned.json, dpo_dataset_nova_pro.json)")
+    parser.add_argument("--qcm-datasets", nargs="+", type=str,
+                       default=[
+                           "dpo_image_dataset/qcm/qcm_dataset.json",
+                           "dpo_image_dataset/qcm/qcm_dataset_nova_pro.json",
+                           "balanced_qcm_all_end.json"
+                       ],
+                       help="QCM dataset paths (can specify multiple)")
+    parser.add_argument("--dpo-datasets", nargs="+", type=str,
+                       default=[
+                           "dpo_image_dataset/dpo_dataset_gemini.json",
+                           "dpo_image_dataset/dpo_dataset_nova_pro.json"
+                       ],
+                       help="DPO dataset paths (can specify multiple)")
     parser.add_argument("--image-dir", type=str,
                        default="dpo_image_dataset",
                        help="Image directory (contains ERP interface screenshots)")

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_576.png
+============================================================
+
+--- BEFORE ---
+Type d'édition : Sélection du format d'édition (Standard, Excel, PDF).
+Visualisation PDF uniquement : Permet la visualisation PDF uniquement.
+Envoi par email autorisé : Autorisation de l'envoi par email.
+Arrondi Total T.V.A.
+Arrondi aux 5 centimes : Arrondi au plus proche 5 centimes.
+Arrondi au ct sans arrondi de la facture : Arrondi au centime sans arrondi de la
+ facture.
+Arrondi au ct avec arrondi automatique de la facture : Arrondi au centime avec a
+rrondi automatique de la facture.
+Type de Refacturation
+Aucun : Pas de refacturation.
+M.O. : Main d'œuvre.
+Matériaux : Matériaux.
+Transports : Transports.
+Machines : Machines.
+Coffrage : Coffrage.
+Divers : Divers.
+Carburants : Carburants.
+Paramétrage des impressions des factures fa903 :
+
+Note explicative du paramétrage des impressions des factures programme « fa903 »
+ : 
+
+Le programme "fa903" est utilisé pour le paramétrage des impressions des facture
+s dans le système ERP. Voici une description détaillée de sa composition et de s
+on fonctionnement :
+1. Liste des Paramètres d'Impression
+La partie gauche de l'écran affiche une liste des configurations d'impression ex
+istantes. Les colonnes incluent :
+Type Facture : Type de facture concerné.
+Groupe Client : Groupe de clients concerné.
+Succursale : Succursale concernée par les paramètres d'impression.
+Exempl. : Nombre d'exemplaires à imprimer.
+Blanc : Nombre de copies en bac blanc.
+Coul. 1 : Nombre de copies en couleur 1.
+Coul. 2 : Nombre de copies en couleur 2.
+2. Détails du Paramétrage Sélectionné
+La partie droite de l'écran affiche les détails du paramétrage d'impression séle
+ctionné. Elle est composée des éléments suivants :
+Sélection des Critères
+Succursale : Menu déroulant pour sélectionner la succursale concernée par le par
+amétrage d'impression.
+Groupe Client : Menu déroulant pour sélectionner le groupe de clients concerné p
+ar le paramétrage d'impression.
+Type de facture : Menu déroulant pour sélectionner le type de facture concerné p
+ar le paramétrage d'impression.
+Paramétrage des Copies
+Nombre d'exemplaires client (dont l'original) : Permet de définir le nombre tota
+l d'exemplaires à imprimer pour le client, y compris l'original.
+Nombre de copies bac blanc : Permet de définir le nombre de copies à imprimer en
+ utilisant le bac de papier blanc.
+Nombre de copies bac "couleur 1" : Permet de définir le nombre de copies à impri
+mer en utilisant le bac de papier de la première couleur.
+Nombre de copies bac "couleur 2" : Permet de définir le nombre de copies à impri
+mer en utilisant le bac de papier de la deuxième couleur.
+Paramètres pour l’interface avec Centrale programme « param » :
+
+Note explicative des paramètres pour l’interface avec Central programme « param 
+» : 
+
+Le programme "param" est utilisé pour gérer les paramètres d'interface entre dif
+férents systèmes, en particulier pour l'importation et l'exportation de données 
+entre l'ERP et d'autres systèmes. Voici une explication détaillée de sa composit
+ion et de son fonctionnement :
+1. Liste des Paramètres d'Interface
+La partie supérieure de l'écran affiche une liste des paramètres d'interface act
+uels. Les colonnes incluses sont :
+Société : Identifiant de la société concernée par le paramétrage.
+Dossier Export Chantier : Répertoire utilisé pour exporter les données de chanti
+er.
+Dossier Export Débiteur : Répertoire utilisé pour exporter les données des débit
+eurs.
+Dossier Import Chantier : Répertoire utilisé pour importer les données de chanti
+er.
+Dossier Import Débiteur : Répertoire utilisé pour importer les données des débit
+eurs.
+2. Détails des Paramètres Sélectionnés
+La partie inférieure de l'écran affiche les détails du paramétrage sélectionné, 
+permettant de modifier ou de configurer les paramètres d'interface spécifiques.
+Répertoires pour les Exports depuis MS2000
+Débiteur : Spécifie le chemin du répertoire où les données des débiteurs seront 
+exportées.
+Chantier : Spécifie le chemin du répertoire où les données des chantiers seront 
+exportées.
+Répertoires pour les Imports depuis AMMANN
+Débiteur : Spécifie le chemin du répertoire où les données des débiteurs seront 
+importées.
+Chantier : Spécifie le chemin du répertoire où les données des chantiers seront 
+importées.
+
+Ms Offre :
+Validation des chantiers créés par Grav  ar360 : 
+
+Note explicative de la validation des chantiers crée par Grav programme « ar360 
+» : 
+Le programme "ar360" est utilisé pour la validation des chantiers créés par la g
+ravière. Ce programme permet de gérer et de valider les chantiers importés avant
+ de les intégrer dans le système principal. Voici une explication détaillée de s
+a composition et de son fonctionnement :
+1. Liste des Chantiers
+La partie supérieure de l'écran affiche une liste des chantiers importés ou vali
+dés. Les colonnes incluses sont :
+Nom du fichier d'import : Le nom du fichier à partir duquel les chantiers ont ét
+é importés.
+N° Chantier Source : Le numéro du chantier tel qu'il apparaît dans le fichier so
+urce.
+N° Chantier MS : Le numéro du chantier dans le système MS.
+Nom chantier : Le nom du chantier.
+Adresse 1 : La première ligne de l'adresse du chantier.
+Npa : Le code postal du chantier.
+Localité : La localité du chantier.
+2. Détails du Chantier Sélectionné
+La partie inférieure de l'écran permet de visualiser et de modifier les détails 
+du chantier sélectionné. Les champs disponibles incluent :
+Informations Générales
+N° Chantier source : Le numéro du chantier dans le fichier source.
+Créé à partir du fichier : Le fichier à partir duquel le chantier a été créé.
+N° Chantier MS : Le numéro du chantier dans le système MS.
+N° CA : Le numéro du compte client associé au chantier.
+Désignation source : La désignation du chantier telle qu'elle apparaît dans le f
+ichier source.
+Désignation compl. : Compléments de désignation du chantier.
+Adresse 1, 2, 3 : Les lignes d'adresse du chantier.
+Npa : Le code postal du chantier.
+Localité : La localité du chantier.
+Pays : Le pays du chantier.
+Informations Client
+Client source : Le nom du client tel qu'il apparaît dans le fichier source.
+Zone : La zone géographique du chantier.
+Client source : Informations supplémentaires sur le client.
+
+Gestion des affaires ar960 : 
+
+
+Edition paramétrable des affaires ar961 :
+
+
+
+Onglet « Edition » :
+
+
+
+
+
+Edition paramétrable ar971 : 
+
+
+Note explicative de l’Edition paramétrable des liste d’offre programme « ar971 »
+ : 
+Le programme "ar971" est utilisé pour l'édition paramétrable des listes d'offres
+
+[IMAGE HERE: image_576.png]
+
+--- AFTER ---
+. Il permet de configurer et de générer des rapports personnalisés sur les offre
+s commerciales en fonction des critères définis par l'utilisateur. Voici une exp
+lication détaillée de sa composition et de son fonctionnement :
+1. Sélection des Offres
+La partie supérieure de l'écran permet de sélectionner les critères de génératio
+n de la liste des offres :
+Exercice : Sélectionner l'année pour laquelle les offres doivent être générées.
+Titre document : Donnez un titre au document qui sera généré.
+Visualisation requête : Permet de prévisualiser la requête avant de générer la l
+iste.
+Format Ligne/Page : Choisir si le format doit être en ligne ou en page.
+Portrait/Paysage : Choisir l'orientation de la page.
+12ème de pouce/15ème de pouce : Sélectionner la taille des marges.
+2. Onglet Sélections
+Cet onglet permet de spécifier les enregistrements à inclure dans la liste des o
+ffres :
+Lire : Choisir de lire tous les enregistrements ou filtrer selon des critères sp
+écifiques.
+Du fichier : Sélectionner le fichier source contenant les données à utiliser (da
+ns ce cas, "affaires (affaires)").
+3. Onglet Édition
+Cet onglet permet de définir les critères d'édition et les champs à inclure dans
+ le rapport :
+Liste des critères : Affiche les critères utilisés pour filtrer les enregistreme
+nts.
+Ajouter : Ajouter de nouveaux critères pour filtrer les offres.
+Modifier : Modifier les critères existants.
+Supprimer : Supprimer des critères de filtrage.
+4. Liste des Critères
+Les critères de filtrage peuvent être définis et ajustés pour affiner la sélecti
+on des offres à inclure dans le rapport. Les critères peuvent inclure :
+Type de facture
+Numéro d'offre
+Client
+Chantier
+Date de début et de fin de validité
+
+Gestion des offres client / chantier ar975 : 
+
+Note explicative de la gestion des offres clients / chantier programme « ar975 »
+ : 
+
+Le programme "ar975" est utilisé pour la gestion des offres client/chantier. Il 
+permet de suivre et de gérer les offres commerciales depuis leur création jusqu'
+à leur conclusion, qu'elles soient acceptées ou refusées. Voici une explication 
+détaillée de sa composition et de son fonctionnement :
+1. Filtrage et Affichage des Offres
+La partie supérieure de l'écran permet de filtrer et d'afficher les offres selon
+ leur état :
+Toutes les offres/affaires : Affiche toutes les offres, qu'elles soient provisoi
+res, existantes ou terminées.
+Offres provisoires : Affiche uniquement les offres en cours de préparation.
+Affaires existantes : Affiche uniquement les offres qui ont été validées et qui 
+sont en cours de traitement.
+Offres terminées : Affiche uniquement les offres qui ont été clôturées.
+Les colonnes incluses sont :
+Désignation affaire : La désignation de l'affaire liée à l'offre.
+Numéro : Le numéro de l'offre.
+Client Désignation client : Le nom du client.
+Chantier : Le nom du chantier associé.
+Npa : Le code postal du chantier.
+Nom de la localité : La localité du chantier.
+Zone : La zone géographique du chantier.
+Evts : Les éventuelles remarques ou événements liés à l'offre.
+2. Détails de l'Offre Sélectionnée
+La partie inférieure de l'écran permet de saisir ou de modifier les détails de l
+'offre sélectionnée. Les champs disponibles incluent :
+Informations Générales
+Site : Le site de l'entreprise où l'offre est gérée.
+N° offre : Le numéro de l'offre.
+du : La date de début de validité de l'offre.
+Valable jusqu'au : La date de fin de validité de l'offre.
+Informations Client
+Client existant/inexistant : Sélectionner si le client existe déjà dans la base 
+de données ou s'il s'agit d'un nouveau client.
+Adresse client existante : Permet de sélectionner une adresse existante pour le 
+client.
+Désignation client : Le nom du client.
+Conditions de paiement : Les conditions de paiement proposées au client.
+Tarif : Le tarif appliqué pour cette offre.
+N° Fax : Le numéro de fax du client.
+N° Tel : Le numéro de téléphone du client.
+À l'attention de : La personne de contact chez le client.
+Localité : La localité du client.
+Informations Chantier
+N° Chantier : Le numéro du chantier.
+Objet du chantier : La description du chantier.
+Zone : La zone géographique du chantier.
+Qté M3 totale : La quantité totale en mètre cube (M3) pour le chantier.
+Désignation affaire : La désignation de l'affaire liée à l'offre.
+Gestion des Conditions
+Offre fermée : Indique si l'offre est fermée.
+Adjugée à l'entreprise : Indique si l'offre a été adjugée à l'entreprise.
+Soumission : Indique si l'offre a été soumise.
+Saut de page avant les textes divers : Ajoute un saut de page avant les textes d
+ivers dans l'impression de l'offre.
+Avec saut de page avant les conditions : Ajoute un saut de page avant les condit
+ions dans l'impression de l'offre.
+Informations Responsables
+Responsable : Le nom du responsable de l'offre.
+Nom Resp. : Le nom du responsable.
+Fonction : La fonction du responsable.
+N° Tel : Le numéro de téléphone du responsable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Gestion des offres of110 :
+
+Ce programme permet de créer des offres (sans compte CA - Analytique), qui une f
+ois acceptées permettront d'éditer des factures de demande d'acomptes.
+
+Résumé du flux :
+
+1) Création offre avec le bouton  
+2) Validation de l'offre par le client (saisie du compte CA)  par le bouton Vali
+der  
+3) Saisie d'une demande d'acompte avec le bouton  Attention : la génération d'ac
+omptes est impossible si l'offre n'a pas été validée auparavant (voir point 2)
+
+4) Comptabilisation de la facture d'acompte avec le programme fa661
+
+
+
+
+
+
+Filtre des genres d'offres
+
+Filtre par dates
+
+Panneau de commandes spécifique : 
+
+ Fonctions "Post-it"
+ Visualiser l'adresse du client

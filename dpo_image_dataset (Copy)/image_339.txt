@@ -1,0 +1,308 @@
+CONTEXT FOR: image_339.png
+============================================================
+
+--- BEFORE ---
+Fonctionnalités :
+Calcul Escompte : Un bouton permettant de calculer les escomptes pour les paieme
+nts anticipés ou dans les conditions de paiement convenues.
+Retour aux factures : Ce bouton permet de revenir à la liste complète des factur
+es émises pour le compte du débiteur.
+
+Chaque ligne représente un ensemble de transactions pour une année donnée, perme
+ttant aux utilisateurs de suivre les variations annuelles des activités avec le 
+débiteur. Cet onglet est essentiel pour la gestion des relations financières ave
+c les clients, offrant une traçabilité détaillée des montants facturés et des co
+nditions de paiement associées.
+
+Onglets « Ecritures effacés »
+
+Les informations des écritures effacées d’un client sont à disposition dans cett
+e vue :
+Clic bouton droit, affiche une liste de fonctionnalités. Voir ci-dessous :
+
+
+Note explicative de l’onglet « Ecriture effacés » de la gestion des débiteurs « 
+db100 » : 
+L'onglet "Ecr. effacés" du programme db100 est dédié à l'affichage et à la gesti
+on des écritures comptables qui ont été annulées ou effacées pour un débiteur sp
+écifique. Voici une explication détaillée de sa composition et de ses fonctionna
+lités :
+Liste des Écritures Effacées :
+N° écriture : Numéro unique identifiant chaque écriture comptable.
+Version : Indique les révisions ou modifications de l'écriture si applicables.
+N° suite : Une suite numérique qui peut être utilisée pour le suivi des écriture
+s liées ou consécutives.
+Lot : Identifiant du lot auquel appartient l'écriture, facilitant le regroupemen
+t par batch ou lot de traitement.
+Désignation : Description ou titre de l'écriture pour faciliter l'identification
+.
+N° de P.O. : Numéro du bon de commande associé à l'écriture, si applicable.
+Date valeur : La date à laquelle l'écriture est valorisée financièrement.
+N° de pièce : Référence au document source ou à la pièce justificative.
+Date pièce : Date de la pièce justificative.
+Libellé de l'écriture : Explication ou commentaire détaillé sur l'écriture.
+Mt en monnaie : Montant de l'écriture dans la monnaie du compte.
+Mt en contre-valeur : Montant de l'écriture dans une autre monnaie, si applicabl
+e.
+Fonctionnalités Intégrées :
+Détail de l'écriture : Permet d'accéder à des détails plus spécifiques sur chaqu
+e écriture effacée.
+Réintégrer l'écriture : Option pour rétablir une écriture précédemment effacée d
+ans les comptes.
+Supprimer définitivement l'écriture : Supprime complètement l'écriture du systèm
+e, à utiliser avec prudence pour assurer la conformité et l'intégrité des donnée
+s.
+
+
+
+Edition des débiteurs db100e :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard d’édition des clients.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée.
+ Attention ! La sélection par page utilise une page pour chaque client.
+
+
+
+Edition paramétrable des comptes clients db101 :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard d’édition des clients.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée.
+ Attention ! La sélection par page utilise une page pour chaque client.
+
+
+Utilisation des listes paramétrables :
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant aux débiteurs :
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+
+
+
+
+Surveillance des débiteurs db302 : 
+
+
+Note explicative de la surveillance des débiteurs programme « db302 » : 
+Le programme db302, dédié à la surveillance des débiteurs, permet une gestion dé
+taillée et une visualisation complète de la situation financière des clients. Vo
+ici une description de ses fonctionnalités principales telles qu'illustrées dans
+ l'interface :
+Vue d'Ensemble des Débiteurs :
+Client : Nom du client associé à chaque compte débiteur.
+N° P.O. : Numéro du bon de commande pour traçabilité.
+Valeur : Date à laquelle la transaction ou l'engagement a été enregistré.
+N° pièce : Référence du document ou de la facture associée.
+Date pièce : La date à laquelle le document ou la facture a été généré.
+Libellé : Description brève de la transaction ou de l'opération.
+Échu depuis : Nombre de jours depuis l'échéance du paiement.
+Montant dû : Montant restant dû par le débiteur.
+Fonctionnalités de Filtrage :
+Clients/P.O. : Permet de filtrer les données affichées par client ou bon de comm
+ande.
+Contentieux : Option pour afficher uniquement les comptes en litige.
+Rappels : Filtrage basé sur le statut des rappels envoyés aux clients.
+Technicien(s) et Collectif(s) : Filtres pour affiner la visualisation des donnée
+s par technicien responsable ou groupe de débiteurs.
+Options de Gestion :
+Bouton droit : Cliquer avec le bouton droit de la souris permet d'accéder à des 
+
+[IMAGE HERE: image_339.png]
+
+--- AFTER ---
+options supplémentaires telles que la modification des détails du débiteur, l'aj
+out de notes ou de rappels supplémentaires.
+Barre d'outils :
+La barre d'outils en haut offre des raccourcis rapides pour les opérations coura
+ntes, telles que l'ajout de nouveaux débiteurs, l'édition de transactions exista
+ntes, ou la gestion des rappels.
+
+Onglet « Contentieux » : 
+
+Note explicative de l’onglet « contentieux » de la surveillance des débiteurs pr
+ogramme « db302 » : 
+L'onglet "Contentieux" du programme db302 est conçu pour gérer et suivre les cas
+ de litiges avec les débiteurs. Voici une explication détaillée de ses principal
+es composantes :
+Liste des Transactions en Litige :
+N° de P.O. : Numéro du bon de commande associé à la transaction.
+Date valeur : La date à laquelle la transaction a été valorisée.
+N° de pièce : Numéro de référence de la transaction ou de la facture.
+Date pièce : Date à laquelle la transaction ou la facture a été générée.
+Libellé de l'écriture : Description de la transaction.
+Échu depuis : Nombre de jours écoulés depuis la date d'échéance du paiement.
+Montant en monnaie : Montant dû en monnaie locale.
+Contrevaleur : Montant dû en monnaie de référence.
+Solde P.O. : Solde actuel du bon de commande.
+Gestion des Actions de Recouvrement :
+N° ordre Action : Identifiant de l'action de recouvrement entreprise.
+Texte : Description ou notes relatives à l'action entreprise.
+Interlocuteur : Contact chez le débiteur avec qui l'action a été coordonnée.
+Accord : Détails de tout accord éventuel atteint avec le débiteur.
+Règlement : Indique si un règlement a été réalisé.
+Montant à régler : Montant qui reste à être payé par le débiteur dans le cadre d
+e l'accord.
+Relance : Date prévue pour la prochaine action de recouvrement.
+Options de Gestion de Dossier :
+Action : Sélection des différentes mesures à prendre (par exemple, envoi de rapp
+els, négociation, etc.).
+Dossier externe/Interne : Choix entre la gestion du dossier comme externe ou int
+erne.
+Date d'accord et Date de relance : Dates clés pour le suivi des engagements pris
+ avec le débiteur.
+Onglet « rappel » : 
+
+
+Note explicative de l’onglet « Rappel » de la surveillance des débiteurs program
+me « db302 » : 
+L'onglet "Rappel" du programme db302 est structuré pour assister les utilisateur
+s dans la gestion et le suivi des rappels envoyés aux débiteurs. Voici les détai
+ls de sa composition et fonctionnement :
+Informations de Base:
+N° de P.O. : Numéro du bon de commande associé à la transaction.
+Date de valeur : La date de valeur de la transaction ou facture.
+N° de pièce : Numéro de référence de la transaction ou facture.
+Date de pièce : La date de création de la transaction ou facture.
+Libellé : Description ou titre de la transaction.
+Échu depuis : Indique le nombre de jours écoulés depuis la date d'échéance de la
+ facture.
+Gestion des Rappels:
+Date : Date à laquelle le rappel a été envoyé ou programmé pour être envoyé.
+Heure : Heure à laquelle le rappel a été envoyé.
+Niveau Date rappel : Niveau ou stade du rappel dans le processus de recouvrement
+ (par exemple, premier rappel, deuxième rappel, etc.).
+Programme : Identifiant ou nom du programme de rappel utilisé pour cette action 
+spécifique.
+Utilisateur/Commentaire : Identifiant de l'utilisateur qui a géré l'envoi du rap
+pel et commentaires associés à l'action.
+
+Cette configuration permet de suivre de manière détaillée toutes les actions de 
+rappel entreprises envers un débiteur spécifique, facilitant ainsi la gestion de
+s créances et la communication avec les débiteurs. Cela aide les entreprises à m
+aintenir un contrôle sur les paiements en retard et à prendre des mesures proact
+ives pour assurer le recouvrement des dettes.
+
+Validation des débiteurs créés par la Grav db360 : 
+
+Note explicative des débiteurs créés par Grav programme « db360 » : 
+Le programme db360 est conçu pour la validation des débiteurs qui ont été import
+és dans le système à partir de différentes sources. Il s'agit d'un outil essenti
+el pour garantir que les informations sur les débiteurs sont exactes et complète
+s avant leur intégration définitive dans la base de données principale de l'entr
+eprise. Voici une explication fonctionnelle de ses composants clés :
+Nom du fichier d'import : Ce champ affiche le nom du fichier à partir duquel les
+ données des débiteurs ont été importées. Cela permet de suivre la source des do
+nnées et de s'assurer que le fichier correct est utilisé pour la mise à jour ou 
+l'ajout de débiteurs.
+N° Client source : Numéro d'identification du client tel qu'il est fourni dans l
+e fichier source. Ce numéro est essentiel pour vérifier et valider l'unicité du 
+débiteur dans le système.
+Nom client : Le nom complet du débiteur tel qu'il apparaît dans le fichier sourc
+e. Ce champ est utilisé pour l'identification visuelle et la validation des donn
+ées de débiteur.
+Adresse 1, 2, 3 : Les adresses détaillées du débiteur. Ces champs sont utilisés 
+pour enregistrer l'emplacement précis du débiteur et sont cruciaux pour des opér
+ations comme la facturation et la livraison.
+Npa et Localité : Code postal et localité associés à l'adresse du débiteur. Ces 
+informations sont utilisées pour des vérifications géographiques et la distribut
+ion régionale.
+Type Client : Catégorie ou type du client, qui peut influencer les conditions co
+mmerciales ou la gestion des comptes.
+Titre adresse : Utilisé pour des salutations ou des en-têtes personnalisés dans 
+la communication avec le débiteur.
+Pays : Indique le pays du débiteur pour des opérations internationales et la con
+formité réglementaire.
+Lié au débiteur MS2000 : Indique si ce débiteur est lié à des enregistrements da
+ns d'autres systèmes ou bases de données internes, facilitant ainsi l'intégratio
+n et la gestion des données entre systèmes.
+
+Ce programme est essentiel pour maintenir l'intégrité des données dans le systèm
+e de gestion des débiteurs, en s'assurant que toutes les informations importées 
+sont correctes et complètes avant leur utilisation dans des processus commerciau
+x ou financiers.
+
+
+
+
+Comptabilisations :
+Comptabilisation des factures débiteurs/clients :
+Information : Dans tous les programmes de saisie comptable, la touche Enter peut
+ être utilisée à la place de la souris
+Factures clients co103 : 
+
+Partie "Pièce"
+
+
+Note explicative des factures clients programme « co103 » : 
+
+Le programme co103, dédié à la gestion des factures clients, permet de saisir, m
+odifier et consulter les écritures de facturation dans le système. Voici une exp
+lication détaillée de ses principaux composants et de leur fonctionnalité :
+N° de pièce : Permet de saisir ou rechercher un numéro spécifique de facture ou 
+de document financier associé à un client. C'est essentiel pour retracer des tra
+nsactions spécifiques ou corriger des entrées.
+Date de la pièce : Il s'agit de la date à laquelle la transaction ou la facture 
+a été générée. Cette information est cruciale pour la tenue des registres compta
+bles et le suivi temporel des transactions.
+Date valeur comptable : Correspond à la date à laquelle la transaction affecte l
+es comptes financiers de l'entreprise. Cette date peut différer de la date de la
+ pièce pour des raisons de rapprochement bancaire ou de traitement comptable.
+Recherche du dernier numéro de pièce du lot sélectionné : Fonction qui permet de
+ récupérer automatiquement le dernier numéro de pièce utilisé dans un lot spécif
+ique, simplifiant la saisie de nouvelles transactions dans des séries continues.
+Sélectionner un lot d'écritures : Permet de choisir un lot spécifique pour la sa
+isie des factures, organisant ainsi les écritures par catégorie ou par période.
+Afficher les écritures déjà saisies : Cette fonctionnalité offre une visibilité 
+sur les transactions déjà enregistrées sous le numéro de pièce ou le lot actuel,
+ permettant ainsi des vérifications rapides et la modification si nécessaire.
+Chiffres relatifs à la déclaration de TVA : Affiche les montants relatifs à la T
+VA qui doivent être déclarés, aidant à la conformité fiscale et à l'exactitude d
+es déclarations de TVA.
+Valider les données et continuer : Ce bouton permet de valider les données saisi
+es pour la facture avant de procéder à l'enregistrement final dans le système. C
