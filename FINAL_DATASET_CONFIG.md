@@ -8,13 +8,13 @@
 
 ### QCM Datasets (All Available):
 1. **`balanced_qcm_all_end.json`** (1099 samples) - Balanced QCM without images
-2. **`dpo_image_dataset/qcm/qcm_dataset.json`** (3.0M) - Gemini QCM with images
+2. **`dpo_image_dataset/qcm/qcm_dataset_gemini.json`** (3.0M) - Gemini QCM with images
 3. **`dpo_image_dataset/qcm/qcm_dataset_nova_pro.json`** (2.0M) - Nova Pro QCM with images
 
 ## Default Configuration
 
 ### Systematic Pipeline (Single Run):
-- Default QCM: `dpo_image_dataset/qcm/qcm_dataset.json` (Gemini with images)
+- Default QCM: `dpo_image_dataset/qcm/qcm_dataset_gemini.json` (Gemini with images)
 - Default DPO: `dpo_image_dataset/dpo_dataset_gemini.json`
 - Note: `balanced_qcm_all_end.json` is text-only, used for evaluation and end-of-study training
 
@@ -30,7 +30,7 @@ python3 run_systematic_benchmark_pipeline.py --train-erp --erp-strategy qcm
 ```
 
 Uses defaults:
-- QCM: `dpo_image_dataset/qcm/qcm_dataset.json` (Gemini image-based)
+- QCM: `dpo_image_dataset/qcm/qcm_dataset_gemini.json` (Gemini image-based)
 - DPO: `dpo_image_dataset/dpo_dataset_gemini.json`
 
 ### Full Comparison (Both Gemini and Nova):
@@ -48,7 +48,7 @@ This will train and evaluate on ALL combinations!
 ```bash
 # Use specific datasets
 python3 run_comprehensive_pipeline.py \
-    --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --dpo-datasets "dpo_image_dataset/dpo_dataset_gemini.json" "dpo_image_dataset/dpo_dataset_nova_pro.json"
 ```
 

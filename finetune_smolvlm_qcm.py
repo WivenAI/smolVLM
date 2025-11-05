@@ -285,7 +285,7 @@ def main():
                        help="Base model to fine-tune (default: HuggingFaceTB/SmolVLM-500M-Instruct)")
     parser.add_argument("--output-dir", type=str, default="./smolvlm-500m-qcm-finetuned",
                        help="Output directory for fine-tuned model")
-    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/qcm/qcm_dataset.json",
+    parser.add_argument("--dataset", type=str, default="dpo_image_dataset/qcm/qcm_dataset_gemini.json",
                        help="Path to QCM dataset JSON file (with images) or balanced_qcm_all_end.json (text-only)")
     parser.add_argument("--image-dir", type=str, default="dpo_image_dataset",
                        help="Directory containing images (ERP screenshots)")

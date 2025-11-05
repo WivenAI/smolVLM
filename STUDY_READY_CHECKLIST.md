@@ -81,7 +81,7 @@ This will evaluate on:
 python3 run_systematic_benchmark_pipeline.py \
     --train-erp \
     --erp-strategy qcm \
-    --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --dpo-dataset "dpo_image_dataset/dpo_dataset_cleaned.json" \
     --image-dir "dpo_image_dataset" \
     --epochs 3
@@ -94,7 +94,7 @@ python3 run_systematic_benchmark_pipeline.py \
     --train-erp \
     --erp-strategy dpo \
     --dpo-dataset "dpo_image_dataset/dpo_dataset_cleaned.json" \
-    --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --image-dir "dpo_image_dataset"
 ```
 
@@ -104,7 +104,7 @@ For a complete systematic study with all strategies:
 
 ```bash
 python3 run_comprehensive_pipeline.py \
-    --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --dpo-datasets "dpo_image_dataset/dpo_dataset_cleaned.json" \
     --image-dir "dpo_image_dataset" \
     --epochs 3

@@ -8,7 +8,7 @@ echo "=========================================="
 
 python3 evaluate_erp_qcm.py \
     --model-path "HuggingFaceTB/SmolVLM-500M-Instruct" \
-    --dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --image-dir "dpo_image_dataset" \
     --output-file "baseline_erp_qcm_evaluation.json"
 

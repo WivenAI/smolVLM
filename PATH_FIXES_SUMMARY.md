@@ -13,7 +13,7 @@ Many files were referencing `dpo_image_dataset/dpo_dataset.json` which doesn't e
 
 ### QCM Datasets:
 - ✅ **`balanced_qcm_all_end.json`** (1099 samples) - Balanced QCM (text-only)
-- ✅ `dpo_image_dataset/qcm/qcm_dataset.json` (3.0M) - QCM with images
+- ✅ `dpo_image_dataset/qcm/qcm_dataset_gemini.json` (3.0M) - QCM with images
 - ✅ `dpo_image_dataset/qcm/qcm_dataset_nova_pro.json` (2.0M) - Nova Pro version
 
 ## Files Fixed (14 files)

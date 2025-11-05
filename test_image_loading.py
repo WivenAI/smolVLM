@@ -111,7 +111,7 @@ def main():
 
     # Test all datasets
     datasets = [
-        ("QCM (nested with images)", "dpo_image_dataset/qcm/qcm_dataset.json", image_dir),
+        ("QCM (nested with images)", "dpo_image_dataset/qcm/qcm_dataset_gemini.json", image_dir),
         ("QCM Nova Pro", "dpo_image_dataset/qcm/qcm_dataset_nova_pro.json", image_dir),
         ("DPO Cleaned", "dpo_image_dataset/dpo_dataset_cleaned.json", image_dir),
         ("DPO Nova Pro", "dpo_image_dataset/dpo_dataset_nova_pro.json", image_dir),

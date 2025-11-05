@@ -49,7 +49,7 @@ Evaluate any model on the ERP QCM dataset:
 ```bash
 python3 evaluate_erp_qcm.py \
     --model-path "HuggingFaceTB/SmolVLM-500M-Instruct" \
-    --dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --image-dir "dpo_image_dataset" \
     --output-file "results.json"
 ```
@@ -110,7 +110,7 @@ python3 run_systematic_benchmark_pipeline.py
 python3 run_systematic_benchmark_pipeline.py \
     --train-erp \
     --erp-strategy qcm \
-    --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --dpo-dataset "dpo_image_dataset/dpo_dataset_cleaned.json" \
     --image-dir "dpo_image_dataset"
 
@@ -124,7 +124,7 @@ The comprehensive pipeline also includes ERP QCM and DPO evaluation:
 
 ```bash
 python3 run_comprehensive_pipeline.py \
-    --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset.json" \
+    --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
     --dpo-datasets "dpo_image_dataset/dpo_dataset_cleaned.json" \
     --image-dir "dpo_image_dataset"
 ```
@@ -138,7 +138,7 @@ This will automatically evaluate all models (base + trained) on both ERP QCM and
 ```json
 {
   "model_path": "HuggingFaceTB/SmolVLM-500M-Instruct",
-  "dataset_path": "dpo_image_dataset/qcm/qcm_dataset.json",
+  "dataset_path": "dpo_image_dataset/qcm/qcm_dataset_gemini.json",
   "num_samples": 3680,
   "metrics": {
     "accuracy": 45.32,
@@ -355,7 +355,7 @@ Each should complete in ~5-10 seconds and verify the setup is working.
 
 The evaluation supports both QCM dataset formats:
 
-1. **Nested format** (from `dpo_image_dataset/qcm/qcm_dataset.json`):
+1. **Nested format** (from `dpo_image_dataset/qcm/qcm_dataset_gemini.json`):
    ```json
    {
      "image_name": "image_001.png",
@@ -410,7 +410,7 @@ To run a full comparison:
    python3 run_systematic_benchmark_pipeline.py \
        --train-erp \
        --erp-strategy qcm \
-       --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+       --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
        --dpo-dataset "dpo_image_dataset/dpo_dataset_cleaned.json" \
        --image-dir "dpo_image_dataset"
    ```
@@ -421,7 +421,7 @@ To run a full comparison:
        --train-erp \
        --erp-strategy dpo \
        --dpo-dataset "dpo_image_dataset/dpo_dataset_cleaned.json" \
-       --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset.json" \
+       --qcm-dataset "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
        --image-dir "dpo_image_dataset"
    ```
 
@@ -430,7 +430,7 @@ To run a full comparison:
 5. **Run comprehensive pipeline** - For full systematic comparison of all strategies:
    ```bash
    python3 run_comprehensive_pipeline.py \
-       --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset.json" \
+       --qcm-datasets "dpo_image_dataset/qcm/qcm_dataset_gemini.json" \
        --dpo-datasets "dpo_image_dataset/dpo_dataset_cleaned.json" \
        --image-dir "dpo_image_dataset"
    ```

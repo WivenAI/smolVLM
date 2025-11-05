@@ -35,7 +35,7 @@ class ERPQCMEvaluator:
     def __init__(
         self,
         model_path: str = "HuggingFaceTB/SmolVLM-500M-Instruct",
-        dataset_path: str = "dpo_image_dataset/qcm/qcm_dataset.json",
+        dataset_path: str = "dpo_image_dataset/qcm/qcm_dataset_gemini.json",
         image_dir: str = "dpo_image_dataset"
     ):
         """Initialize the evaluator
@@ -501,7 +501,7 @@ def main():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="dpo_image_dataset/qcm/qcm_dataset.json",
+        default="dpo_image_dataset/qcm/qcm_dataset_gemini.json",
         help="Path to QCM dataset JSON"
     )
 
