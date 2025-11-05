@@ -796,8 +796,8 @@ def main():
 
     # ERP dataset paths
     parser.add_argument("--qcm-dataset", type=str,
-                       default="balanced_qcm_all_end.json",
-                       help="QCM dataset path")
+                       default="dpo_image_dataset/qcm/qcm_dataset.json",
+                       help="QCM dataset path (default: Gemini image-based dataset)")
     parser.add_argument("--dpo-dataset", type=str,
                        default="dpo_image_dataset/dpo_dataset_gemini.json",
                        help="DPO dataset path")
