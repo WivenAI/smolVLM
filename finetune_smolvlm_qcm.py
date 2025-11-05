@@ -160,11 +160,12 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
             if idx == 0:
                 print("ℹ No image_name in dataset - using white dummy images (text-only mode)")
 
-        # Extract QCM data directly from item (no nested 'qcm' key)
-        question = item['question']
-        options = item['options']
-        correct_answer = item['correct_answer']
-        explanation = item.get('explanation', '')
+        # Extract QCM data - support both nested and flat formats
+        qcm_data = item.get('qcm', item)  # Use nested 'qcm' key if present, otherwise flat structure
+        question = qcm_data['question']
+        options = qcm_data['options']
+        correct_answer = qcm_data['correct_answer']
+        explanation = qcm_data.get('explanation', '')
 
         # Format the prompt with question and options
         options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
