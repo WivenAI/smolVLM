@@ -503,7 +503,7 @@ class BenchmarkPipeline:
             train_script="finetune_smolvlm_qcm.py",
             output_dir="./smolvlm-500m-dpo-qcm-finetuned",
             base_model=dpo_model_path,
-            dataset="dpo_image_dataset/qcm_dataset.json"
+            dataset="dpo_image_dataset/qcm/qcm_dataset_gemini.json"
         )
 
         if qcm_model_path is None:

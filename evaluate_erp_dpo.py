@@ -34,7 +34,7 @@ class ERPDPOEvaluator:
     def __init__(
         self,
         model_path: str = "HuggingFaceTB/SmolVLM-500M-Instruct",
-        dataset_path: str = "dpo_image_dataset/dpo_dataset_cleaned.json",
+        dataset_path: str = "dpo_image_dataset/dpo_dataset_gemini.json",
         image_dir: str = "dpo_image_dataset"
     ):
         """Initialize the evaluator

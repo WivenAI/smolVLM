@@ -113,7 +113,7 @@ def main():
     datasets = [
         ("QCM (nested with images)", "dpo_image_dataset/qcm/qcm_dataset_gemini.json", image_dir),
         ("QCM Nova Pro", "dpo_image_dataset/qcm/qcm_dataset_nova_pro.json", image_dir),
-        ("DPO Cleaned", "dpo_image_dataset/dpo_dataset_cleaned.json", image_dir),
+        ("DPO Gemini", "dpo_image_dataset/dpo_dataset_gemini.json", image_dir),
         ("DPO Nova Pro", "dpo_image_dataset/dpo_dataset_nova_pro.json", image_dir),
         ("Balanced QCM (text-only)", "balanced_qcm_all_end.json", image_dir),
     ]
