@@ -196,15 +196,8 @@ def main():
     # In test mode, only use 10 samples
     if args.test:
         full_dataset = full_dataset.select(range(min(10, len(full_dataset))))
-    else:
-        # IMPORTANT: Limit dataset to prevent OOM during tokenization
-        # DPOTrainer tokenizes entire dataset during init, which causes OOM with 1840 samples
-        # CONFIRMED: 100 samples works (300 hangs at 51%, 100 completes successfully)
-        max_samples = 100  # Maximum: 100 samples for 8GB VRAM (tested Oct 31, 2025)
-        if len(full_dataset) > max_samples:
-            print(f"\n⚠️  Limiting dataset to {max_samples} samples (from {len(full_dataset)}) to prevent OOM")
-            print(f"   DPOTrainer tokenizes entire dataset during initialization")
-            full_dataset = full_dataset.select(range(max_samples))
+    # Testing with full dataset to verify if OOM still occurs
+    print(f"\n✓ Using full dataset: {len(full_dataset)} samples")
 
     # Split for validation
     dataset_split = full_dataset.train_test_split(test_size=0.1, seed=42)

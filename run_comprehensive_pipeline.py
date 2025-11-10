@@ -336,6 +336,48 @@ class ComprehensivePipeline:
 
         return True
 
+    def phase6b_erp_training_combined_sft(self):
+        """Phase 6b: Train on ERP with QCM+DPO-SFT (using SFT on DPO dataset), test on all"""
+        total_combinations = len(self.args.qcm_datasets) * len(self.args.dpo_datasets)
+        print("\n" + "="*80)
+        print("PHASE 6B: ERP TRAINING - QCM + DPO-SFT (Sequential)")
+        print(f"Train QCM first, then DPO dataset with SFT ({total_combinations} total), test on ALL benchmarks")
+        print(f"QCM datasets: {self.args.qcm_datasets}")
+        print(f"DPO datasets: {self.args.dpo_datasets}")
+        print("="*80)
+
+        if self.args.skip_erp_combined_sft:
+            print("Skipping ERP combined QCM+DPO-SFT training")
+            return True
+
+        for qcm_dataset in self.args.qcm_datasets:
+            for dpo_dataset in self.args.dpo_datasets:
+                qcm_name = self.get_dataset_short_name(qcm_dataset)
+                dpo_name = self.get_dataset_short_name(dpo_dataset)
+                print(f"\n{'='*80}")
+                print(f"Training on QCM+DPO-SFT combination:")
+                print(f"  QCM: {qcm_dataset} ({qcm_name})")
+                print(f"  DPO (SFT): {dpo_dataset} ({dpo_name})")
+                print(f"{'='*80}")
+
+                success = self.run_systematic_pipeline(
+                    experiment_name=f"erp_qcm_dpo_sft_{qcm_name}_{dpo_name}",
+                    extra_args=[
+                        "--skip-baseline",
+                        "--train-erp",
+                        "--erp-strategy", "qcm+dpo-sft",
+                        "--qcm-dataset", qcm_dataset,
+                        "--dpo-dataset", dpo_dataset,
+                        "--image-dir", self.args.image_dir,
+                        "--epochs", str(self.args.epochs)
+                    ]
+                )
+
+                if not success and not self.args.continue_on_error:
+                    return False
+
+        return True
+
     def phase7_mega_comparison(self):
         """Phase 6: Aggregate all results and create mega comparison"""
         print("\n" + "="*80)
@@ -578,8 +620,11 @@ class ComprehensivePipeline:
         # Phase 5: ERP DPO (actual DPO training)
         self.phase5_erp_training_dpo()
 
-        # Phase 6: ERP Combined
+        # Phase 6: ERP Combined (QCM + DPO)
         self.phase6_erp_training_combined()
+
+        # Phase 6b: ERP Combined (QCM + DPO-SFT)
+        self.phase6b_erp_training_combined_sft()
 
         # Phase 7: Mega comparison
         self.phase7_mega_comparison()
@@ -617,7 +662,9 @@ def main():
     parser.add_argument("--skip-erp-dpo", action="store_true",
                        help="Skip ERP DPO method training")
     parser.add_argument("--skip-erp-combined", action="store_true",
-                       help="Skip ERP combined training")
+                       help="Skip ERP combined QCM+DPO training")
+    parser.add_argument("--skip-erp-combined-sft", action="store_true",
+                       help="Skip ERP combined QCM+DPO-SFT training")
 
     # Training options
     parser.add_argument("--train-benchmarks", nargs="+",

@@ -437,11 +437,25 @@ class SystematicBenchmarkPipeline:
             ]
         elif training_strategy == "dpo":
             model_output = self.results_dir / "trained_on_erp_dpo"
-            cmd = [
-                "python3", "finetune_smolvlm_dpo.py",
-                "--output-dir", str(model_output),
+
+            # Prepare lazy-loading dataset first (fast, <1 second)
+            dataset_dir = self.results_dir / "dpo_dataset_lazy"
+            prep_cmd = [
+                "python3", "prepare_dpo_dataset_lazy.py",
                 "--dataset", self.args.dpo_dataset,
-                "--image-dir", self.args.image_dir
+                "--image-dir", self.args.image_dir,
+                "--output-dir", str(dataset_dir)
+            ]
+
+            print("Preparing lazy-loading DPO dataset...")
+            if not self.run_command(prep_cmd, "DPO Dataset Preparation"):
+                return False
+
+            # Train with lazy loading (memory efficient)
+            cmd = [
+                "python3", "finetune_dpo_from_disk.py",
+                "--output-dir", str(model_output),
+                "--dataset-dir", str(dataset_dir)
             ]
         elif training_strategy == "qcm+dpo":
             # First QCM, then DPO
@@ -458,13 +472,50 @@ class SystematicBenchmarkPipeline:
             if not self.run_command(cmd_qcm, "ERP QCM Training"):
                 return False
 
+            # Prepare lazy-loading dataset for DPO
+            dataset_dir = self.results_dir / "dpo_dataset_lazy"
+            prep_cmd = [
+                "python3", "prepare_dpo_dataset_lazy.py",
+                "--dataset", self.args.dpo_dataset,
+                "--image-dir", self.args.image_dir,
+                "--output-dir", str(dataset_dir)
+            ]
+
+            print("Preparing lazy-loading DPO dataset...")
+            if not self.run_command(prep_cmd, "DPO Dataset Preparation"):
+                return False
+
             model_output = self.results_dir / "trained_on_erp_qcm_dpo"
             cmd = [
-                "python3", "finetune_smolvlm_dpo.py",
+                "python3", "finetune_dpo_from_disk.py",
                 "--base-model", str(qcm_output),
                 "--output-dir", str(model_output),
-                "--dataset", self.args.dpo_dataset,
-                "--image-dir", self.args.image_dir
+                "--dataset-dir", str(dataset_dir)
+            ]
+        elif training_strategy == "qcm+dpo-sft":
+            # First QCM, then DPO dataset with SFT
+            qcm_output = self.results_dir / "trained_on_erp_qcm_temp"
+
+            cmd_qcm = [
+                "python3", "finetune_smolvlm_qcm.py",
+                "--output-dir", str(qcm_output),
+                "--dataset", self.args.qcm_dataset,
+                "--image-dir", self.args.image_dir,
+                "--num-epochs", str(self.args.epochs)
+            ]
+
+            if not self.run_command(cmd_qcm, "ERP QCM Training"):
+                return False
+
+            model_output = self.results_dir / "trained_on_erp_qcm_dpo_sft"
+            cmd = [
+                "python3", "finetune_smolvlm_qcm.py",  # Use QCM script which does SFT
+                "--base-model", str(qcm_output),
+                "--output-dir", str(model_output),
+                "--dataset", self.args.dpo_dataset,  # But use DPO dataset
+                "--image-dir", self.args.image_dir,
+                "--num-epochs", str(self.args.epochs),
+                "--use-dpo-chosen-only"  # Flag to use only chosen responses
             ]
         else:
             print(f"Unknown ERP strategy: {training_strategy}")
