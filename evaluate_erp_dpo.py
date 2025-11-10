@@ -233,9 +233,10 @@ class ERPDPOEvaluator:
         messages[0]["content"].append({"type": "text", "text": prompt})
 
         # Add assistant response
+        # Format as list to match user message structure
         messages.append({
             "role": "assistant",
-            "content": response
+            "content": [{"type": "text", "text": response}]
         })
 
         # Apply chat template
