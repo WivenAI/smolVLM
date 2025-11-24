@@ -2,6 +2,16 @@
 """
 DPO Fine-tuning using lazy-loaded dataset from disk
 Images are loaded on-the-fly, not all at once
+
+PERFORMANCE OPTIMIZATIONS:
+1. Lazy image loading - images loaded from disk on-demand (not all in memory)
+2. Multi-worker data loading - parallel image loading/preprocessing
+3. Multi-process dataset operations - faster dataset transformations
+4. Pin memory - faster CPU-to-GPU data transfer
+5. Automatic cache cleanup - prevents disk space bloat
+
+Note: DPO training is inherently ~2x slower than SFT because it processes
+both chosen AND rejected responses for each sample. This is expected behavior.
 """
 
 import torch
@@ -242,7 +252,10 @@ def main():
         torch.cuda.empty_cache()
         print(f"GPU memory: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
 
-    # DPO Training config
+    # DPO Training config (OPTIMIZED)
+    import multiprocessing
+    num_workers = min(4, multiprocessing.cpu_count())
+
     training_args = DPOConfig(
         output_dir=args.output_dir,
         num_train_epochs=3,
@@ -259,20 +272,23 @@ def main():
         save_steps=100,
         save_total_limit=2,
         bf16=torch.cuda.is_available(),
-        dataloader_pin_memory=False,
-        dataloader_num_workers=0,  # 0 for lazy loading
+        dataloader_pin_memory=True,  # Enable for faster GPU transfer (was False)
+        dataloader_num_workers=num_workers,  # Use multiple workers (was 0)
         remove_unused_columns=False,
         report_to="wandb",
         beta=0.1,
         loss_type="sigmoid",
         max_length=512,
         max_prompt_length=256,
-        dataset_num_proc=1,  # Single process for stability
+        dataset_num_proc=num_workers,  # Use multiple processes for dataset operations (was 1)
     )
 
-    print("\nInitializing DPO Trainer...")
-    print("Note: Tokenization will happen on-the-fly (may be slow initially)")
-    print("Cache files will be stored in /tmp and cleaned up automatically")
+    print("\nInitializing DPO Trainer with optimizations...")
+    print(f"✓ Using {num_workers} workers for parallel data loading")
+    print(f"✓ Using {num_workers} processes for dataset operations")
+    print("✓ Pin memory enabled for faster GPU transfer")
+    print("✓ Lazy image loading from disk")
+    print("Note: Initial tokenization may create cache files in /tmp (cleaned automatically)")
 
     try:
         trainer = DPOTrainer(

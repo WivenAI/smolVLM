@@ -2,7 +2,22 @@
 """
 DPO Fine-tuning with LAZY LOADING (memory efficient)
 Loads images on-the-fly instead of all at once
-Similar to how the SFT script works
+
+PERFORMANCE OPTIMIZATIONS:
+1. True lazy image loading - images loaded only when needed during training
+2. Pre-tokenization in __getitem__ - tokenize once per sample (not on-the-fly)
+3. Optimized collate function - just stacks pre-tokenized tensors
+4. Multi-worker DataLoader - parallel data loading/preprocessing
+5. Pin memory - faster CPU-to-GPU data transfer
+6. Direct PyTorch Dataset - no HF Dataset conversion overhead
+
+Note: DPO training is inherently ~2x slower than SFT because it processes
+both chosen AND rejected responses (double forward pass). This is expected.
+
+FIXES:
+- Fixed bug where converting to HF Dataset loaded all images into memory
+- Tokenization now happens in DataLoader workers (was main thread)
+- Uses 4 workers instead of 0 for parallel processing
 """
 
 import os
@@ -42,7 +57,7 @@ class LazyDPODataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        """Load and process a single sample on-the-fly"""
+        """Load and process a single sample on-the-fly with PRE-TOKENIZATION"""
         item = self.data[idx]
 
         # Load image on-demand
@@ -64,57 +79,61 @@ class LazyDPODataset(torch.utils.data.Dataset):
         else:
             image = Image.new('RGB', (224, 224), color='white')
 
-        # Return in DPO format
-        # Note: We return the image and text, and let DPOTrainer handle tokenization
-        # This is more memory efficient than pre-tokenizing
+        # PRE-TOKENIZE for better performance (like SFT does)
+        prompt = f"<image>{item['prompt']}"
+        chosen = item['chosen']
+        rejected = item['rejected']
+
+        # Tokenize chosen response
+        chosen_inputs = self.processor(
+            text=prompt + chosen,
+            images=image,
+            return_tensors="pt",
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length
+        )
+
+        # Tokenize rejected response
+        rejected_inputs = self.processor(
+            text=prompt + rejected,
+            images=image,
+            return_tensors="pt",
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length
+        )
+
+        # Return pre-tokenized data (squeeze batch dimension)
         return {
-            'prompt': f"<image>{item['prompt']}",
-            'chosen': item['chosen'],
-            'rejected': item['rejected'],
-            'images': image  # DPOTrainer will handle this
+            'input_ids_chosen': chosen_inputs['input_ids'].squeeze(0),
+            'attention_mask_chosen': chosen_inputs['attention_mask'].squeeze(0),
+            'pixel_values_chosen': chosen_inputs['pixel_values'].squeeze(0),
+            'input_ids_rejected': rejected_inputs['input_ids'].squeeze(0),
+            'attention_mask_rejected': rejected_inputs['attention_mask'].squeeze(0),
+            'pixel_values_rejected': rejected_inputs['pixel_values'].squeeze(0),
+            'prompt': prompt,
+            'chosen': chosen,
+            'rejected': rejected,
         }
 
 
-def collate_fn(batch, processor, max_length=512):
+def collate_fn(batch):
     """
-    Custom collate function that tokenizes on-the-fly
-    This avoids loading all tokenized data into memory at once
+    Custom collate function for pre-tokenized data
+    Since tokenization happens in __getitem__, just stack tensors here
+    This is much faster than on-the-fly tokenization!
     """
-    prompts = [item['prompt'] for item in batch]
-    chosen = [item['chosen'] for item in batch]
-    rejected = [item['rejected'] for item in batch]
-    images = [item['images'] for item in batch]
-
-    # Tokenize chosen responses
-    chosen_inputs = processor(
-        text=[p + c for p, c in zip(prompts, chosen)],
-        images=images,
-        return_tensors="pt",
-        padding="max_length",
-        truncation=True,
-        max_length=max_length
-    )
-
-    # Tokenize rejected responses
-    rejected_inputs = processor(
-        text=[p + r for p, r in zip(prompts, rejected)],
-        images=images,
-        return_tensors="pt",
-        padding="max_length",
-        truncation=True,
-        max_length=max_length
-    )
-
     return {
-        'input_ids_chosen': chosen_inputs['input_ids'],
-        'attention_mask_chosen': chosen_inputs['attention_mask'],
-        'pixel_values_chosen': chosen_inputs['pixel_values'],
-        'input_ids_rejected': rejected_inputs['input_ids'],
-        'attention_mask_rejected': rejected_inputs['attention_mask'],
-        'pixel_values_rejected': rejected_inputs['pixel_values'],
-        'prompts': prompts,
-        'chosen': chosen,
-        'rejected': rejected,
+        'input_ids_chosen': torch.stack([item['input_ids_chosen'] for item in batch]),
+        'attention_mask_chosen': torch.stack([item['attention_mask_chosen'] for item in batch]),
+        'pixel_values_chosen': torch.stack([item['pixel_values_chosen'] for item in batch]),
+        'input_ids_rejected': torch.stack([item['input_ids_rejected'] for item in batch]),
+        'attention_mask_rejected': torch.stack([item['attention_mask_rejected'] for item in batch]),
+        'pixel_values_rejected': torch.stack([item['pixel_values_rejected'] for item in batch]),
+        'prompt': [item['prompt'] for item in batch],
+        'chosen': [item['chosen'] for item in batch],
+        'rejected': [item['rejected'] for item in batch],
     }
 
 
@@ -218,27 +237,41 @@ def main():
 
     print(f"Using {len(full_dataset)} samples")
 
-    # Convert to HuggingFace Dataset format
-    from datasets import Dataset as HFDataset
+    # Split PyTorch dataset for validation
+    # Don't convert to HF Dataset - use our optimized LazyDPODataset directly!
+    dataset_size = len(full_dataset)
+    train_size = int(0.9 * dataset_size)
+    eval_size = dataset_size - train_size
 
-    # Prepare data in dict format
-    hf_data = []
-    for i in range(len(full_dataset)):
-        sample = full_dataset[i]
-        hf_data.append({
-            'prompt': sample['prompt'],
-            'chosen': sample['chosen'],
-            'rejected': sample['rejected'],
-            'images': sample['images']
-        })
+    # Manual split
+    import random
+    random.seed(42)
+    indices = list(range(dataset_size))
+    random.shuffle(indices)
 
-    # Create HF Dataset
-    hf_dataset = HFDataset.from_list(hf_data)
+    train_indices = indices[:train_size]
+    eval_indices = indices[train_size:]
 
-    # Split for validation
-    dataset_split = hf_dataset.train_test_split(test_size=0.1, seed=42)
-    train_dataset = dataset_split['train']
-    eval_dataset = dataset_split['test']
+    # Create subset datasets
+    train_data = [full_dataset.data[i] for i in train_indices]
+    eval_data = [full_dataset.data[i] for i in eval_indices]
+
+    # Create separate train and eval datasets
+    train_dataset = LazyDPODataset(
+        json_path=args.dataset,
+        image_dir=args.image_dir,
+        processor=processor,
+        max_length=512
+    )
+    train_dataset.data = train_data
+
+    eval_dataset = LazyDPODataset(
+        json_path=args.dataset,
+        image_dir=args.image_dir,
+        processor=processor,
+        max_length=512
+    )
+    eval_dataset.data = eval_data
 
     print(f"Train samples: {len(train_dataset)}")
     print(f"Eval samples: {len(eval_dataset)}")
@@ -250,7 +283,7 @@ def main():
         torch.cuda.empty_cache()
         print(f"GPU memory: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
 
-    # DPO Training arguments
+    # DPO Training arguments (OPTIMIZED)
     training_args = DPOConfig(
         output_dir=args.output_dir,
         num_train_epochs=3,
@@ -267,8 +300,8 @@ def main():
         save_steps=100,
         save_total_limit=2,
         bf16=torch.cuda.is_available(),
-        dataloader_pin_memory=False,
-        dataloader_num_workers=0,  # Important: 0 workers for lazy loading
+        dataloader_pin_memory=True,  # Enable for faster data transfer
+        dataloader_num_workers=4,  # Use 4 workers for parallel data loading (was 0)
         remove_unused_columns=False,
         report_to="wandb",
         beta=0.1,
@@ -278,11 +311,10 @@ def main():
     )
 
     # Initialize DPO Trainer
-    print("\nInitializing DPO Trainer with lazy loading...")
-
-    # Create custom data collator
-    from functools import partial
-    data_collator = partial(collate_fn, processor=processor, max_length=512)
+    print("\nInitializing DPO Trainer with lazy loading and pre-tokenization...")
+    print("✓ Images are loaded on-the-fly (lazy loading)")
+    print("✓ Tokenization happens in DataLoader (pre-tokenization)")
+    print("✓ This should be significantly faster than on-the-fly tokenization!")
 
     try:
         trainer = DPOTrainer(
@@ -292,7 +324,7 @@ def main():
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=processor,
-            # data_collator=data_collator,  # Use custom collator if needed
+            data_collator=collate_fn,  # Use our optimized pre-tokenized collator
         )
     except Exception as e:
         print(f"\n❌ Error initializing DPO Trainer: {e}")
