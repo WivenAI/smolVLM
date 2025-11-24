@@ -17,7 +17,7 @@ both chosen AND rejected responses (double forward pass). This is expected.
 FIXES:
 - Fixed bug where converting to HF Dataset loaded all images into memory
 - Tokenization now happens in DataLoader workers (was main thread)
-- Uses 4 workers instead of 0 for parallel processing
+- Uses 2 workers instead of 0 for parallel processing
 """
 
 import os
@@ -301,7 +301,7 @@ def main():
         save_total_limit=2,
         bf16=torch.cuda.is_available(),
         dataloader_pin_memory=True,  # Enable for faster data transfer
-        dataloader_num_workers=4,  # Use 4 workers for parallel data loading (was 0)
+        dataloader_num_workers=2,  # Use 2 workers for parallel data loading (was 0)
         remove_unused_columns=False,
         report_to="wandb",
         beta=0.1,

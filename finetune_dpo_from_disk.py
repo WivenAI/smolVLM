@@ -254,7 +254,7 @@ def main():
 
     # DPO Training config (OPTIMIZED)
     import multiprocessing
-    num_workers = min(4, multiprocessing.cpu_count())
+    num_workers = min(2, multiprocessing.cpu_count())  # Max 2 workers to avoid overhead
 
     training_args = DPOConfig(
         output_dir=args.output_dir,
