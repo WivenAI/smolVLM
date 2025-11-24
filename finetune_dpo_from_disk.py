@@ -14,6 +14,10 @@ from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import BitsAndBytesConfig
 from datasets import load_from_disk
+import os
+
+# Disable HuggingFace datasets caching to save disk space
+os.environ["HF_DATASETS_CACHE"] = "/tmp/hf_datasets_cache"
 
 
 def load_model_and_processor(base_model: str = None):
@@ -59,6 +63,117 @@ def load_model_and_processor(base_model: str = None):
     return model, None, processor
 
 
+def cleanup_hf_cache(dataset_dir: str = None):
+    """
+    Clean up HuggingFace datasets cache files
+
+    Args:
+        dataset_dir: Dataset directory to clean cache files from
+    """
+    import shutil
+    from pathlib import Path
+
+    freed_space = 0
+
+    # Clean up cache files in dataset directory
+    if dataset_dir:
+        dataset_path = Path(dataset_dir)
+        if dataset_path.exists():
+            cache_files = list(dataset_path.glob("cache-*.arrow"))
+            if cache_files:
+                print(f"Cleaning HF cache files in {dataset_dir}...")
+                for cache_file in cache_files:
+                    try:
+                        size = cache_file.stat().st_size
+                        cache_file.unlink()
+                        freed_space += size
+                        print(f"  ✓ Removed {cache_file.name} ({size / 1e9:.2f} GB)")
+                    except Exception as e:
+                        print(f"  ⚠ Could not remove {cache_file.name}: {e}")
+
+    # Clean up /tmp HF cache
+    tmp_cache = Path("/tmp/hf_datasets_cache")
+    if tmp_cache.exists():
+        try:
+            size = sum(f.stat().st_size for f in tmp_cache.rglob('*') if f.is_file())
+            shutil.rmtree(tmp_cache)
+            freed_space += size
+            print(f"  ✓ Removed /tmp HF cache ({size / 1e9:.2f} GB)")
+        except Exception as e:
+            print(f"  ⚠ Could not remove /tmp cache: {e}")
+
+    return freed_space
+
+
+def cleanup_after_training(output_dir: str, dataset_dir: str, cleanup_dataset: bool = False):
+    """
+    Clean up intermediate files to free disk space after training
+
+    Args:
+        output_dir: Training output directory
+        dataset_dir: Dataset directory
+        cleanup_dataset: Whether to also delete the dataset directory
+    """
+    import shutil
+    from pathlib import Path
+
+    output_path = Path(output_dir)
+    freed_space = 0
+
+    # Clean HuggingFace cache files first
+    print("Cleaning HuggingFace cache files...")
+    freed_space += cleanup_hf_cache(dataset_dir)
+
+    # Remove intermediate checkpoints (keep only final model)
+    if output_path.exists():
+        print(f"Cleaning checkpoints in {output_dir}...")
+        checkpoint_dirs = list(output_path.glob("checkpoint-*"))
+
+        if checkpoint_dirs:
+            for checkpoint_dir in checkpoint_dirs:
+                try:
+                    size = sum(f.stat().st_size for f in checkpoint_dir.rglob('*') if f.is_file())
+                    shutil.rmtree(checkpoint_dir)
+                    freed_space += size
+                    print(f"  ✓ Removed {checkpoint_dir.name} ({size / 1e9:.2f} GB)")
+                except Exception as e:
+                    print(f"  ⚠ Could not remove {checkpoint_dir.name}: {e}")
+        else:
+            print("  No checkpoints to remove")
+
+    # Remove runs directory (WandB logs)
+    runs_dir = output_path / "runs"
+    if runs_dir.exists():
+        try:
+            size = sum(f.stat().st_size for f in runs_dir.rglob('*') if f.is_file())
+            shutil.rmtree(runs_dir)
+            freed_space += size
+            print(f"  ✓ Removed runs directory ({size / 1e9:.2f} GB)")
+        except Exception as e:
+            print(f"  ⚠ Could not remove runs directory: {e}")
+
+    # Clean up dataset if requested
+    if cleanup_dataset:
+        dataset_path = Path(dataset_dir)
+        if dataset_path.exists():
+            try:
+                size = sum(f.stat().st_size for f in dataset_path.rglob('*') if f.is_file())
+                shutil.rmtree(dataset_path)
+                freed_space += size
+                print(f"  ✓ Removed dataset directory {dataset_dir} ({size / 1e9:.2f} GB)")
+            except Exception as e:
+                print(f"  ⚠ Could not remove dataset: {e}")
+
+    # Clear GPU/CPU cache
+    import gc
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        print(f"  ✓ Cleared GPU memory cache")
+
+    print(f"\n💾 Total disk space freed: {freed_space / 1e9:.2f} GB")
+
+
 def main():
     import argparse
 
@@ -73,6 +188,10 @@ def main():
                        help="Maximum samples to use")
     parser.add_argument("--test", action="store_true",
                        help="Test mode with 10 samples")
+    parser.add_argument("--no-cleanup", action="store_true",
+                       help="Keep intermediate checkpoints (cleanup is enabled by default)")
+    parser.add_argument("--cleanup-dataset", action="store_true",
+                       help="Also delete the dataset directory after training")
 
     args = parser.parse_args()
 
@@ -153,6 +272,7 @@ def main():
 
     print("\nInitializing DPO Trainer...")
     print("Note: Tokenization will happen on-the-fly (may be slow initially)")
+    print("Cache files will be stored in /tmp and cleaned up automatically")
 
     try:
         trainer = DPOTrainer(
@@ -163,10 +283,19 @@ def main():
             eval_dataset=eval_dataset,
             processing_class=processor,
         )
+
+        # Clean up cache files created during initialization
+        print("\nCleaning up tokenization cache files...")
+        freed = cleanup_hf_cache(args.dataset_dir)
+        if freed > 0:
+            print(f"  ✓ Freed {freed / 1e9:.2f} GB during initialization")
+
     except Exception as e:
         print(f"\n❌ Error initializing DPO Trainer: {e}")
         import traceback
         traceback.print_exc()
+        # Try to clean up cache before exiting
+        cleanup_hf_cache(args.dataset_dir)
         raise
 
     print("\nStarting DPO training...")
@@ -203,6 +332,11 @@ def main():
         import traceback
         traceback.print_exc()
         raise
+
+    # Cleanup by default (unless --no-cleanup is specified)
+    if not args.no_cleanup or args.cleanup_dataset:
+        print("\n🧹 Cleaning up...")
+        cleanup_after_training(args.output_dir, args.dataset_dir, args.cleanup_dataset)
 
     print(f"\n🎉 DPO Training completed successfully!")
 
