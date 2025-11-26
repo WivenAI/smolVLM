@@ -26,13 +26,17 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Default cache directory for HuggingFace downloads (can be overridden)
+DEFAULT_HF_CACHE = "../tmpcache"
+
 class SmolVLMBenchmarkEvaluator:
-    def __init__(self, model_path: str = "HuggingFaceTB/SmolVLM-500M-Instruct", dataset_percentage: float = 100.0):
+    def __init__(self, model_path: str = "HuggingFaceTB/SmolVLM-500M-Instruct", dataset_percentage: float = 100.0, hf_cache_dir: str = None):
         """Initialize the benchmark evaluator with a model
 
         Args:
             model_path: Path to the model (defaults to base model)
             dataset_percentage: Percentage of dataset to download and use (1-100)
+            hf_cache_dir: Directory to cache HuggingFace model downloads (defaults to ../tmpcache)
         """
         self.model_path = model_path
         self.model = None
@@ -40,6 +44,16 @@ class SmolVLMBenchmarkEvaluator:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.results_cache = {}
         self.dataset_percentage = dataset_percentage
+
+        # Set up HuggingFace cache directory
+        self.hf_cache_dir = hf_cache_dir or DEFAULT_HF_CACHE
+        # Create cache directory if it doesn't exist
+        Path(self.hf_cache_dir).mkdir(parents=True, exist_ok=True)
+        # Set environment variables for HuggingFace
+        os.environ["HF_HOME"] = str(Path(self.hf_cache_dir).resolve())
+        os.environ["HF_HUB_CACHE"] = str(Path(self.hf_cache_dir).resolve() / "hub")
+        os.environ["TRANSFORMERS_CACHE"] = str(Path(self.hf_cache_dir).resolve())
+        logger.info(f"HuggingFace cache directory set to: {self.hf_cache_dir}")
 
         # Set random seeds for reproducibility
         random.seed(42)
@@ -63,14 +77,15 @@ class SmolVLMBenchmarkEvaluator:
                 base_model = "HuggingFaceTB/SmolVLM-500M-Instruct"
 
                 # Load processor from adapter directory (it should have processor files)
-                self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True)
+                self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True, cache_dir=self.hf_cache_dir)
 
                 # Load base model
                 base_model_obj = AutoModelForVision2Seq.from_pretrained(
                     base_model,
                     trust_remote_code=True,
                     torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                    device_map="auto" if torch.cuda.is_available() else None
+                    device_map="auto" if torch.cuda.is_available() else None,
+                    cache_dir=self.hf_cache_dir
                 )
 
                 # Load LoRA adapter on top
@@ -78,12 +93,13 @@ class SmolVLMBenchmarkEvaluator:
                 logger.info("LoRA adapter loaded successfully on base model")
             else:
                 # Load as full model
-                self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True)
+                self.processor = AutoProcessor.from_pretrained(self.model_path, trust_remote_code=True, cache_dir=self.hf_cache_dir)
                 self.model = AutoModelForVision2Seq.from_pretrained(
                     self.model_path,
                     trust_remote_code=True,
                     torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                    device_map="auto" if torch.cuda.is_available() else None
+                    device_map="auto" if torch.cuda.is_available() else None,
+                    cache_dir=self.hf_cache_dir
                 )
                 logger.info("Full model loaded successfully")
         except Exception as e:
@@ -91,12 +107,13 @@ class SmolVLMBenchmarkEvaluator:
             # Fallback to base model if fine-tuned model not available
             logger.info("Falling back to base model...")
             base_model = "HuggingFaceTB/SmolVLM-500M-Instruct"
-            self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
+            self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True, cache_dir=self.hf_cache_dir)
             self.model = AutoModelForVision2Seq.from_pretrained(
                 base_model,
                 trust_remote_code=True,
                 torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                device_map="auto" if torch.cuda.is_available() else None
+                device_map="auto" if torch.cuda.is_available() else None,
+                cache_dir=self.hf_cache_dir
             )
 
     def generate_response(self, image: Image.Image, question: str, max_tokens: int = 100) -> str:
@@ -228,7 +245,7 @@ class SmolVLMBenchmarkEvaluator:
         logger.info(f"Loading {dataset_name} dataset ({self.dataset_percentage}% of data)...")
         try:
             # Use streaming to avoid loading full dataset
-            dataset = load_dataset(dataset_name, split=split, streaming=True, trust_remote_code=True)
+            dataset = load_dataset(dataset_name, split=split, streaming=True, trust_remote_code=True, cache_dir=self.hf_cache_dir)
 
             # Calculate how many samples to load based on percentage
             # Cap at 1000 samples for benchmark datasets (not ERP datasets)
@@ -289,7 +306,7 @@ class SmolVLMBenchmarkEvaluator:
 
             # Fallback to non-streaming but limited
             try:
-                dataset = load_dataset(dataset_name, split=split, trust_remote_code=True)
+                dataset = load_dataset(dataset_name, split=split, trust_remote_code=True, cache_dir=self.hf_cache_dir)
 
                 # Apply same cap logic as above
                 is_erp_dataset = any(keyword in dataset_name.lower() for keyword in ['qcm', 'dpo', 'erp'])
@@ -1237,6 +1254,8 @@ def main():
                        help="Percentage of each dataset to download and use (1-100, default: 100)")
     parser.add_argument("--cache-dir", default="./benchmark_cache",
                        help="Directory to cache datasets")
+    parser.add_argument("--hf-cache-dir", default="../tmpcache",
+                       help="Directory to cache HuggingFace model downloads (default: ../tmpcache)")
     parser.add_argument("--verbose", action="store_true",
                        help="Enable verbose logging")
 
@@ -1249,8 +1268,8 @@ def main():
     if args.percentage <= 0 or args.percentage > 100:
         parser.error("--percentage must be between 1 and 100")
 
-    # Initialize evaluator with percentage limit
-    evaluator = SmolVLMBenchmarkEvaluator(args.model_path, dataset_percentage=args.percentage)
+    # Initialize evaluator with percentage limit and cache directory
+    evaluator = SmolVLMBenchmarkEvaluator(args.model_path, dataset_percentage=args.percentage, hf_cache_dir=args.hf_cache_dir)
 
     try:
         # Run evaluation
