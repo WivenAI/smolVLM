@@ -1,0 +1,5 @@
+python3 run_comprehensive_pipeline.py \
+    --skip-baseline \
+    --skip-benchmark-training \
+    --skip-erp-qcm \
+    --skip-erp-dpo-sft

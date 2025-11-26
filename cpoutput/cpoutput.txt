@@ -1,0 +1,2216 @@
+
+
+
+
+
+QCM LoRA Training completed!
+LoRA adapters saved to: systematic_results/trained_on_erp_qcm_temp
+
+To use the fine-tuned model, load the base model and apply the LoRA adapters.
+✅ Completed: ERP QCM Training
+
+================================================================================
+Running: ERP Training (qcm+dpo)
+Command: python3 finetune_smolvlm_dpo.py --base-model systematic_results/trained_on_erp_qcm_temp --output-dir systematic_results/trained_on_erp_qcm_dpo --dataset dpo_image_dataset/dpo_dataset_gemini.json --image-dir dpo_image_dataset
+================================================================================
+
+Starting SmolVLM DPO fine-tuning...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251109_172714-3nx7yslv
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-dpo-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/3nx7yslv
+Using device: cuda
+Loading base model: systematic_results/trained_on_erp_qcm_temp
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/mapping_func.py:73: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/tuners/tuners_utils.py:196: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing DPO dataset...
+Loaded 1833 DPO examples
+✓ Loaded image: dpo_image_dataset/image_001.png
+✓ Loaded image: dpo_image_dataset/image_053.png
+✓ Loaded image: dpo_image_dataset/image_105.png
+✓ Loaded image: dpo_image_dataset/image_153.png
+✓ Loaded image: dpo_image_dataset/image_206.png
+✓ Loaded image: dpo_image_dataset/image_258.png
+✓ Loaded image: dpo_image_dataset/image_312.png
+✓ Loaded image: dpo_image_dataset/image_365.png
+✓ Loaded image: dpo_image_dataset/image_418.png
+✓ Loaded image: dpo_image_dataset/image_469.png
+✓ Loaded image: dpo_image_dataset/image_523.png
+✓ Loaded image: dpo_image_dataset/image_576.png
+✓ Loaded image: dpo_image_dataset/image_629.png
+✓ Loaded image: dpo_image_dataset/image_682.png
+✓ Loaded image: dpo_image_dataset/image_735.png
+✓ Loaded image: dpo_image_dataset/image_788.png
+✓ Loaded image: dpo_image_dataset/image_843.png
+✓ Loaded image: dpo_image_dataset/image_895.png
+✓ Loaded image: dpo_image_dataset/image_950.png
+
+✓ Successfully loaded 1833 DPO samples
+  All samples loaded successfully!
+
+⚠️  Limiting dataset to 100 samples (from 1833) to prevent OOM
+   DPOTrainer tokenizes entire dataset during initialization
+Train samples: 90
+Eval samples: 10
+GPU memory allocated: 0.62 GB
+GPU memory reserved: 0.75 GB
+
+Initializing DPO Trainer...
+Extracting prompt in train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 6334.74 examples/s]
+Applying chat template to train dataset: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 14040.82 examples/s]
+Tokenizing train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:39<00:00,  2.28 examples/s]
+Extracting prompt in eval dataset: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 700.04 examples/s]
+Applying chat template to eval dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 3770.16 examples/s]
+Tokenizing eval dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:04<00:00,  2.31 examples/s]
+
+Starting DPO training...
+GPU memory before training: 0.62 GB allocated
+GPU memory reserved: 0.75 GB
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 49279, 'bos_token_id': 1, 'pad_token_id': 2}.
+  0%|                                                                                                                                                            | 0/69 [00:00<?, ?it/s]/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+{'loss': 0.7145, 'grad_norm': 153.4378662109375, 'learning_rate': 9e-08, 'rewards/chosen': 0.04232856258749962, 'rewards/rejected': -0.017294805496931076, 'rewards/accuracies': 0.42500001192092896, 'rewards/margins': 0.05962337926030159, 'logps/chosen': -2026.298095703125, 'logps/rejected': -436.91119384765625, 'logits/chosen': -3.1914737224578857, 'logits/rejected': -3.3323326110839844, 'epoch': 0.44}
+{'loss': 0.6812, 'grad_norm': 107.56352233886719, 'learning_rate': 1.8999999999999998e-07, 'rewards/chosen': 0.138651043176651, 'rewards/rejected': -0.028798142448067665, 'rewards/accuracies': 0.5249999761581421, 'rewards/margins': 0.1674492061138153, 'logps/chosen': -1958.8101806640625, 'logps/rejected': -443.17608642578125, 'logits/chosen': -3.2955615520477295, 'logits/rejected': -3.462822675704956, 'epoch': 0.89}
+{'loss': 0.7553, 'grad_norm': 127.25166320800781, 'learning_rate': 2.9e-07, 'rewards/chosen': -0.07836882770061493, 'rewards/rejected': -0.029862578958272934, 'rewards/accuracies': 0.4736842215061188, 'rewards/margins': -0.0485062450170517, 'logps/chosen': -2012.784912109375, 'logps/rejected': -404.198486328125, 'logits/chosen': -3.1175875663757324, 'logits/rejected': -3.187835454940796, 'epoch': 1.31}
+{'loss': 0.7766, 'grad_norm': 538.3170166015625, 'learning_rate': 3.8999999999999997e-07, 'rewards/chosen': 0.10108323395252228, 'rewards/rejected': -0.010308722965419292, 'rewards/accuracies': 0.574999988079071, 'rewards/margins': 0.11139193922281265, 'logps/chosen': -1940.807861328125, 'logps/rejected': -448.72064208984375, 'logits/chosen': -3.3038811683654785, 'logits/rejected': -3.3043174743652344, 'epoch': 1.76}
+{'loss': 0.6199, 'grad_norm': 57.63405227661133, 'learning_rate': 4.9e-07, 'rewards/chosen': 0.2899065613746643, 'rewards/rejected': 0.0030686240643262863, 'rewards/accuracies': 0.6052631735801697, 'rewards/margins': 0.28683793544769287, 'logps/chosen': -2030.991943359375, 'logps/rejected': -464.65850830078125, 'logits/chosen': -3.2351224422454834, 'logits/rejected': -3.378845691680908, 'epoch': 2.18}
+{'eval_loss': 0.748528242111206, 'eval_runtime': 60.2391, 'eval_samples_per_second': 0.166, 'eval_steps_per_second': 0.166, 'eval_rewards/chosen': -0.09244751930236816, 'eval_rewards/rejected': -0.01176757737994194, 'eval_rewards/accuracies': 0.4000000059604645, 'eval_rewards/margins': -0.08067993074655533, 'eval_logps/chosen': -1730.105712890625, 'eval_logps/rejected': -402.7118225097656, 'eval_logits/chosen': -2.9259157180786133, 'eval_logits/rejected': -3.3752918243408203, 'epoch': 2.18}
+{'loss': 0.81, 'grad_norm': 153.9030303955078, 'learning_rate': 2.706448363680831e-07, 'rewards/chosen': -0.09572906792163849, 'rewards/rejected': 0.0012072373647242785, 'rewards/accuracies': 0.574999988079071, 'rewards/margins': -0.09693630039691925, 'logps/chosen': -1858.7652587890625, 'logps/rejected': -397.015869140625, 'logits/chosen': -3.1696696281433105, 'logits/rejected': -3.2478041648864746, 'epoch': 2.62}
+{'train_runtime': 1893.453, 'train_samples_per_second': 0.143, 'train_steps_per_second': 0.036, 'train_loss': 0.7389923109524492, 'epoch': 3.0}                                         
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 69/69 [31:33<00:00, 27.44s/it]
+
+GPU memory after training: 0.67 GB
+
+Saving model...
+✅ Model saved successfully to: systematic_results/trained_on_erp_qcm_dpo
+
+🎉 DPO Training completed successfully!
+Model location: systematic_results/trained_on_erp_qcm_dpo
+✅ Completed: ERP Training (qcm+dpo)
+
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+Benchmarking: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+Benchmarks: ocrbench, docvqa, chartqa
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+
+================================================================================
+Running: Benchmark trained_on_erp_qcm+dpo
+Command: python3 evaluate_ocrbench.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_20251109_152205.json --percentage 100.0 --benchmarks ocrbench docvqa chartqa
+================================================================================
+
+INFO:__main__:Starting comprehensive benchmark evaluation using FULL datasets...
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully on base model
+INFO:__main__:Running ocrbench evaluation...
+INFO:__main__:Evaluating on OCRBench...
+INFO:__main__:Trying OCR dataset: echo840/OCRBench
+INFO:__main__:Loading echo840/OCRBench from cache...
+INFO:__main__:Successfully loaded OCR dataset: echo840/OCRBench
+INFO:__main__:Using full OCRBench dataset: 1000 samples
+OCRBench: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [06:50<00:00,  2.44it/s]
+INFO:__main__:Running docvqa evaluation...
+INFO:__main__:Evaluating on DocVQA...
+INFO:__main__:Loading nielsr/docvqa_1200_examples from cache...
+INFO:__main__:Using full DocVQA dataset: 1000 samples
+DocVQA: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [07:44<00:00,  2.16it/s]
+INFO:__main__:Running chartqa evaluation...
+INFO:__main__:Evaluating on ChartQA...
+INFO:__main__:Loading HuggingFaceM4/ChartQA from cache...
+INFO:__main__:Using full ChartQA dataset: 1000 samples
+ChartQA: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [11:22<00:00,  1.47it/s]
+INFO:__main__:Results saved to systematic_results/trained_on_erp_qcm+dpo_20251109_152205.json
+
+================================================================================
+SmolVLM Full Dataset Benchmark Evaluation Summary
+================================================================================
+
+Single-Image Benchmarks:
+------------------------------------------------------------
+
+OCRBENCH:
+  Tasks evaluated: 1000
+  Accuracy: 53.70%
+
+  Example 1:
+    Question: what is written in the image?...
+    Response: The text on the paper says "Clintie"....
+    Ground Truth: ['CENTRE']...
+
+  Example 2:
+    Question: what is written in the image?...
+    Response: The text "Friend" is visible in white color on a black background....
+    Ground Truth: ['FRIEND']...
+
+DOCVQA:
+  Tasks evaluated: 1000
+  Accuracy: 63.50%
+
+  Example 1:
+    Question: what is the date mentioned in this letter?...
+    Response: 1/8/93...
+    Ground Truth: ['1/8/93']...
+
+  Example 2:
+    Question: Who is in  cc in this letter?...
+    Response: T.R. Fiehl...
+    Ground Truth: ['T.F. Riehl']...
+
+CHARTQA:
+  Tasks evaluated: 1000
+  Accuracy: 41.90%
+
+  Example 1:
+    Question: How many food item is shown in the bar graph?...
+    Response: 16...
+    Ground Truth: ['14']...
+
+  Example 2:
+    Question: What is the difference in value between Lamb and Corn?...
+    Response: 103.7-102.46 
+Answer: 0.24....
+    Ground Truth: ['0.57']...
+
+================================================================================
+BENCHMARK SCORES SUMMARY:
+================================================================================
+
+Single-Image Benchmarks:
+  ocrbench       :  53.70%
+  docvqa         :  63.50%
+  chartqa        :  41.90%
+  Average        :  53.03%
+
+Multi-task Benchmarks:
+
+Overall Average Score: 53.03%
+Total evaluated tasks: 3000
+================================================================================
+
+Performance Analysis (compared to SmolVLM paper - image benchmarks only):
+----------------------------------------------------------------------
+  ocrbench       :  53.70% - GOOD (within SmolVLM range)
+  docvqa         :  63.50% - GOOD (within SmolVLM range)
+  chartqa        :  41.90% - NEEDS IMPROVEMENT (below SmolVLM-256M)
+
+Note: Using full datasets for comprehensive evaluation
+================================================================================
+
+Detailed results saved to: systematic_results/trained_on_erp_qcm+dpo_20251109_152205.json
+Dataset cache saved to: ./benchmark_cache
+✅ Completed: Benchmark trained_on_erp_qcm+dpo
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+ERP QCM Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_qcm.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251109_152205.json --dataset dpo_image_dataset/qcm/qcm_dataset_nova_pro.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP QCM Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json
+INFO:__main__:Loaded 3736 samples
+Evaluating: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3736/3736 [33:20<00:00,  1.87it/s]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json
+INFO:__main__:Samples: 3736
+INFO:__main__:
+Accuracy: 43.74%
+INFO:__main__:Average Log Probability: -0.1912
+INFO:__main__:
+BERTScore:
+INFO:__main__:  Precision: 0.7112
+INFO:__main__:  Recall:    0.6780
+INFO:__main__:  F1:        0.6923
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251109_152205.json
+✅ Completed: ERP QCM Evaluation trained_on_erp_qcm+dpo
+
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+ERP DPO Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+
+================================================================================
+Running: ERP DPO Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_dpo.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251109_152205.json --dataset dpo_image_dataset/dpo_dataset_gemini.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_gemini.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP DPO Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: dpo_image_dataset/dpo_dataset_gemini.json
+INFO:__main__:Loaded 1833 samples
+Evaluating: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1833/1833 [1:11:16<00:00,  2.33s/it]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_gemini.json
+INFO:__main__:Samples: 1833
+INFO:__main__:
+Preference Accuracy: 97.27%
+INFO:__main__:  (Model assigns higher probability to 'chosen' response)
+INFO:__main__:
+Average Log Probabilities:
+INFO:__main__:  Chosen:   -1.9687
+INFO:__main__:  Rejected: -2.7273
+INFO:__main__:  Margin:   0.7585
+INFO:__main__:
+BERTScore (Generated vs Chosen):
+INFO:__main__:  Precision: 0.6997
+INFO:__main__:  Recall:    0.5575
+INFO:__main__:  F1:        0.6189
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251109_152205.json
+✅ Completed: ERP DPO Evaluation trained_on_erp_qcm+dpo
+
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+PHASE 4: COMPARISON & ANALYSIS
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+
+================================================================================
+COMPREHENSIVE COMPARISON RESULTS
+================================================================================
+
+                 model  average_accuracy  ocrbench_acc  docvqa_acc  chartqa_acc  erp_qcm_acc  erp_qcm_log_prob  erp_qcm_bertscore_f1  erp_dpo_pref_acc  erp_dpo_margin  erp_dpo_bertscore_f1
+trained_on_erp_qcm+dpo         50.166667          53.7        63.5         33.3    43.736617         -0.191167              0.692253         97.272231        0.758543              0.618926
+
+✅ Results saved:
+   CSV:  systematic_results/systematic_comparison_20251109_152205.csv
+   JSON: systematic_results/systematic_comparison_20251109_152205.json
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+
+🏆 Best Overall Model: trained_on_erp_qcm+dpo
+   Average Accuracy: 50.17%
+
+================================================================================
+
+================================================================================
+PIPELINE COMPLETED
+================================================================================
+Total time: 4:49:14.109889
+Results: systematic_results
+Full log: systematic_results/systematic_log_20251109_152205.txt
+WandB: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/ug54x9cn
+================================================================================
+
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:                trained_on_erp_qcm+dpo/chartqa ▁
+wandb:                 trained_on_erp_qcm+dpo/docvqa ▁
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 ▁
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin ▁
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy ▁
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob ▁
+wandb:               trained_on_erp_qcm+dpo/ocrbench ▁
+wandb: 
+wandb: Run summary:
+wandb:                trained_on_erp_qcm+dpo/chartqa 33.3
+wandb:                 trained_on_erp_qcm+dpo/docvqa 63.5
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 0.61893
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin 0.75854
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc 97.27223
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy 43.73662
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 0.69225
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob -0.19117
+wandb:               trained_on_erp_qcm+dpo/ocrbench 53.7
+wandb:                    trained_on_erp_qcm+dpo_avg 50.16667
+wandb: 
+wandb: 🚀 View run systematic_pipeline_20251109_152205 at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/ug54x9cn
+wandb: ⭐️ View project at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20251109_152205-ug54x9cn/logs
+wandb: 
+wandb: 🚀 View run smolvlm-qcm-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/u84xojvs
+wandb: Find logs at: wandb/run-20251109_152211-u84xojvs/logs
+wandb: 
+wandb: 🚀 View run smolvlm-dpo-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/3nx7yslv
+wandb: Find logs at: wandb/run-20251109_172714-3nx7yslv/logs
+✅ Experiment completed: erp_qcm_dpo_qcm_nova_dpo_gemini
+
+================================================================================
+Training on QCM+DPO combination:
+  QCM: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json (qcm_nova)
+  DPO: dpo_image_dataset/dpo_dataset_nova_pro.json (dpo_nova)
+================================================================================
+
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+EXPERIMENT: erp_qcm_dpo_qcm_nova_dpo_nova
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+
+Command: python3 run_systematic_benchmark_pipeline.py --benchmark-percentage 100.0 --skip-baseline --train-erp --erp-strategy qcm+dpo --qcm-dataset dpo_image_dataset/qcm/qcm_dataset_nova_pro.json --dpo-dataset dpo_image_dataset/dpo_dataset_nova_pro.json --image-dir dpo_image_dataset --epochs 3
+
+================================================================================
+Systematic Pipeline Started: 2025-11-09 20:11:28.412385
+Log file: systematic_results/systematic_log_20251109_201128.txt
+================================================================================
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251109_201129-p5hfl0tx
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run systematic_pipeline_20251109_201128
+wandb:  View project at https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb:  View run at https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/p5hfl0tx
+
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+SYSTEMATIC BENCHMARK PIPELINE
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+PHASE 1: BASELINE - Test Base Model on ALL Benchmarks
+This establishes baseline performance before any training
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+Skipping baseline (--skip-baseline)
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+PHASE 3: ERP TRAINING - Train on ERP Data
+Then test on ALL benchmarks to measure:
+  1. Does ERP training improve ERP tasks?
+  2. Does it maintain general VQA performance?
+  3. Is there catastrophic forgetting?
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Training
+Command: python3 finetune_smolvlm_qcm.py --output-dir systematic_results/trained_on_erp_qcm_temp --dataset dpo_image_dataset/qcm/qcm_dataset_nova_pro.json --image-dir dpo_image_dataset --num-epochs 3
+================================================================================
+
+Starting SmolVLM LoRA fine-tuning on QCM dataset...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251109_201136-04blvvs5
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-qcm-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/04blvvs5
+Using device: cuda
+Loading model and processor: HuggingFaceTB/SmolVLM-500M-Instruct
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing QCM dataset...
+Loaded 3736 QCM examples (nested structure with images)
+Train samples: 3362
+Eval samples: 374
+
+Setting up training arguments...
+
+Initializing Trainer...
+
+Starting LoRA training on QCM dataset...
+  0%|                                                                                                                                                          | 0/1263 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`...
+{'loss': 1.9818, 'grad_norm': 2.588125467300415, 'learning_rate': 9.000000000000001e-07, 'epoch': 0.02}                                                                                 
+  1%|█▉                                                                                                                                             | 17/1263 [01:22<1:41:24,  4.88s/it]✓ Loaded image: dpo_image_dataset/image_621.png
+{'loss': 2.0505, 'grad_norm': 2.7639355659484863, 'learning_rate': 1.9000000000000002e-06, 'epoch': 0.05}                                                                               
+{'loss': 1.9847, 'grad_norm': 3.573483467102051, 'learning_rate': 2.9e-06, 'epoch': 0.07}                                                                                               
+  3%|████                                                                                                                                           | 36/1263 [02:57<1:39:59,  4.89s/it]✓ Loaded image: dpo_image_dataset/image_700.png
+{'loss': 1.9485, 'grad_norm': 1.9320213794708252, 'learning_rate': 3.900000000000001e-06, 'epoch': 0.1}                                                                                 
+{'loss': 1.919, 'grad_norm': 2.952418088912964, 'learning_rate': 4.9000000000000005e-06, 'epoch': 0.12}                                                                                 
+  4%|█████▊                                                                                                                                         | 51/1263 [04:10<1:39:48,  4.94s/it]✓ Loaded image: dpo_image_dataset/image_154.png
+  4%|██████                                                                                                                                         | 54/1263 [04:24<1:36:23,  4.78s/it]✓ Loaded image: dpo_image_dataset/image_857.png
+{'loss': 1.8356, 'grad_norm': 2.376169443130493, 'learning_rate': 5.9e-06, 'epoch': 0.14}                                                                                               
+  5%|███████                                                                                                                                        | 62/1263 [05:04<1:39:55,  4.99s/it]✓ Loaded image: dpo_image_dataset/image_179.png
+{'loss': 1.8596, 'grad_norm': 2.3659520149230957, 'learning_rate': 6.9e-06, 'epoch': 0.17}                                                                                              
+  6%|████████▌                                                                                                                                      | 76/1263 [06:12<1:31:13,  4.61s/it]✓ Loaded image: dpo_image_dataset/image_386.png
+{'loss': 1.8064, 'grad_norm': 2.310204029083252, 'learning_rate': 7.9e-06, 'epoch': 0.19}                                                                                               
+{'loss': 1.6978, 'grad_norm': 2.433750629425049, 'learning_rate': 8.900000000000001e-06, 'epoch': 0.21}                                                                                 
+{'loss': 1.6917, 'grad_norm': 1.5415544509887695, 'learning_rate': 9.9e-06, 'epoch': 0.24}                                                                                              
+  8%|███████████▏                                                                                                                                  | 100/1263 [08:09<1:37:15,  5.02s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.07it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:50<00:53,  3.42it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.86it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:37<00:03,  3.48it/s]
+{'eval_loss': 1.6006214618682861, 'eval_runtime': 101.4981, 'eval_samples_per_second': 3.685, 'eval_steps_per_second': 3.685, 'epoch': 0.24}                                            
+  9%|████████████▎                                                                                                                                 | 109/1263 [10:36<2:10:16,  6.77s/it]✓ Loaded image: dpo_image_dataset/image_959.png                                                                                                                                         
+{'loss': 1.5161, 'grad_norm': 1.496520757675171, 'learning_rate': 9.99852244399082e-06, 'epoch': 0.26}                                                                                  
+  9%|█████████████                                                                                                                                 | 116/1263 [11:10<1:35:43,  5.01s/it]✓ Loaded image: dpo_image_dataset/image_463.png
+{'loss': 1.5306, 'grad_norm': 1.1612895727157593, 'learning_rate': 9.993415964106498e-06, 'epoch': 0.29}                                                                                
+{'loss': 1.4381, 'grad_norm': 1.2018427848815918, 'learning_rate': 9.984666043964637e-06, 'epoch': 0.31}                                                                                
+{'loss': 1.2554, 'grad_norm': 1.056431770324707, 'learning_rate': 9.97227906793448e-06, 'epoch': 0.33}                                                                                  
+{'loss': 1.1851, 'grad_norm': 1.2353014945983887, 'learning_rate': 9.956264074158947e-06, 'epoch': 0.36}                                                                                
+ 12%|█████████████████▌                                                                                                                            | 156/1263 [14:25<1:28:36,  4.80s/it]✓ Loaded image: dpo_image_dataset/image_255.png
+{'loss': 1.1539, 'grad_norm': 0.8198522329330444, 'learning_rate': 9.936632747959962e-06, 'epoch': 0.38}                                                                                
+ 13%|██████████████████▌                                                                                                                           | 165/1263 [15:08<1:27:39,  4.79s/it]✓ Loaded image: dpo_image_dataset/image_001.png
+{'loss': 1.1031, 'grad_norm': 0.9533389210700989, 'learning_rate': 9.913399413312274e-06, 'epoch': 0.4}                                                                                 
+ 14%|███████████████████▋                                                                                                                          | 175/1263 [15:57<1:28:49,  4.90s/it]✓ Loaded image: dpo_image_dataset/image_053.png
+{'loss': 1.0598, 'grad_norm': 0.756065845489502, 'learning_rate': 9.886581022391986e-06, 'epoch': 0.43}                                                                                 
+{'loss': 1.0842, 'grad_norm': 0.8276190757751465, 'learning_rate': 9.856197143207414e-06, 'epoch': 0.45}                                                                                
+ 15%|█████████████████████▎                                                                                                                        | 190/1263 [17:10<1:28:45,  4.96s/it]✓ Loaded image: dpo_image_dataset/image_334.png
+{'loss': 1.0695, 'grad_norm': 0.7374286651611328, 'learning_rate': 9.822269945321318e-06, 'epoch': 0.48}                                                                                
+ 16%|██████████████████████▍                                                                                                                       | 200/1263 [18:00<1:28:54,  5.02s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:03,  4.18it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:50<00:53,  3.45it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:26<00:13,  3.88it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:36<00:03,  3.49it/s]
+{'eval_loss': 1.014559030532837, 'eval_runtime': 100.5413, 'eval_samples_per_second': 3.72, 'eval_steps_per_second': 3.72, 'epoch': 0.48}                                               
+ 16%|███████████████████████                                                                                                                       | 205/1263 [20:06<3:36:27, 12.28s/it]✓ Loaded image: dpo_image_dataset/image_309.png                                                                                                                                         
+ 17%|███████████████████████▍                                                                                                                      | 209/1263 [20:26<1:56:21,  6.62s/it]✓ Loaded image: dpo_image_dataset/image_778.png
+{'loss': 0.997, 'grad_norm': 1.0012941360473633, 'learning_rate': 9.784824183674904e-06, 'epoch': 0.5}                                                                                  
+ 17%|████████████████████████▏                                                                                                                     | 215/1263 [20:56<1:32:05,  5.27s/it]✓ Loaded image: dpo_image_dataset/image_489.png
+{'loss': 0.9596, 'grad_norm': 0.7018571496009827, 'learning_rate': 9.743887180525407e-06, 'epoch': 0.52}                                                                                
+{'loss': 0.981, 'grad_norm': 0.7383992671966553, 'learning_rate': 9.699488805510442e-06, 'epoch': 0.55}                                                                                 
+ 18%|██████████████████████████▏                                                                                                                   | 233/1263 [22:23<1:23:02,  4.84s/it]✓ Loaded image: dpo_image_dataset/image_282.png
+{'loss': 0.9833, 'grad_norm': 0.7771157026290894, 'learning_rate': 9.65166145385365e-06, 'epoch': 0.57}                                                                                 
+ 20%|███████████████████████████▉                                                                                                                  | 248/1263 [23:36<1:21:20,  4.81s/it]✓ Loaded image: dpo_image_dataset/image_726.png
+{'loss': 0.9548, 'grad_norm': 0.6756343245506287, 'learning_rate': 9.600440022727564e-06, 'epoch': 0.59}                                                                                
+{'loss': 0.9387, 'grad_norm': 0.7513030767440796, 'learning_rate': 9.545861885790931e-06, 'epoch': 0.62}                                                                                
+{'loss': 0.978, 'grad_norm': 0.7116996049880981, 'learning_rate': 9.487966865919058e-06, 'epoch': 0.64}                                                                                 
+{'loss': 0.9248, 'grad_norm': 0.6528258919715881, 'learning_rate': 9.426797206147102e-06, 'epoch': 0.67}                                                                                
+ 22%|███████████████████████████████▉                                                                                                              | 284/1263 [26:32<1:20:11,  4.92s/it]✓ Loaded image: dpo_image_dataset/image_569.png
+{'loss': 0.8723, 'grad_norm': 0.6546655297279358, 'learning_rate': 9.362397538847477e-06, 'epoch': 0.69}                                                                                
+ 23%|████████████████████████████████▉                                                                                                             | 293/1263 [27:16<1:19:57,  4.95s/it]✓ Loaded image: dpo_image_dataset/image_129.png
+{'loss': 0.9195, 'grad_norm': 0.6506219506263733, 'learning_rate': 9.294814853163912e-06, 'epoch': 0.71}                                                                                
+ 24%|█████████████████████████████████▋                                                                                                            | 300/1263 [27:50<1:17:32,  4.83s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.09it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:54,  3.40it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.85it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.43it/s]
+{'eval_loss': 0.8799334168434143, 'eval_runtime': 102.075, 'eval_samples_per_second': 3.664, 'eval_steps_per_second': 3.664, 'epoch': 0.71}                                             
+ 24%|██████████████████████████████████                                                                                                            | 303/1263 [29:47<5:19:15, 19.95s/it]✓ Loaded image: dpo_image_dataset/image_648.png                                                                                                                                         
+{'loss': 0.9225, 'grad_norm': 0.7723206281661987, 'learning_rate': 9.224098460725857e-06, 'epoch': 0.74}                                                                                
+ 25%|███████████████████████████████████▌                                                                                                          | 316/1263 [30:51<1:20:32,  5.10s/it]✓ Loaded image: dpo_image_dataset/image_805.png
+{'loss': 0.877, 'grad_norm': 0.7429223656654358, 'learning_rate': 9.150299959668322e-06, 'epoch': 0.76}                                                                                 
+ 26%|████████████████████████████████████▍                                                                                                         | 324/1263 [31:30<1:14:19,  4.75s/it]✓ Loaded image: dpo_image_dataset/image_908.png
+{'loss': 0.8872, 'grad_norm': 0.6556907296180725, 'learning_rate': 9.073473196983356e-06, 'epoch': 0.79}                                                                                
+{'loss': 0.8169, 'grad_norm': 0.7330275177955627, 'learning_rate': 8.993674229230642e-06, 'epoch': 0.81}                                                                                
+{'loss': 0.8447, 'grad_norm': 0.5775949358940125, 'learning_rate': 8.910961281635898e-06, 'epoch': 0.83}                                                                                
+ 28%|████████████████████████████████████████                                                                                                      | 356/1263 [34:06<1:16:14,  5.04s/it]✓ Loaded image: dpo_image_dataset/image_933.png
+ 28%|████████████████████████████████████████▏                                                                                                     | 357/1263 [34:11<1:15:23,  4.99s/it]✓ Loaded image: dpo_image_dataset/image_204.png
+{'loss': 0.8864, 'grad_norm': 1.007009506225586, 'learning_rate': 8.825394705606911e-06, 'epoch': 0.86}                                                                                 
+ 29%|████████████████████████████████████████▍                                                                                                     | 360/1263 [34:26<1:15:55,  5.05s/it]✓ Loaded image: dpo_image_dataset/image_230.png
+ 29%|█████████████████████████████████████████▎                                                                                                    | 367/1263 [35:00<1:12:42,  4.87s/it]✓ Loaded image: dpo_image_dataset/image_078.png
+{'loss': 0.898, 'grad_norm': 0.7763147950172424, 'learning_rate': 8.73703693469819e-06, 'epoch': 0.88}                                                                                  
+ 29%|█████████████████████████████████████████▊                                                                                                    | 372/1263 [35:25<1:14:30,  5.02s/it]✓ Loaded image: dpo_image_dataset/image_543.png
+{'loss': 0.8237, 'grad_norm': 1.1575405597686768, 'learning_rate': 8.645952439056413e-06, 'epoch': 0.9}                                                                                 
+ 30%|███████████████████████████████████████████▏                                                                                                  | 384/1263 [36:26<1:15:24,  5.15s/it]✓ Loaded image: dpo_image_dataset/image_882.png
+{'loss': 0.8331, 'grad_norm': 1.3588566780090332, 'learning_rate': 8.552207678379833e-06, 'epoch': 0.93}                                                                                
+ 31%|████████████████████████████████████████████                                                                                                  | 392/1263 [37:05<1:08:50,  4.74s/it]✓ Loaded image: dpo_image_dataset/image_674.png
+ 32%|████████████████████████████████████████████▋                                                                                                 | 398/1263 [37:33<1:10:11,  4.87s/it]✓ Loaded image: dpo_image_dataset/image_360.png
+{'loss': 0.8578, 'grad_norm': 0.9276924729347229, 'learning_rate': 8.455871053426056e-06, 'epoch': 0.95}                                                                                
+ 32%|████████████████████████████████████████████▉                                                                                                 | 400/1263 [37:43<1:11:33,  4.98s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.07it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:54,  3.39it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:28<00:13,  3.84it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.42it/s]
+{'eval_loss': 0.80640709400177, 'eval_runtime': 102.4208, 'eval_samples_per_second': 3.652, 'eval_steps_per_second': 3.652, 'epoch': 0.95}                                              
+ 32%|█████████████████████████████████████████████                                                                                                 | 401/1263 [39:32<8:36:39, 35.96s/it]✓ Loaded image: dpo_image_dataset/image_412.png                                                                                                                                         
+ 32%|█████████████████████████████████████████████▍                                                                                                | 404/1263 [39:46<3:40:27, 15.40s/it]✓ Loaded image: dpo_image_dataset/image_516.png
+{'loss': 0.8436, 'grad_norm': 0.7044079303741455, 'learning_rate': 8.357012856103502e-06, 'epoch': 0.98}                                                                                
+ 32%|██████████████████████████████████████████████                                                                                                | 410/1263 [40:15<1:28:01,  6.19s/it]✓ Loaded image: dpo_image_dataset/image_104.png
+ 33%|██████████████████████████████████████████████▌                                                                                               | 414/1263 [40:36<1:15:44,  5.35s/it]✓ Loaded image: dpo_image_dataset/image_596.png
+{'loss': 0.7875, 'grad_norm': 0.6944847702980042, 'learning_rate': 8.255705218182985e-06, 'epoch': 1.0}                                                                                 
+{'loss': 0.8302, 'grad_norm': 0.6665455102920532, 'learning_rate': 8.152022058666855e-06, 'epoch': 1.02}                                                                                
+ 35%|█████████████████████████████████████████████████▏                                                                                            | 438/1263 [42:29<1:07:30,  4.91s/it]✓ Loaded image: dpo_image_dataset/image_648.png
+{'loss': 0.8374, 'grad_norm': 0.8209001421928406, 'learning_rate': 8.046039029854087e-06, 'epoch': 1.05}                                                                                
+ 35%|██████████████████████████████████████████████████                                                                                            | 445/1263 [43:03<1:08:08,  5.00s/it]✓ Loaded image: dpo_image_dataset/image_908.png
+{'loss': 0.9212, 'grad_norm': 0.7054338455200195, 'learning_rate': 7.937833462140658e-06, 'epoch': 1.07}                                                                                
+{'loss': 0.8624, 'grad_norm': 0.6693964004516602, 'learning_rate': 7.827484307595521e-06, 'epoch': 1.09}                                                                                
+ 37%|███████████████████████████████████████████████████▉                                                                                          | 462/1263 [44:27<1:04:52,  4.86s/it]✓ Loaded image: dpo_image_dataset/image_674.png
+✓ Loaded image: dpo_image_dataset/image_334.png
+ 37%|████████████████████████████████████████████████████▎                                                                                         | 465/1263 [44:42<1:02:58,  4.73s/it]✓ Loaded image: dpo_image_dataset/image_360.png
+ 37%|████████████████████████████████████████████████████▍                                                                                         | 466/1263 [44:47<1:04:18,  4.84s/it]✓ Loaded image: dpo_image_dataset/image_933.png
+{'loss': 0.8365, 'grad_norm': 0.7200161218643188, 'learning_rate': 7.715072082353309e-06, 'epoch': 1.12}                                                                                
+{'loss': 0.8051, 'grad_norm': 0.8536244630813599, 'learning_rate': 7.600678807865835e-06, 'epoch': 1.14}                                                                                
+{'loss': 0.7586, 'grad_norm': 0.6662468314170837, 'learning_rate': 7.4843879510552374e-06, 'epoch': 1.16}                                                                               
+ 39%|███████████████████████████████████████████████████████▉                                                                                      | 498/1263 [47:23<1:03:05,  4.95s/it]✓ Loaded image: dpo_image_dataset/image_204.png
+{'loss': 0.8209, 'grad_norm': 0.7320336103439331, 'learning_rate': 7.366284363412424e-06, 'epoch': 1.19}                                                                                
+ 40%|████████████████████████████████████████████████████████▏                                                                                     | 500/1263 [47:33<1:02:46,  4.94s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:04,  4.11it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:53,  3.43it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.82it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.45it/s]
+{'eval_loss': 0.7637495398521423, 'eval_runtime': 101.7869, 'eval_samples_per_second': 3.674, 'eval_steps_per_second': 3.674, 'epoch': 1.19}                                            
+{'loss': 0.7056, 'grad_norm': 1.1820112466812134, 'learning_rate': 7.2464542190852836e-06, 'epoch': 1.21}                                                                               
+ 40%|█████████████████████████████████████████████████████████▎                                                                                    | 510/1263 [50:03<1:14:41,  5.95s/it]✓ Loaded image: dpo_image_dataset/image_621.png
+{'loss': 0.7895, 'grad_norm': 0.9971067905426025, 'learning_rate': 7.124984952001825e-06, 'epoch': 1.24}                                                                                
+ 41%|██████████████████████████████████████████████████████████▍                                                                                   | 520/1263 [50:53<1:02:06,  5.02s/it]✓ Loaded image: dpo_image_dataset/image_386.png
+{'loss': 0.8139, 'grad_norm': 0.8216506838798523, 'learning_rate': 7.001965192074103e-06, 'epoch': 1.26}                                                                                
+{'loss': 0.8395, 'grad_norm': 0.7405319809913635, 'learning_rate': 6.877484700529501e-06, 'epoch': 1.28}                                                                                
+ 43%|█████████████████████████████████████████████████████████████▊                                                                                  | 542/1263 [52:39<57:58,  4.83s/it]✓ Loaded image: dpo_image_dataset/image_255.png
+ 43%|██████████████████████████████████████████████████████████████▎                                                                                 | 547/1263 [53:03<58:01,  4.86s/it]✓ Loaded image: dpo_image_dataset/image_726.png
+{'loss': 0.7617, 'grad_norm': 0.6324262619018555, 'learning_rate': 6.751634304416566e-06, 'epoch': 1.31}                                                                                
+ 44%|██████████████████████████████████████████████████████████████▋                                                                                 | 550/1263 [53:18<58:30,  4.92s/it]✓ Loaded image: dpo_image_dataset/image_230.png
+{'loss': 0.6984, 'grad_norm': 0.8004723191261292, 'learning_rate': 6.624505830333146e-06, 'epoch': 1.33}                                                                                
+ 45%|████████████████████████████████████████████████████████████████▌                                                                               | 566/1263 [54:36<55:27,  4.77s/it]✓ Loaded image: dpo_image_dataset/image_179.png
+{'loss': 0.7274, 'grad_norm': 0.6784157156944275, 'learning_rate': 6.496192037425221e-06, 'epoch': 1.35}                                                                                
+{'loss': 0.7736, 'grad_norm': 0.8491755127906799, 'learning_rate': 6.366786549705296e-06, 'epoch': 1.38}                                                                                
+ 46%|██████████████████████████████████████████████████████████████████▉                                                                             | 587/1263 [56:19<55:13,  4.90s/it]✓ Loaded image: dpo_image_dataset/image_463.png
+ 47%|███████████████████████████████████████████████████████████████████▏                                                                            | 589/1263 [56:29<54:03,  4.81s/it]✓ Loaded image: dpo_image_dataset/image_078.png
+{'loss': 0.763, 'grad_norm': 0.7795611619949341, 'learning_rate': 6.236383787739755e-06, 'epoch': 1.4}                                                                                  
+ 47%|███████████████████████████████████████████████████████████████████▋                                                                            | 594/1263 [56:53<54:01,  4.85s/it]✓ Loaded image: dpo_image_dataset/image_001.png
+{'loss': 0.7614, 'grad_norm': 1.1321802139282227, 'learning_rate': 6.105078899754992e-06, 'epoch': 1.43}                                                                                
+ 48%|████████████████████████████████████████████████████████████████████▍                                                                           | 600/1263 [57:23<54:29,  4.93s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.09it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:53,  3.42it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.80it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.44it/s]
+{'eval_loss': 0.7385126352310181, 'eval_runtime': 101.8812, 'eval_samples_per_second': 3.671, 'eval_steps_per_second': 3.671, 'epoch': 1.43}                                            
+ 48%|███████████████████████████████████████████████████████████████████▉                                                                          | 604/1263 [59:27<2:53:06, 15.76s/it]✓ Loaded image: dpo_image_dataset/image_596.png                                                                                                                                         
+{'loss': 0.6884, 'grad_norm': 0.6178891658782959, 'learning_rate': 5.972967692212621e-06, 'epoch': 1.45}                                                                                
+ 49%|████████████████████████████████████████████████████████████████████▉                                                                         | 613/1263 [1:00:11<57:16,  5.29s/it]✓ Loaded image: dpo_image_dataset/image_543.png
+{'loss': 0.694, 'grad_norm': 0.6848945617675781, 'learning_rate': 5.840146559904405e-06, 'epoch': 1.47}                                                                                 
+{'loss': 0.7753, 'grad_norm': 1.266780138015747, 'learning_rate': 5.706712415617897e-06, 'epoch': 1.5}                                                                                  
+ 50%|███████████████████████████████████████████████████████████████████████▏                                                                      | 633/1263 [1:01:49<51:36,  4.92s/it]✓ Loaded image: dpo_image_dataset/image_569.png
+{'loss': 0.7238, 'grad_norm': 0.6368517279624939, 'learning_rate': 5.572762619424144e-06, 'epoch': 1.52}                                                                                
+{'loss': 0.7841, 'grad_norm': 1.2904216051101685, 'learning_rate': 5.438394907639015e-06, 'epoch': 1.54}                                                                                
+{'loss': 0.7085, 'grad_norm': 0.6473090052604675, 'learning_rate': 5.303707321510017e-06, 'epoch': 1.57}                                                                                
+{'loss': 0.7873, 'grad_norm': 0.615912675857544, 'learning_rate': 5.1687981356806e-06, 'epoch': 1.59}                                                                                   
+ 54%|████████████████████████████████████████████████████████████████████████████▎                                                                 | 679/1263 [1:05:39<49:09,  5.05s/it]✓ Loaded image: dpo_image_dataset/image_104.png
+{'loss': 0.7064, 'grad_norm': 0.6587085127830505, 'learning_rate': 5.033765786484191e-06, 'epoch': 1.62}                                                                                
+ 54%|█████████████████████████████████████████████████████████████████████████████▏                                                                | 686/1263 [1:06:13<47:44,  4.96s/it]✓ Loaded image: dpo_image_dataset/image_778.png
+{'loss': 0.7341, 'grad_norm': 0.7999562621116638, 'learning_rate': 4.898708800120225e-06, 'epoch': 1.64}                                                                                
+ 55%|██████████████████████████████████████████████████████████████████████████████▎                                                               | 697/1263 [1:07:07<44:36,  4.73s/it]✓ Loaded image: dpo_image_dataset/image_700.png
+{'loss': 0.7003, 'grad_norm': 0.6511243581771851, 'learning_rate': 4.763725720764609e-06, 'epoch': 1.66}                                                                                
+ 55%|██████████████████████████████████████████████████████████████████████████████▋                                                               | 700/1263 [1:07:21<44:54,  4.79s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.07it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:54,  3.37it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.87it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.43it/s]
+{'eval_loss': 0.722187876701355, 'eval_runtime': 102.0826, 'eval_samples_per_second': 3.664, 'eval_steps_per_second': 3.664, 'epoch': 1.66}                                             
+ 56%|█████████████████████████████████████████████████████████████████████████████▊                                                              | 702/1263 [1:09:13<4:05:24, 26.25s/it]✓ Loaded image: dpo_image_dataset/image_154.png                                                                                                                                         
+{'loss': 0.7276, 'grad_norm': 0.8901383280754089, 'learning_rate': 4.628915038667101e-06, 'epoch': 1.69}                                                                                
+ 57%|████████████████████████████████████████████████████████████████████████████████▎                                                             | 714/1263 [1:10:11<47:26,  5.19s/it]✓ Loaded image: dpo_image_dataset/image_282.png
+✓ Loaded image: dpo_image_dataset/image_129.png
+ 57%|████████████████████████████████████████████████████████████████████████████████▌                                                             | 717/1263 [1:10:26<45:52,  5.04s/it]✓ Loaded image: dpo_image_dataset/image_309.png
+{'loss': 0.731, 'grad_norm': 1.4873263835906982, 'learning_rate': 4.494375118287983e-06, 'epoch': 1.71}                                                                                 
+ 58%|█████████████████████████████████████████████████████████████████████████████████▊                                                            | 728/1263 [1:11:22<45:31,  5.11s/it]✓ Loaded image: dpo_image_dataset/image_516.png
+{'loss': 0.6817, 'grad_norm': 0.670875608921051, 'learning_rate': 4.360204126526567e-06, 'epoch': 1.74}                                                                                 
+{'loss': 0.7663, 'grad_norm': 0.8333568572998047, 'learning_rate': 4.226499961093814e-06, 'epoch': 1.76}                                                                                
+{'loss': 0.7267, 'grad_norm': 0.7076306343078613, 'learning_rate': 4.093360179081394e-06, 'epoch': 1.78}                                                                                
+ 60%|████████████████████████████████████████████████████████████████████████████████████▉                                                         | 755/1263 [1:13:33<41:18,  4.88s/it]✓ Loaded image: dpo_image_dataset/image_857.png
+{'loss': 0.7115, 'grad_norm': 0.6826207041740417, 'learning_rate': 3.960881925779252e-06, 'epoch': 1.81}                                                                                
+{'loss': 0.6834, 'grad_norm': 0.7029894590377808, 'learning_rate': 3.8291618637936664e-06, 'epoch': 1.83}                                                                               
+ 61%|██████████████████████████████████████████████████████████████████████████████████████▌                                                       | 770/1263 [1:14:48<40:20,  4.91s/it]✓ Loaded image: dpo_image_dataset/image_805.png
+{'loss': 0.7024, 'grad_norm': 0.7504370808601379, 'learning_rate': 3.698296102517496e-06, 'epoch': 1.85}                                                                                
+ 62%|███████████████████████████████████████████████████████████████████████████████████████▊                                                      | 781/1263 [1:15:42<38:51,  4.84s/it]✓ Loaded image: dpo_image_dataset/image_959.png
+{'loss': 0.7512, 'grad_norm': 0.788652241230011, 'learning_rate': 3.568380128004044e-06, 'epoch': 1.88}                                                                                 
+{'loss': 0.73, 'grad_norm': 0.6359867453575134, 'learning_rate': 3.4395087332958064e-06, 'epoch': 1.9}                                                                                  
+ 63%|█████████████████████████████████████████████████████████████████████████████████████████▉                                                    | 800/1263 [1:17:15<37:56,  4.92s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:04,  4.09it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:50<00:53,  3.42it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.86it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:37<00:03,  3.48it/s]
+{'eval_loss': 0.7121294736862183, 'eval_runtime': 101.4057, 'eval_samples_per_second': 3.688, 'eval_steps_per_second': 3.688, 'epoch': 1.9}                                             
+ 64%|█████████████████████████████████████████████████████████████████████████████████████████▎                                                  | 806/1263 [1:19:27<1:16:20, 10.02s/it]✓ Loaded image: dpo_image_dataset/image_489.png                                                                                                                                         
+{'loss': 0.7824, 'grad_norm': 0.8202992081642151, 'learning_rate': 3.311775949258802e-06, 'epoch': 1.93}                                                                                
+ 64%|███████████████████████████████████████████████████████████████████████████████████████████▍                                                  | 813/1263 [1:20:01<39:31,  5.27s/it]✓ Loaded image: dpo_image_dataset/image_053.png
+{'loss': 0.739, 'grad_norm': 0.5918480157852173, 'learning_rate': 3.185274975973082e-06, 'epoch': 1.95}                                                                                 
+ 65%|████████████████████████████████████████████████████████████████████████████████████████████▎                                                 | 821/1263 [1:20:39<35:46,  4.86s/it]✓ Loaded image: dpo_image_dataset/image_412.png
+ 65%|████████████████████████████████████████████████████████████████████████████████████████████▊                                                 | 825/1263 [1:20:58<35:36,  4.88s/it]✓ Loaded image: dpo_image_dataset/image_882.png
+{'loss': 0.6481, 'grad_norm': 0.708426833152771, 'learning_rate': 3.0600981147293833e-06, 'epoch': 1.97}                                                                                
+{'loss': 0.6858, 'grad_norm': 0.7660293579101562, 'learning_rate': 2.9363367006816086e-06, 'epoch': 2.0}                                                                                
+{'loss': 0.6778, 'grad_norm': 0.6857712864875793, 'learning_rate': 2.814081036204223e-06, 'epoch': 2.02}                                                                                
+ 67%|███████████████████████████████████████████████████████████████████████████████████████████████▌                                              | 850/1263 [1:22:58<32:44,  4.76s/it]✓ Loaded image: dpo_image_dataset/image_621.png
+ 67%|███████████████████████████████████████████████████████████████████████████████████████████████▊                                              | 852/1263 [1:23:08<33:17,  4.86s/it]✓ Loaded image: dpo_image_dataset/image_882.png
+{'loss': 0.7356, 'grad_norm': 0.8293645977973938, 'learning_rate': 2.693420325003246e-06, 'epoch': 2.04}                                                                                
+{'loss': 0.7001, 'grad_norm': 0.7880048155784607, 'learning_rate': 2.574442607028852e-06, 'epoch': 2.07}                                                                                
+ 69%|██████████████████████████████████████████████████████████████████████████████████████████████████▍                                           | 875/1263 [1:25:01<31:50,  4.92s/it]✓ Loaded image: dpo_image_dataset/image_334.png
+{'loss': 0.7049, 'grad_norm': 0.6603683233261108, 'learning_rate': 2.4572346942371305e-06, 'epoch': 2.09}                                                                               
+ 70%|███████████████████████████████████████████████████████████████████████████████████████████████████▏                                          | 882/1263 [1:25:35<31:07,  4.90s/it]✓ Loaded image: dpo_image_dataset/image_805.png
+{'loss': 0.7239, 'grad_norm': 1.268629789352417, 'learning_rate': 2.341882107247841e-06, 'epoch': 2.11}                                                                                 
+ 70%|████████████████████████████████████████████████████████████████████████████████████████████████████                                          | 890/1263 [1:26:13<30:34,  4.92s/it]✓ Loaded image: dpo_image_dataset/image_386.png
+ 71%|████████████████████████████████████████████████████████████████████████████████████████████████████▏                                         | 891/1263 [1:26:18<30:23,  4.90s/it]✓ Loaded image: dpo_image_dataset/image_596.png
+{'loss': 0.7459, 'grad_norm': 0.6985965371131897, 'learning_rate': 2.2284690129443924e-06, 'epoch': 2.14}                                                                               
+ 71%|█████████████████████████████████████████████████████████████████████████████████████████████████████▏                                        | 900/1263 [1:27:02<30:03,  4.97s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:04,  4.10it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:50<00:53,  3.44it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.84it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:37<00:03,  3.48it/s]
+{'eval_loss': 0.7054598927497864, 'eval_runtime': 101.5132, 'eval_samples_per_second': 3.684, 'eval_steps_per_second': 3.684, 'epoch': 2.14}                                            
+ 72%|████████████████████████████████████████████████████████████████████████████████████████████████████▏                                       | 904/1263 [1:29:04<1:32:50, 15.52s/it]✓ Loaded image: dpo_image_dataset/image_700.png                                                                                                                                         
+ 72%|████████████████████████████████████████████████████████████████████████████████████████████████████▎                                       | 905/1263 [1:29:09<1:13:06, 12.25s/it]✓ Loaded image: dpo_image_dataset/image_309.png
+ 72%|██████████████████████████████████████████████████████████████████████████████████████████████████████                                        | 908/1263 [1:29:23<43:10,  7.30s/it]✓ Loaded image: dpo_image_dataset/image_179.png
+{'loss': 0.7131, 'grad_norm': 0.714987576007843, 'learning_rate': 2.1170781630615646e-06, 'epoch': 2.16}                                                                                
+ 73%|██████████████████████████████████████████████████████████████████████████████████████████████████████▉                                       | 916/1263 [1:30:02<28:38,  4.95s/it]✓ Loaded image: dpo_image_dataset/image_516.png
+{'loss': 0.7135, 'grad_norm': 0.6466144323348999, 'learning_rate': 2.007790833805806e-06, 'epoch': 2.19}                                                                                
+ 73%|███████████████████████████████████████████████████████████████████████████████████████████████████████▋                                      | 922/1263 [1:30:31<27:47,  4.89s/it]✓ Loaded image: dpo_image_dataset/image_412.png
+ 73%|████████████████████████████████████████████████████████████████████████████████████████████████████████▎                                     | 928/1263 [1:30:59<26:07,  4.68s/it]✓ Loaded image: dpo_image_dataset/image_255.png
+{'loss': 0.6338, 'grad_norm': 0.8034812808036804, 'learning_rate': 1.9006867665521405e-06, 'epoch': 2.21}                                                                               
+{'loss': 0.7844, 'grad_norm': 0.6165421605110168, 'learning_rate': 1.795844109660969e-06, 'epoch': 2.23}                                                                                
+{'loss': 0.6633, 'grad_norm': 0.6203231811523438, 'learning_rate': 1.693339361457197e-06, 'epoch': 2.26}                                                                                
+ 76%|███████████████████████████████████████████████████████████████████████████████████████████████████████████▎                                  | 954/1263 [1:33:07<26:13,  5.09s/it]✓ Loaded image: dpo_image_dataset/image_001.png
+{'loss': 0.708, 'grad_norm': 0.717991292476654, 'learning_rate': 1.5932473144133315e-06, 'epoch': 2.28}                                                                                 
+ 76%|████████████████████████████████████████████████████████████████████████████████████████████████████████████▍                                 | 965/1263 [1:34:02<25:00,  5.04s/it]✓ Loaded image: dpo_image_dataset/image_489.png
+{'loss': 0.6754, 'grad_norm': 0.7995564937591553, 'learning_rate': 1.4956410005772244e-06, 'epoch': 2.3}                                                                                
+ 77%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████▏                                | 971/1263 [1:34:32<24:17,  4.99s/it]✓ Loaded image: dpo_image_dataset/image_959.png
+{'loss': 0.6935, 'grad_norm': 0.8935301303863525, 'learning_rate': 1.4005916382843387e-06, 'epoch': 2.33}                                                                               
+{'loss': 0.6685, 'grad_norm': 0.8006476163864136, 'learning_rate': 1.3081685801933575e-06, 'epoch': 2.35}                                                                               
+{'loss': 0.6517, 'grad_norm': 0.6753880381584167, 'learning_rate': 1.2184392626831054e-06, 'epoch': 2.38}                                                                               
+ 79%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████▋                             | 1000/1263 [1:36:54<21:32,  4.92s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.06it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:54,  3.39it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:28<00:13,  3.80it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.45it/s]
+{'eval_loss': 0.7019081115722656, 'eval_runtime': 102.6416, 'eval_samples_per_second': 3.644, 'eval_steps_per_second': 3.644, 'epoch': 2.38}                                            
+{'loss': 0.7626, 'grad_norm': 0.7897555828094482, 'learning_rate': 1.1314691566476639e-06, 'epoch': 2.4}                                                                                
+{'loss': 0.7, 'grad_norm': 0.6093424558639526, 'learning_rate': 1.0473217197256136e-06, 'epoch': 2.42}                                                                                  
+{'loss': 0.7708, 'grad_norm': 0.6957755088806152, 'learning_rate': 9.660583499982374e-07, 'epoch': 2.45}                                                                                
+ 82%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▎                         | 1033/1263 [1:41:18<18:16,  4.77s/it]✓ Loaded image: dpo_image_dataset/image_857.png
+{'loss': 0.731, 'grad_norm': 1.3713535070419312, 'learning_rate': 8.877383411904866e-07, 'epoch': 2.47}                                                                                 
+{'loss': 0.695, 'grad_norm': 0.6167131066322327, 'learning_rate': 8.124188394073729e-07, 'epoch': 2.49}                                                                                 
+{'loss': 0.7558, 'grad_norm': 0.8224754333496094, 'learning_rate': 7.401548014373849e-07, 'epoch': 2.52}                                                                                
+{'loss': 0.7184, 'grad_norm': 0.8763929009437561, 'learning_rate': 6.709989546533269e-07, 'epoch': 2.54}                                                                                
+ 85%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                     | 1071/1263 [1:44:25<14:56,  4.67s/it]✓ Loaded image: dpo_image_dataset/image_726.png
+ 85%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▉                     | 1074/1263 [1:44:39<14:57,  4.75s/it]✓ Loaded image: dpo_image_dataset/image_360.png
+{'loss': 0.7012, 'grad_norm': 0.7477939128875732, 'learning_rate': 6.050017585398554e-07, 'epoch': 2.57}                                                                                
+ 86%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▏                   | 1085/1263 [1:45:34<14:57,  5.04s/it]✓ Loaded image: dpo_image_dataset/image_154.png
+ 86%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                   | 1089/1263 [1:45:54<14:48,  5.11s/it]✓ Loaded image: dpo_image_dataset/image_933.png
+{'loss': 0.6957, 'grad_norm': 0.7176159024238586, 'learning_rate': 5.422113678757701e-07, 'epoch': 2.59}                                                                                
+ 87%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                  | 1098/1263 [1:46:38<13:05,  4.76s/it]✓ Loaded image: dpo_image_dataset/image_778.png
+{'loss': 0.6543, 'grad_norm': 0.9004979133605957, 'learning_rate': 4.826735975979352e-07, 'epoch': 2.61}                                                                                
+ 87%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊                  | 1100/1263 [1:46:47<12:29,  4.60s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.09it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:53,  3.44it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:27<00:13,  3.84it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.41it/s]
+{'eval_loss': 0.7001492977142334, 'eval_runtime': 102.1179, 'eval_samples_per_second': 3.662, 'eval_steps_per_second': 3.662, 'epoch': 2.61}                                            
+{'loss': 0.7809, 'grad_norm': 0.6418903470039368, 'learning_rate': 4.2643188937246173e-07, 'epoch': 2.64}                                                                               
+ 88%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▎                | 1113/1263 [1:49:33<13:29,  5.39s/it]✓ Loaded image: dpo_image_dataset/image_569.png
+ 88%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                | 1116/1263 [1:49:48<12:36,  5.15s/it]✓ Loaded image: dpo_image_dataset/image_104.png
+{'loss': 0.7029, 'grad_norm': 1.2315164804458618, 'learning_rate': 3.735272798975498e-07, 'epoch': 2.66}                                                                                
+ 89%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊               | 1127/1263 [1:50:43<11:02,  4.87s/it]✓ Loaded image: dpo_image_dataset/image_648.png
+ 89%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████               | 1129/1263 [1:50:52<10:44,  4.81s/it]✓ Loaded image: dpo_image_dataset/image_053.png
+{'loss': 0.651, 'grad_norm': 0.5986986756324768, 'learning_rate': 3.23998370961105e-07, 'epoch': 2.69}                                                                                  
+ 90%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▍              | 1132/1263 [1:51:08<11:01,  5.05s/it]✓ Loaded image: dpo_image_dataset/image_204.png
+ 90%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌              | 1134/1263 [1:51:18<10:35,  4.93s/it]✓ Loaded image: dpo_image_dataset/image_230.png
+ 90%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▏             | 1139/1263 [1:51:42<10:08,  4.90s/it]✓ Loaded image: dpo_image_dataset/image_129.png
+{'loss': 0.7285, 'grad_norm': 0.7916296720504761, 'learning_rate': 2.7788130127498756e-07, 'epoch': 2.71}                                                                               
+ 90%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌             | 1143/1263 [1:52:02<09:50,  4.92s/it]✓ Loaded image: dpo_image_dataset/image_078.png
+{'loss': 0.7218, 'grad_norm': 0.821880042552948, 'learning_rate': 2.3520972010644794e-07, 'epoch': 2.73}                                                                                
+ 91%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌            | 1152/1263 [1:52:46<09:02,  4.89s/it]✓ Loaded image: dpo_image_dataset/image_908.png
+{'loss': 0.6975, 'grad_norm': 0.6993562579154968, 'learning_rate': 1.960147627259662e-07, 'epoch': 2.76}                                                                                
+ 92%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌           | 1161/1263 [1:53:30<08:20,  4.90s/it]✓ Loaded image: dpo_image_dataset/image_463.png
+{'loss': 0.7024, 'grad_norm': 0.7618248462677002, 'learning_rate': 1.603250276894519e-07, 'epoch': 2.78}                                                                                
+ 93%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▎         | 1176/1263 [1:54:44<06:58,  4.81s/it]✓ Loaded image: dpo_image_dataset/image_282.png
+{'loss': 0.7779, 'grad_norm': 0.721577525138855, 'learning_rate': 1.2816655597132742e-07, 'epoch': 2.8}                                                                                 
+{'loss': 0.7108, 'grad_norm': 0.613206684589386, 'learning_rate': 9.956281196377037e-08, 'epoch': 2.83}                                                                                 
+{'loss': 0.7451, 'grad_norm': 1.101837396621704, 'learning_rate': 7.453466635593932e-08, 'epoch': 2.85}                                                                                 
+ 95%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▉       | 1200/1263 [1:56:42<05:06,  4.87s/it✓ Loaded image: dpo_image_dataset/image_438.png▊                                                                                                       | 108/374 [00:28<01:05,  4.05it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_026.png████████████████████████████████▋                                                                       | 190/374 [00:51<00:54,  3.37it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_751.png████████████████████████████████████████████████████████████████████████████████████▏                   | 323/374 [01:28<00:13,  3.81it/s]
+                                                                                                                                                                                       ✓ Loaded image: dpo_image_dataset/image_832.png██████████████████████████████████████████████████████████████████████████████████████████████████▉     | 361/374 [01:38<00:03,  3.39it/s]
+{'eval_loss': 0.6994594931602478, 'eval_runtime': 102.5283, 'eval_samples_per_second': 3.648, 'eval_steps_per_second': 3.648, 'epoch': 2.85}                                            
+ 95%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▏      | 1202/1263 [1:58:37<27:23, 26.95s/it]✓ Loaded image: dpo_image_dataset/image_543.png                                                                                                                                         
+{'loss': 0.6868, 'grad_norm': 0.8354105353355408, 'learning_rate': 5.310038090570513e-08, 'epoch': 2.88}                                                                                
+{'loss': 0.7442, 'grad_norm': 0.7277804017066956, 'learning_rate': 3.5275595114975244e-08, 'epoch': 2.9}                                                                                
+ 97%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌    | 1223/1263 [2:00:19<03:13,  4.84s/it]✓ Loaded image: dpo_image_dataset/image_674.png
+{'loss': 0.6804, 'grad_norm': 0.5951621532440186, 'learning_rate': 2.1073314818353398e-08, 'epoch': 2.92}                                                                               
+{'loss': 0.6866, 'grad_norm': 0.893866240978241, 'learning_rate': 1.0503902693443923e-08, 'epoch': 2.95}                                                                                
+{'loss': 0.7212, 'grad_norm': 0.6715161800384521, 'learning_rate': 3.575070699736727e-09, 'epoch': 2.97}                                                                                
+{'loss': 0.7369, 'grad_norm': 0.8678950071334839, 'learning_rate': 2.9187445158618264e-10, 'epoch': 2.99}                                                                               
+{'train_runtime': 7416.4768, 'train_samples_per_second': 1.36, 'train_steps_per_second': 0.17, 'train_loss': 0.8930128566442929, 'epoch': 3.0}                                          
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1263/1263 [2:03:36<00:00,  5.87s/it]
+
+Saving LoRA adapters...
+
+QCM LoRA Training completed!
+LoRA adapters saved to: systematic_results/trained_on_erp_qcm_temp
+
+To use the fine-tuned model, load the base model and apply the LoRA adapters.
+✅ Completed: ERP QCM Training
+
+================================================================================
+Running: ERP Training (qcm+dpo)
+Command: python3 finetune_smolvlm_dpo.py --base-model systematic_results/trained_on_erp_qcm_temp --output-dir systematic_results/trained_on_erp_qcm_dpo --dataset dpo_image_dataset/dpo_dataset_nova_pro.json --image-dir dpo_image_dataset
+================================================================================
+
+Starting SmolVLM DPO fine-tuning...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251109_221532-01yoiqz8
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-dpo-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/01yoiqz8
+Using device: cuda
+Loading base model: systematic_results/trained_on_erp_qcm_temp
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/mapping_func.py:73: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/tuners/tuners_utils.py:196: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing DPO dataset...
+Loaded 1868 DPO examples
+✓ Loaded image: dpo_image_dataset/image_001.png
+✓ Loaded image: dpo_image_dataset/image_053.png
+✓ Loaded image: dpo_image_dataset/image_104.png
+✓ Loaded image: dpo_image_dataset/image_154.png
+✓ Loaded image: dpo_image_dataset/image_204.png
+✓ Loaded image: dpo_image_dataset/image_255.png
+✓ Loaded image: dpo_image_dataset/image_309.png
+✓ Loaded image: dpo_image_dataset/image_360.png
+✓ Loaded image: dpo_image_dataset/image_412.png
+✓ Loaded image: dpo_image_dataset/image_463.png
+✓ Loaded image: dpo_image_dataset/image_516.png
+✓ Loaded image: dpo_image_dataset/image_569.png
+✓ Loaded image: dpo_image_dataset/image_621.png
+✓ Loaded image: dpo_image_dataset/image_674.png
+✓ Loaded image: dpo_image_dataset/image_726.png
+✓ Loaded image: dpo_image_dataset/image_778.png
+✓ Loaded image: dpo_image_dataset/image_832.png
+✓ Loaded image: dpo_image_dataset/image_882.png
+✓ Loaded image: dpo_image_dataset/image_933.png
+
+✓ Successfully loaded 1868 DPO samples
+  All samples loaded successfully!
+
+⚠️  Limiting dataset to 100 samples (from 1868) to prevent OOM
+   DPOTrainer tokenizes entire dataset during initialization
+Train samples: 90
+Eval samples: 10
+GPU memory allocated: 0.62 GB
+GPU memory reserved: 0.75 GB
+
+Initializing DPO Trainer...
+Extracting prompt in train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 7146.81 examples/s]
+Applying chat template to train dataset: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 12746.49 examples/s]
+Tokenizing train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:41<00:00,  2.19 examples/s]
+Extracting prompt in eval dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 2727.47 examples/s]
+Applying chat template to eval dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 4888.47 examples/s]
+Tokenizing eval dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:04<00:00,  2.29 examples/s]
+
+Starting DPO training...
+GPU memory before training: 0.62 GB allocated
+GPU memory reserved: 0.75 GB
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 49279, 'bos_token_id': 1, 'pad_token_id': 2}.
+  0%|                                                                                                                                                            | 0/69 [00:00<?, ?it/s]/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+{'loss': 0.6978, 'grad_norm': 100.20660400390625, 'learning_rate': 9e-08, 'rewards/chosen': 0.03231995552778244, 'rewards/rejected': 0.019650954753160477, 'rewards/accuracies': 0.4000000059604645, 'rewards/margins': 0.012668987736105919, 'logps/chosen': -1135.01708984375, 'logps/rejected': -209.3438720703125, 'logits/chosen': -3.161348581314087, 'logits/rejected': -3.2849316596984863, 'epoch': 0.44}
+{'loss': 0.6782, 'grad_norm': 62.866390228271484, 'learning_rate': 1.8999999999999998e-07, 'rewards/chosen': 0.17116013169288635, 'rewards/rejected': -0.022394487634301186, 'rewards/accuracies': 0.5249999761581421, 'rewards/margins': 0.1935546100139618, 'logps/chosen': -1028.612548828125, 'logps/rejected': -214.49105834960938, 'logits/chosen': -3.1943459510803223, 'logits/rejected': -3.495354175567627, 'epoch': 0.89}
+{'loss': 0.6823, 'grad_norm': 51.39479446411133, 'learning_rate': 2.9e-07, 'rewards/chosen': 0.05949651077389717, 'rewards/rejected': 0.024501478299498558, 'rewards/accuracies': 0.4736842215061188, 'rewards/margins': 0.034995030611753464, 'logps/chosen': -965.1115112304688, 'logps/rejected': -219.15748596191406, 'logits/chosen': -3.1866159439086914, 'logits/rejected': -3.3926944732666016, 'epoch': 1.31}
+{'loss': 0.6844, 'grad_norm': 66.47086334228516, 'learning_rate': 3.8999999999999997e-07, 'rewards/chosen': 0.055965740233659744, 'rewards/rejected': 0.007513123564422131, 'rewards/accuracies': 0.5, 'rewards/margins': 0.04845260828733444, 'logps/chosen': -1058.6962890625, 'logps/rejected': -204.63221740722656, 'logits/chosen': -3.2091948986053467, 'logits/rejected': -3.447289228439331, 'epoch': 1.76}
+{'loss': 0.652, 'grad_norm': 56.81840515136719, 'learning_rate': 4.9e-07, 'rewards/chosen': 0.25784164667129517, 'rewards/rejected': -0.007260854355990887, 'rewards/accuracies': 0.5789473652839661, 'rewards/margins': 0.2651025354862213, 'logps/chosen': -1157.7835693359375, 'logps/rejected': -223.3187255859375, 'logits/chosen': -3.371173143386841, 'logits/rejected': -3.3660688400268555, 'epoch': 2.18}
+{'eval_loss': 0.7454401254653931, 'eval_runtime': 57.0287, 'eval_samples_per_second': 0.175, 'eval_steps_per_second': 0.175, 'eval_rewards/chosen': -0.056888431310653687, 'eval_rewards/rejected': 0.028921205550432205, 'eval_rewards/accuracies': 0.4000000059604645, 'eval_rewards/margins': -0.085809625685215, 'eval_logps/chosen': -1033.719482421875, 'eval_logps/rejected': -195.94497680664062, 'eval_logits/chosen': -3.3421242237091064, 'eval_logits/rejected': -3.608229398727417, 'epoch': 2.18}
+{'loss': 0.669, 'grad_norm': 52.088829040527344, 'learning_rate': 2.706448363680831e-07, 'rewards/chosen': 0.0643436461687088, 'rewards/rejected': -0.01576930843293667, 'rewards/accuracies': 0.574999988079071, 'rewards/margins': 0.08011295646429062, 'logps/chosen': -987.1485595703125, 'logps/rejected': -216.03366088867188, 'logits/chosen': -3.1165947914123535, 'logits/rejected': -3.540884017944336, 'epoch': 2.62}
+{'train_runtime': 1916.4707, 'train_samples_per_second': 0.141, 'train_steps_per_second': 0.036, 'train_loss': 0.6909249900043875, 'epoch': 3.0}                                        
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 69/69 [31:56<00:00, 27.77s/it]
+
+GPU memory after training: 0.67 GB
+
+Saving model...
+✅ Model saved successfully to: systematic_results/trained_on_erp_qcm_dpo
+
+🎉 DPO Training completed successfully!
+Model location: systematic_results/trained_on_erp_qcm_dpo
+✅ Completed: ERP Training (qcm+dpo)
+
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+Benchmarking: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+Benchmarks: ocrbench, docvqa, chartqa
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+
+================================================================================
+Running: Benchmark trained_on_erp_qcm+dpo
+Command: python3 evaluate_ocrbench.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_20251109_201128.json --percentage 100.0 --benchmarks ocrbench docvqa chartqa
+================================================================================
+
+INFO:__main__:Starting comprehensive benchmark evaluation using FULL datasets...
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully on base model
+INFO:__main__:Running ocrbench evaluation...
+INFO:__main__:Evaluating on OCRBench...
+INFO:__main__:Trying OCR dataset: echo840/OCRBench
+INFO:__main__:Loading echo840/OCRBench from cache...
+INFO:__main__:Successfully loaded OCR dataset: echo840/OCRBench
+INFO:__main__:Using full OCRBench dataset: 1000 samples
+OCRBench: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [06:43<00:00,  2.48it/s]
+INFO:__main__:Running docvqa evaluation...
+INFO:__main__:Evaluating on DocVQA...
+INFO:__main__:Loading nielsr/docvqa_1200_examples from cache...
+INFO:__main__:Using full DocVQA dataset: 1000 samples
+DocVQA: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [07:35<00:00,  2.19it/s]
+INFO:__main__:Running chartqa evaluation...
+INFO:__main__:Evaluating on ChartQA...
+INFO:__main__:Loading HuggingFaceM4/ChartQA from cache...
+INFO:__main__:Using full ChartQA dataset: 1000 samples
+ChartQA: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [10:59<00:00,  1.52it/s]
+INFO:__main__:Results saved to systematic_results/trained_on_erp_qcm+dpo_20251109_201128.json
+
+================================================================================
+SmolVLM Full Dataset Benchmark Evaluation Summary
+================================================================================
+
+Single-Image Benchmarks:
+------------------------------------------------------------
+
+OCRBENCH:
+  Tasks evaluated: 1000
+  Accuracy: 53.70%
+
+  Example 1:
+    Question: what is written in the image?...
+    Response: The text on the paper says "Clintie"....
+    Ground Truth: ['CENTRE']...
+
+  Example 2:
+    Question: what is written in the image?...
+    Response: The text "Friend" is visible in white color on a black background....
+    Ground Truth: ['FRIEND']...
+
+DOCVQA:
+  Tasks evaluated: 1000
+  Accuracy: 63.60%
+
+  Example 1:
+    Question: what is the date mentioned in this letter?...
+    Response: 1/8/93...
+    Ground Truth: ['1/8/93']...
+
+  Example 2:
+    Question: Who is in  cc in this letter?...
+    Response: T.R. Fiehl...
+    Ground Truth: ['T.F. Riehl']...
+
+CHARTQA:
+  Tasks evaluated: 1000
+  Accuracy: 41.80%
+
+  Example 1:
+    Question: How many food item is shown in the bar graph?...
+    Response: 16...
+    Ground Truth: ['14']...
+
+  Example 2:
+    Question: What is the difference in value between Lamb and Corn?...
+    Response: 103.7-102.46 
+Answer: 0.24....
+    Ground Truth: ['0.57']...
+
+================================================================================
+BENCHMARK SCORES SUMMARY:
+================================================================================
+
+Single-Image Benchmarks:
+  ocrbench       :  53.70%
+  docvqa         :  63.60%
+  chartqa        :  41.80%
+  Average        :  53.03%
+
+Multi-task Benchmarks:
+
+Overall Average Score: 53.03%
+Total evaluated tasks: 3000
+================================================================================
+
+Performance Analysis (compared to SmolVLM paper - image benchmarks only):
+----------------------------------------------------------------------
+  ocrbench       :  53.70% - GOOD (within SmolVLM range)
+  docvqa         :  63.60% - GOOD (within SmolVLM range)
+  chartqa        :  41.80% - NEEDS IMPROVEMENT (below SmolVLM-256M)
+
+Note: Using full datasets for comprehensive evaluation
+================================================================================
+
+Detailed results saved to: systematic_results/trained_on_erp_qcm+dpo_20251109_201128.json
+Dataset cache saved to: ./benchmark_cache
+✅ Completed: Benchmark trained_on_erp_qcm+dpo
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+ERP QCM Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_qcm.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251109_201128.json --dataset dpo_image_dataset/qcm/qcm_dataset_nova_pro.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP QCM Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json
+INFO:__main__:Loaded 3736 samples
+Evaluating: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3736/3736 [33:19<00:00,  1.87it/s]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/qcm/qcm_dataset_nova_pro.json
+INFO:__main__:Samples: 3736
+INFO:__main__:
+Accuracy: 43.66%
+INFO:__main__:Average Log Probability: -0.1908
+INFO:__main__:
+BERTScore:
+INFO:__main__:  Precision: 0.7109
+INFO:__main__:  Recall:    0.6776
+INFO:__main__:  F1:        0.6919
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251109_201128.json
+✅ Completed: ERP QCM Evaluation trained_on_erp_qcm+dpo
+
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+ERP DPO Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+
+================================================================================
+Running: ERP DPO Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_dpo.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251109_201128.json --dataset dpo_image_dataset/dpo_dataset_nova_pro.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_nova_pro.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP DPO Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: dpo_image_dataset/dpo_dataset_nova_pro.json
+INFO:__main__:Loaded 1868 samples
+Evaluating: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1868/1868 [1:06:50<00:00,  2.15s/it]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_nova_pro.json
+INFO:__main__:Samples: 1868
+INFO:__main__:
+Preference Accuracy: 95.34%
+INFO:__main__:  (Model assigns higher probability to 'chosen' response)
+INFO:__main__:
+Average Log Probabilities:
+INFO:__main__:  Chosen:   -1.9555
+INFO:__main__:  Rejected: -3.0193
+INFO:__main__:  Margin:   1.0638
+INFO:__main__:
+BERTScore (Generated vs Chosen):
+INFO:__main__:  Precision: 0.6913
+INFO:__main__:  Recall:    0.5827
+INFO:__main__:  F1:        0.6309
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251109_201128.json
+✅ Completed: ERP DPO Evaluation trained_on_erp_qcm+dpo
+
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+PHASE 4: COMPARISON & ANALYSIS
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+
+================================================================================
+COMPREHENSIVE COMPARISON RESULTS
+================================================================================
+
+                 model  average_accuracy  ocrbench_acc  docvqa_acc  chartqa_acc  erp_qcm_acc  erp_qcm_log_prob  erp_qcm_bertscore_f1  erp_dpo_pref_acc  erp_dpo_margin  erp_dpo_bertscore_f1
+trained_on_erp_qcm+dpo         50.133333          53.7        63.6         33.1    43.656317         -0.190797              0.691912         95.342612        1.063836              0.630859
+
+✅ Results saved:
+   CSV:  systematic_results/systematic_comparison_20251109_201128.csv
+   JSON: systematic_results/systematic_comparison_20251109_201128.json
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+
+🏆 Best Overall Model: trained_on_erp_qcm+dpo
+   Average Accuracy: 50.13%
+
+================================================================================
+
+================================================================================
+PIPELINE COMPLETED
+================================================================================
+Total time: 4:43:18.002364
+Results: systematic_results
+Full log: systematic_results/systematic_log_20251109_201128.txt
+WandB: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/p5hfl0tx
+================================================================================
+
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:                trained_on_erp_qcm+dpo/chartqa ▁
+wandb:                 trained_on_erp_qcm+dpo/docvqa ▁
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 ▁
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin ▁
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy ▁
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob ▁
+wandb:               trained_on_erp_qcm+dpo/ocrbench ▁
+wandb: 
+wandb: Run summary:
+wandb:                trained_on_erp_qcm+dpo/chartqa 33.1
+wandb:                 trained_on_erp_qcm+dpo/docvqa 63.6
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 0.63086
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin 1.06384
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc 95.34261
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy 43.65632
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 0.69191
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob -0.1908
+wandb:               trained_on_erp_qcm+dpo/ocrbench 53.7
+wandb:                    trained_on_erp_qcm+dpo_avg 50.13333
+wandb: 
+wandb: 🚀 View run systematic_pipeline_20251109_201128 at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/p5hfl0tx
+wandb: ⭐️ View project at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20251109_201129-p5hfl0tx/logs
+wandb: 
+wandb: 🚀 View run smolvlm-dpo-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/01yoiqz8
+wandb: Find logs at: wandb/run-20251109_221532-01yoiqz8/logs
+wandb: 
+wandb: 🚀 View run smolvlm-qcm-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/04blvvs5
+wandb: Find logs at: wandb/run-20251109_201136-04blvvs5/logs
+✅ Experiment completed: erp_qcm_dpo_qcm_nova_dpo_nova
+
+================================================================================
+Training on QCM+DPO combination:
+  QCM: balanced_qcm_all_end.json (balanced_qcm)
+  DPO: dpo_image_dataset/dpo_dataset_gemini.json (dpo_gemini)
+================================================================================
+
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+EXPERIMENT: erp_qcm_dpo_balanced_qcm_dpo_gemini
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+
+Command: python3 run_systematic_benchmark_pipeline.py --benchmark-percentage 100.0 --skip-baseline --train-erp --erp-strategy qcm+dpo --qcm-dataset balanced_qcm_all_end.json --dpo-dataset dpo_image_dataset/dpo_dataset_gemini.json --image-dir dpo_image_dataset --epochs 3
+
+================================================================================
+Systematic Pipeline Started: 2025-11-10 00:54:57.649825
+Log file: systematic_results/systematic_log_20251110_005457.txt
+================================================================================
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251110_005458-slpdyb1x
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run systematic_pipeline_20251110_005457
+wandb:  View project at https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb:  View run at https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/slpdyb1x
+
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+SYSTEMATIC BENCHMARK PIPELINE
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+PHASE 1: BASELINE - Test Base Model on ALL Benchmarks
+This establishes baseline performance before any training
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+Skipping baseline (--skip-baseline)
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+PHASE 3: ERP TRAINING - Train on ERP Data
+Then test on ALL benchmarks to measure:
+  1. Does ERP training improve ERP tasks?
+  2. Does it maintain general VQA performance?
+  3. Is there catastrophic forgetting?
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Training
+Command: python3 finetune_smolvlm_qcm.py --output-dir systematic_results/trained_on_erp_qcm_temp --dataset balanced_qcm_all_end.json --image-dir dpo_image_dataset --num-epochs 3
+================================================================================
+
+Starting SmolVLM LoRA fine-tuning on QCM dataset...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251110_005504-yp8luwji
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-qcm-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/yp8luwji
+Using device: cuda
+Loading model and processor: HuggingFaceTB/SmolVLM-500M-Instruct
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing QCM dataset...
+Loaded 1099 QCM examples (flat structure)
+Train samples: 989
+Eval samples: 110
+
+Setting up training arguments...
+
+Initializing Trainer...
+
+Starting LoRA training on QCM dataset...
+  0%|                                                                                                                                                           | 0/372 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`...
+{'loss': 2.2287, 'grad_norm': 5.907332420349121, 'learning_rate': 9.000000000000001e-07, 'epoch': 0.08}                                                                                 
+{'loss': 2.3717, 'grad_norm': 5.254337787628174, 'learning_rate': 1.9000000000000002e-06, 'epoch': 0.16}                                                                                
+{'loss': 2.3817, 'grad_norm': 5.486691474914551, 'learning_rate': 2.9e-06, 'epoch': 0.24}                                                                                               
+{'loss': 2.4052, 'grad_norm': 6.252316951751709, 'learning_rate': 3.900000000000001e-06, 'epoch': 0.32}                                                                                 
+{'loss': 2.126, 'grad_norm': 4.491148471832275, 'learning_rate': 4.9000000000000005e-06, 'epoch': 0.4}                                                                                  
+ 14%|████████████████████                                                                                                                              | 51/372 [04:19<27:09,  5.08s/it]ℹ No image_name in dataset - using white dummy images (text-only mode)
+{'loss': 2.1502, 'grad_norm': 6.103773593902588, 'learning_rate': 5.9e-06, 'epoch': 0.49}                                                                                               
+{'loss': 2.0146, 'grad_norm': 4.916031837463379, 'learning_rate': 6.9e-06, 'epoch': 0.57}                                                                                               
+{'loss': 1.9392, 'grad_norm': 3.10003924369812, 'learning_rate': 7.9e-06, 'epoch': 0.65}                                                                                                
+{'loss': 1.4714, 'grad_norm': 2.9434800148010254, 'learning_rate': 8.900000000000001e-06, 'epoch': 0.73}                                                                                
+{'loss': 1.3742, 'grad_norm': 3.3975791931152344, 'learning_rate': 9.9e-06, 'epoch': 0.81}                                                                                              
+{'eval_loss': 1.4485772848129272, 'eval_runtime': 30.2582, 'eval_samples_per_second': 3.635, 'eval_steps_per_second': 3.635, 'epoch': 0.81}                                             
+{'loss': 1.0892, 'grad_norm': 2.1037936210632324, 'learning_rate': 9.973010436321005e-06, 'epoch': 0.89}                                                                                
+{'loss': 0.9211, 'grad_norm': 2.1577179431915283, 'learning_rate': 9.880087198628579e-06, 'epoch': 0.97}                                                                                
+ 33%|████████████████████████████████████████████████▎                                                                                                | 124/372 [10:58<18:33,  4.49s/it]ℹ No image_name in dataset - using white dummy images (text-only mode)
+{'loss': 0.6938, 'grad_norm': 1.3813371658325195, 'learning_rate': 9.722135021920427e-06, 'epoch': 1.05}                                                                                
+{'loss': 0.6522, 'grad_norm': 1.7723729610443115, 'learning_rate': 9.5012586764698e-06, 'epoch': 1.13}                                                                                  
+{'loss': 0.5123, 'grad_norm': 1.2303504943847656, 'learning_rate': 9.220401420012412e-06, 'epoch': 1.21}                                                                                
+{'loss': 0.3974, 'grad_norm': 1.231205940246582, 'learning_rate': 8.883305777765319e-06, 'epoch': 1.29}                                                                                 
+{'loss': 0.3359, 'grad_norm': 1.9974315166473389, 'learning_rate': 8.494463671915547e-06, 'epoch': 1.37}                                                                                
+{'loss': 0.2876, 'grad_norm': 2.806368350982666, 'learning_rate': 8.059056565121218e-06, 'epoch': 1.45}                                                                                 
+{'loss': 0.2355, 'grad_norm': 1.932063102722168, 'learning_rate': 7.5828864156347735e-06, 'epoch': 1.53}                                                                                
+{'loss': 0.2219, 'grad_norm': 1.7282788753509521, 'learning_rate': 7.072298364096486e-06, 'epoch': 1.61}                                                                                
+{'eval_loss': 0.22675490379333496, 'eval_runtime': 29.7694, 'eval_samples_per_second': 3.695, 'eval_steps_per_second': 3.695, 'epoch': 1.61}                                            
+{'loss': 0.1875, 'grad_norm': 2.6450998783111572, 'learning_rate': 6.534096182224809e-06, 'epoch': 1.7}                                                                                 
+{'loss': 0.1454, 'grad_norm': 2.744947671890259, 'learning_rate': 5.975451610080643e-06, 'epoch': 1.78}                                                                                 
+{'loss': 0.1413, 'grad_norm': 2.419835329055786, 'learning_rate': 5.4038087900193985e-06, 'epoch': 1.86}                                                                                
+{'loss': 0.1283, 'grad_norm': 2.3335816860198975, 'learning_rate': 4.826785070783326e-06, 'epoch': 1.94}                                                                                
+{'loss': 0.1184, 'grad_norm': 2.248185873031616, 'learning_rate': 4.252069503555645e-06, 'epoch': 2.02}                                                                                 
+{'loss': 0.1194, 'grad_norm': 2.0406672954559326, 'learning_rate': 3.6873203825535473e-06, 'epoch': 2.1}                                                                                
+{'loss': 0.1067, 'grad_norm': 5.129088878631592, 'learning_rate': 3.1400631954689626e-06, 'epoch': 2.18}                                                                                
+{'loss': 0.0795, 'grad_norm': 3.10139799118042, 'learning_rate': 2.617590343604648e-06, 'epoch': 2.26}                                                                                  
+{'loss': 0.0942, 'grad_norm': 1.8646284341812134, 'learning_rate': 2.1268639679712814e-06, 'epoch': 2.34}                                                                               
+ 80%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊                             | 297/372 [26:12<06:24,  5.12s/it]ℹ No image_name in dataset - using white dummy images (text-only mode)
+{'loss': 0.1064, 'grad_norm': 3.5449979305267334, 'learning_rate': 1.6744231762232178e-06, 'epoch': 2.42}                                                                               
+{'eval_loss': 0.09832871705293655, 'eval_runtime': 30.5303, 'eval_samples_per_second': 3.603, 'eval_steps_per_second': 3.603, 'epoch': 2.42}                                            
+{'loss': 0.0972, 'grad_norm': 7.5045318603515625, 'learning_rate': 1.266296906667762e-06, 'epoch': 2.5}                                                                                 
+{'loss': 0.0978, 'grad_norm': 2.2976789474487305, 'learning_rate': 9.079235904667826e-07, 'epoch': 2.58}                                                                                
+{'loss': 0.0806, 'grad_norm': 3.1778340339660645, 'learning_rate': 6.040786825610518e-07, 'epoch': 2.66}                                                                                
+{'loss': 0.0732, 'grad_norm': 2.7590980529785156, 'learning_rate': 3.588110269941747e-07, 'epoch': 2.74}                                                                                
+{'loss': 0.1003, 'grad_norm': 2.841087579727173, 'learning_rate': 1.7538890459131098e-07, 'epoch': 2.83}                                                                                
+{'loss': 0.0928, 'grad_norm': 7.75527286529541, 'learning_rate': 5.625648192703115e-08, 'epoch': 2.91}                                                                                  
+{'loss': 0.1155, 'grad_norm': 2.914483070373535, 'learning_rate': 3.0012419156572047e-09, 'epoch': 2.99}                                                                                
+{'train_runtime': 1986.9849, 'train_samples_per_second': 1.493, 'train_steps_per_second': 0.187, 'train_loss': 0.7447398096443184, 'epoch': 3.0}                                        
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 372/372 [33:06<00:00,  5.34s/it]
+
+Saving LoRA adapters...
+
+QCM LoRA Training completed!
+LoRA adapters saved to: systematic_results/trained_on_erp_qcm_temp
+
+To use the fine-tuned model, load the base model and apply the LoRA adapters.
+✅ Completed: ERP QCM Training
+
+================================================================================
+Running: ERP Training (qcm+dpo)
+Command: python3 finetune_smolvlm_dpo.py --base-model systematic_results/trained_on_erp_qcm_temp --output-dir systematic_results/trained_on_erp_qcm_dpo --dataset dpo_image_dataset/dpo_dataset_gemini.json --image-dir dpo_image_dataset
+================================================================================
+
+Starting SmolVLM DPO fine-tuning...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251110_012829-11eiba4b
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-dpo-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/11eiba4b
+Using device: cuda
+Loading base model: systematic_results/trained_on_erp_qcm_temp
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/mapping_func.py:73: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/tuners/tuners_utils.py:196: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing DPO dataset...
+Loaded 1833 DPO examples
+✓ Loaded image: dpo_image_dataset/image_001.png
+✓ Loaded image: dpo_image_dataset/image_053.png
+✓ Loaded image: dpo_image_dataset/image_105.png
+✓ Loaded image: dpo_image_dataset/image_153.png
+✓ Loaded image: dpo_image_dataset/image_206.png
+✓ Loaded image: dpo_image_dataset/image_258.png
+✓ Loaded image: dpo_image_dataset/image_312.png
+✓ Loaded image: dpo_image_dataset/image_365.png
+✓ Loaded image: dpo_image_dataset/image_418.png
+✓ Loaded image: dpo_image_dataset/image_469.png
+✓ Loaded image: dpo_image_dataset/image_523.png
+✓ Loaded image: dpo_image_dataset/image_576.png
+✓ Loaded image: dpo_image_dataset/image_629.png
+✓ Loaded image: dpo_image_dataset/image_682.png
+✓ Loaded image: dpo_image_dataset/image_735.png
+✓ Loaded image: dpo_image_dataset/image_788.png
+✓ Loaded image: dpo_image_dataset/image_843.png
+✓ Loaded image: dpo_image_dataset/image_895.png
+✓ Loaded image: dpo_image_dataset/image_950.png
+
+✓ Successfully loaded 1833 DPO samples
+  All samples loaded successfully!
+
+⚠️  Limiting dataset to 100 samples (from 1833) to prevent OOM
+   DPOTrainer tokenizes entire dataset during initialization
+Train samples: 90
+Eval samples: 10
+GPU memory allocated: 0.62 GB
+GPU memory reserved: 0.75 GB
+
+Initializing DPO Trainer...
+Extracting prompt in train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 6587.45 examples/s]
+Applying chat template to train dataset: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 14355.86 examples/s]
+Tokenizing train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:39<00:00,  2.28 examples/s]
+Extracting prompt in eval dataset: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 898.95 examples/s]
+Applying chat template to eval dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 3999.53 examples/s]
+Tokenizing eval dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:04<00:00,  2.28 examples/s]
+
+Starting DPO training...
+GPU memory before training: 0.62 GB allocated
+GPU memory reserved: 0.75 GB
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 49279, 'bos_token_id': 1, 'pad_token_id': 2}.
+  0%|                                                                                                                                                            | 0/69 [00:00<?, ?it/s]/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+{'loss': 0.7536, 'grad_norm': 139.42054748535156, 'learning_rate': 9e-08, 'rewards/chosen': -0.03638846427202225, 'rewards/rejected': -0.02938404120504856, 'rewards/accuracies': 0.44999998807907104, 'rewards/margins': -0.0070044370368123055, 'logps/chosen': -2027.0853271484375, 'logps/rejected': -437.03204345703125, 'logits/chosen': -3.1763243675231934, 'logits/rejected': -3.3313636779785156, 'epoch': 0.44}
+{'loss': 0.6343, 'grad_norm': 92.60432434082031, 'learning_rate': 1.8999999999999998e-07, 'rewards/chosen': 0.2779146432876587, 'rewards/rejected': -0.04547157138586044, 'rewards/accuracies': 0.6499999761581421, 'rewards/margins': 0.3233862519264221, 'logps/chosen': -1957.4176025390625, 'logps/rejected': -443.34283447265625, 'logits/chosen': -3.310547351837158, 'logits/rejected': -3.4644672870635986, 'epoch': 0.89}
+{'loss': 0.6631, 'grad_norm': 126.21403503417969, 'learning_rate': 2.9e-07, 'rewards/chosen': 0.10184646397829056, 'rewards/rejected': -0.0074776895344257355, 'rewards/accuracies': 0.5526315569877625, 'rewards/margins': 0.10932415723800659, 'logps/chosen': -2010.98291015625, 'logps/rejected': -403.9746398925781, 'logits/chosen': -3.1185314655303955, 'logits/rejected': -3.1929659843444824, 'epoch': 1.31}
+{'loss': 0.8069, 'grad_norm': 653.965576171875, 'learning_rate': 3.8999999999999997e-07, 'rewards/chosen': -0.08395874500274658, 'rewards/rejected': -0.03822338581085205, 'rewards/accuracies': 0.5, 'rewards/margins': -0.04573533684015274, 'logps/chosen': -1942.658203125, 'logps/rejected': -448.999755859375, 'logits/chosen': -3.3136324882507324, 'logits/rejected': -3.31535005569458, 'epoch': 1.76}
+{'loss': 0.7652, 'grad_norm': 91.5853500366211, 'learning_rate': 4.9e-07, 'rewards/chosen': 0.016517721116542816, 'rewards/rejected': -0.018696030601859093, 'rewards/accuracies': 0.5263158082962036, 'rewards/margins': 0.035213764756917953, 'logps/chosen': -2033.7259521484375, 'logps/rejected': -464.8761901855469, 'logits/chosen': -3.2345118522644043, 'logits/rejected': -3.3746190071105957, 'epoch': 2.18}
+{'eval_loss': 0.6283453702926636, 'eval_runtime': 60.7486, 'eval_samples_per_second': 0.165, 'eval_steps_per_second': 0.165, 'eval_rewards/chosen': 0.11346802860498428, 'eval_rewards/rejected': -0.08485627174377441, 'eval_rewards/accuracies': 0.699999988079071, 'eval_rewards/margins': 0.1983242928981781, 'eval_logps/chosen': -1728.046630859375, 'eval_logps/rejected': -403.4427185058594, 'eval_logits/chosen': -2.929466724395752, 'eval_logits/rejected': -3.361618757247925, 'epoch': 2.18}
+{'loss': 0.8176, 'grad_norm': 127.57115936279297, 'learning_rate': 2.706448363680831e-07, 'rewards/chosen': -0.12674590945243835, 'rewards/rejected': 0.017733309417963028, 'rewards/accuracies': 0.44999998807907104, 'rewards/margins': -0.14447921514511108, 'logps/chosen': -1859.0758056640625, 'logps/rejected': -396.85052490234375, 'logits/chosen': -3.1664347648620605, 'logits/rejected': -3.2490622997283936, 'epoch': 2.62}
+{'train_runtime': 1895.1438, 'train_samples_per_second': 0.142, 'train_steps_per_second': 0.036, 'train_loss': 0.7360962646594946, 'epoch': 3.0}                                        
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 69/69 [31:35<00:00, 27.47s/it]
+
+GPU memory after training: 0.67 GB
+
+Saving model...
+✅ Model saved successfully to: systematic_results/trained_on_erp_qcm_dpo
+
+🎉 DPO Training completed successfully!
+Model location: systematic_results/trained_on_erp_qcm_dpo
+✅ Completed: ERP Training (qcm+dpo)
+
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+Benchmarking: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+Benchmarks: ocrbench, docvqa, chartqa
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+
+================================================================================
+Running: Benchmark trained_on_erp_qcm+dpo
+Command: python3 evaluate_ocrbench.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_20251110_005457.json --percentage 100.0 --benchmarks ocrbench docvqa chartqa
+================================================================================
+
+INFO:__main__:Starting comprehensive benchmark evaluation using FULL datasets...
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully on base model
+INFO:__main__:Running ocrbench evaluation...
+INFO:__main__:Evaluating on OCRBench...
+INFO:__main__:Trying OCR dataset: echo840/OCRBench
+INFO:__main__:Loading echo840/OCRBench from cache...
+INFO:__main__:Successfully loaded OCR dataset: echo840/OCRBench
+INFO:__main__:Using full OCRBench dataset: 1000 samples
+OCRBench: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [06:49<00:00,  2.44it/s]
+INFO:__main__:Running docvqa evaluation...
+INFO:__main__:Evaluating on DocVQA...
+INFO:__main__:Loading nielsr/docvqa_1200_examples from cache...
+INFO:__main__:Using full DocVQA dataset: 1000 samples
+DocVQA: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [07:39<00:00,  2.17it/s]
+INFO:__main__:Running chartqa evaluation...
+INFO:__main__:Evaluating on ChartQA...
+INFO:__main__:Loading HuggingFaceM4/ChartQA from cache...
+INFO:__main__:Using full ChartQA dataset: 1000 samples
+ChartQA: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [11:09<00:00,  1.49it/s]
+INFO:__main__:Results saved to systematic_results/trained_on_erp_qcm+dpo_20251110_005457.json
+
+================================================================================
+SmolVLM Full Dataset Benchmark Evaluation Summary
+================================================================================
+
+Single-Image Benchmarks:
+------------------------------------------------------------
+
+OCRBENCH:
+  Tasks evaluated: 1000
+  Accuracy: 53.50%
+
+  Example 1:
+    Question: what is written in the image?...
+    Response: The text on the paper says "Clintie"....
+    Ground Truth: ['CENTRE']...
+
+  Example 2:
+    Question: what is written in the image?...
+    Response: The text "Friend" is visible in white color on a black background....
+    Ground Truth: ['FRIEND']...
+
+DOCVQA:
+  Tasks evaluated: 1000
+  Accuracy: 63.40%
+
+  Example 1:
+    Question: what is the date mentioned in this letter?...
+    Response: 1/8/93...
+    Ground Truth: ['1/8/93']...
+
+  Example 2:
+    Question: Who is in  cc in this letter?...
+    Response: T.R. Fiehl...
+    Ground Truth: ['T.F. Riehl']...
+
+CHARTQA:
+  Tasks evaluated: 1000
+  Accuracy: 41.80%
+
+  Example 1:
+    Question: How many food item is shown in the bar graph?...
+    Response: 16...
+    Ground Truth: ['14']...
+
+  Example 2:
+    Question: What is the difference in value between Lamb and Corn?...
+    Response: 103.7-102.46 
+Answer: 0.24....
+    Ground Truth: ['0.57']...
+
+================================================================================
+BENCHMARK SCORES SUMMARY:
+================================================================================
+
+Single-Image Benchmarks:
+  ocrbench       :  53.50%
+  docvqa         :  63.40%
+  chartqa        :  41.80%
+  Average        :  52.90%
+
+Multi-task Benchmarks:
+
+Overall Average Score: 52.90%
+Total evaluated tasks: 3000
+================================================================================
+
+Performance Analysis (compared to SmolVLM paper - image benchmarks only):
+----------------------------------------------------------------------
+  ocrbench       :  53.50% - GOOD (within SmolVLM range)
+  docvqa         :  63.40% - GOOD (within SmolVLM range)
+  chartqa        :  41.80% - NEEDS IMPROVEMENT (below SmolVLM-256M)
+
+Note: Using full datasets for comprehensive evaluation
+================================================================================
+
+Detailed results saved to: systematic_results/trained_on_erp_qcm+dpo_20251110_005457.json
+Dataset cache saved to: ./benchmark_cache
+✅ Completed: Benchmark trained_on_erp_qcm+dpo
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+ERP QCM Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_qcm.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251110_005457.json --dataset balanced_qcm_all_end.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: balanced_qcm_all_end.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP QCM Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: balanced_qcm_all_end.json
+INFO:__main__:Loaded 1099 samples
+Evaluating: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1099/1099 [13:51<00:00,  1.32it/s]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: balanced_qcm_all_end.json
+INFO:__main__:Samples: 1099
+INFO:__main__:
+Accuracy: 29.85%
+INFO:__main__:Average Log Probability: -0.3016
+INFO:__main__:
+BERTScore:
+INFO:__main__:  Precision: 0.6955
+INFO:__main__:  Recall:    0.7504
+INFO:__main__:  F1:        0.7199
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251110_005457.json
+✅ Completed: ERP QCM Evaluation trained_on_erp_qcm+dpo
+
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+ERP DPO Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+
+================================================================================
+Running: ERP DPO Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_dpo.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251110_005457.json --dataset dpo_image_dataset/dpo_dataset_gemini.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_gemini.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP DPO Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: dpo_image_dataset/dpo_dataset_gemini.json
+INFO:__main__:Loaded 1833 samples
+Evaluating: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1833/1833 [1:10:58<00:00,  2.32s/it]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_gemini.json
+INFO:__main__:Samples: 1833
+INFO:__main__:
+Preference Accuracy: 97.27%
+INFO:__main__:  (Model assigns higher probability to 'chosen' response)
+INFO:__main__:
+Average Log Probabilities:
+INFO:__main__:  Chosen:   -1.9687
+INFO:__main__:  Rejected: -2.7273
+INFO:__main__:  Margin:   0.7587
+INFO:__main__:
+BERTScore (Generated vs Chosen):
+INFO:__main__:  Precision: 0.6995
+INFO:__main__:  Recall:    0.5572
+INFO:__main__:  F1:        0.6187
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251110_005457.json
+✅ Completed: ERP DPO Evaluation trained_on_erp_qcm+dpo
+
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+PHASE 4: COMPARISON & ANALYSIS
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+
+================================================================================
+COMPREHENSIVE COMPARISON RESULTS
+================================================================================
+
+                 model  average_accuracy  ocrbench_acc  docvqa_acc  chartqa_acc  erp_qcm_acc  erp_qcm_log_prob  erp_qcm_bertscore_f1  erp_dpo_pref_acc  erp_dpo_margin  erp_dpo_bertscore_f1
+trained_on_erp_qcm+dpo         50.033333          53.5        63.4         33.2    29.845314         -0.301594              0.719885         97.272231        0.758654              0.618677
+
+✅ Results saved:
+   CSV:  systematic_results/systematic_comparison_20251110_005457.csv
+   JSON: systematic_results/systematic_comparison_20251110_005457.json
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+
+🏆 Best Overall Model: trained_on_erp_qcm+dpo
+   Average Accuracy: 50.03%
+
+================================================================================
+
+================================================================================
+PIPELINE COMPLETED
+================================================================================
+Total time: 2:57:32.355771
+Results: systematic_results
+Full log: systematic_results/systematic_log_20251110_005457.txt
+WandB: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/slpdyb1x
+================================================================================
+
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:                trained_on_erp_qcm+dpo/chartqa ▁
+wandb:                 trained_on_erp_qcm+dpo/docvqa ▁
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 ▁
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin ▁
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy ▁
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob ▁
+wandb:               trained_on_erp_qcm+dpo/ocrbench ▁
+wandb: 
+wandb: Run summary:
+wandb:                trained_on_erp_qcm+dpo/chartqa 33.2
+wandb:                 trained_on_erp_qcm+dpo/docvqa 63.4
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 0.61868
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin 0.75865
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc 97.27223
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy 29.84531
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 0.71988
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob -0.30159
+wandb:               trained_on_erp_qcm+dpo/ocrbench 53.5
+wandb:                    trained_on_erp_qcm+dpo_avg 50.03333
+wandb: 
+wandb: 🚀 View run systematic_pipeline_20251110_005457 at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/slpdyb1x
+wandb: ⭐️ View project at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20251110_005458-slpdyb1x/logs
+wandb: 
+wandb: 🚀 View run smolvlm-dpo-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/11eiba4b
+wandb: Find logs at: wandb/run-20251110_012829-11eiba4b/logs
+wandb: 
+wandb: 🚀 View run smolvlm-qcm-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/yp8luwji
+wandb: Find logs at: wandb/run-20251110_005504-yp8luwji/logs
+✅ Experiment completed: erp_qcm_dpo_balanced_qcm_dpo_gemini
+
+================================================================================
+Training on QCM+DPO combination:
+  QCM: balanced_qcm_all_end.json (balanced_qcm)
+  DPO: dpo_image_dataset/dpo_dataset_nova_pro.json (dpo_nova)
+================================================================================
+
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+EXPERIMENT: erp_qcm_dpo_balanced_qcm_dpo_nova
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+
+Command: python3 run_systematic_benchmark_pipeline.py --benchmark-percentage 100.0 --skip-baseline --train-erp --erp-strategy qcm+dpo --qcm-dataset balanced_qcm_all_end.json --dpo-dataset dpo_image_dataset/dpo_dataset_nova_pro.json --image-dir dpo_image_dataset --epochs 3
+
+================================================================================
+Systematic Pipeline Started: 2025-11-10 03:52:39.623452
+Log file: systematic_results/systematic_log_20251110_035239.txt
+================================================================================
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251110_035240-b4scw9bk
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run systematic_pipeline_20251110_035239
+wandb:  View project at https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb:  View run at https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/b4scw9bk
+
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+SYSTEMATIC BENCHMARK PIPELINE
+🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 🔬 
+
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+PHASE 1: BASELINE - Test Base Model on ALL Benchmarks
+This establishes baseline performance before any training
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 
+Skipping baseline (--skip-baseline)
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+PHASE 3: ERP TRAINING - Train on ERP Data
+Then test on ALL benchmarks to measure:
+  1. Does ERP training improve ERP tasks?
+  2. Does it maintain general VQA performance?
+  3. Is there catastrophic forgetting?
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Training
+Command: python3 finetune_smolvlm_qcm.py --output-dir systematic_results/trained_on_erp_qcm_temp --dataset balanced_qcm_all_end.json --image-dir dpo_image_dataset --num-epochs 3
+================================================================================
+
+Starting SmolVLM LoRA fine-tuning on QCM dataset...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251110_035246-ijrqzlo8
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-qcm-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/ijrqzlo8
+Using device: cuda
+Loading model and processor: HuggingFaceTB/SmolVLM-500M-Instruct
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing QCM dataset...
+Loaded 1099 QCM examples (flat structure)
+Train samples: 989
+Eval samples: 110
+
+Setting up training arguments...
+
+Initializing Trainer...
+
+Starting LoRA training on QCM dataset...
+  0%|                                                                                                                                                           | 0/372 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`...
+{'loss': 2.2289, 'grad_norm': 5.89552640914917, 'learning_rate': 9.000000000000001e-07, 'epoch': 0.08}                                                                                  
+{'loss': 2.3701, 'grad_norm': 5.200700283050537, 'learning_rate': 1.9000000000000002e-06, 'epoch': 0.16}                                                                                
+{'loss': 2.3863, 'grad_norm': 5.388824939727783, 'learning_rate': 2.9e-06, 'epoch': 0.24}                                                                                               
+{'loss': 2.4051, 'grad_norm': 6.155884265899658, 'learning_rate': 3.900000000000001e-06, 'epoch': 0.32}                                                                                 
+{'loss': 2.1249, 'grad_norm': 4.458156585693359, 'learning_rate': 4.9000000000000005e-06, 'epoch': 0.4}                                                                                 
+ 14%|████████████████████                                                                                                                              | 51/372 [04:20<27:13,  5.09s/it]ℹ No image_name in dataset - using white dummy images (text-only mode)
+{'loss': 2.1487, 'grad_norm': 6.1068620681762695, 'learning_rate': 5.9e-06, 'epoch': 0.49}                                                                                              
+{'loss': 2.0181, 'grad_norm': 4.788580417633057, 'learning_rate': 6.9e-06, 'epoch': 0.57}                                                                                               
+{'loss': 1.9413, 'grad_norm': 2.9978675842285156, 'learning_rate': 7.9e-06, 'epoch': 0.65}                                                                                              
+{'loss': 1.474, 'grad_norm': 2.85836124420166, 'learning_rate': 8.900000000000001e-06, 'epoch': 0.73}                                                                                   
+{'loss': 1.3803, 'grad_norm': 3.2975878715515137, 'learning_rate': 9.9e-06, 'epoch': 0.81}                                                                                              
+{'eval_loss': 1.4526095390319824, 'eval_runtime': 30.2971, 'eval_samples_per_second': 3.631, 'eval_steps_per_second': 3.631, 'epoch': 0.81}                                             
+{'loss': 1.0925, 'grad_norm': 2.0373775959014893, 'learning_rate': 9.973010436321005e-06, 'epoch': 0.89}                                                                                
+{'loss': 0.9251, 'grad_norm': 2.1146342754364014, 'learning_rate': 9.880087198628579e-06, 'epoch': 0.97}                                                                                
+ 33%|████████████████████████████████████████████████▎                                                                                                | 124/372 [10:59<18:27,  4.47s/it]ℹ No image_name in dataset - using white dummy images (text-only mode)
+{'loss': 0.6962, 'grad_norm': 1.385477066040039, 'learning_rate': 9.722135021920427e-06, 'epoch': 1.05}                                                                                 
+{'loss': 0.6536, 'grad_norm': 1.6414685249328613, 'learning_rate': 9.5012586764698e-06, 'epoch': 1.13}                                                                                  
+{'loss': 0.513, 'grad_norm': 1.190054178237915, 'learning_rate': 9.220401420012412e-06, 'epoch': 1.21}                                                                                  
+{'loss': 0.3967, 'grad_norm': 1.1210976839065552, 'learning_rate': 8.883305777765319e-06, 'epoch': 1.29}                                                                                
+{'loss': 0.3357, 'grad_norm': 1.8219778537750244, 'learning_rate': 8.494463671915547e-06, 'epoch': 1.37}                                                                                
+{'loss': 0.2866, 'grad_norm': 3.0188634395599365, 'learning_rate': 8.059056565121218e-06, 'epoch': 1.45}                                                                                
+{'loss': 0.2344, 'grad_norm': 2.193394899368286, 'learning_rate': 7.5828864156347735e-06, 'epoch': 1.53}                                                                                
+{'loss': 0.2235, 'grad_norm': 2.1970043182373047, 'learning_rate': 7.072298364096486e-06, 'epoch': 1.61}                                                                                
+{'eval_loss': 0.227101668715477, 'eval_runtime': 29.8518, 'eval_samples_per_second': 3.685, 'eval_steps_per_second': 3.685, 'epoch': 1.61}                                              
+{'loss': 0.1843, 'grad_norm': 1.6900912523269653, 'learning_rate': 6.534096182224809e-06, 'epoch': 1.7}                                                                                 
+{'loss': 0.1475, 'grad_norm': 2.4222590923309326, 'learning_rate': 5.975451610080643e-06, 'epoch': 1.78}                                                                                
+{'loss': 0.1436, 'grad_norm': 2.868535041809082, 'learning_rate': 5.4038087900193985e-06, 'epoch': 1.86}                                                                                
+{'loss': 0.1294, 'grad_norm': 2.6118106842041016, 'learning_rate': 4.826785070783326e-06, 'epoch': 1.94}                                                                                
+{'loss': 0.1157, 'grad_norm': 3.009154796600342, 'learning_rate': 4.252069503555645e-06, 'epoch': 2.02}                                                                                 
+{'loss': 0.1217, 'grad_norm': 2.1774039268493652, 'learning_rate': 3.6873203825535473e-06, 'epoch': 2.1}                                                                                
+{'loss': 0.0981, 'grad_norm': 3.277740716934204, 'learning_rate': 3.1400631954689626e-06, 'epoch': 2.18}                                                                                
+{'loss': 0.0793, 'grad_norm': 1.599679708480835, 'learning_rate': 2.617590343604648e-06, 'epoch': 2.26}                                                                                 
+{'loss': 0.093, 'grad_norm': 2.0537123680114746, 'learning_rate': 2.1268639679712814e-06, 'epoch': 2.34}                                                                                
+ 80%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊                             | 297/372 [26:07<06:22,  5.10s/it]ℹ No image_name in dataset - using white dummy images (text-only mode)
+{'loss': 0.1052, 'grad_norm': 3.549734354019165, 'learning_rate': 1.6744231762232178e-06, 'epoch': 2.42}                                                                                
+{'eval_loss': 0.09362109750509262, 'eval_runtime': 30.4345, 'eval_samples_per_second': 3.614, 'eval_steps_per_second': 3.614, 'epoch': 2.42}                                            
+{'loss': 0.095, 'grad_norm': 4.571846008300781, 'learning_rate': 1.266296906667762e-06, 'epoch': 2.5}                                                                                   
+{'loss': 0.1003, 'grad_norm': 2.388070821762085, 'learning_rate': 9.079235904667826e-07, 'epoch': 2.58}                                                                                 
+{'loss': 0.0799, 'grad_norm': 6.427481651306152, 'learning_rate': 6.040786825610518e-07, 'epoch': 2.66}                                                                                 
+{'loss': 0.0667, 'grad_norm': 2.0408437252044678, 'learning_rate': 3.588110269941747e-07, 'epoch': 2.74}                                                                                
+{'loss': 0.0964, 'grad_norm': 1.9814651012420654, 'learning_rate': 1.7538890459131098e-07, 'epoch': 2.83}                                                                               
+{'loss': 0.0902, 'grad_norm': 8.155155181884766, 'learning_rate': 5.625648192703115e-08, 'epoch': 2.91}                                                                                 
+{'loss': 0.1156, 'grad_norm': 3.6228387355804443, 'learning_rate': 3.0012419156572047e-09, 'epoch': 2.99}                                                                               
+{'train_runtime': 1980.484, 'train_samples_per_second': 1.498, 'train_steps_per_second': 0.188, 'train_loss': 0.7447922821006467, 'epoch': 3.0}                                         
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 372/372 [33:00<00:00,  5.32s/it]
+
+Saving LoRA adapters...
+
+QCM LoRA Training completed!
+LoRA adapters saved to: systematic_results/trained_on_erp_qcm_temp
+
+To use the fine-tuned model, load the base model and apply the LoRA adapters.
+✅ Completed: ERP QCM Training
+
+================================================================================
+Running: ERP Training (qcm+dpo)
+Command: python3 finetune_smolvlm_dpo.py --base-model systematic_results/trained_on_erp_qcm_temp --output-dir systematic_results/trained_on_erp_qcm_dpo --dataset dpo_image_dataset/dpo_dataset_nova_pro.json --image-dir dpo_image_dataset
+================================================================================
+
+Starting SmolVLM DPO fine-tuning...
+wandb: Currently logged in as: david-lacour (david-lacour-epfl) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /home/david-lacour/Documents/smolvlm/smolVLM/wandb/run-20251110_042603-nisx4in3
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run smolvlm-dpo-finetuning
+wandb: ⭐️ View project at https://wandb.ai/david-lacour-epfl/SmallVLM
+wandb: 🚀 View run at https://wandb.ai/david-lacour-epfl/SmallVLM/runs/nisx4in3
+Using device: cuda
+Loading base model: systematic_results/trained_on_erp_qcm_temp
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/mapping_func.py:73: UserWarning: You are trying to modify a model with PEFT for a second time. If you want to reload the model with a different config, make sure to call `.unload()` before.
+  warnings.warn(
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/peft/tuners/tuners_utils.py:196: UserWarning: Already found a `peft_config` attribute in the model. This will lead to having multiple adapters in the model. Make sure to know what you are doing!
+  warnings.warn(
+trainable params: 4,161,536 || all params: 511,643,840 || trainable%: 0.8134
+
+Preparing DPO dataset...
+Loaded 1868 DPO examples
+✓ Loaded image: dpo_image_dataset/image_001.png
+✓ Loaded image: dpo_image_dataset/image_053.png
+✓ Loaded image: dpo_image_dataset/image_104.png
+✓ Loaded image: dpo_image_dataset/image_154.png
+✓ Loaded image: dpo_image_dataset/image_204.png
+✓ Loaded image: dpo_image_dataset/image_255.png
+✓ Loaded image: dpo_image_dataset/image_309.png
+✓ Loaded image: dpo_image_dataset/image_360.png
+✓ Loaded image: dpo_image_dataset/image_412.png
+✓ Loaded image: dpo_image_dataset/image_463.png
+✓ Loaded image: dpo_image_dataset/image_516.png
+✓ Loaded image: dpo_image_dataset/image_569.png
+✓ Loaded image: dpo_image_dataset/image_621.png
+✓ Loaded image: dpo_image_dataset/image_674.png
+✓ Loaded image: dpo_image_dataset/image_726.png
+✓ Loaded image: dpo_image_dataset/image_778.png
+✓ Loaded image: dpo_image_dataset/image_832.png
+✓ Loaded image: dpo_image_dataset/image_882.png
+✓ Loaded image: dpo_image_dataset/image_933.png
+
+✓ Successfully loaded 1868 DPO samples
+  All samples loaded successfully!
+
+⚠️  Limiting dataset to 100 samples (from 1868) to prevent OOM
+   DPOTrainer tokenizes entire dataset during initialization
+Train samples: 90
+Eval samples: 10
+GPU memory allocated: 0.62 GB
+GPU memory reserved: 0.75 GB
+
+Initializing DPO Trainer...
+Extracting prompt in train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 7653.99 examples/s]
+Applying chat template to train dataset: 100%|████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:00<00:00, 14109.57 examples/s]
+Tokenizing train dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 90/90 [00:39<00:00,  2.29 examples/s]
+Extracting prompt in eval dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 2820.08 examples/s]
+Applying chat template to eval dataset: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 4584.94 examples/s]
+Tokenizing eval dataset: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:04<00:00,  2.40 examples/s]
+
+Starting DPO training...
+GPU memory before training: 0.62 GB allocated
+GPU memory reserved: 0.75 GB
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 49279, 'bos_token_id': 1, 'pad_token_id': 2}.
+  0%|                                                                                                                                                            | 0/69 [00:00<?, ?it/s]/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+{'loss': 0.6863, 'grad_norm': 86.85379791259766, 'learning_rate': 9e-08, 'rewards/chosen': 0.04875175654888153, 'rewards/rejected': 0.012582873925566673, 'rewards/accuracies': 0.5, 'rewards/margins': 0.03616888448596001, 'logps/chosen': -1134.852783203125, 'logps/rejected': -209.41455078125, 'logits/chosen': -3.158221483230591, 'logits/rejected': -3.2634875774383545, 'epoch': 0.44}
+{'loss': 0.6638, 'grad_norm': 55.01329040527344, 'learning_rate': 1.8999999999999998e-07, 'rewards/chosen': 0.19290098547935486, 'rewards/rejected': -0.03000459633767605, 'rewards/accuracies': 0.5, 'rewards/margins': 0.22290559113025665, 'logps/chosen': -1028.3951416015625, 'logps/rejected': -214.56716918945312, 'logits/chosen': -3.1902854442596436, 'logits/rejected': -3.4867351055145264, 'epoch': 0.89}
+{'loss': 0.6797, 'grad_norm': 64.03514862060547, 'learning_rate': 2.9e-07, 'rewards/chosen': 0.07788398861885071, 'rewards/rejected': 0.005485094618052244, 'rewards/accuracies': 0.6052631735801697, 'rewards/margins': 0.07239891588687897, 'logps/chosen': -964.9276123046875, 'logps/rejected': -219.34768676757812, 'logits/chosen': -3.18180775642395, 'logits/rejected': -3.412523031234741, 'epoch': 1.31}
+{'loss': 0.7023, 'grad_norm': 69.93254852294922, 'learning_rate': 3.8999999999999997e-07, 'rewards/chosen': -0.006407930050045252, 'rewards/rejected': -0.015713615342974663, 'rewards/accuracies': 0.5249999761581421, 'rewards/margins': 0.009305685758590698, 'logps/chosen': -1059.3199462890625, 'logps/rejected': -204.86447143554688, 'logits/chosen': -3.211066484451294, 'logits/rejected': -3.4405884742736816, 'epoch': 1.76}
+{'loss': 0.7222, 'grad_norm': 61.962520599365234, 'learning_rate': 4.9e-07, 'rewards/chosen': 0.157156303524971, 'rewards/rejected': -0.01055086962878704, 'rewards/accuracies': 0.5, 'rewards/margins': 0.167707160115242, 'logps/chosen': -1158.790283203125, 'logps/rejected': -223.3516387939453, 'logits/chosen': -3.379014730453491, 'logits/rejected': -3.3630642890930176, 'epoch': 2.18}
+{'eval_loss': 0.7200756072998047, 'eval_runtime': 56.9163, 'eval_samples_per_second': 0.176, 'eval_steps_per_second': 0.176, 'eval_rewards/chosen': -0.033852845430374146, 'eval_rewards/rejected': 0.0034116364549845457, 'eval_rewards/accuracies': 0.5, 'eval_rewards/margins': -0.03726447373628616, 'eval_logps/chosen': -1033.4893798828125, 'eval_logps/rejected': -196.20010375976562, 'eval_logits/chosen': -3.3384957313537598, 'eval_logits/rejected': -3.612030506134033, 'epoch': 2.18}
+{'loss': 0.6352, 'grad_norm': 63.3509521484375, 'learning_rate': 2.706448363680831e-07, 'rewards/chosen': 0.20906011760234833, 'rewards/rejected': -0.010517425835132599, 'rewards/accuracies': 0.574999988079071, 'rewards/margins': 0.21957755088806152, 'logps/chosen': -985.7012939453125, 'logps/rejected': -215.9811553955078, 'logits/chosen': -3.120680809020996, 'logits/rejected': -3.5279541015625, 'epoch': 2.62}
+{'train_runtime': 1917.4121, 'train_samples_per_second': 0.141, 'train_steps_per_second': 0.036, 'train_loss': 0.6869969575301461, 'epoch': 3.0}                                        
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 69/69 [31:57<00:00, 27.79s/it]
+
+GPU memory after training: 0.67 GB
+
+Saving model...
+✅ Model saved successfully to: systematic_results/trained_on_erp_qcm_dpo
+
+🎉 DPO Training completed successfully!
+Model location: systematic_results/trained_on_erp_qcm_dpo
+✅ Completed: ERP Training (qcm+dpo)
+
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+Benchmarking: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+Benchmarks: ocrbench, docvqa, chartqa
+📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 📊 
+
+================================================================================
+Running: Benchmark trained_on_erp_qcm+dpo
+Command: python3 evaluate_ocrbench.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_20251110_035239.json --percentage 100.0 --benchmarks ocrbench docvqa chartqa
+================================================================================
+
+INFO:__main__:Starting comprehensive benchmark evaluation using FULL datasets...
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully on base model
+INFO:__main__:Running ocrbench evaluation...
+INFO:__main__:Evaluating on OCRBench...
+INFO:__main__:Trying OCR dataset: echo840/OCRBench
+INFO:__main__:Loading echo840/OCRBench from cache...
+INFO:__main__:Successfully loaded OCR dataset: echo840/OCRBench
+INFO:__main__:Using full OCRBench dataset: 1000 samples
+OCRBench: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [06:44<00:00,  2.47it/s]
+INFO:__main__:Running docvqa evaluation...
+INFO:__main__:Evaluating on DocVQA...
+INFO:__main__:Loading nielsr/docvqa_1200_examples from cache...
+INFO:__main__:Using full DocVQA dataset: 1000 samples
+DocVQA: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [07:37<00:00,  2.19it/s]
+INFO:__main__:Running chartqa evaluation...
+INFO:__main__:Evaluating on ChartQA...
+INFO:__main__:Loading HuggingFaceM4/ChartQA from cache...
+INFO:__main__:Using full ChartQA dataset: 1000 samples
+ChartQA: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [11:04<00:00,  1.51it/s]
+INFO:__main__:Results saved to systematic_results/trained_on_erp_qcm+dpo_20251110_035239.json
+
+================================================================================
+SmolVLM Full Dataset Benchmark Evaluation Summary
+================================================================================
+
+Single-Image Benchmarks:
+------------------------------------------------------------
+
+OCRBENCH:
+  Tasks evaluated: 1000
+  Accuracy: 53.60%
+
+  Example 1:
+    Question: what is written in the image?...
+    Response: The text on the paper says "Clintie"....
+    Ground Truth: ['CENTRE']...
+
+  Example 2:
+    Question: what is written in the image?...
+    Response: The text "Friend" is visible in white color on a black background....
+    Ground Truth: ['FRIEND']...
+
+DOCVQA:
+  Tasks evaluated: 1000
+  Accuracy: 63.60%
+
+  Example 1:
+    Question: what is the date mentioned in this letter?...
+    Response: 1/8/93...
+    Ground Truth: ['1/8/93']...
+
+  Example 2:
+    Question: Who is in  cc in this letter?...
+    Response: T.R. Fiehl...
+    Ground Truth: ['T.F. Riehl']...
+
+CHARTQA:
+  Tasks evaluated: 1000
+  Accuracy: 41.80%
+
+  Example 1:
+    Question: How many food item is shown in the bar graph?...
+    Response: 16...
+    Ground Truth: ['14']...
+
+  Example 2:
+    Question: What is the difference in value between Lamb and Corn?...
+    Response: 103.7-102.46 
+Answer: 0.24....
+    Ground Truth: ['0.57']...
+
+================================================================================
+BENCHMARK SCORES SUMMARY:
+================================================================================
+
+Single-Image Benchmarks:
+  ocrbench       :  53.60%
+  docvqa         :  63.60%
+  chartqa        :  41.80%
+  Average        :  53.00%
+
+Multi-task Benchmarks:
+
+Overall Average Score: 53.00%
+Total evaluated tasks: 3000
+================================================================================
+
+Performance Analysis (compared to SmolVLM paper - image benchmarks only):
+----------------------------------------------------------------------
+  ocrbench       :  53.60% - GOOD (within SmolVLM range)
+  docvqa         :  63.60% - GOOD (within SmolVLM range)
+  chartqa        :  41.80% - NEEDS IMPROVEMENT (below SmolVLM-256M)
+
+Note: Using full datasets for comprehensive evaluation
+================================================================================
+
+Detailed results saved to: systematic_results/trained_on_erp_qcm+dpo_20251110_035239.json
+Dataset cache saved to: ./benchmark_cache
+✅ Completed: Benchmark trained_on_erp_qcm+dpo
+
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+ERP QCM Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 🏢 
+
+================================================================================
+Running: ERP QCM Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_qcm.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251110_035239.json --dataset balanced_qcm_all_end.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: balanced_qcm_all_end.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP QCM Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: balanced_qcm_all_end.json
+INFO:__main__:Loaded 1099 samples
+Evaluating: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1099/1099 [14:03<00:00,  1.30it/s]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: balanced_qcm_all_end.json
+INFO:__main__:Samples: 1099
+INFO:__main__:
+Accuracy: 29.75%
+INFO:__main__:Average Log Probability: -0.3019
+INFO:__main__:
+BERTScore:
+INFO:__main__:  Precision: 0.6949
+INFO:__main__:  Recall:    0.7503
+INFO:__main__:  F1:        0.7196
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_qcm_20251110_035239.json
+✅ Completed: ERP QCM Evaluation trained_on_erp_qcm+dpo
+
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+ERP DPO Evaluation: trained_on_erp_qcm+dpo
+Model path: systematic_results/trained_on_erp_qcm_dpo
+🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 🎯 
+
+================================================================================
+Running: ERP DPO Evaluation trained_on_erp_qcm+dpo
+Command: python3 evaluate_erp_dpo.py --model-path systematic_results/trained_on_erp_qcm_dpo --output-file systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251110_035239.json --dataset dpo_image_dataset/dpo_dataset_nova_pro.json --image-dir dpo_image_dataset
+================================================================================
+
+INFO:__main__:Device: cuda
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_nova_pro.json
+INFO:__main__:Image dir: dpo_image_dataset
+INFO:__main__:================================================================================
+INFO:__main__:Starting ERP DPO Evaluation
+INFO:__main__:================================================================================
+INFO:__main__:Loading model from: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Detected LoRA adapter, loading base model first...
+/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/transformers/models/auto/modeling_auto.py:2284: FutureWarning: The class `AutoModelForVision2Seq` is deprecated and will be removed in v5.0. Please use `AutoModelForImageTextToText` instead.
+  warnings.warn(
+`torch_dtype` is deprecated! Use `dtype` instead!
+INFO:accelerate.utils.modeling:We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+INFO:__main__:LoRA adapter loaded successfully
+INFO:__main__:Loading dataset: dpo_image_dataset/dpo_dataset_nova_pro.json
+INFO:__main__:Loaded 1868 samples
+Evaluating: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1868/1868 [1:06:52<00:00,  2.15s/it]
+INFO:__main__:Calculating BERTScore...
+INFO:__main__:================================================================================
+INFO:__main__:EVALUATION RESULTS
+INFO:__main__:================================================================================
+INFO:__main__:Model: systematic_results/trained_on_erp_qcm_dpo
+INFO:__main__:Dataset: dpo_image_dataset/dpo_dataset_nova_pro.json
+INFO:__main__:Samples: 1868
+INFO:__main__:
+Preference Accuracy: 95.34%
+INFO:__main__:  (Model assigns higher probability to 'chosen' response)
+INFO:__main__:
+Average Log Probabilities:
+INFO:__main__:  Chosen:   -1.9555
+INFO:__main__:  Rejected: -3.0193
+INFO:__main__:  Margin:   1.0638
+INFO:__main__:
+BERTScore (Generated vs Chosen):
+INFO:__main__:  Precision: 0.6912
+INFO:__main__:  Recall:    0.5825
+INFO:__main__:  F1:        0.6307
+INFO:__main__:================================================================================
+INFO:__main__:
+Results saved to: systematic_results/trained_on_erp_qcm+dpo_erp_dpo_20251110_035239.json
+✅ Completed: ERP DPO Evaluation trained_on_erp_qcm+dpo
+
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+PHASE 4: COMPARISON & ANALYSIS
+📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 📈 
+
+================================================================================
+COMPREHENSIVE COMPARISON RESULTS
+================================================================================
+
+                 model  average_accuracy  ocrbench_acc  docvqa_acc  chartqa_acc  erp_qcm_acc  erp_qcm_log_prob  erp_qcm_bertscore_f1  erp_dpo_pref_acc  erp_dpo_margin  erp_dpo_bertscore_f1
+trained_on_erp_qcm+dpo         50.166667          53.6        63.6         33.3    29.754322         -0.301922              0.719557         95.342612        1.063789              0.630704
+
+✅ Results saved:
+   CSV:  systematic_results/systematic_comparison_20251110_035239.csv
+   JSON: systematic_results/systematic_comparison_20251110_035239.json
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+
+🏆 Best Overall Model: trained_on_erp_qcm+dpo
+   Average Accuracy: 50.17%
+
+================================================================================
+
+================================================================================
+PIPELINE COMPLETED
+================================================================================
+Total time: 2:53:30.011898
+Results: systematic_results
+Full log: systematic_results/systematic_log_20251110_035239.txt
+WandB: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/b4scw9bk
+================================================================================
+
+wandb:                                                                                
+wandb: 
+wandb: Run history:
+wandb:                trained_on_erp_qcm+dpo/chartqa ▁
+wandb:                 trained_on_erp_qcm+dpo/docvqa ▁
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 ▁
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin ▁
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy ▁
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 ▁
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob ▁
+wandb:               trained_on_erp_qcm+dpo/ocrbench ▁
+wandb: 
+wandb: Run summary:
+wandb:                trained_on_erp_qcm+dpo/chartqa 33.3
+wandb:                 trained_on_erp_qcm+dpo/docvqa 63.6
+wandb:   trained_on_erp_qcm+dpo/erp_dpo_bertscore_f1 0.6307
+wandb:         trained_on_erp_qcm+dpo/erp_dpo_margin 1.06379
+wandb: trained_on_erp_qcm+dpo/erp_dpo_preference_acc 95.34261
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_accuracy 29.75432
+wandb:   trained_on_erp_qcm+dpo/erp_qcm_bertscore_f1 0.71956
+wandb:       trained_on_erp_qcm+dpo/erp_qcm_log_prob -0.30192
+wandb:               trained_on_erp_qcm+dpo/ocrbench 53.6
+wandb:                    trained_on_erp_qcm+dpo_avg 50.16667
+wandb: 
+wandb: 🚀 View run systematic_pipeline_20251110_035239 at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic/runs/b4scw9bk
+wandb: ⭐️ View project at: https://wandb.ai/david-lacour-epfl/SmallVLM-Systematic
+wandb: Synced 5 W&B file(s), 1 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20251110_035240-b4scw9bk/logs
+wandb: 
+wandb: 🚀 View run smolvlm-qcm-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/ijrqzlo8
+wandb: Find logs at: wandb/run-20251110_035246-ijrqzlo8/logs
+wandb: 
+wandb: 🚀 View run smolvlm-dpo-finetuning at: https://wandb.ai/david-lacour-epfl/SmallVLM/runs/nisx4in3
+wandb: Find logs at: wandb/run-20251110_042603-nisx4in3/logs
+✅ Experiment completed: erp_qcm_dpo_balanced_qcm_dpo_nova
+
+================================================================================
+PHASE 6: MEGA COMPARISON
+Aggregating and comparing ALL experiments
+================================================================================
+Loading: systematic_results/systematic_comparison_20251109_031505.json
+Loading: systematic_results/systematic_comparison_20251109_055323.json
+Loading: systematic_results/systematic_comparison_20251108_021352.json
+Loading: systematic_results/systematic_comparison_20251107_203639.json
+Loading: systematic_results/systematic_comparison_20251108_055636.json
+Loading: systematic_results/systematic_comparison_20251108_175013.json
+Loading: systematic_results/systematic_comparison_20251109_003237.json
+Loading: systematic_results/systematic_comparison_20251109_152205.json
+Loading: systematic_results/systematic_comparison_20251107_231504.json
+Loading: systematic_results/systematic_comparison_20251108_152041.json
+Loading: systematic_results/systematic_comparison_20251109_104010.json
+Loading: systematic_results/systematic_comparison_20251109_201128.json
+Loading: systematic_results/systematic_comparison_20251110_035239.json
+Loading: systematic_results/systematic_comparison_20251110_005457.json
+Loading: systematic_results/systematic_comparison_20251108_104845.json
+Loading: systematic_results/systematic_comparison_20251107_185418.json
+Loading: systematic_results/systematic_comparison_20251108_211250.json
+
+================================================================================
+MEGA COMPARISON - ALL EXPERIMENTS
+================================================================================
+
+                 model  ocrbench_acc  docvqa_acc  chartqa_acc  erp_qcm_acc  erp_dpo_acc  average_accuracy
+    trained_on_erp_qcm          53.5        65.5         33.8    48.099572            0         40.179914
+     trained_on_docvqa          54.8        65.9         33.9    41.684783            0         39.256957
+trained_on_erp_dpo-sft          53.4        63.7         34.1    41.793478            0         38.598696
+    trained_on_erp_dpo          53.6        63.6         33.1    42.201087            0         38.500217
+            base_model          53.6        63.6         33.0    42.282609            0         38.496522
+   trained_on_ocrbench          55.6        57.4         34.1    39.510870            0         37.322174
+    trained_on_chartqa          50.6        58.1         34.7    38.668478            0         36.413696
+trained_on_erp_qcm+dpo          53.5        63.4         33.2    29.845314            0         35.989063
+
+✅ Mega comparison saved:
+   CSV:  comprehensive_results/mega_comparison_20251107_185417.csv
+   JSON: comprehensive_results/mega_comparison_20251107_185417.json
+
+================================================================================
+COMPREHENSIVE INSIGHTS
+================================================================================
+
+🏆 BEST OVERALL MODEL: trained_on_erp_qcm
+   Average Accuracy: 40.18%
+
+📊 IMPROVEMENT OVER BASELINE (38.50%):
+   📈 trained_on_erp_qcm                      : +1.68%
+   📈 trained_on_docvqa                       : +0.76%
+   📈 trained_on_erp_dpo-sft                  : +0.10%
+   📈 trained_on_erp_dpo                      : +0.00%
+   📉 trained_on_ocrbench                     : -1.17%
+   📉 trained_on_chartqa                      : -2.08%
+   📉 trained_on_erp_qcm+dpo                  : -2.51%
+
+🎯 TRAINING STRATEGY COMPARISON:
+
+   Benchmark SFT:
+      Average: 37.66%  |  Best: 39.26%  |  Worst: 36.41%
+      - trained_on_docvqa: 39.26%
+      - trained_on_ocrbench: 37.32%
+      - trained_on_chartqa: 36.41%
+
+   ERP QCM (SFT):
+      Average: 40.18%  |  Best: 40.18%  |  Worst: 40.18%
+
+   ERP DPO (Method):
+      Average: 38.55%  |  Best: 38.60%  |  Worst: 38.50%
+      - trained_on_erp_dpo-sft: 38.60%
+      - trained_on_erp_dpo: 38.50%
+
+📈 BEST MODEL PER BENCHMARK:
+   🎯 ocrbench    : trained_on_ocrbench                      (55.6%) [SPECIALIZED]
+   🎯 docvqa      : trained_on_docvqa                        (65.9%) [SPECIALIZED]
+   🎯 chartqa     : trained_on_chartqa                       (34.7%) [SPECIALIZED]
+   🎯 erp_qcm     : trained_on_erp_qcm                       (48.1%) [SPECIALIZED]
+   ✨ erp_dpo     : trained_on_erp_qcm                       (0.0%) [TRANSFER]
+
+⚔️  SFT vs DPO FOR ERP:
+   SFT on QCM dataset:        40.18%
+   DPO method on DPO dataset: 38.55%
+
+   🏆 Winner: SFT (QCM) is better by 1.63%
+
+================================================================================
+
+================================================================================
+🎉 COMPREHENSIVE PIPELINE COMPLETED 🎉
+================================================================================
+Total time: 2 days, 11:51:59.980414
+Results: comprehensive_results
+Full log: comprehensive_results/pipeline_log_20251107_185417.txt
+================================================================================

@@ -1,0 +1,393 @@
+%\documentclass[11pt,a4paper]{article}
+
+\documentclass[10pt,conference,compsocconf]{IEEEtran}
+
+%\bibliographystyle{IEEEtran}
+
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{listings}
+
+\geometry{margin=1in}
+
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Code listing style
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\textbf{Parameter-Efficient Fine-Tuning of SmolVLM-500M-Instruct \cite{marafioti2025smolvlm}:\\A Comparative Study Using LoRA \cite{hu2021loralowrankadaptationlarge}, SFT \cite{ouyang2022traininglanguagemodelsfollow} \cite{wei2022finetunedlanguagemodelszeroshot} and DPO \cite{rafailov2024directpreferenceoptimizationlanguage}}}
+
+\author{
+    Vision-Language Model Fine-Tuning Study\\
+    \texttt{October 2025}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This work explores how parameter-efficient fine-tuning using Low-Rank Adaptation (LoRA\cite{hu2021loralowrankadaptationlarge}) can adapt SmolVLM-500M-Instruct \cite{marafioti2025smolvlm} into an intelligent assistant for enterprise resource planning (ERP) systems. The model is fine-tuned to serve both the technical support team and end users of Mediasoft, a construction-focused ERP platform. The goal is to enhance the model’s ability to interpret and reason over both textual and visual ERP data, understanding the connections between interface elements, software context, and real-world enterprise operations.
+
+This project presents both intellectual and technical challenges: it requires multimodal reasoning across text, images, and software workflows, while operating under limited computational and human resources for data generation. If successful, this approach could significantly improve the accessibility and usability of ERP systems, empowering small businesses and startups by lowering the technical barriers to effective enterprise management.  
+\end{abstract}
+
+\section{Introduction}
+
+Vision-Language Models (VLMs) have shown impressive progress in integrating visual and textual understanding, enabling applications ranging from image captioning to multimodal reasoning. However, most state-of-the-art VLMs remain computationally demanding and difficult to adapt to specialized domains. SmolVLM-500M-Instruct \cite{marafioti2025smolvlm} represents a promising balance between efficiency and capability—a compact, instruction-tuned model designed for multimodal understanding. Its smaller scale makes it well-suited for experimentation in resource-constrained environments, such as systems limited to a single 8~GB GPU.  
+
+Despite these advantages, effectively fine-tuning VLMs for domain-specific applications remains a challenging research problem. The goal of this study is to explore whether parameter-efficient fine-tuning (PEFT) methods, particularly Low-Rank Adaptation (LoRA\cite{hu2021loralowrankadaptationlarge}), can be leveraged to specialize a lightweight vision-language model for enterprise-level software assistance without sacrificing its general reasoning ability.
+
+\subsection{Motivation}
+
+Enterprise Resource Planning (ERP) systems form the digital backbone of modern organizations, integrating diverse operations such as finance, inventory management, human resources, and supply chain logistics. While essential, ERP platforms are often complex, featuring dense interfaces, steep learning curves, and limited accessibility for non-technical users. These challenges are especially pronounced in small and medium-sized enterprises that lack extensive IT support.  
+
+An intelligent assistant capable of interpreting ERP interfaces—understanding screenshots, icons, and workflows in conjunction with user queries—could greatly simplify system navigation and troubleshooting. Such a tool would not only assist end users but also support technical teams by automating responses to frequent issues and contextualizing visual information from ERP dashboards.
+
+\section{Related Work}
+
+\subsection{Vision-Language Models and Parameter-Efficient Fine-Tuning}
+
+Vision-Language Models (VLMs) have emerged as powerful tools for multimodal understanding, integrating visual and textual information processing. Recent surveys \cite{danish2025comprehensive} \cite{sun2024survey} demonstrate that VLMs have evolved significantly from early models like CLIP to modern architectures capable of handling complex reasoning tasks. The advent of transformer-based architectures has enabled models to achieve state-of-the-art performance across diverse benchmarks including image captioning, visual question answering, and document understanding.
+
+Parameter-efficient fine-tuning (PEFT) methods have become essential for adapting large VLMs to specialized domains without the computational burden of full model retraining. Low-Rank Adaptation (LoRA) \cite{hu2021loralowrankadaptationlarge} has emerged as a leading approach, focusing on modifying only a small subset of model parameters while maintaining competitive performance. Studies by \cite{zanella2024cliplora} demonstrate that LoRA can outperform both prompt tuning and traditional adapter-based approaches in few-shot scenarios. The technique has been successfully applied across multiple domains, from robotics \cite{vilone2024finetuning} to document extraction \cite{nanonets2025vlmfinetuning}, consistently demonstrating efficiency gains with minimal performance degradation.
+
+\subsection{Document Understanding and VQA Benchmarks}
+
+Document understanding represents a critical application domain for VLMs, requiring models to integrate OCR capabilities, layout comprehension, and semantic reasoning. DocVQA \cite{mathew2021docvqadatasetvqadocument} pioneered large-scale evaluation of VQA on document images.
+
+ChartQA \cite{masry2022chartqabenchmarkquestionanswering} extends this paradigm to data visualization understanding. OCRBench \cite{Liu_2024} provides comprehensive evaluation across five text-oriented components, including scene text recognition, document-oriented VQA, and mathematical expression recognition. Recent work \cite{liu2025ocrbenchv2} highlights persistent challenges in handling complex layouts, rotated text, and structured output generation, with state-of-the-art models still struggling to parse text into structured formats for downstream applications.
+
+\subsection{Direct Preference Optimization for Vision-Language Models}
+
+Direct Preference Optimization (DPO) \cite{rafailov2024directpreferenceoptimizationlanguage} has revolutionized preference-based learning by eliminating the need for explicit reward modeling and reinforcement learning. The approach reparameterizes the reward model to enable closed-form policy extraction, allowing models to be optimized directly on human preferences through a simple classification loss. This stability and computational efficiency have made DPO particularly attractive for multimodal applications.
+
+Recent extensions to vision-language models have demonstrated DPO's effectiveness in mitigating hallucinations and improving visual grounding. V-DPO \cite{xie2024vdpo} addresses the over-reliance on language priors by enhancing visual context learning through vision-guided preference pairs. Studies on video LMMs \cite{zhang2024dpovideo} show that DPO significantly improves performance on open-ended QA tasks when combined with appropriate reward mechanisms. The technique has proven especially valuable for aligning model outputs with human preferences while maintaining computational tractability \cite{wallace2024diffusion}.
+
+\subsection{AI in Enterprise Resource Planning Systems}
+
+Enterprise Resource Planning systems have begun integrating AI capabilities to enhance usability, automate workflows, and improve decision-making. Recent industry reports \cite{hginsights2024} indicate that ERP represents 16.8\% of global IT spending, with over half of decision-makers prioritizing ERP investments. AI integration focuses on natural language processing for conversational interfaces, predictive analytics for forecasting, and optical character recognition for document automation \cite{epicor2024eva} \cite{microsoft2024dynamics}.
+
+However, existing AI-ERP solutions primarily target process automation and analytics rather than interface understanding and software assistance. Virtual assistants like Epicor's EVA \cite{epicor2024eva} use NLP to answer questions and perform routine tasks but lack visual understanding of interface elements. Current research on AI in ERP \cite{jawad2024mldriven} emphasizes optimization of supply chains, inventory management, and financial forecasting, leaving a gap in multimodal assistance for navigating complex interfaces and troubleshooting software-specific issues.
+
+\subsection{Research Gap and Contribution}
+
+While substantial progress has been made in VLM development, document understanding, and preference optimization, limited work has explored the application of these technologies to enterprise software assistance, particularly for ERP systems. Most VLM research focuses on general-purpose benchmarks or broad document understanding tasks, rather than specialized software interfaces with domain-specific workflows. Our work bridges this gap by applying parameter-efficient fine-tuning techniques to adapt a lightweight VLM (SmolVLM-500M-Instruct) for ERP-specific assistance, combining visual interface understanding with functional workflow knowledge. By constructing domain-specific datasets using MCQ and DPO methodologies, we explore whether modern VLMs can effectively serve both technical support teams and end users in navigating complex enterprise systems.
+
+\section{Methodology}
+
+We selected HuggingFaceTB/SmolVLM-500M-Instruct as the base model for this study. This model was chosen due to its strong multimodal pretraining and instruction-tuned design, which make it well-suited for adaptation into a domain-specific software assistance role.
+
+To validate and monitor the training process, we first used three publicly available datasets: OCRBench\cite{Liu_2024}, DocVQA\cite{mathew2021docvqadatasetvqadocument}, and ChartQA\cite{masry2022chartqabenchmarkquestionanswering}. These datasets serve two key purposes:
+
+Training Validation
+They provide “sanity check” tasks to confirm that training is proceeding correctly. For example, performance on OCRBench should improve after training on it; failure to see such improvement would indicate a fundamental problem with the training process that must be addressed.
+
+Forgetting and Transfer Assessment
+These datasets allow us to evaluate whether fine-tuning on ERP-specific data causes:
+
+Catastrophic forgetting (loss of previously learned abilities), or
+
+Positive transfer, where ERP training improves or preserves general multimodal reasoning skills.
+
+This helps determine whether specialization reduces general capability or whether new domain knowledge can be integrated while maintaining baseline performance.
+
+We fine-tuned the model using two Mediasoft ERP–specific datasets: a multiple-choice question (MCQ \cite{li-etal-2024-multiple}  \cite{howard-ruder-2018-universal} \cite{allenai:arc} \cite{hendrycks2020measuring} \cite{hendryckstest2021}) dataset and a Direct Preference Optimization (DPO\cite{rafailov2024directpreferenceoptimizationlanguage}) dataset.
+
+The MCQ dataset links visual interface elements to their functional roles within the software. Each question is based solely on visible interface components, with additional textual context used to ensure the question is meaningful in the ERP workflow.
+
+The DPO dataset similarly focuses on visual elements with contextual text, but provides a preferred and a rejected answer for each prompt, enabling preference-based alignment during training.
+
+Both datasets are used for training and evaluation.
+
+MCQ performance is assessed using accuracy.
+
+DPO performance is evaluated using BERTScore and log-probability, which more effectively capture semantic correctness and alignment than lexical similarity metrics like BLEU or ROUGE.
+
+\section{Material}
+\begin{itemize}
+\item Aide-General-MS-ERP.docs : a word file of 145076 word, 1645 pages and 967 pictures. This is a user manual explaining how to use Mediasoft software. Mediasoft MS.ERP (Swiss) is a tailor-made ERP solution specifically designed for the construction and project industries. An all-in-one platform for managing margins, projects, and business growth.Includes BI dashboards for tracking margins, KPIs, and forecasts. Provide various modules: accounting, payroll, human ressources etc...
+\item 8 GB NVIDIA GeForce RTX 4060 Laptop GPU
+\end{itemize}
+
+\section{Datasets}
+
+\subsection{echo840/OCRBench  \cite{Liu_2024} }
+
+\url{https://huggingface.co/datasets/echo840/OCRBench}
+\vspace{1cm}
+
+OCRBench is a comprehensive evaluation benchmark designed to assess the OCR capabilities of Large Multimodal Models. It comprises five components: Text Recognition, SceneText-Centric VQA, Document-Oriented VQA, Key Information Extraction, and Handwritten Mathematical Expression Recognition. The benchmark includes 1000 question-answer pairs, and all the answers undergo manual verification and correction to ensure a more precise evaluation.
+\\
+Github:\url{https://github.com/Yuliang-Liu/MultimodalOCR}
+
+
+\subsection{nielsr/docvqa\_1200\_examples \cite{mathew2021docvqadatasetvqadocument}}
+
+
+\url{https://huggingface.co/datasets/nielsr/docvqa_1200_examples}
+DocVQA is a Visual Question Answering dataset that contains 50,000 questions defined on over 12,000 document images arXiv
+
+\subsection{HuggingFaceM4/ChartQA \cite{masry2022chartqabenchmarkquestionanswering} }
+
+
+
+\url{ https://huggingface.co/datasets/HuggingFaceM4/ChartQA}
+ChartQA is a benchmark dataset containing 32,719 question-answer pairs: 9.6K human-written questions and 23.1K machine-generated questions from chart summaries. The dataset focuses on complex reasoning requiring multiple logical and arithmetic operations, as well as visual chart interpretation, emphasizing naturalistic questions over template-based approaches.
+
+\textbf{Composition:} ChartQA-H (human-authored) and ChartQA-M (machine-generated) questions and answers.
+
+\textbf{Contents:} Chart images (PNG), annotations (JSON with bounding boxes, colors, values, chart types), and data tables (CSV).
+
+\textbf{Data Splits:} Train: 28.3K, Validation: 1.92K, Test: 2.5K.
+
+The benchmark evaluates visual and logical reasoning by requiring models to integrate visual features with underlying data.
+
+
+dataset nova pro 
+% ==================================================================
+% CONCISE DATASET DESCRIPTION FOR LATEX SUBSECTION (ENGLISH)
+% Copy the content below into your existing LaTeX document
+% ==================================================================
+
+\subsection{ERP DPO and MCQ}
+
+We constructed the DPO and MCQ datasets from Mediasoft ERP system documentation images using Amazon Bedrock (Nova Pro model) and Google Gemini. To generate the dataset, interface screenshots were extracted from the Mediasoft user manual. For each screenshot, we provided the LLM with the image, its position in the document, and approximately 150 lines of surrounding manual text (both preceding and following the image). Images smaller than 400×400 pixels were filtered out to avoid including minor interface icons.
+
+This contextual information helps the model understand how the Mediasoft ERP interface operates. We used the CrewAI library to design an automated agent pipeline to streamline data extraction and prompt generation.
+
+For each image, we produced two question–answer pairs:
+
+Descriptive (DPO) Question-Answer Pair:
+Aimed at helping the vision-language model learn to correctly interpret Mediasoft’s graphical interface components.
+
+Functional (MCQ) Question-Answer Pair:
+Focused on the practical use of the software, testing understanding of system functionality and workflows.
+
+\subsubsection{DPO Dataset (Direct Preference Optimization)}
+
+The DPO dataset contains response pairs for preference-based training. Each entry includes:
+\begin{itemize}
+    \item \textbf{Prompt}: User question or instruction (e.g., ``Describe the interface...'')
+    \item \textbf{Chosen}: Detailed, structured, and precise response based on visual observation
+    \item \textbf{Rejected}: Vague, incomplete, or less informative response
+    \item \textbf{Type}: \texttt{descriptive} (interface description) or \texttt{qa} (functional question-answer)
+\end{itemize}
+
+The dataset guarantees \textbf{strict visual grounding}: all responses are based exclusively on visible content, without references to external documentation. \textit{Chosen} responses are on average 6 times longer than \textit{rejected} responses, ensuring clear qualitative contrast.
+
+\textbf{Gemini DPO :}  1,840 images-prompt-answer pairs 
+\textbf{Nova DPO }  1,868 images-prompt-answer pairs
+
+\subsubsection{MCQ Dataset (Multiple Choice Questions)}
+
+The MCQ dataset provides evaluation questions with 4 options and a justification.
+The \textbf{distractors} (incorrect options) are designed to be plausible but false.
+
+
+
+\begin{lstlisting}[caption={Structure of an MCQ entry}]
+{
+  "image_name": "image_XXX.png",
+  "type": "mcq",
+  "mcq": {
+    "question": "Contextual question",
+    "options": {
+      "A": "First option",
+      "B": "Second option",
+      "C": "Third option",
+      "D": "Fourth option"
+    },
+    "correct_answer": "B",
+    "explanation": "Visual justification"
+  }
+}
+\end{lstlisting}
+
+This approach enables both training vision-language models to produce high-quality descriptions (DPO) and evaluating their precise understanding of specific elements (MCQ).
+
+\textbf{Gemini MCQ:}  3,680 images-prompt-answer pairs 
+\textbf{Nova MCQ:}  3736 images-prompt-answer pairs
+\textbf{Claude MCQ:} 1099 additional MCQ questions about Mediasoft software usage without images generated with Claude and the user manual text
+% ==================================================================
+% END OF DATASET DESCRIPTION
+% ==================================================================
+
+\section{Evaluation}
+
+Our parsing approach during accuracy evaluation may differ from the official benchmark parsing methodology. This is intentional, as our parsing is adapted to accommodate the Instruct model architecture and our goal of developing an AI assistant rather than a pure OCR system.
+
+\subsection*{DocVQA}
+The model response is converted to lowercase and whitespace is stripped. Accuracy is calculated using bidirectional containment matching: a response is considered correct if either the ground truth string is contained in the response or the response is contained in the ground truth (case-insensitive). This allows for partial matches and accounts for responses that may include additional explanatory text. Multiple ground truth answers are supported, and matching any one of them is considered correct.
+
+\subsection*{ChartQA}
+Responses are parsed to extract numerical values using regular expressions (pattern: \texttt{-?\textbackslash d+.\textbackslash d*}). Accuracy is calculated with a 5\% relative error tolerance for numeric answers: $\frac{|predicted - ground\_truth|}{|ground\_truth|} \leq 0.05$. If numeric comparison is not possible or fails, the evaluation falls back to case-insensitive text containment matching similar to DocVQA. This dual approach handles both precise numerical chart questions and qualitative textual answers.
+
+\subsection*{OCRBench}
+Responses are converted to lowercase with whitespace stripped. Accuracy uses strict unidirectional substring containment: the ground truth must be present as a substring within the model's response (case-insensitive). Unlike DocVQA, this does not accept reverse containment (response within ground truth), making it more stringent and ensuring that the model extracted the complete required text from the image.
+
+\subsection*{QCM (French ERP Multiple-Choice)}
+Responses are parsed using pattern matching to extract the answer letter (A, B, C, or D). The parser applies several regex patterns in order: single letters with word boundaries, letters followed by punctuation, and letters preceded by keywords like "answer" or "réponse". If no pattern matches, it searches for the first occurrence of A, B, C, or D in the response. Accuracy is calculated as exact match: the extracted letter must exactly equal the correct answer, with no tolerance or fuzzy matching.
+
+\subsection*{Log Probability (DPO Evaluation)}
+Log probability measures the model's confidence in generated text by computing the logarithm of the probability assigned to each token. For DPO (Direct Preference Optimization) evaluation, log probabilities are computed separately for both chosen (preferred) and rejected responses. The average log probability per token is calculated by summing log probabilities across all response tokens and dividing by the number of tokens. Higher (less negative) values indicate greater model confidence. The margin (chosen log prob minus rejected log prob) measures preference alignment---positive margins indicate the model correctly assigns higher probability to preferred responses. Results are interpreted as follows: higher average log probabilities for chosen responses ($>-2.0$ is typical for confident predictions), positive margins indicate correct preference alignment, and perplexity (exponential of negative average log prob) below 20 suggests coherent generation.
+
+\subsection*{BERTScore (Semantic Similarity)}
+BERTScore evaluates semantic similarity between generated responses and reference answers using contextualized embeddings from pre-trained language models. Unlike exact string matching, BERTScore captures meaning similarity even when words differ. The metric computes three scores: Precision measures what percentage of tokens in the prediction are semantically similar to tokens in the reference (penalizes hallucination), Recall measures what percentage of reference tokens are captured in the prediction (penalizes omission), and F1 is the harmonic mean of precision and recall. Scores range from 0 to 1, with values above 0.85 indicating strong semantic alignment, 0.70--0.85 indicating moderate alignment, and below 0.70 suggesting significant semantic divergence. For French ERP evaluation, BERTScore uses French language embeddings and is particularly valuable for assessing responses that may use different wording but convey the correct meaning.
+
+
+
+
+\subsection{Base Model}
+
+We use \textbf{SmolVLM-500M-Instruct} from HuggingFace as our base model. This model is part of the SmolVLM family, designed to be efficient while maintaining strong performance on vision-language tasks.
+
+\textbf{Model Specifications:}
+\begin{itemize}
+    \item Parameters: 500 million
+    \item Architecture: Vision-to-Sequence Transformer
+    \item Training: Instruction-tuned on diverse vision-language tasks
+    \item Input: Images (up to 1024px longest edge) and text prompts
+\end{itemize}
+
+\subsection{Fine-Tuning Approach: LoRA}
+
+We employ Low-Rank Adaptation (LoRA) for parameter-efficient fine-tuning. LoRA introduces trainable low-rank matrices into the model while keeping the original weights frozen.
+
+\textbf{LoRA Configuration:}
+\begin{itemize}
+    \item Rank ($r$): 16
+    \item Alpha ($\alpha$): 32
+    \item Target modules: \texttt{q\_proj, v\_proj, k\_proj, o\_proj}
+    \item Dropout: 0.05
+    \item Task type: Causal Language Modeling
+\end{itemize}
+
+\textbf{Quantization:}
+\begin{itemize}
+    \item 4-bit quantization using \texttt{bitsandbytes}
+    \item Quantization type: NF4 (Normal Float 4)
+    \item Double quantization: Enabled
+    \item Compute dtype: bfloat16
+\end{itemize}
+
+\bibliographystyle{IEEEtran}
+\bibliography{literature}
+
+\section{Appendix: Base Model Evaluation Examples}
+\onecolumn
+
+\subsection*{Example 1: OCRBench - Text Recognition}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{echo840_OCRBench_0.jpg}
+\end{center}
+
+\noindent\textbf{Question:} what is written in the image?
+
+\noindent\textbf{Base Model Response:} The text on the paper says "Clintie".
+
+\noindent\textbf{Ground Truth:} CENTRE
+
+\vspace{1cm}
+
+\subsection*{Example 2: OCRBench - Text Recognition}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{echo840_OCRBench_1.jpg}
+\end{center}
+
+\noindent\textbf{Question:} what is written in the image?
+
+\noindent\textbf{Base Model Response:} The text "Friend" is visible in white color on a black background.
+
+\noindent\textbf{Ground Truth:} FRIEND
+
+\vspace{1cm}
+
+\subsection*{Example 3: ChartQA - Data Visualization}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{HuggingFaceM4_ChartQA_0.jpg}
+\end{center}
+
+\noindent\textbf{Question:} How many food item is shown in the bar graph?
+
+\noindent\textbf{Base Model Response:} 16
+
+\noindent\textbf{Ground Truth:} 14
+
+\vspace{1cm}
+
+\subsection*{Example 4: ChartQA - Data Visualization}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{HuggingFaceM4_ChartQA_999.jpg}
+\end{center}
+
+\noindent\textbf{Question:} Which payment method shows the smallest difference between how consumers can pay and how providers can receive payments?
+
+\noindent\textbf{Base Model Response:} PayPal showed a 23 percent difference in customer willingness to pay for services compared with provider's ability to collect payments.
+
+\noindent\textbf{Ground Truth:} Cash
+
+\vspace{1cm}
+
+\subsection*{Example 5: DocVQA - Document Understanding}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{nielsr_docvqa_1200_examples_0.jpg}
+\end{center}
+
+\noindent\textbf{Question:} what is the date mentioned in this letter?
+
+\noindent\textbf{Base Model Response:} 1/8/93
+
+\noindent\textbf{Ground Truth:} 1/8/93
+
+\vspace{1cm}
+
+\subsection*{Example 6: DocVQA - Document Understanding}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{nielsr_docvqa_1200_examples_999.jpg}
+\end{center}
+
+\noindent\textbf{Question:} Which Corporation is mentioned on the letterhead?
+
+\noindent\textbf{Base Model Response:} The Great Western United Corporation is mentioned on the letterhead.
+
+\noindent\textbf{Ground Truth:} GreatWestern United Corporation
+
+\end{document}

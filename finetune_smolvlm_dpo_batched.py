@@ -5,7 +5,14 @@ Processes dataset in batches of 100 samples to avoid OOM
 Goes through the entire dataset incrementally
 """
 
+# Set HuggingFace cache directory before importing transformers (avoids disk quota issues on clusters)
 import os
+_hf_cache = os.path.abspath(os.path.join(os.path.dirname(__file__), "../tmpcache"))
+os.makedirs(_hf_cache, exist_ok=True)
+os.environ["HF_HOME"] = _hf_cache
+os.environ["HF_HUB_CACHE"] = os.path.join(_hf_cache, "hub")
+os.environ["TRANSFORMERS_CACHE"] = _hf_cache
+
 import json
 import torch
 from pathlib import Path

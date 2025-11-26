@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 """Test to verify tokenization mismatch bug in label masking"""
 
+# Set HuggingFace cache directory before importing transformers (avoids disk quota issues on clusters)
+import os
+_hf_cache = os.path.abspath(os.path.join(os.path.dirname(__file__), "../tmpcache"))
+os.makedirs(_hf_cache, exist_ok=True)
+os.environ["HF_HOME"] = _hf_cache
+os.environ["HF_HUB_CACHE"] = os.path.join(_hf_cache, "hub")
+os.environ["TRANSFORMERS_CACHE"] = _hf_cache
+
 from transformers import AutoProcessor
 from PIL import Image
 import torch

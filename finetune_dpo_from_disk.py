@@ -14,6 +14,15 @@ Note: DPO training is inherently ~2x slower than SFT because it processes
 both chosen AND rejected responses for each sample. This is expected behavior.
 """
 
+# Set HuggingFace cache directory before importing transformers (avoids disk quota issues on clusters)
+import os
+_hf_cache = os.path.abspath(os.path.join(os.path.dirname(__file__), "../tmpcache"))
+os.makedirs(_hf_cache, exist_ok=True)
+os.environ["HF_HOME"] = _hf_cache
+os.environ["HF_HUB_CACHE"] = os.path.join(_hf_cache, "hub")
+os.environ["TRANSFORMERS_CACHE"] = _hf_cache
+os.environ["HF_DATASETS_CACHE"] = os.path.join(_hf_cache, "datasets")
+
 import torch
 import wandb
 from transformers import (
@@ -24,10 +33,6 @@ from trl import DPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import BitsAndBytesConfig
 from datasets import load_from_disk
-import os
-
-# Disable HuggingFace datasets caching to save disk space
-os.environ["HF_DATASETS_CACHE"] = "/tmp/hf_datasets_cache"
 
 
 def load_model_and_processor(base_model: str = None):
