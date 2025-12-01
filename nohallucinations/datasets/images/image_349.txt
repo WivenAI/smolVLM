@@ -1,0 +1,308 @@
+CONTEXT FOR: image_349.png
+============================================================
+
+--- BEFORE ---
+Ce champ est obligatoire.
+§ Libellé – MS propose par défaut, le libellé « Facture » ou « Note de crédit »,
+ valider ou saisir dans ce champ un complément du libellé. C’est le libellé offi
+ciel qui sera édité dans les historiques des comptes clients.
+Ce champ est obligatoire.
+§ Libellé privé – Saisir éventuellement dans ce champ un libellé complémentaire,
+ qui ne sera édité optionnellement dans les historiques des comptes clients, (db
+700).
+Ce champ est facultatif.
+§ Commentaires – Saisir éventuellement dans ce champ des commentaires relatifs à
+ cette écriture, qui ne sera pas édité dans les historiques des comptes clients,
+ mais consultable dans les lignes, (option Détail de la ligne).
+Ce champ est facultatif.
+§ Succursale – Sélectionner éventuellement la succursale à affecter à cette écri
+ture.
+
+Valider les saisies soit par la touche « Enter » ou cliquer sur le bouton « Enre
+gistrer ».
+(Les champs marqués du caractère #, signifient que la valeur de ce champ saisie 
+précédemment peut être réaffichée à l’aide de la touche ↓)
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de la partie « client » des factures clients programme « co103 
+» : 
+
+Dans le programme co103 dédié à la gestion des factures clients, la section "Cli
+ent" joue un rôle crucial en facilitant l'identification et la gestion des infor
+mations relatives aux clients pour les transactions de facturation. Voici les co
+mposants clés de cette section et leur fonctionnalité :
+Client ID (Numéro de client) : Chaque client est identifié par un numéro unique.
+ Ceci est crucial pour assurer que toutes les transactions et communications son
+t correctement associées au bon client.
+Nom du client : Cela affiche le nom complet du client, permettant aux utilisateu
+rs de vérifier rapidement à qui la facture est adressée et d'assurer que les ser
+vices ou produits sont correctement facturés.
+Adresse : Les adresses du client sont utilisées pour les besoins de facturation,
+ de livraison, et de communication générale. Elles peuvent être nécessaires pour
+ des vérifications de conformité ou des audits.
+Libellé de la facture : Cela permet aux utilisateurs de saisir un descriptif ou 
+un titre pour la facture, ce qui aide à identifier rapidement la nature des tran
+sactions dans les relevés financiers.
+Commentaires : Une zone de texte est disponible pour ajouter des remarques spéci
+fiques concernant la facture ou le client, utile pour des notes internes ou des 
+clarifications lors du suivi des paiements.
+Succursale : Si le client opère via différentes branches ou succursales, cette i
+nformation permet d'assurer que la facturation est envoyée à la bonne localisati
+on.
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre de Comptabilisation des factures débiteurs/clients : 
+Partie « Poste Ouvert »
+
+
+§ Numéro de facture – Par défaut le programme affiche le numéro de pièce saisi c
+i-dessus dans la partie « Pièce ». Il peut être modifié.
+ Ce champ est obligatoire. Il est défini comme numéro de poste ouvert qui sera t
+raité dans les programmes de traitement des encaissements, de listes des postes 
+ouverts et dans le traitement des rappels.
+§ Date 1er jour – Par défaut le programme affiche la date de pièce saisi ci-dess
+us dans la partie « Pièce ». Il peut être modifié.
+ Ce champ est obligatoire. Il est défini comme base de calcul de la date d’échéa
+nce en relation avec les conditions de paiement. Il sera traité dans les program
+mes de listes des postes ouverts et dans le traitement des rappels.
+§ Conditions de paiement – MS propose par défaut, les conditions de paiement de 
+base du client (programme db100) elles peuvent être modifiées pour une pièce spé
+cifique et entraîne automatiquement le calcul de la date d’échéance. Ce champ es
+t obligatoire.
+Fenêtre de Comptabilisation des factures débiteurs/clients : 
+Partie « T VA »
+
+Après avoir validé le « Libellé » pour le compte TVA, le programme active l’icôn
+e de la calculette du taux de base (actuellement 8.00%). En validant avec Enter,
+ la TVA sera calculée automatiquement comme le montre la vue ci-dessus. Les numé
+ros entre parenthèses figurant à côté des champs, correspondent aux cases de la 
+déclaration de TVA.
+§ Options possibles  – MS 2000 offre plusieurs possibilités de comptabiliser la 
+TVA :
+1.Non soumis : Cliquer dans le champ « Exempt de TVA » et le montant s’affichera
+ dans le champ « Non soumis (230) » et cocher éventuellement la case « Divers (2
+80).
+2.Exportation : Cliquer dans le champ « Exportation » et saisir le montant et co
+cher la case adéquate.
+3.Taux multiples sur une même pièce : Cliquer dans le champ « TTC pour la calcul
+ette ». Saisir le montant TTC proportionnel à ce taux, et cliquer sur la calcule
+tte relative au taux de TVA. Répéter l’opération jusqu’à ce que le champ « TTC p
+our la calculette » soit à zéro.
+4.Taux d’une autre période : Cliquer sur le bouton approprié, saisir la date de 
+validité des taux et cliquer sur le bouton de la calculette.
+Fenêtre de Comptabilisation des factures débiteurs/clients : 
+Partie « Contrepartie Comptabilité Générale »
+
+
+
+
+
+
+
+
+
+
+Sélection d’un compte C.G. :
+
+
+
+
+§ Débit Crédit – Par défaut le programme positionne sur Crédit (Produit), si l’o
+n souhaite comptabiliser une note de crédit, il faut cliquer sur Débit. 
+Ce champ est obligatoire.
+§ Libellé – MS propose par défaut, l’intitulé du compte débiteur, valider ou sai
+sir dans ce champ un complément du libellé. C’est le libellé officiel qui sera é
+dité dans les historiques des comptes généraux.
+Ce champ est obligatoire.
+§ Libellé privé – Saisir éventuellement dans ce champ un libellé complémentaire,
+ qui ne sera édité optionnellement dans les historiques des comptes comptables, 
+(cg700).
+Ce champ est facultatif.
+§ Commentaires – Saisir éventuellement dans ce champ des commentaires relatifs à
+ cette écriture, qui ne sera pas édité dans les historiques des comptes comptabl
+es, mais consultable dans les lignes, (option Détail de la ligne).
+Ce champ est facultatif.
+
+
+
+
+
+
+
+
+
+
+
+
+
+[IMAGE HERE: image_349.png]
+
+--- AFTER ---
+
+
+Fenêtre de Comptabilisation des factures débiteurs/clients : 
+Partie « Comptabilité Analytique » co103 :
+
+
+
+
+
+
+
+
+
+
+Sélection d’un compte C.A. :
+
+
+
+§ Débit Crédit  – Par défaut  le programme positionne sur Crédit (Produit), sens
+ identique à la comptabilité générale.
+Ce champ est obligatoire et grisé afin d’être cohérent entre la CG et la CA.
+§ Libellé – MS 2000 propose par défaut, le libellé du compte comptable, valider 
+ou saisir dans ce champ un complément du libellé. C’est le libellé officiel qui 
+sera édité dans les historiques des comptes analytiques.
+Ce champ est obligatoire.
+§ Libellé privé  – Saisir éventuellement dans ce champ un libellé complémentaire
+, qui ne sera pas édité dans les historiques des comptes analytiques, (ca700).
+Ce champ est facultatif.
+§ Commentaires  – Saisir éventuellement dans ce champ des commentaires relatifs 
+à cette écriture, qui ne sera pas édité dans les historiques des comptes analyti
+ques, mais consultable dans les lignes, (option Détail de la ligne).
+Ce champ est facultatif.
+§ Genre de frais  – MS 2000 propose par défaut, le genre de frais provenant du c
+ompte comptable, valider ou saisir dans ce champ un autre genre de frais.
+Ce champ est obligatoire.
+§ Quantité – MS 2000 ouvre ce champ si une unité de quantité a été attribuée à c
+e genre de frais dans le programme de gestion des genres de frais (voir programm
+e ca101).
+Ce champ est obligatoire si une unité de quantité a été attribuée.
+
+
+
+
+
+
+
+
+
+Fenêtre de Comptabilisation des factures débiteurs/clients : 
+Partie « Mise à jour des comptes »
+
+
+
+Approbation de la pièce et mise à jour des comptes :
+
+Lorsque les soldes pour la comptabilité générale et la comptabilité analytique s
+ont à zéro le message ci-dessous apparaît. A ce niveau, la possibilité de modifi
+er, d’effacer tout ou partie de l’écriture reste ouverte.
+
+
+
+Encaissements clients co104 : 
+Information : Dans tous les programmes de saisie comptable, les touches "Tabulat
+ion" et "Enter" peuvent être utilisées à la place de la souris.
+
+Tabulation => passer au champ suivant
+Majuscule + Tabulation => revenir au champ précédent
+Enter => valider
+
+
+Partie « Pièce »
+
+
+Options relatives au numéro de pièce
+
+
+
+Cocher si frais bancaires
+à comptabiliser
+
+
+
+Champs :
+§ N° de Pièce – Le numéro de pièce peut être : soit le numéro de facture ou note
+ de crédit ou un numéro de pièce interne (par exemple, numéro séquentiel attribu
+é par un composteur)
+Il est souhaitable que ce numéro soit unique. Ce champ est obligatoire.
+§ Date de pièce – MS propose par défaut la date du jour, mais elle peut être mod
+ifiée. 
+NB : En cas d’erreur de saisie sur un champ date : saisir "?" Pour libérer le ch
+amp, et pouvoir renouveler la saisie.
+Ce champ est obligatoire, car la date d’échéance sera calculée à partir de cette
+ date.
+
+§ Date de valeur – MS propose par défaut la date de pièce, mais elle peut être m
+odifiée.
+
+La date de valeur comptable détermine le classement de l’écriture : son apparten
+ance à un certain mois (mouvements mensuels, chiffre d’affaires, trimestre TVA) 
+et à une certaine place par rapport aux autres écritures d’un même mois comptabl
+e. MS 2000 permet d’attribuer une écriture à tout mois comptable ouvert, c’est-à
+-dire pas encore bloqué par le chef comptable de manière à ne pas revenir sur un
+e période pour laquelle les résultats ne doivent plus être modifiés. La date de 
+valeur comptable doit être comprise entre les dates de début et de fin de l’exer
+cice comptable.
+
+Partie « Lot »
+
+
+
+§ Lot – Dans le système de gestion MS, un lot n’a pas de valeur comptable comme,
+ par exemple, un journal. Un lot n’a qu’une valeur pratique pour organiser le tr
+avail de saisie des écritures.
+
+C’est un groupe de pièces qu’un utilisateur va saisir : pièces de banque de la s
+emaine, factures de la semaine ou de la journée, pièces diverses pour une périod
+e quelconque, qui représentent un ensemble pratique dans la répartition des tâch
+es des différents collaborateurs.
+Un lot peut être utilisé par plusieurs utilisateurs. Chacun travaille dans ce lo
+t, mais on peut avoir plusieurs lots ouverts simultanément. Chacun contrôle la c
+omptabilisation effectuée en ayant la possibilité d’imprimer un "brouillard" de 
+saisie (journal des comptabilisations correspondant à un certain lot). Ce docume
+nt n’est pas le journal officiel de comptabilisation : il n’a pas d’autre foncti
+on que celle d’aider à la découverte d’éventuelles erreurs de saisie.
+Il est vivement conseillé d’ouvrir plutôt de nombreux lots ne comptant pas trop 
+de pièces comptables, que peu de lots très volumineux, car les brouillards de co
+ntrôle impriment toujours le détail des écritures d’un lot. Voir édition du brou
+illard, programme co150.
+
+Partie « Journal »
+
+
+
+Journal – Dans le système de gestion MS, toute pièce comptable doit appartenir à
+ l’un des types de journaux comptables reconnus dans la société. La liste en est
+ dressée par le chef comptable, dans une table gérée par le programme "co900". C
+liquer sur le bouton OK pour choisir le type approprié dans une liste des types 
+de journaux comptables reconnus. Les pièces d’un même lot peuvent toutes apparte
+nir à un même type de journaux, mais elles peuvent aussi appartenir à toutes sor
+tes de types de journaux différents. Ce sont les programmes qui éditent les jour
+naux provisoires "co610" et définitifs "co620" qui opèrent le regroupement des é
+critures dans les différents journaux en fonction du type indiqué à ce niveau.
+
+
+
+
+
+
+
+Fenêtre de Comptabilisation des encaissements débiteurs/clients :

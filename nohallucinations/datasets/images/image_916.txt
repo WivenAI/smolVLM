@@ -1,0 +1,308 @@
+CONTEXT FOR: image_916.png
+============================================================
+
+--- BEFORE ---
+
+
+
+4 - Le libellé privé ainsi que les commentaires sont facultatifs
+5 - Entrer le montant de la ligne 
+
+6 - Valider avec la touche "TAB"
+
+7 - Choix du compte bancaire
+
+
+
+
+8 - Partie "Poste Ouver" : saisir le numéro de facture et les conditions de paie
+ment :
+
+
+Note : il est possible a ce stade de voir la date d'échéance calculée par MS2000
+ selon les condtions de paiement du fournisseur
+
+
+§ Numéro de facture …  – Le numéro de pièce saisi ci-dessus dans la partie « N° 
+de pièce », peut être répété automatiquement par la touche ↓. Un numéro différen
+t peut être saisi.
+ Ce champ est obligatoire. Il est défini comme numéro de poste ouvert qui sera t
+raité dans les programmes de listes des postes ouverts et dans le traitement des
+ paiements.
+§ Conditions de paiement  – MS 2000 propose par défaut, les conditions de paieme
+nt de base du fournisseur (programme cr100) elles peuvent modifiées pour une piè
+ce spécifique et entraîne automatiquement le calcul de la date d’échéance.
+Ce champ est obligatoire.
+§ Date 1er jour  – Par défaut le programme affiche la date de pièce saisi ci-des
+sus dans la partie « Pièce ». Il peut être modifié.
+ Ce champ est obligatoire. Il est défini comme base de calcul de la date d’échéa
+nce en relation avec les conditions de paiement. Il sera traité dans les program
+mes de listes des postes ouverts et dans le traitement des rappels.
+§ No de banque, Compte, Référence, No de compte BVR, No de compte CCP – Toutes c
+es informations sont générées soient automatiquement en cas de paiement par BVR,
+ soient par sélection manuelle dans le cas d’autre moyen de paiement.
+ Certains champs sont obligatoires, selon le moyen de paiement défini pour cette
+ facture. Ils seront traités dans les programmes de paiements automatiques aux f
+ournisseurs.
+
+Valider les saisies soit par la touche « Enter » ou cliquer sur le bouton « Enre
+gistrer ».
+
+
+
+
+
+
+
+
+9 - Cliquer sur 
+
+10 - Choisir un compte CG  
+
+11 - Sélection Débit/Crédit puis d'un libellé
+
+12 - Valider avec la touche "Tab"
+
+13 - Saisie du compte Analytique  
+
+14 - Saisie du genre de frais    
+
+
+15 - Cliquer sur 
+
+16 - Cliquer sur Oui pour valider la mise à jour des comptes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paiements fournisseurs co102 :
+
+Fenêtre de Comptabilisation des paiements créanciers/fournisseurs :
+
+Partie « Comptabilité Générale – compte financier » :
+
+Note : la procédure de comptabilisation étant identique que lors de la saisie de
+ factures fournisseurs (co101), il suffit de suivre la même démarche. 
+La différence réside dans le choix d'un cmpte financier à la place d'un compte f
+ournisseur :
+
+1- Saisie du compte financier
+
+
+
+
+2 - Saisie du montant :
+
+
+
+3 - Saisie ou sélection du fournisseur / et du type de paiement :
+
+
+
+
+Note : saisir ici le montant payé, qui sera déduit du montant de la facture en c
+as de paiement partiel
+
+
+4 - Touche "Enter" pour valider
+
+5 - Choisir une facture dans la fenêtre de sélection :
+
+
+
+
+6 - Partie Application du paiement / escompte :
+
+
+
+
+S’il y a une différence entre le montant du paiement et celui du poste ouvert sé
+lectionné, le programme propose de passer automatiquement la différence sur le c
+ompte escompte et de fermer le poste ouvert, si l’option "Oui" a été sélectionné
+e ci-dessus. Sinon la différence restera comme poste ouvert.
+Le programme permet de comptabiliser des paiements sans facture. Pour ce faire c
+ocher la case prévue à cet effet. Attention ! Une condition de paiement « Acompt
+e » avec zéro jour doit être créée dans la table des conditions de paiements. Vo
+ir programme db901.
+
+Valider les saisies soit par la touche « Enter » ou cliquer sur le bouton « Enre
+gistrer ».
+Les champs marqués du caractère # , signifient que la valeur de ce champ saisie 
+précédemment peut être réaffichée à l’aide de la touche  ↓
+
+
+7 - Validation du passage à l'escompte
+
+
+
+8 - Calcul du montant et du % d'escompte après validation
+
+
+
+
+
+9 - Partie Mise à jour des comptes 
+
+[IMAGE HERE: image_916.png]
+
+--- AFTER ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+Escomptes fournisseurs semi-automatiques co106 : 
+
+
+Fenêtre de Comptabilisation des escomptes fournisseurs semi-automatiques
+
+Ce programme à pour but d’analyser et de proposer éventuellement la comptabilisa
+tion des résidus de montant sur certains postes ouverts.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+
+
+Bouton de sélection
+
+Cliquer pour sélectionner le type de journal
+
+Cliquer pour sélectionner le type de pièce
+
+Sélection des dates
+
+Sélection du solde maxi
+Toutes les différences inférieures à ce solde seront passées à l'escompte
+
+Fenêtre de validation : possibilité de voir les montants à passer a l'escompte :
+
+
+
+
+
+
+
+
+
+Validation des factures fournisseurs co108 : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epuration des P.O. cr410 :
+
+Ce programme à pour but d’épurer et de balancer les postes ouverts d’un fourniss
+eur, il est souhaitable de travailler avec ce programme sur la base de la liste 
+des P.O (programme cr320). Chaque poste ouvert traité dans ce programme n’appara
+îtra plus dans les listes relatives au traitement des P.O. Ce pourquoi, il est r
+ecommandé d’exécuter ce programme avant la procédure des paiements automatiques.
+
+
+
+
+Cliquer pour sélectionner un fournisseur
+
+Sélection des P.O. à épurer
+Cliquer  en maintenant la touche Majuscule enfoncée, pour sélectionner les ligne
+s à épurer jusqu’à ce que le montant de la balance soit à zéro. Ensuite cliquez 
+sur OK
+
+Cliquer pour valider les données et lancer la procédure de traitement
+Consultation des comptes co300 :
+
+
+Ce programme à pour but d’interroger de façon centrale tous les types de comptes
+ traités en comptabilité dans MS 2000. Des fonctionnalités spécifiques sont à di
+sposition pour chaque type de compte. La majorité de ces fonctionnalités a été d
+écrite dans la gestion des données de base des fournisseurs
+
+
+
+Cliquer pour sélectionner un fournisseur
+
+Cliquer pour sélectionner une fonctionnalité 
+
+
+Fonctionnalité « Recherche Facture/Pièce
+
+Fenêtre de recherche d’une facture ou d’une pièce :
+
+
+
+Saisir le numéro de facture / de pièce / d'écriture et valider :
+
+
+
+
+
+
+
+Recherche et Edition d'une écriture co340 :
+
+Fenêtre de recherche et d’édition d’une écriture.
+
+Ce programme à pour but d’interroger et éventuellement d’imprimer une écriture d
+e façon centrale, selon certains critères de recherches
+
+La recherche peut se faire selon différents critères :
+
+Par numéro d'écriture
+Par type de compte et numéro de pièce
+Par type de compte et type de journal
+Par date de valeur comptable
+91c234c1-40f1-46ca-b810-770570f7a06d
+
+
+
+
+Par numéro d'écriture :
+
+
+
+
+
+Cliquer pour sélectionner le critère souhaité
+
+Saisir le numéro d'écriture
+
+Validation des choix
+
+Cliquer  pour imprimer les valeurs ci-dessous
+Par type de compte et numéro de pièce :
+
+Critère de recherche par type de compte et numéro de pièce :
+
+
+
+

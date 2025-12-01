@@ -1,0 +1,308 @@
+CONTEXT FOR: image_540.png
+============================================================
+
+--- BEFORE ---
+Gestion des Listes :
+Les utilisateurs peuvent sélectionner une liste existante dans la partie supérie
+ure de l'onglet. Une fois sélectionnée, les critères associés à cette liste s'af
+fichent dans la zone principale.
+La sélection d'une liste permet également d'accéder à des options supplémentaire
+s pour gérer les listes, telles que la duplication ou l'archivage.
+
+
+Onglet "Edition"
+Cliquer pour changer le titre de la liste
+Choix de la disposition
+Champs de filtrage par condition
+
+Note explicative de l’onglet « Sélection » de l’édition des paramétrables des fa
+ctures programme « fa101 » : 
+Le programme "fa101" permet l'édition paramétrable des listes de contrôle des fa
+ctures. L'onglet "Édition" est une fonctionnalité essentielle pour personnaliser
+ les champs à imprimer ou à exporter. Voici une explication fonctionnelle détail
+lée de cet onglet :
+Exercice et Titre du Document :
+Exercice : Permet de sélectionner l'année fiscale en cours ou une année spécifiq
+ue pour laquelle les données doivent être extraites.
+Titre du document : Spécifie le titre du document de contrôle des factures.
+Options de Visualisation et Format :
+Visualisation requête : Cochez cette option pour voir un aperçu des résultats av
+ant de générer le document final.
+Format Ligne / Format Page : Choisissez entre une présentation en ligne ou en pa
+ge pour l'édition du document.
+Portrait / Paysage : Sélectionnez l'orientation du document.
+12ème de pouce / 15ème de pouce : Choisissez l'espacement entre les lignes pour 
+une meilleure lisibilité.
+Rupture sur le Premier Champ Imprimé :
+Cette option permet de créer une rupture dans le document imprimé, facilitant la
+ segmentation des données pour une analyse plus facile.
+Sélection des Champs à Imprimer ou Exporter :
+Visualiser les champs du fichier : Permet de voir tous les champs disponibles à 
+partir du fichier source. Le fichier source est spécifié comme étant les entêtes
+ de factures dans ce contexte (Facturation : Fichier des pièces).
+Champs disponibles : Liste des champs qui peuvent être ajoutés au document. Ces 
+champs sont extraits du fichier source sélectionné.
+Champs à imprimer ou exporter : Liste des champs actuellement sélectionnés pour 
+l'impression ou l'exportation.
+Gestion des Champs :
+Ajouter des champs : Utilisez le bouton flèche droite pour ajouter des champs de
+ la liste des champs disponibles à la liste des champs à imprimer ou exporter.
+Retirer des champs : Utilisez le bouton flèche gauche pour retirer des champs de
+ la liste des champs à imprimer ou exporter.
+Nb car et Maxi : Spécifiez le nombre de caractères maximum pour chaque champ. Ce
+la permet de contrôler la longueur des données imprimées.
+Ordre des Champs :
+Utilisez les flèches haut et bas pour réorganiser l'ordre des champs dans la lis
+te des champs à imprimer ou exporter. Cela permet de personnaliser l'ordre dans 
+lequel les données apparaîtront dans le document final.
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+Génération du fichier excel
+Edition paramétrable ligne factures fa109 :
+
+
+Note explicative de l’Edition paramétrable des lignes factures programme « fa109
+ » : 
+
+Le programme "fa109" est conçu pour gérer l'édition paramétrable des lignes de f
+actures. Voici comment il est structuré et comment vous pouvez l'utiliser effica
+cement :
+Sélection d'une Liste
+Sélection d'une Liste :
+Mes listes/Toutes les listes : Vous pouvez choisir d'afficher vos propres listes
+ personnalisées ou toutes les listes disponibles.
+Liste des critères : La section en bas de la fenêtre affiche les critères de sél
+ection basés sur les fichiers de factures. Vous pouvez ajouter, modifier ou supp
+rimer des critères en fonction de vos besoins.
+Onglet "Sélections"
+Sélection des Enregistrements :
+Lire : Sélectionner les enregistrements à lire, par exemple, "Tous les enregistr
+ements".
+Du fichier : Sélectionner le fichier source, par exemple, "Facturation : Fichier
+ des pièces (entêtes de factures) [fapi]".
+Liste des critères : Afficher et gérer les critères de sélection des enregistrem
+ents. Vous pouvez ajouter des critères pour filtrer les enregistrements selon de
+s conditions spécifiques (par exemple, "Type de facture Égal 'TRI'").
+Onglet "Édition"
+Paramétrage de l'Édition :
+Exercice : Sélectionner l'année d'exercice pour les factures à éditer.
+Titre du document : Spécifier le titre du document qui sera généré, par exemple,
+ "Facturation Site BE".
+Visualisation requête : Cochez cette option pour voir les résultats avant l'édit
+ion finale.
+Format de page : Choisir entre "Format Ligne" ou "Format Page" et la disposition
+ "Portrait" ou "Paysage".
+Rupture sur le premier champ imprimé : Cochez cette option si vous souhaitez ajo
+uter une rupture (saut de page) après le premier champ imprimé.
+Taille de la police : Choisir la taille de la police, soit "12ème de pouce" ou "
+15ème de pouce".
+
+
+Champs à Imprimer ou Exporter
+
+Configuration des Champs :
+Visualiser les champs du fichier : Cette section permet de sélectionner les cham
+ps disponibles dans le fichier source.
+Champs disponibles : Liste des champs disponibles dans le fichier sélectionné.
+Champs à imprimer ou exporter : Sélectionner et déplacer les champs souhaités po
+ur l'édition finale.
+
+Gestion des Critères
+Critères de Sélection :
+Utilisez les boutons "Ajouter", "Modifier" et "Supprimer" pour gérer les critère
+s de sélection.
+Les critères permettent de filtrer les enregistrements selon des conditions spéc
+ifiques, assurant ainsi que seules les lignes de factures pertinentes sont édité
+es.
+
+
+
+
+
+
+
+Edition des factures fa661 :
+
+·Edition des factures « Sans mise à jour » : Calcul et impression des factures u
+niquement (sans aucune mise à jour)
+
+
+Cliquer sur le critère "sans mise à jour"
+Pour le traitement "avec mise à jour", voir ci-dessous
+
+Critère de tri
+
+Après avoir cliqué sur la colonne pour activer le critère de tri désiré, saisir 
+la valeur de départ de l’affichage et validé avec le bouton « Coche verte »
+
+
+[IMAGE HERE: image_540.png]
+
+--- AFTER ---
+
+Edition des factures « Sans mise à jour » - Sélection des critères du traitement
+ :
+
+« Type de facture » : Liste déroulante des différents types de factures traités 
+dans le programme fa100.
+« Succursale » : Liste déroulante des différentes succursales traitées dans le p
+rogramme db100 et adrsuc.
+« Groupe client » : Liste déroulante des différents groupes de clients traités d
+ans le programme db100 et db902.
+« Utilisateur(s) » : Liste déroulante des utilisateurs ms2000 ayant traités les 
+factures dans le programme fa100.
+« Responsable(s) » : Liste déroulante des responsables de chantier traités dans 
+le programme ca100.
+« Factures non imputées » : Possibilité de filtrer que les factures non-imputées
+ en comptabilité (donc les factures en cours n’ayant pas encore de numéro de fac
+ture, mais seulement un numéro de pièce).
+« Factures imputées » : Possibilité de filtrer que les factures imputées en comp
+tabilité et ayant un de numéro de facture.
+« Par client » : Permet d’imprimer les factures dans l’ordre des clients.
+« Par n° provisoire » : Permet d’imprimer les factures dans l’ordre des numéros 
+de pièce.
+« Code banque pour BVR » : Sélectionner la banque pour imprimer les données du B
+VR sur les factures sélectionnées, (voir programme bkbvr).
+«Texte pour BVR » : Possibilité de saisir le texte qui sera imprimé dans la part
+ie haute du formulaire BVR (traitement spécifique sur demande).
+Edition des factures « Avec mise à jour » : Calcul et impression des factures (a
+vec mise à jour des données) :
+
+
+
+
+·Edition des factures « Avec mise à jour » : Calcul et impression des factures e
+t mise à jour des comptabilités et de la TVA.
+
+« Type de facture » : Liste déroulante des différents types de factures traités 
+dans le programme fa100.
+« Succursale » : Liste déroulante des différentes succursales traitées dans le p
+rogramme db100 et adrsuc.
+« Groupe client » : Liste déroulante des différents groupes de clients traités d
+ans le programme db100 et db902.
+« Utilisateur(s) » : Liste déroulante des utilisateurs ms2000 ayant traités les 
+factures dans le programme fa100.
+« Responsable(s) » : Liste déroulante des responsables de chantier traités dans 
+le programme ca100.
+« Factures non imputées » : Possibilité de filtrer que les factures non-imputées
+ en comptabilité (donc les factures en cours n’ayant pas encore de numéro de fac
+ture, mais seulement un numéro de pièce).
+« Factures imputées » : Possibilité de filtrer que les factures imputées en comp
+tabilité et ayant un de numéro de facture.
+« Par client » Permet d’imprimer les factures dans l’ordre des clients.
+« Par n° provisoire » Permet d’imprimer les factures dans l’ordre des numéros de
+ pièce.
+«Date de facture » : La date du jour est affichée par défaut, cette date sera im
+primée comme date de facture sur le document et permet de calculer la date d’éch
+éance selon les conditions de paiement définies sur le client (db100) ou sur la 
+pièce (fa100).
+«Date de valeur » : La date du jour est affichée par défaut, cette date détermin
+e la période de comptabilisation et de déclaration de la TVA. Par sécurité, une 
+confirmation de cette date est demandée après la validation.
+« Code banque pour BVR » : Sélectionner la banque pour imprimer les donné
+es du BVR sur les factures sélectionnées, (voir programme bkbvr).
+«Texte pour BVR » : Possibilité de saisir le texte qui sera imprimé dans la part
+ie haute du formulaire BVR (traitement spécifique sur demande).
+«Date de valeur » : La date du jour est affichée par défaut, cette date détermin
+e la période comptabilisation et de déclaration de la TVA. Une confirmation de c
+ette date est demandée après la validation.
+«Type de pièce » : Sélectionner le type de pièce.
+«Intitulé du lot » : Sélectionner un lot existant ou créer un nouveau lot (recom
+mandé).
+«Libellé écritures » : Saisir le libellé d’écritures, sinon libellé par défaut s
+elon l’indication.
+
+Note : Si le "Mode de mise à jour comptable" est indirect => utiliser le program
+me fa662 pour terminer la comptabilisation
+Ce programme permet de comptabiliser des acomptes, une fois l'offre (voir progra
+mme of110) acceptée (voir le flux des offres dans la section "Interventions"),
+et une fois l'acompte créé dans le programme of110.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre de sélection possible :
+
+
+Sélection des types de facture
+
+Sélection par responsable
+
+Avec mise à jour : génération d'une écriture comptable
+L'acompte sera comptabilisé sur le compte du client sélectionné
+
+Sélection de la demande d'acompte à traiter
+
+Cliquer pour choisir/créer le lot pour la comptabilisation
+
+Saisir ici le libellé qui apparaîtra en comptabilité
+
+
+Impression de la facture
+Note : la comptabilisation aura lieu si sélection suivante est choisie :
+
+Note explicative d’Edition des factures programme « fa661 » : 
+Le programme "fa661" est conçu pour l'édition des factures. Voici comment il est
+ structuré et comment vous pouvez l'utiliser efficacement :
+1. Sélection des Types de Facture
+Type de facture : Permet de sélectionner le type de facture à éditer, par exempl
+e, "Demande Acompte Simple".
+Succursale(s) : Vous pouvez choisir toutes les succursales ou en sélectionner un
+e spécifique pour laquelle les factures seront éditées.
+2. Sélection par Responsable
+Group(e)s clients : Sélectionner le ou les groupes de clients concernés par l'éd
+ition des factures.
+Utilisateurs : Filtrer par utilisateur pour voir les factures créées par une per
+sonne spécifique.
+Responsable(s) : Sélectionner le ou les responsables pour filtrer les factures q
+u'ils gèrent.
+3. Mode de Mise à Jour Comptable
+Options de mise à jour :
+Par client : Génération d'une écriture comptable par client.
+Par n° provisoire : Génération d'une écriture comptable par numéro provisoire.
+Avec mise à jour : Permet de générer une écriture comptable.
+Sans mise à jour : Aucune écriture comptable ne sera générée.
+Rédédition : Rééditer une facture existante.
+Date de facture : Sélectionner la date de la facture.
+Code banque pour BVR : Indiquer le code de la banque pour le BVR (Bulletin de Ve
+rsement avec Référence).
+4. Sélection de la Demande d'Acompte à Traiter
+Liste des factures : Afficher les factures non imputées ou imputées. Vous pouvez
+ sélectionner les factures à traiter dans cette liste.
+5. Lot de Comptabilisation
+Choisir/créer le lot : Cliquer sur l'icône pour choisir ou créer un lot pour la 
+comptabilisation des factures.

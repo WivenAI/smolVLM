@@ -1,0 +1,308 @@
+CONTEXT FOR: image_140.png
+============================================================
+
+--- BEFORE ---
+ages des employés et pour répondre aux exigences réglementaires ou de reporting​
+​.
+
+Onglet « Formation » :
+
+Note explicative de l’onglet « Formation » du programme « sd100 » :
+L'onglet « Famille » dans le programme sd100 de MS est structuré pour recueillir
+ des informations sur la famille de l'employé. Il se compose de plusieurs sectio
+ns :
+Conjoint et Enfant : Ici, on peut entrer les détails du conjoint et des enfants,
+ si cela est pertinent pour le dossier de l'employé.
+Nom et Prénom : Ces champs sont destinés aux informations sur le nom de famille 
+et le prénom du conjoint ou des enfants.
+Adresse : Il existe une option pour indiquer si le conjoint partage la même adre
+sse que l'employé ou une adresse différente.
+Détails supplémentaires : Cela inclut le numéro de sécurité sociale, la date de 
+naissance, et le sexe, pour fournir une documentation complète sur le conjoint p
+our des raisons administratives ou de conformité.
+Activité et Revenus : Ces champs permettent de préciser si le conjoint travaille
+, le type d'activité exercée, ainsi que les revenus associés, s'ils sont pertine
+nts pour l'employé.
+Permis : Cela concerne le type de permis de séjour ou de travail du conjoint si 
+cela est nécessaire.
+Rente : Si le conjoint reçoit une pension ou une rente, ces informations peuvent
+ être consignées ici.
+Commentaire : Une section est disponible pour ajouter toute remarque ou informat
+ion complémentaire concernant le conjoint ou les enfants.
+Ce segment du programme sd100 est vital pour la gestion des informations familia
+les des employés, ce qui peut influencer les déductions fiscales, les avantages 
+sociaux et d'autres éléments de la gestion des ressources humaines. L'exactitude
+ et la mise à jour de ces informations sont essentielles pour le suivi des avant
+ages des employés et pour répondre aux exigences réglementaires ou de reporting​
+​.
+
+
+
+
+
+
+
+
+
+
+Saisie d'un nouvel employé sd100 :
+
+Attention : Tous les employés, peu importe leur employeur, sont exclusivement cr
+éés dans la Société 1 (Chèque-Emploi), et ensuite copiés vers leur employeur res
+pectif.
+
+Pour la création d'un employé et la gestion du fichier du personnel, se référer 
+à la section Swissdec
+
+Pour la copie d’un employé vers son employeur, se référer à la section suivante 
+: Copie d'un employé vers un employeur (sd100)
+Copie d'un employé vers un employeur sd100 :
+
+Une fois qu'un employé est créé dans la société 1, il faut le copier vers son em
+ployeur (qui est une autre société créée dans MS) :
+
+4.1 Sélection de l'employé
+
+Dans le programme sd100, sélectionner l'employé désiré par un clic gauche pour l
+e faire apparaître en bleu :
+
+
+
+4.2 Transfert
+
+Puis cliquer sur l'icône de transfert   
+
+La fenêtre suivante apparaîtra, permettant de choisir la source et la destinatio
+n :
+
+
+
+Cliquer sur "Un" 
+Permet de choisir l'employé à transférer
+
+Cliquer pour choisir un employé
+
+
+Choisir la société (=employeur) désirée
+
+
+
+Valider et lancer le tranfert
+Les fenêtres suivantes vont apparaître :
+
+
+
+
+
+
+
+Edition des employés sd101 : 
+
+
+Note explicative Edition des employé programme « sd101 »
+
+Le programme sd101 d'Édition des Données des employés de MS est un outil conçu p
+our générer des listes et des rapports personnalisés sur les employés selon les 
+besoins de l'utilisateur. Voici comment l'utiliser étape par étape :
+Sélection de la liste : À l'ouverture du programme, vous êtes présenté avec une 
+fenêtre de sélection de liste. Vous pouvez choisir parmi des listes préexistante
+s ou créer une nouvelle liste en fonction de vos besoins spécifiques.
+Configuration de la liste : Une fois que vous avez sélectionné ou créé une nouve
+lle liste, vous pouvez la configurer davantage. Cela comprend la définition de c
+ritères de sélection spécifiques, comme des conditions sur certaines rubriques s
+alariales, des informations démographiques ou d'autres filtres pertinents.
+Ajout d'informations supplémentaires : Vous avez la possibilité d'ajouter des in
+formations supplémentaires à la liste sélectionnée, en utilisant des options tel
+les que les colonnes et les critères spécifiques pour inclure ou exclure des don
+nées particulières.
+Génération et Exportation : Après avoir configuré votre liste, vous pouvez lance
+r la génération du rapport. Le rapport peut être visualisé, et souvent, il y a u
+ne option pour l'exporter vers Excel pour une manipulation ultérieure ou pour in
+tégrer le rapport dans d'autres documents ou présentations.
+En résumé, le programme sd101 est un générateur de rapports flexible qui vous pe
+rmet de créer des listes d'employés détaillées et personnalisées pour répondre a
+ux différentes exigences de gestion des ressources humaines et de reporting de l
+’entreprise.
+
+Onglet « Edition » :
+
+
+Note explicative de l’onglet « Edition » du programme « sd101 » :
+L'onglet que vous voyez dans le programme sd101 d'Édition des Employés est consa
+cré à la configuration et à la génération de rapports personnalisés. Voici les é
+tapes détaillées pour comprendre sa composition :
+Choix de la Liste : Vous commencez par sélectionner la liste de données que vous
+ souhaitez éditer. Cela peut être une liste prédéfinie ou une nouvelle que vous 
+créez pour répondre à un besoin spécifique.
+Configuration : Après avoir sélectionné la liste, vous pouvez la configurer pour
+ déterminer quelles données apparaîtront dans le rapport. Ceci est réalisé en aj
+outant ou en retirant des champs disponibles à la liste des champs à imprimer ou
+ à exporter.
+Personnalisation : Les champs disponibles pour la liste peuvent inclure des déta
+ils tels que le numéro de personnel, le nom, le prénom, la date de naissance, la
+ nationalité, et d'autres détails pertinents liés aux employés.
+Visualisation et Exportation : Avant de finaliser, vous pouvez prévisualiser la 
+liste pour s'assurer qu'elle contient toutes les informations nécessaires. Ensui
+te, vous avez la possibilité d'exporter cette liste dans un format utilisable, t
+el qu'Excel, où vous pourrez faire des manipulations supplémentaires si nécessai
+re.
+En somme, cet onglet dans sd101 est l'outil qui permet de construire des rapport
+s sur mesure pour l'analyse des données employés ou pour d'autres besoins admini
+stratifs liés à la gestion du personnel.
+Haut du formulaire
+
+
+
+[IMAGE HERE: image_140.png]
+
+--- AFTER ---
+
+
+
+
+Edition des paramétrables de la famille sd104 : 
+
+
+Note explicative de l’Edition des paramétrable de la famille programme « sd104 »
+ : 
+
+Le programme sd104 de MS est une interface de gestion pour éditer et paramétrer 
+des listes relatives aux informations familiales des employés. Voici un guide ex
+plicatif sur son utilisation :
+Sélection d'une Liste : À l'ouverture, vous avez l'option de choisir entre 'Mes 
+listes' pour les listes personnalisées sauvegardées, ou 'Toutes les listes' pour
+ accéder à une gamme plus large, incluant des listes prédéfinies ou pour en crée
+r une nouvelle.
+Configuration de la Liste : Une fois la liste choisie, vous accédez à une interf
+ace où vous pouvez définir et affiner les critères de sélection pour votre rappo
+rt, tels que les conditions spécifiques d'inclusion ou d'exclusion des données.
+Personnalisation de l'Affichage : Dans l'onglet 'Édition', vous déterminez les c
+hamps à afficher dans votre liste, en les déplaçant de la section 'Champ(s) disp
+onibles' vers 'Champ(s) à imprimer ou exporter', vous permettant ainsi de constr
+uire un rapport personnalisé selon les besoins spécifiques de gestion des inform
+ations familiales.
+Prévisualisation et Exportation : Avant de finaliser, vous avez la possibilité d
+e visualiser la requête pour vérifier l'exactitude des informations et la pertin
+ence de la configuration. Ensuite, vous pouvez exporter la liste pour une utilis
+ation ultérieure ou pour intégration dans d'autres processus administratifs.
+Cet onglet dans le programme sd104 est donc un outil puissant et flexible pour l
+a création de listes personnalisées, essentiel pour la gestion RH, le suivi des 
+informations familiales, et pour répondre aux différentes exigences administrati
+ves ou réglementaires liées au personnel.
+Haut du formulaire
+Haut du formulaire
+
+Listes diverses salariés sd106 : 
+
+Note explicative de l’Edition des listes diverse programme « sd106 » : 
+
+Le programme sd106 de MS est utilisé pour la gestion des listes diverses relativ
+es aux salariés. Voici une explication détaillée de son utilisation, suivant le 
+format de votre requête précédente :
+Sélection de la liste: Pour démarrer, sélectionnez la liste souhaitée parmi cell
+es disponibles dans le programme. Ce choix se fait en double-cliquant sur le nom
+ de la liste dans la fenêtre de sélection.
+Personnalisation de la liste: Après la sélection de la liste, vous pouvez person
+naliser les informations qui y figureront en utilisant les options disponibles p
+our ajouter des informations supplémentaires. Cela se fait grâce à des colonnes 
+telles que J, K, L, M, et N, où vous pourrez ajouter des détails provenant des r
+ubriques salariales.
+Génération du rapport: Une fois les informations nécessaires ajoutées, le rappor
+t peut être lancé en utilisant le bouton "Excel". Le rapport généré s'ouvrira da
+ns Excel et pourra y être modifié ou reformaté selon les besoins spécifiques de 
+l'utilisateur.
+Utilisation des données pour d'autres processus: Les données de la liste peuvent
+ ensuite être utilisées pour divers processus liés à la gestion des salariés, te
+ls que la préparation de bulletins de salaire ou l'analyse des coûts de main-d'œ
+uvre.
+En cas de besoin d'informations plus détaillées ou de soutien pour l'utilisation
+ de ce programme, la documentation de l'Aide MS 2000 peut fournir des éclairciss
+ements et des instructions supplémentaires .
+
+
+
+
+
+
+
+Edition Paramétrable des formation ep101 :
+
+
+Note explicative de l’Edition paramétrable des formations programme « ep 101 »
+
+Le programme ep101 dans MS est un outil conçu pour l'édition paramétrable des li
+stes de formations des employés. Voici comment il fonctionne :
+Sélection de Liste : Au démarrage, vous avez la possibilité de sélectionner une 
+liste de formations existante ou de créer une nouvelle liste adaptée à vos besoi
+ns.
+Personnalisation de la Liste : Après la sélection, vous pouvez personnaliser les
+ détails de la liste des formations, tels que le titre du document, l'exercice c
+oncerné, et choisir entre un affichage de type portrait ou paysage pour l'impres
+sion ou l'export.
+Définition des Critères : Dans l'onglet "Sélections", vous pouvez définir des cr
+itères spécifiques pour filtrer les données selon vos besoins. Vous pouvez chois
+ir d'afficher toutes les formations ou d'utiliser des filtres pour restreindre l
+es résultats à certaines conditions.
+Ajustement des Paramètres : Vous avez également la possibilité d'ajuster des par
+amètres comme la taille de papier et si vous souhaitez une rupture sur le premie
+r champ imprimé, ce qui est utile pour organiser les données de manière logique 
+dans le rapport.
+Visualisation et Exportation : Une fois que vous avez configuré la liste selon v
+os spécifications, vous pouvez prévisualiser le document avant de finaliser. Il 
+y a aussi des options pour exporter la liste vers Excel ou pour imprimer directe
+ment.
+Le programme ep101 est donc essentiel pour gérer efficacement les informations r
+elatives aux formations des employés, offrant une personnalisation approfondie p
+our répondre aux exigences de reporting et de suivi de l'entreprise en matière d
+e développement professionnel.
+
+Gestion des fixes sd110 :
+
+Note Explicative de la gestion des fixes programme « sd110 » :
+
+Le programme sd110 dans MS est un outil essentiel pour la gestion des éléments d
+e salaire fixes des employés. Voici comment il est structuré :
+Sélection de l’Employé : À l'ouverture du programme, vous pouvez rechercher et s
+électionner un employé spécifique pour afficher ou saisir ses éléments de salair
+e fixes.
+Gestion des Rubriques de Salaire : Pour l'employé sélectionné, vous pouvez défin
+ir et gérer différentes rubriques salariales, telles que le salaire de base, les
+ primes fixes, etc.
+Périodisation : Le programme permet de spécifier les périodes de validité pour c
+haque rubrique de salaire, offrant ainsi une vue d'ensemble sur la durée pendant
+ laquelle chaque élément de salaire est applicable.
+Visualisation des Montants : Les montants alloués à chaque rubrique peuvent être
+ visualisés et ajustés, et les changements sont reflétés dans la grille des mois
+ à droite, vous permettant de voir quand et comment chaque rubrique s'applique t
+out au long de l'année.
+Options de Filtre : Il est possible de filtrer les rubriques selon qu’elles sont
+ valides à un moment donné ou selon leur historique, pour faciliter la gestion e
+t l'analyse des salaires fixes.
+Visualisation et Exportation : Après avoir configuré les éléments de salaire, vo
+us pouvez prévisualiser les informations et les exporter si nécessaire, par exem
+ple, pour les intégrer dans d'autres rapports ou analyses.
+Le programme sd110 est donc crucial pour une gestion précise et structurée des é
+léments fixes du salaire, permettant de s'assurer que la rémunération des employ
+és est gérée de manière cohérente et conforme aux politiques de l'entreprise.
+
+
+
+
+Edition des fixes sd110e :
+
+
+Note explicative des Edition des fixes programme « sd110e » :
+
+Le programme sd110e dans MS est conçu pour l'édition des données fixes selon des
+ critères prédéfinis. Voici un guide explicatif fonctionnel pour comprendre sa c
+omposition et son usage :
+Sélection d'un type d'impression : Au démarrage, le programme vous propose de ch
+oisir le type d'impression souhaité parmi une liste prédéfinie. Par exemple, vou
+s pourriez avoir des options comme "Par salarié et rubrique" ou "Par rubrique et
+ salarié", qui déterminent l'ordre et la structuration des données dans le docum
+ent final.
+Paramètres de Sélection : Après avoir sélectionné le type d'impression, vous pas
+sez à la configuration des paramètres de sélection. Ces paramètres peuvent inclu
+re des filtres pour afficher uniquement certains salariés ou certaines rubriques
+, basés sur des critères comme la période, le département, ou le statut de l'emp
+loyé (présent, variable, etc.).

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_145.png
+============================================================
+
+--- BEFORE ---
+
+
+Note explicative de l’Edition paramétrable des formations programme « ep 101 »
+
+Le programme ep101 dans MS est un outil conçu pour l'édition paramétrable des li
+stes de formations des employés. Voici comment il fonctionne :
+Sélection de Liste : Au démarrage, vous avez la possibilité de sélectionner une 
+liste de formations existante ou de créer une nouvelle liste adaptée à vos besoi
+ns.
+Personnalisation de la Liste : Après la sélection, vous pouvez personnaliser les
+ détails de la liste des formations, tels que le titre du document, l'exercice c
+oncerné, et choisir entre un affichage de type portrait ou paysage pour l'impres
+sion ou l'export.
+Définition des Critères : Dans l'onglet "Sélections", vous pouvez définir des cr
+itères spécifiques pour filtrer les données selon vos besoins. Vous pouvez chois
+ir d'afficher toutes les formations ou d'utiliser des filtres pour restreindre l
+es résultats à certaines conditions.
+Ajustement des Paramètres : Vous avez également la possibilité d'ajuster des par
+amètres comme la taille de papier et si vous souhaitez une rupture sur le premie
+r champ imprimé, ce qui est utile pour organiser les données de manière logique 
+dans le rapport.
+Visualisation et Exportation : Une fois que vous avez configuré la liste selon v
+os spécifications, vous pouvez prévisualiser le document avant de finaliser. Il 
+y a aussi des options pour exporter la liste vers Excel ou pour imprimer directe
+ment.
+Le programme ep101 est donc essentiel pour gérer efficacement les informations r
+elatives aux formations des employés, offrant une personnalisation approfondie p
+our répondre aux exigences de reporting et de suivi de l'entreprise en matière d
+e développement professionnel.
+
+Gestion des fixes sd110 :
+
+Note Explicative de la gestion des fixes programme « sd110 » :
+
+Le programme sd110 dans MS est un outil essentiel pour la gestion des éléments d
+e salaire fixes des employés. Voici comment il est structuré :
+Sélection de l’Employé : À l'ouverture du programme, vous pouvez rechercher et s
+électionner un employé spécifique pour afficher ou saisir ses éléments de salair
+e fixes.
+Gestion des Rubriques de Salaire : Pour l'employé sélectionné, vous pouvez défin
+ir et gérer différentes rubriques salariales, telles que le salaire de base, les
+ primes fixes, etc.
+Périodisation : Le programme permet de spécifier les périodes de validité pour c
+haque rubrique de salaire, offrant ainsi une vue d'ensemble sur la durée pendant
+ laquelle chaque élément de salaire est applicable.
+Visualisation des Montants : Les montants alloués à chaque rubrique peuvent être
+ visualisés et ajustés, et les changements sont reflétés dans la grille des mois
+ à droite, vous permettant de voir quand et comment chaque rubrique s'applique t
+out au long de l'année.
+Options de Filtre : Il est possible de filtrer les rubriques selon qu’elles sont
+ valides à un moment donné ou selon leur historique, pour faciliter la gestion e
+t l'analyse des salaires fixes.
+Visualisation et Exportation : Après avoir configuré les éléments de salaire, vo
+us pouvez prévisualiser les informations et les exporter si nécessaire, par exem
+ple, pour les intégrer dans d'autres rapports ou analyses.
+Le programme sd110 est donc crucial pour une gestion précise et structurée des é
+léments fixes du salaire, permettant de s'assurer que la rémunération des employ
+és est gérée de manière cohérente et conforme aux politiques de l'entreprise.
+
+
+
+
+Edition des fixes sd110e :
+
+
+Note explicative des Edition des fixes programme « sd110e » :
+
+Le programme sd110e dans MS est conçu pour l'édition des données fixes selon des
+ critères prédéfinis. Voici un guide explicatif fonctionnel pour comprendre sa c
+omposition et son usage :
+Sélection d'un type d'impression : Au démarrage, le programme vous propose de ch
+oisir le type d'impression souhaité parmi une liste prédéfinie. Par exemple, vou
+s pourriez avoir des options comme "Par salarié et rubrique" ou "Par rubrique et
+ salarié", qui déterminent l'ordre et la structuration des données dans le docum
+ent final.
+Paramètres de Sélection : Après avoir sélectionné le type d'impression, vous pas
+sez à la configuration des paramètres de sélection. Ces paramètres peuvent inclu
+re des filtres pour afficher uniquement certains salariés ou certaines rubriques
+, basés sur des critères comme la période, le département, ou le statut de l'emp
+loyé (présent, variable, etc.).
+Options d'Affichage : Vous pouvez décider d'imprimer les informations directemen
+t vers un fichier ou de les visualiser à l'écran avant l'impression. Cela vous p
+ermet de vérifier que les données correspondent à vos besoins avant de procéder 
+à l'impression physique ou à la création d'un document numérique.
+Critères de Tri : Le programme offre des options pour trier les données selon di
+fférents critères, comme l'ordre alphabétique ou numérique, et peut également pe
+rmettre de sélectionner des périodes spécifiques pour lesquelles vous souhaitez 
+extraire les données.
+Sélection des Décomptes et des Départements : sd110e permet également de sélecti
+onner des ensembles spécifiques de données en fonction des décomptes (par exempl
+e, les employés d'un certain département ou d'une certaine catégorie).
+Finalisation : Une fois que tous les paramètres sont configurés selon vos spécif
+ications, vous pouvez procéder à l'impression ou à l'exportation des données fix
+e. Si l'option "Visualiser" est cochée, vous aurez un aperçu avant l'impression,
+ ce qui est un moyen efficace de contrôler les données finales. L'option d'impri
+mer vers fichier est particulièrement utile si vous souhaitez conserver une copi
+e numérique ou procéder à une analyse plus approfondie des données dans un outil
+ comme Excel. 
+Utilisation de l’Interface : L'interface utilisateur est intuitive, avec des bou
+tons clairement marqués pour chaque action, et des listes déroulantes pour simpl
+ifier la sélection des critères. L'écran est organisé pour faciliter le flux de 
+travail de la sélection à l'impression, avec des options configurables à chaque 
+étape.
+Ce guide explicatif est basé sur l'analyse de l'interface utilisateur de sd110e 
+et les informations disponibles dans le document de support de MS2000. Cela devr
+ait vous aider à naviguer et à utiliser le programme sd110e de manière efficace 
+pour toutes vos tâches d'édition des données fixes.
+
+
+
+
+Utilitaires fixes sd112 :
+
+Note explicative utilitaires des fixes programme « sd112 » :
+Le programme sd112 dans MS est un utilitaire conçu pour la gestion et la modific
+ation des fixes. Les "fixes" font référence à des éléments de données constants 
+ou régulièrement utilisés qui nécessitent une gestion centralisée pour assurer l
+a cohérence à travers le système ERP. Voici les fonctionnalités clés et les étap
+es pour utiliser le programme sd112 :
+Sélection de critères : Vous commencez par sélectionner des critères de tri pour
+ les données que vous souhaitez gérer. Cela peut être fait de manière alphabétiq
+ue, numérique, ou pour tous les salariés en général.
+Choix des Décomptes : Vous pouvez choisir parmi des décomptes prédéfinis pour fi
+ltrer les données fixes selon des catégories spécifiques telles que le type de d
+épartement ou la succursale.
+Type de Paiement : Il est possible de déterminer le type de paiement associé aux
+ données fixes, que ce soit un paiement automatique, manuel ou un autre type déf
+ini dans le système.
+Création et Gestion des Fixes : Le programme vous permet de créer un nouveau fix
+e, de copier des données à partir d'autres fixes existants, de modifier un fixe 
+sélectionné ou de supprimer un fixe existant.
+Fonctionnalités Additionnelles : Vous avez également la possibilité de faire des
+ modifications plus spécifiques, telles que changer la date de validité, ajuster
+ les montants ou ajouter des commentaires pour chaque fixe.
+Finalisation : Une fois que vous avez fait vos sélections et modifié les données
+ comme nécessaire, vous pouvez finaliser le processus. Cela pourrait impliquer d
+e sauvegarder les modifications, d'exporter les données pour une utilisation en 
+dehors du programme, ou d'imprimer les informations pour un enregistrement papie
+r.
+En bref, le programme sd112 offre une plate-forme robuste pour gérer des élément
+s de données récurrents, permettant aux utilisateurs de maintenir l'intégrité de
+s données dans l'ERP MS2000. Pour plus de détails et une compréhension approfond
+ie des spécificités du programme, le document explicatif peut être consulté pour
+ obtenir des instructions détaillées et des captures d'écran supplémentaires​​.
+Haut du formulaire
+
+
+
+
+
+
+[IMAGE HERE: image_145.png]
+
+--- AFTER ---
+
+
+Gestion des rubriques sd120 : 
+Avec toute les rubriques dans les captures d’écrans ci-dessous : 
+
+
+
+Note explicative de l’onglet « liste » de la gestion des rubriques programme « s
+d120 » :
+Le programme sd120 de MS est destiné à la gestion et la configuration des rubriq
+ues salariales. Dans l'onglet "Liste", vous pouvez voir et modifier les éléments
+ suivants :
+Sélection de l'Employé et de la Période : Vous pouvez sélectionner un employé sp
+écifique et définir la période pour laquelle vous souhaitez gérer les rubriques.
+Numéro Historique : Cela permet de visualiser ou de retracer les modifications h
+istoriques apportées aux rubriques de l'employé sélectionné.
+Liste de Rubriques : Affiche toutes les rubriques disponibles dans le système. C
+haque rubrique a un numéro de référence unique et une désignation qui la définit
+. Par exemple, il peut y avoir des rubriques pour le salaire horaire de base, le
+ salaire annuel, les heures supplémentaires, etc.
+Propriétés : Vous avez la possibilité de visualiser les propriétés détaillées de
+ chaque rubrique, telles que son intégration dans le bulletin de salaire, si ell
+e est fixe ou variable, et si elle est soumise à des contributions sociales.
+Edition : C'est ici que vous pouvez modifier les paramètres d'une rubrique sélec
+tionnée, tels que les montants ou les périodes de validité.
+Compatibilité et Calculs : Permet de définir les règles de calcul pour chaque ru
+brique, comment elles s'intègrent dans les calculs de salaire globaux et leur in
+teraction avec d'autres rubriques.
+Décomptes et Sélections : Vous pouvez choisir de filtrer les rubriques en foncti
+on de divers critères tels que le type de salarié, le département, ou la période
+.
+
+
+
+
+
+
+
+
+
+
+Le programme offre donc une vue d'ensemble et des outils de manipulation pour le
+s rubriques liées à la rémunération des employés, garantissant que tous les élém
+ents salariaux sont gérés de manière précise et conforme aux réglementations en 
+vigueur.
+Pour représenter l'échantillon de rubriques du programme "sd120" de l'ERP en for
+mat de tableau, voici comment cela pourrait être structuré :
+Cela continue pour toutes les rubriques que vous avez énumérées. Chaque ligne re
+présente une rubrique spécifique avec son numéro de code, la description, et d'a
+utres colonnes qui pourraient inclure des indicateurs comme "Brut", "AVS/AC", "L
+AA", "LAAC", "IJM probable", etc., ainsi que des colonnes pour des informations 
+supplémentaires comme "facteur rétroactive", "Impôts", "CAF", "Certificat de sal
+aire", "Statistique", etc.
+Haut du formulaire
+
+
+Onglet « base » : 
+
+
+Note explicative de l’onglet « Base » de la gestion des rubriques programme « sd
+120 » :
+
+Dans l'onglet "Base" du programme sd120 de MS, vous pouvez gérer les éléments su
+ivants :
+Rubrique : Chaque rubrique salariale est identifiée par un numéro unique. Elle p
+eut correspondre à différents types de paiement ou déductions, comme le salaire 
+de base, les heures supplémentaires, etc.
+Désignation : C'est la description de la rubrique. Dans votre exemple, il s'agit
+ de "Base salaire journalier (réel)".
+Intitulé bulletin de salaire : Il reflète comment la rubrique est désignée sur l
+e bulletin de salaire de l'employé.
+Caractéristiques de la Rubrique :
+Fixe ou Variable : Détermine si le montant est constant chaque période ou s'il p
+eut varier.
+Applicabilité : Indique à quel type d'employé la rubrique s'applique, comme les 
+salariés, les apprentis, etc.
+Succursales et Départements : Vous pouvez attribuer la rubrique à des succursale
+s ou départements spécifiques, ce qui permet d'appliquer la rubrique uniquement 
+aux employés concernés.
+Traitement : Options pour définir comment la rubrique est traitée lors des calcu
+ls :
+Traitement lors du 1er salaire de l'année / lors de la sortie du salarié : Ces o
+ptions indiquent si la rubrique doit être considérée lors de ces événements spéc
+ifiques.
+Traitement si la période : Définit comment la rubrique doit être traitée selon l
+a période considérée (mensuelle, annuelle, etc.).
+Unité et Code : Ce sont les identifiants administratifs ou techniques associés à
+ la rubrique, par exemple, pour les intégrations comptables ou les rapports.
+Options Supplémentaires :
+Saisie de la quantité uniquement : Permet de spécifier si la rubrique nécessite 
+seulement une saisie de quantité, sans montant associé.
+Montant nul autorisé dans les variables : Permet ou non de saisir un montant nul
+ pour la rubrique.
+Ces paramètres de base sont essentiels pour déterminer comment chaque rubrique f
+onctionnera en pratique lors des traitements salariaux et pour garantir que les 
+calculs sont exécutés conformément aux règles établies de l'entreprise.
+Haut du formulaire
+
+
+Onglet « propriété » :
+
+Note explicative de l’onglet « Propriétés » de la gestion des rubriques programm
+e « sd120 » :
+
+L'onglet "Propriétés" dans le programme sd120 de MS est l'endroit où vous pouvez
+ configurer des paramètres spécifiques pour la rubrique sélectionnée, dans ce ca
+s, "Base salaire journalier (réel)". Voici un guide détaillé des options disponi
+bles dans cet onglet :
+Catégorisation de la Rubrique :
+Obligatoire : Si coché, cette rubrique est essentielle et doit être incluse dans
+ les calculs de paie.
+Concernant les déplacements : Spécifie si la rubrique est relative aux déplaceme
+nts directs ou via un dépôt.
+Report : Indique si la rubrique doit être reportée d'une période à l'autre.
+Part patronale, Gestion d'un historique, Influence heures de base : Ces options 
+déterminent la manière dont la rubrique interagit avec les contributions patrona
+les, l'historique des paiements, et l'influence sur les heures de base pour le c
+alcul des salaires.
+Options de Saisie et Absence :
+Aucune saisie, Saisie d'une période, Saisie d'une date : Décrit comment les info
+rmations de la rubrique sont saisies dans le système.
+Ne concerne pas les absences : Indique si les absences des employés n'affectent 
+pas cette rubrique.
+Divers :
+Autre : Une série de cases à cocher permettant de spécifier d'autres caractérist
+iques de la rubrique, comme s'il s'agit d'une allocation familiale, d'un salaire
+ brut, etc.
+Vacances, Maladie, Accident : Ces champs permettent de spécifier les rubriques p
+our les congés, les maladies, et les accidents professionnels.
+Rapports de travail : Ici, vous pouvez associer la rubrique à divers types de ra
+pports de travail comme le temps de nuit, le travail à l'étranger, etc.
+Configuration Comptable :
+Genre pour comptes salaires : Vous sélectionnez ici le type de compte de salaire
+ auquel la rubrique est associée, ce qui est crucial pour la comptabilité et le 
+reporting.
+Hors LPP, LPP - prévisionnel, LPP - rétroactif : Ces options déterminent la rela
+tion de la rubrique avec les provisions de pensions professionnelles.
+Chaque sélection dans cet onglet définit les propriétés fonctionnelles de la rub
+rique de paie et comment elle sera traitée dans le cadre plus large du calcul de
+ la paie et de la gestion des données des employés dans MS2000.
+
+
+Onglet « Edition »
+
+Note explicative de l’onglet « Edition » de la gestion des rubriques programme «
+ sd120 » :
+L'onglet "Édition" dans le programme sd120 de MS est dédié à la personnalisation
+ de l'affichage et de l'édition des rubriques de paie dans les bulletins de sala
+ire et les bulletins de contrôle. Voici un aperçu des options disponibles :
+Édition dans le bulletin de salaire : Si cette option est cochée, la rubrique ap

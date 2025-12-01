@@ -1,0 +1,308 @@
+CONTEXT FOR: image_855.png
+============================================================
+
+--- BEFORE ---
+
+Titre de la table pilote à paramétrer
+
+=> est défini  avec le programme tp100 gestion des tables pilotes
+
+Copie d'un bloc de lignes
+
+
+Suppression d’un bloc de lignes
+
+
+Copie de table pilote
+
+
+
+Renumérotation des lignes
+
+
+
+Champs :
+
+Table pilote :Une table est constituée de toutes les lignes à traiter pour un do
+maine et une table.
+Numéro de ligne :Numéro séquentiel de 10 en 10. Il indique l'ordre chronologique
+ de traitement des lignes.
+Les programmes d'éditions ne font qu'exécuter ce qui leur est demandé, ligne apr
+ès ligne, par la table pilote qui a été choisie au lancement du programme.
+Rappel. : Les lignes peuvent subir une renumérotation selon l'indentation de vot
+re choix à l'aide de la fonction prévue à cet effet dans la barre d’outils.
+Types de ligne : 
+Ligne de type « Titre »: Utilisé principalement pour les titres et sous-titres.
+Edition du texte saisi dans la zone "Texte", avec les paramètres de traitement s
+électionnés. 
+
+
+Ligne de type « Compte C.G. »
+Traitement des comptes compris dans la tranche "comptes de / à ". Ils seront imp
+rimés dans la ou les colonne(s) indiquée(s) dans le programme tp501 selon la pré
+sentation souhaitée.
+Si le code "Edition" est décoché, la tranche de compte n'apparaîtra pas sur l'éd
+ition (lignes masquées) mais traité dans les totalisateurs de base(s) éventuels.
+ La zone « Base(s) permet de totaliser les valeurs pour le traitement des sous-t
+otaux et totaux. Selon l’exemple ci-dessous les valeurs des comptes traités sero
+nt totalisées dans le totalisateur « A ».
+
+
+Base %Saisir un numéro de base (1 à 9) pour la constitution d’une somme servant 
+à calculer le pourcentage proportionnel à appliquer aux lignes ou totaux désirés
+.
+
+
+
+Ligne de type « Total »
+Edition du résultat d’un totalisateur :
+
+
+
+Traitement d’un totalisateur : Le résultat du totalisateur « A » sera imprimé et
+ remis à zéro. Le montant du totalisateur A sera totalisé dans le totalisateur B
+.
+
+
+
+EditionDécocher si vous ne voulez pas que cette ligne soit éditée.
+Par exemple, vous pouvez  bloquer l'édition lorsque vous voulez additionner les 
+soldes d'une série de comptes dans un ou des totalisateurs sans imprimer le déta
+il, compte après compte, et n'éditer ensuite que le montant regroupé dans un cer
+tain totalisateur.
+Edition si solde à zéroCocher si vous voulez que les soldes à zéro soient édités
+. 
+Attributs d’impressionCes codes permettent de donner jusqu'à trois ordres à l'im
+primante quant à la manière d'imprimer. Pour donner un code, il convient de coch
+er le(s) mode(s) souhaité(s).
+Saut avant édition, AprèsPermet d'insérer des lignes vides (interligne)  Sélecti
+onner un chiffre de 0 à 9 qui correspond au nombre de lignes vides à insérer ava
+nt le traitement de la ligne en cours. Sélectionner « P » pour faire un saut de 
+page à l’endroit désiré.
+
+
+Base %Saisir un numéro de base (1 à 9) pour la constitution d’une somme servant 
+à calculer le pourcentage proportionnel à appliquer aux lignes ou totaux désirés
+.
+
+Exemple :
+Totalisateur 2 utilisé pour le traitement des charges.
+
+
+
+
+
+L’impression du pourcentage sera pilotée par le programme tp501. (voir exemple c
+i-après).
+
+Traitement de la colonne 11 :
+
+Paramètres dans programme tp501
+
+
+
+Définir la colonne qui sera traitée dans la colonne 11(paramètre tp500)  – Exemp
+le la colonne 3 cochée « Masquée », serivra à totaliser les écarts de chaque com
+ptes traités (sans les imprimer) et de pouvoir obtenir le total dans une autre c
+olonne (3) selon exemple de paramètrage ci-dessous.
+
+Paramètres dans programme tp500
+
+Exemple de paramètrage et de traitement de la colonne 11.
+
+
+
+
+
+
+Exemple du résultat des paramètrages ci-dessus dans le classuer Excel.
+
+
+Ligne de type « Résultat »: Utilisé pour calculer automatiquement le résultat (s
+omme de tous les comptes traités).
+Analyse du résultat et édition du texte saisi dans les zones "Résultat négatif",
+ « Résultat positif ».
+
+
+
+
+
+Gestion des décomptes C.A. et C.G. tp501 :
+
+Ce programme (tp501) permet de piloter le traitement et la présentation « vertic
+ale (colonnes)» des comptes de la comptabilité générale et analytique.
+Les comptes « actifs et passifs » (Bilan), « charges et produits »(P.P) seront t
+raités avec le programme tp510, tandis que pour les genres de frais (Comptabilit
+é analytique), seront traités avec le programme tp535. Il faut donc créer des ta
+bles pilotes pour les traitements respectifs.
+
+
+Champs :
+Domaine :  Les tables pilotes sont paramétrées pour être traitées avec les progr
+ammes
+- 'tp510'Edition bilan (C.G. Bilan) et du PP (C.G. Compte d’exploitation)
+- 'tp535'Edition des décomptes analytiques (C.A.).
+Titre (sélection) :Saisir le titre de la liste qui sera présenté lors du lanceme
+nt du programme. (tp510 ou tp535).
+Titre (Excel) : Saisir le titre de la liste qui sera donné au classeur Excel.
+M-Files :          Permet un traitement spécifique avec stockages des données da
+ns M-Files.
+Portrait - Paysage : Définir la mise en page du traitement pour la liste.
+Police - Taille :    Définir la Police et la Taille pour le traitement de la lis
+te.
+Colonne 1 à 10:  Sélectionner la valeur correspondante à traiter dans cette colo
+nne.
+
+[IMAGE HERE: image_855.png]
+
+--- AFTER ---
+AP : Saisir le numéro de l’année par rapport à l’exercice en cours ou sélectionn
+é.
+Unité :  Cocher si l’édition des unités de quantité soit traitée. (Uniquement en
+ CA).
+Masquée :Cocher si l’on désire traiter l’information mais ne pas l’afficher.
+Période :   Cocher si l’on désire traiter une tranche périodique.
+% :   Cocher si l’on désire afficher le pourcentage (selon paramétrage dans tp50
+0).
+% masqué:    Cocher si l’on désire masquer le pourcentage (selon paramétrage dan
+s tp500).
+OU :      Paramétrer en sélectionnant les différentes possibilités de calcul off
+ertes (No de colonne et opérateur)
+% :   Cocher si l’on désire afficher le résultat du calcul en pourcentage.
+Entête 1 à 10:Saisir le texte de la colonne qui sera indiquée dans Excel.
+
+
+
+
+
+
+
+
+
+
+
+Décomptes analytiques tp535 :
+
+
+Décomptes analytiques selon type d’impression et table pilote (tp535) : 
+
+
+
+
+
+Option de traitement du classeur Excel
+
+
+
+Choix du niveau de détail
+
+Récapitulée : Masque le détail des lignes et affiche que les lignes de type « so
+mme ».
+Détaillée : affiche toutes les lignes
+
+Validation des réponses, traitement et affichage dans Excel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Décomptes analytiques : 
+Gestion des tables pilotes analytiques ca500 : 
+
+
+Liste des tables pilotes analytiques ca500e : 
+
+
+Décomptes (format A4H) ca510 : 
+
+
+Décomptes avec comparaison (Paysage) ca530 : 
+
+
+	Table analytique :
+Tables simples ca900 :
+
+Gestion des tables simples :
+
+Le but de ce programme, est pouvoir définir les informations nécessaires dans le
+s divers programmes de comptabilité analytique, selon différents types de tables
+ comme le montre l’exemple ci-après.
+
+Avant de pouvoir gérer une nouvelle entrée dans la table, sélectionner en priori
+té le type de table désiré.
+
+Exemple ci-dessous : à gauche, le type de table pour codes SMIT, à droite, les d
+ifférents codes SMIT pouvant être supprimés, étendus ou modifiés selon ses besoi
+ns.
+
+Gestion des constantes analytiques ca901 :
+
+
+Gestion des genres de comptes analytique ca902 : 
+Ce programme permet de gérer les genres de comptes analytiques définis au niveau
+ de la société. Le genre de compte est sélectionné au niveau du programme
+ca100 :
+
+
+Pour ajouter ou modifier un genre, utiliser le programme ca902 : 
+
+
+
+
+
+Cliquer pour sélectionner le genre à traiter
+
+
+
+Entrer une désignation
+
+
+
+Tarif de facturation interne
+ Voir la gestion des tarifs - ar901
+
+
+
+
+
+
+
+
+
+
+
+Gestion des techniciens/ responsable de chantier ca903 : 
+Ce programme permet d'ajouter un technicien, et de modifier ses paramètres :
+
+
+
+Gestion des sous-genres ca904 : 
+
+
+Gestion des statuts CA ca905 :
+
+
+
+Edition paramétrable des tables ca909 :
+
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant à l'édition des tables :
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi

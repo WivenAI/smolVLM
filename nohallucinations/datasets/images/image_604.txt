@@ -1,0 +1,308 @@
+CONTEXT FOR: image_604.png
+============================================================
+
+--- BEFORE ---
+de voir en un coup d'œil les informations essentielles d'un compte comptable, y 
+compris les transactions et les soldes actuels.
+2. Solde Actuel du Compte
+Le solde actuel du compte est une information cruciale affichée en haut de la fe
+nêtre. Il indique le montant disponible ou dû dans le compte sélectionné. Cette 
+valeur est mise à jour en temps réel en fonction des transactions enregistrées d
+ans le système.
+3. Onglet "Liste"
+L'onglet "Liste" est une interface de visualisation où sont listés tous les comp
+tes du plan comptable. Voici une description détaillée des colonnes et des infor
+mations affichées :
+Numéro : Le numéro unique attribué à chaque compte, utilisé pour l'identificatio
+n et le suivi.
+Intitulé court : Un nom abrégé du compte pour une identification rapide.
+Monnaie : La devise dans laquelle les transactions du compte sont effectuées.
+Type : Indique la nature du compte (Actif, Passif, etc.).
+Intitulé : Le nom complet du compte, donnant plus de détails que l'intitulé cour
+t.
+Intitulé (suite) : Informations supplémentaires ou descriptions étendues du comp
+te.
+Compte C.A. : Référence au compte de Centre d'Analyse (C.A.) si applicable.
+Genre de frais : Type de dépenses associées au compte, le cas échéant.
+Fonctionnalités Clés :
+Navigation et Sélection :
+Type de compte : Un filtre permettant de sélectionner un type de compte spécifiq
+ue pour une visualisation plus ciblée.
+Saisie du compte : Une zone de saisie pour entrer directement le numéro de compt
+e que l'utilisateur souhaite consulter.
+Visualisation des Soldes :
+Soldes actuels en monnaie : Affiche le solde actuel dans la devise principale du
+ compte.
+En contre-valeur : Montre la valeur équivalente dans une autre devise, facilitan
+t ainsi les opérations multicurrency.
+Gestion des Comptes :
+Hist-lettre : Onglet permettant l'accès à l'historique des lettrages, important 
+pour les réconciliations bancaires et autres ajustements comptables.
+Écr. effacées : Section où les écritures annulées ou supprimées sont affichées p
+our référence et audit.
+
+
+
+
+Onglet « Compte » :
+
+
+Paramètres de base du compte
+
+
+
+Paramètres Comptabilité Analytique
+
+Association avec un compte analytique et un compte par nature (Genre de frais)
+
+
+Sélections spéciale et blocage du compte
+
+Lorsque le blocage du compte est coché, aucune écriture ne peut être entrée sur 
+ce compte
+
+Choix du type de compte
+
+S'il s'agit d'un compte de regroupement, sélectionner "Collectif clients" ou "Co
+llectif fournisseurs"
+
+Paramétrage de l'accès au données
+
+0 = accès à tous les utilisateurs 9= accès restreint au minimum (par exemple Dir
+ection de l'entreprise)
+
+Panel de fonctions standard MS2000
+
+Pour ajouter, modifier ou effacer un compte
+
+
+Consultation de l'historique du compte
+
+
+
+Consultation historique + lettrages effectués
+
+
+
+Consultation des écritures effacées
+
+
+
+
+
+
+Note explicative de l’onglet « Compte » du plan comptable programme « cg100 » :
+
+L'onglet "Compte" du programme "cg100" est conçu pour permettre une gestion déta
+illée et complète des comptes du plan comptable. Voici une explication fonctionn
+elle et détaillée des différents composants et fonctionnalités de cet onglet.
+1. Paramètres de Base du Compte
+Cette section permet de configurer les informations fondamentales du compte séle
+ctionné.
+Compte : Zone de saisie du numéro de compte.
+Intitulé de recherche : Description ou libellé du compte pour faciliter les rech
+erches.
+Intitulé : Libellé principal du compte pour une identification claire.
+Intitulé (suite) : Informations complémentaires sur le compte.
+Monnaie : Devise utilisée pour les transactions de ce compte.
+Pays TVA : Pays d'application de la TVA pour ce compte.
+2. Paramètres de Comptabilité Analytique
+Cette section est dédiée à la configuration des aspects analytiques du compte.
+Compte C.A. : Sélection ou saisie du compte de Centre d'Analyse.
+Genre de frais : Spécifie la nature des frais associés à ce compte.
+Analyse des flux financiers : Permet de définir et de gérer les groupes de flux 
+financiers pour une analyse détaillée.
+3. Sélections Spéciales et Blocage du Compte
+Cette zone permet d'appliquer diverses sélections spéciales et options de blocag
+e pour le compte.
+A imprimer : Indique si le compte doit être inclus dans les impressions.
+Comptabilisation bloquée : Empêche les nouvelles écritures comptables sur ce com
+pte.
+Ne sera pas reporté : Exclut le compte des reportings financiers.
+Est un compte transfert de fonds : Identifie le compte comme étant utilisé pour 
+les transferts de fonds.
+Autres options : Plusieurs autres cases à cocher pour spécifier des utilisations
+ particulières ou des restrictions pour ce compte (par exemple, détail des salai
+res, comptes clients/fournisseurs).
+4. Choix du Type de Compte
+Cette section permet de définir le type de compte parmi plusieurs options.
+Actif : Compte d'actif.
+Passif : Compte de passif.
+Produit : Compte de produits.
+Charge : Compte de charges.
+Changement de classe : Options pour changer la classification du compte.
+Tampon : Utilisé pour des comptes temporaires ou de transition.
+N'est pas un compte collectif : Spécifie si le compte est individuel ou collecti
+f (clients, fournisseurs).
+5. Paramétrage de l'Accès aux Données
+Permet de gérer les droits d'accès et les niveaux de permission pour les utilisa
+teurs concernant ce compte spécifique.
+
+
+
+
+
+
+
+
+
+
+
+
+Onglet « engagement » 
+
+Note explicative de l’onglet « engagement » du plan comptable programme « cg100 
+
+[IMAGE HERE: image_604.png]
+
+--- AFTER ---
+» : 
+
+L'onglet "Engagement" du programme "cg100" permet la gestion des engagements fin
+anciers associés à un compte spécifique. Voici une explication détaillée des dif
+férentes sections et champs présents dans cet onglet :
+1. Banque
+Champ de saisie pour indiquer la banque associée à l'engagement.
+2. Compte Débit IBAN
+Champ de saisie pour entrer le numéro de compte IBAN utilisé pour les débits aut
+omatiques.
+3. Type d'Engagement
+Menu déroulant pour sélectionner le type d'engagement (par exemple, prêt, crédit
+, hypothèque).
+4. Début
+Champ de date pour indiquer le début de la période d'engagement.
+5. Fin
+Champ de date pour indiquer la fin de la période d'engagement.
+6. Taux en %
+Champ de saisie pour indiquer le taux d'intérêt applicable en pourcentage.
+7. Type de Taux
+Menu déroulant pour choisir le type de taux (fixe ou variable).
+8. Montant Amortissement
+Champ de saisie pour indiquer le montant qui sera amorti régulièrement.
+9. Type d'Amortissement
+Menu déroulant pour sélectionner le type d'amortissement (linéaire, dégressif).
+10. Échéance Débit
+Champ de date pour indiquer la date d'échéance des paiements de débit réguliers.
+11. Échéance Débit Amortissement
+Champ de date pour indiquer la date d'échéance des paiements d'amortissement.
+12. Échéance Débit Intérêt
+Champ de date pour indiquer la date d'échéance des paiements d'intérêt.
+13. Limite de l'Engagement
+Champ de saisie pour définir une limite maximale pour l'engagement.
+14. N° de Parcelle
+Champ de saisie pour spécifier un numéro de parcelle ou un identifiant lié à un 
+actif immobilier.
+15. Montant Cédulé
+Champ de saisie pour indiquer le montant cédulé.
+16. Type de Cédulé
+Menu déroulant pour spécifier le type de cédulé.
+17. Remarques
+Champ de texte pour saisir des remarques ou des notes supplémentaires concernant
+ l'engagement.
+Panel de Fonctions Standard
+Modifier : Permet de modifier les informations de l'engagement.
+Rétablir : Annule les modifications non sauvegardées.
+Ajouter : Crée un nouvel engagement.
+Copier : Duplique les informations d'un engagement existant.
+Effacer : Supprime l'engagement sélectionné.
+Annuler : Annule l'action en cours.
+Utilisation Pratique
+Saisie des Informations Bancaires et de l'Engagement :
+Indiquez la banque, le compte IBAN, et le type d'engagement.
+Définissez les dates de début et de fin de l'engagement ainsi que le taux d'inté
+rêt.
+Configuration des Amortissements et des Échéances :
+Entrez les détails concernant les montants et les types d'amortissements.
+Spécifiez les échéances pour les débits et les intérêts.
+Gestion des Limites et des Remarques :
+Fixez une limite d'engagement pour contrôler les dépenses.
+Ajoutez des remarques pour consigner des informations supplémentaires ou des exc
+eptions.
+
+
+Onglet « historique » : 
+
+
+Note explicative de l’onglet « historique » du plan comptable programme « cg100 
+» : 
+
+L'onglet "Historique" du programme "cg100" est utilisé pour consulter l'historiq
+ue détaillé des écritures comptables liées à un compte spécifique. Voici une exp
+lication détaillée de sa composition et de ses fonctionnalités :
+1. Tableau des Écritures Comptables
+L'élément principal de l'onglet "Historique" est un tableau qui affiche toutes l
+es écritures comptables associées au compte sélectionné. Chaque ligne du tableau
+ représente une écriture comptable distincte.
+Colonnes du Tableau
+N° Écriture : Numéro unique attribué à chaque écriture comptable pour identifica
+tion.
+Suite : Indique s'il s'agit d'une écriture liée à une autre (suite d'une écritur
+e principale).
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date de la valeur comptable de l'écriture.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture pour clarifier la na
+ture de la transaction.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Solde : Solde du compte après l'enregistrement de l'écriture.
+
+
+Onglet « Hist+lettrage » :
+
+Note explicative de l’onglet « Hist+lettrage » du plan comptable programme « cg1
+00 » : 
+L'onglet "Hist+Lettrage" du programme "cg100" permet de consulter l'historique d
+es écritures comptables ainsi que les lettrages effectués sur un compte spécifiq
+ue. Voici une explication détaillée de sa composition et de ses fonctionnalités 
+:
+1. Tableau des Écritures Comptables et Lettrages
+L'élément principal de l'onglet est un tableau affichant les écritures comptable
+s avec des informations spécifiques sur les lettrages. Chaque ligne représente u
+ne écriture comptable distincte, intégrant les détails de lettrage.
+Colonnes du Tableau
+N° Écriture : Numéro unique attribué à chaque écriture comptable pour identifica
+tion.
+Lettrage : Indicateur montrant si l'écriture a été lettrée.
+Suite Lettrage : Indique la séquence ou le lien avec d'autres écritures dans le 
+lettrage.
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date de la valeur comptable de l'écriture.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture pour clarifier la na
+ture de la transaction.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Solde : Solde du compte après l'enregistrement de l'écriture.
+
+
+
+
+Onglet « Ecr.effacées » :
+
+Note explicative de l’onglet « ecr.effacés » du plan comptable programme « cg100
+ » : 
+
+L'onglet "Écr. effacées" du programme "cg100" est conçu pour afficher et gérer l
+es écritures comptables qui ont été annulées ou supprimées. Cet onglet permet de
+ suivre et d'auditer les modifications apportées aux écritures comptables. Voici
+ une explication détaillée de sa composition et de ses fonctionnalités :
+Tableau des Écritures Effacées
+Le tableau principal présente une liste des écritures comptables qui ont été eff
+acées, fournissant des informations détaillées sur chaque écriture supprimée.
+Colonnes du Tableau
+N° Écriture : Numéro unique attribué à chaque écriture comptable pour identifica
+tion.
+Version : Indique la version de l'écriture si elle a été modifiée plusieurs fois
+.
+N° Suite : Indique le numéro de la suite, montrant s'il s'agit d'une écriture fa
+isant partie d'une série de transactions.
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_558.png
+============================================================
+
+--- BEFORE ---
+« Groupe client » : Liste déroulante des différents groupes de clients traités d
+ans le programme db100 et db902.
+« Utilisateur(s) » : Liste déroulante des utilisateurs ms2000 ayant traités les 
+factures dans le programme fa100.
+« Responsable(s) » : Liste déroulante des responsables de chantier traités dans 
+le programme ca100.
+« Factures non imputées » : Possibilité de filtrer que les factures non-imputées
+ en comptabilité (donc les factures en cours n’ayant pas encore de numéro de fac
+ture, mais seulement un numéro de pièce).
+« Factures imputées » : Possibilité de filtrer que les factures imputées en comp
+tabilité et ayant un de numéro de facture.
+« Par client » : Permet d’imprimer les factures dans l’ordre des clients.
+« Par n° provisoire » : Permet d’imprimer les factures dans l’ordre des numéros 
+de pièce.
+« Code banque pour BVR » : Sélectionner la banque pour imprimer les données du B
+VR sur les factures sélectionnées, (voir programme bkbvr).
+«Texte pour BVR » : Possibilité de saisir le texte qui sera imprimé dans la part
+ie haute du formulaire BVR (traitement spécifique sur demande).
+Edition des factures « Avec mise à jour » : Calcul et impression des factures (a
+vec mise à jour des données) :
+
+
+
+
+·Edition des factures « Avec mise à jour » : Calcul et impression des factures e
+t mise à jour des comptabilités et de la TVA.
+
+« Type de facture » : Liste déroulante des différents types de factures traités 
+dans le programme fa100.
+« Succursale » : Liste déroulante des différentes succursales traitées dans le p
+rogramme db100 et adrsuc.
+« Groupe client » : Liste déroulante des différents groupes de clients traités d
+ans le programme db100 et db902.
+« Utilisateur(s) » : Liste déroulante des utilisateurs ms2000 ayant traités les 
+factures dans le programme fa100.
+« Responsable(s) » : Liste déroulante des responsables de chantier traités dans 
+le programme ca100.
+« Factures non imputées » : Possibilité de filtrer que les factures non-imputées
+ en comptabilité (donc les factures en cours n’ayant pas encore de numéro de fac
+ture, mais seulement un numéro de pièce).
+« Factures imputées » : Possibilité de filtrer que les factures imputées en comp
+tabilité et ayant un de numéro de facture.
+« Par client » Permet d’imprimer les factures dans l’ordre des clients.
+« Par n° provisoire » Permet d’imprimer les factures dans l’ordre des numéros de
+ pièce.
+«Date de facture » : La date du jour est affichée par défaut, cette date sera im
+primée comme date de facture sur le document et permet de calculer la date d’éch
+éance selon les conditions de paiement définies sur le client (db100) ou sur la 
+pièce (fa100).
+«Date de valeur » : La date du jour est affichée par défaut, cette date détermin
+e la période de comptabilisation et de déclaration de la TVA. Par sécurité, une 
+confirmation de cette date est demandée après la validation.
+« Code banque pour BVR » : Sélectionner la banque pour imprimer les donné
+es du BVR sur les factures sélectionnées, (voir programme bkbvr).
+«Texte pour BVR » : Possibilité de saisir le texte qui sera imprimé dans la part
+ie haute du formulaire BVR (traitement spécifique sur demande).
+«Date de valeur » : La date du jour est affichée par défaut, cette date détermin
+e la période comptabilisation et de déclaration de la TVA. Une confirmation de c
+ette date est demandée après la validation.
+«Type de pièce » : Sélectionner le type de pièce.
+«Intitulé du lot » : Sélectionner un lot existant ou créer un nouveau lot (recom
+mandé).
+«Libellé écritures » : Saisir le libellé d’écritures, sinon libellé par défaut s
+elon l’indication.
+
+Note : Si le "Mode de mise à jour comptable" est indirect => utiliser le program
+me fa662 pour terminer la comptabilisation
+Ce programme permet de comptabiliser des acomptes, une fois l'offre (voir progra
+mme of110) acceptée (voir le flux des offres dans la section "Interventions"),
+et une fois l'acompte créé dans le programme of110.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre de sélection possible :
+
+
+Sélection des types de facture
+
+Sélection par responsable
+
+Avec mise à jour : génération d'une écriture comptable
+L'acompte sera comptabilisé sur le compte du client sélectionné
+
+Sélection de la demande d'acompte à traiter
+
+Cliquer pour choisir/créer le lot pour la comptabilisation
+
+Saisir ici le libellé qui apparaîtra en comptabilité
+
+
+Impression de la facture
+Note : la comptabilisation aura lieu si sélection suivante est choisie :
+
+Note explicative d’Edition des factures programme « fa661 » : 
+Le programme "fa661" est conçu pour l'édition des factures. Voici comment il est
+ structuré et comment vous pouvez l'utiliser efficacement :
+1. Sélection des Types de Facture
+Type de facture : Permet de sélectionner le type de facture à éditer, par exempl
+e, "Demande Acompte Simple".
+Succursale(s) : Vous pouvez choisir toutes les succursales ou en sélectionner un
+e spécifique pour laquelle les factures seront éditées.
+2. Sélection par Responsable
+Group(e)s clients : Sélectionner le ou les groupes de clients concernés par l'éd
+ition des factures.
+Utilisateurs : Filtrer par utilisateur pour voir les factures créées par une per
+sonne spécifique.
+Responsable(s) : Sélectionner le ou les responsables pour filtrer les factures q
+u'ils gèrent.
+3. Mode de Mise à Jour Comptable
+Options de mise à jour :
+Par client : Génération d'une écriture comptable par client.
+Par n° provisoire : Génération d'une écriture comptable par numéro provisoire.
+Avec mise à jour : Permet de générer une écriture comptable.
+Sans mise à jour : Aucune écriture comptable ne sera générée.
+Rédédition : Rééditer une facture existante.
+Date de facture : Sélectionner la date de la facture.
+Code banque pour BVR : Indiquer le code de la banque pour le BVR (Bulletin de Ve
+rsement avec Référence).
+4. Sélection de la Demande d'Acompte à Traiter
+Liste des factures : Afficher les factures non imputées ou imputées. Vous pouvez
+ sélectionner les factures à traiter dans cette liste.
+5. Lot de Comptabilisation
+Choisir/créer le lot : Cliquer sur l'icône pour choisir ou créer un lot pour la 
+comptabilisation des factures.
+6. Libellé des Écritures
+Saisir le libellé : Entrer le libellé qui apparaîtra en comptabilité. Par défaut
+, il peut être "facture" ou "NC" (Note de Crédit).
+7. Impression de la Facture
+Imprimer vers fichier : Cette option permet d'imprimer la facture vers un fichie
+r. Cliquez sur l'icône d'imprimante pour lancer l'impression.
+Variante fa662 :
+
+
+[IMAGE HERE: image_558.png]
+
+--- AFTER ---
+NB : Cette variante est spécifique à certains clients
+
+Le programme FA662 permet uniquement d' attribuer un numéro de facture et d'envo
+yer le document à un client final (Edition).
+
+Avantage : en cas de changement de montant, rabais etc.. il n'est pas nécessaire
+ d'extourner l'écriture (pas de comptabilisation).
+
+Exemple de flux :
+
+1) FV100 : Création facture pour Fr. 200.-
+2) FA662 : Edition de la facture (pas d'imputation)
+
+Puis, le montant passe de Fr. 200.- à Fr. 140.-
+
+3) FV100 : Modification du montant à Fr. 140.-
+4) FA661 : Edition de la facture avec mise à jour => la facture est imputée en c
+omptabilié
+Tables simple facturation fa900 :
+
+Note explicative des tables simple de facturation programme « fa900 » : 
+Le programme "fa900" est utilisé pour gérer les tables simples dans le système E
+RP. Voici une description détaillée de sa composition et de son fonctionnement :
+1. Types de Tables
+Sur la partie gauche de l'écran, vous avez une liste de types de tables que vous
+ pouvez gérer. Dans cet exemple, nous voyons deux types :
+lab : Labels variables factures
+rab : Types de rabais
+Vous pouvez sélectionner le type de table que vous souhaitez afficher et modifie
+r.
+2. Liste des Éléments
+Au centre de l'écran, vous avez une vue tableau des éléments de la table sélecti
+onnée. Cette vue affiche :
+No Code : Le code unique de l'élément dans la table.
+Désignation : La désignation principale de l'élément.
+Désignation 2 : Une désignation supplémentaire pour l'élément.
+3. Détails de l'Élément Sélectionné
+Lorsque vous sélectionnez un élément dans la liste, ses détails apparaissent dan
+s la section inférieure de l'écran :
+Langue : Sélectionnez la langue associée à l'élément.
+Numéro : Le numéro unique de l'élément.
+Code : Le code de l'élément.
+Désignation (1) : La première désignation ou description de l'élément.
+Désignation (2) : Une deuxième désignation ou description pour des informations 
+supplémentaires.
+Divers : Champ libre pour des informations diverses sur l'élément.
+Texte Swissdec : Un texte spécifique lié à Swissdec pour cet élément.
+Utilisation
+Pour utiliser le programme "fa900" :
+Sélectionnez un type de table dans la liste de gauche.
+Visualisez les éléments de cette table dans la vue tableau au centre.
+Sélectionnez un élément pour en voir les détails et les modifier si nécessaire.
+Utilisez les boutons en bas pour ajouter, enregistrer, copier ou effacer les élé
+ments de la table.
+
+Gestion des types de factures fa901 :
+
+Programme généralement utilisé par Médiasoft, car il comporte des champs ayant d
+es influences sur le traitement ultérieur des programmes de facturation.
+
+Les champs spécifiques du programme fa901:
+« No» : Numéro de séquence dans la table
+« Code» : Code du type de facture – 2 positions alpha-numérique..
+« Désignation » : Désignation du type de facture.
+« Groupe de facture » : Sélectionner le groupe de facture avec lequel ce type se
+ra traité – (les groupes sont définis par Médiasoft dans le programme ms900. Des
+ traitements spécifiques seront réalisés selon le groupe).
+« Type pour numérotation facture » : Type de numérotation spécifique ou utilisan
+t la numérotation d’un autre type (si pour les types il y a une seule numérotati
+on des factures, laisser ce champ vide).
+« Compte CG » : Saisir ou sélectionner un compte de produit sur lequel les imput
+ations comptables seront réalisées.
+« Compte CA » : Saisir ou sélectionner un compte analytique sur lequel les imput
+ations comptables seront réalisées.
+« Catalogue par défaut » : Sélectionner le groupe catalogue des articles qui ser
+a proposé dans la saisie des lignes à facturer, pour ce type de facture.
+« Catalogue sélectionné uniquement » : Coché si le catalogue sélectionné ci-dess
+us sera uniquement traité dans la saisie des lignes à facturer.
+« Facturation TTC » : Coché si ce type de facture est traité en TTC – Un tarif T
+TC doit être paramétré dans la gestion des tarifs – (Programme ar901).
+« Edition des factures à 0 » : Coché si l’on désire traiter les factures dont le
+ montant à facturer est égal à zéro (Programme fa661).
+« Comptabilisation des factures lors de l’édition avec MAJ » : Coché si l’on dés
+ire comptabiliser les factures lors de l’édition (Programme fa661).
+Sinon le traitement de la comptabilisation sera réalisé de manière différée (pro
+gramme fa662) – Voir le paramètre dans « Xstes » – Onglet « MAJ ».
+« Imputation de la TVA sur les comptes produits » : Coché si l’on désire que le 
+montant de la TVA soit comptabilisée sur les comptes de produits et non sur le c
+ompe TVA (Programme co902).
+« Edition avec fa660 » : Coché pour traiter les factures de type « contrats ».
+« Numérotation manuelle » : Coché si l’on désire attribuer manuellement les numé
+ros de facture .
+« Edition BVR » : Coché pour traiter l’impression des BVR .
+« Site obligatoire » : Coché si l’on désire traiter la notion de site pour ce ty
+pe de facture .
+« Codification mise sous pli » : Coché pour traiter sur l’édition des factures l
+es codes de traitement automatique de la mise sous pli des documents.
+« Arrondi aux 5 centimes » : Sélectionner le type de traitement de l’arrondi, se
+lon les 3 possibilités.
+« Comptabilisation» : Coché pour traiter la comptabilisation des factures dans M
+S2000.
+« Comptabilisation directe» : Coché pour traiter la comptabilisation des facture
+s directement. (programme fa661 avec mise à jour). Sinon, comptabilisation avec 
+le programme fa662.
+« Factures contrat» : Coché pour traiter les factures de type « contrats ».
+
+Traitement de la mise en pages des factures :
+Standard : Mise en page et traitement classique.
+Excel : Mise en page et traitement avec Excel.
+1 PDF : Facture et BVR sur la même page. Pas d’accès aux zones BVR dans fa661 (t
+exte ou d’image sur page BVR).
+2 PDF : Facture et BVR sur 2 pages distinctes. Les zones BVR sont accessibles da
+ns fa661 (texte ou d’image sur page BVR).
+Facture et BVR dans le même PDF : Ne sert uniquement quand on est en option « 2P
+DF ». Permet de générer un seul document contenant Facture 1, BVR 1, Facture 2, 
+BVR 2… au lieu de 2 documents, l’un avec toutes les factures et l’autre avec tou
+s les BVR n’est utilisable que si l’imprimante permet de dispatcher automatiquem
+ent les BVR sur un autre bac et demande un développement de Médiasoft pour bien 
+calibrer la position du BVR
+Visualisation PDF uniquement : Si coché, l’option visualiser du fa661 est non ut
+ilisable et nous avons automatiquement la visualisation du pdf. Sinon, dans le f
+a661 on peut : Visualiser le pdf Imprimer le pdf : ouvre le pdf avec la boite de
+ dialogue d’impression. 
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de la gestion des types de factures programme « fa901 » : 
+
+Le programme "fa901" est utilisé pour la gestion des types de factures dans le s
+ystème ERP. Voici une description détaillée de sa composition et de son fonction
+nement :
+1. Liste des Types de Factures
+La partie supérieure de l'écran affiche une liste des types de factures existant
+s. Les colonnes incluent :
+N° : Numéro du type de facture.
+Code : Code unique pour le type de facture.
+Désignation : Nom du type de facture.
+Fact. TTC : Indication si la facture inclut les taxes.
+Fact. à 0 : Indication si la facture peut être éditée avec un montant de zéro.
+Catalogue par défaut : Indication si un catalogue par défaut est utilisé.
+Cat. uniq. : Indication de l'utilisation d'une catégorie unique.
+Compte C.A. : Compte de chiffre d'affaires associé.

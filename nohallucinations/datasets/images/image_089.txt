@@ -1,0 +1,308 @@
+CONTEXT FOR: image_089.png
+============================================================
+
+--- BEFORE ---
+des imprimantes pour des départements entiers ou des rôles fonctionnels.
+Utilisateur: Ce champ permet d'assigner une imprimante par défaut à un utilisate
+ur individuel, surclassant potentiellement le réglage du groupe d'utilisateurs s
+i nécessaire.
+Application: Ce menu déroulant permet de spécifier l'application ERP dans laquel
+le l'imprimante par défaut sera utilisée. Par exemple, une application de compta
+bilité peut nécessiter l'utilisation d'une imprimante différente de celle d'une 
+application de gestion d'entrepôt.
+Programme: Si l'application sélectionnée contient plusieurs programmes ou module
+s, ce champ permet de spécifier celui auquel l'imprimante est assignée.
+Liste: Ce champ pourrait servir à désigner une liste ou un rapport spécifique au
+ sein du programme choisi qui nécessite l'impression.
+Désignation: Ici, vous pouvez donner une description ou un nom à la configuratio
+n de l'imprimante pour aider à l'identifier.
+Imprimante: Ce champ déroulant est utilisé pour sélectionner l'imprimante qui se
+ra désignée comme l'imprimante par défaut pour les paramètres choisis ci-dessus.
+Les boutons situés en bas de l'interface sont :
+Enregistrer: Cliquez ici pour sauvegarder toutes les configurations que vous ave
+z définies.
+Rétablir: Si vous avez apporté des modifications et que vous souhaitez revenir à
+ la dernière configuration sauvegardée, utilisez ce bouton.
+Ajouter: Pour créer une nouvelle configuration d'imprimante par défaut.
+Copier: Si vous souhaitez dupliquer une configuration existante pour ensuite la 
+modifier.
+Effacer: Utilisez ce bouton pour supprimer une configuration existante.
+Annuler: Annulez l'action en cours ou fermez la fenêtre sans enregistrer les mod
+ifications.
+
+Programme et sous-domaines programme « program » : 
+
+Note explicative du programme « program » :
+La fenêtre à l'écran est une vue d'ensemble des programmes et des sous-domaines 
+associés à un système ERP spécifique. Cette interface permet aux utilisateurs de
+ gérer et d'accéder à différents programmes fonctionnels du système ERP. Voici u
+ne explication des différents composants de cette interface :
+Appl. (Application) : Indique le code de l'application associée à chaque program
+me. C'est une sorte de catégorisation ou de regroupement de programmes sous une 
+fonctionnalité commune de l'ERP.
+Programme : Le nom technique du fichier programme, utilisé par le système pour e
+xécuter différentes tâches et processus.
+Désignation : La description ou le nom commun du programme qui indique sa foncti
+on ou son but, par exemple, "Commandes d'achat", "Impressions des commandes", "G
+estion des adresses", etc.
+Path : Le chemin d'accès au programme dans le système de fichiers ou la base de 
+données de l'ERP, indiquant où le programme est stocké ou comment y accéder.
+Client : Peut faire référence à une entité spécifique pour laquelle le programme
+ est configuré ou à un espace client au sein de l'ERP où le programme est utilis
+é.
+Groupe client : Un champ supplémentaire qui peut être utilisé pour définir des g
+roupes d'utilisateurs ou des permissions basées sur les clients ou les groupes d
+e clients.
+Accès 1, Accès 2, Accès 3, Salaires : Ces colonnes pourraient indiquer différent
+s niveaux d'accès ou des permissions spécifiques liées au programme. "Salaires" 
+peut indiquer si le programme est associé à la gestion des salaires ou des infor
+mations connexes.
+En bas de l'écran, il y a des contrôles d'accès supplémentaires :
+MS2000 Classique/MS2000 Consolidation/Les 2 : Des options pour sélectionner une 
+version ou un mode de l'ERP. Ceci est crucial pour les entreprises qui peuvent a
+voir différentes instances de l'ERP pour différents besoins ou phases de consoli
+dation.
+Programme d'impression, Excel, Taille de la police modifiable, Gestion de base, 
+Mot de passe nécessaire : Ce sont des contrôles d'accès qui pourraient activer o
+u restreindre l'utilisation de fonctionnalités spécifiques dans chaque programme
+.
+La section inférieure permet à l'utilisateur de "Modifier" la configuration d'un
+ programme sélectionné ou de "Rétablir" les paramètres par défaut, et d'autres o
+ptions comme "Copier", "Effacer" et "Annuler" pour gérer les configurations de p
+rogramme.
+Cette interface est donc essentielle pour la gestion centralisée des programmes 
+ERP. Elle offre une vue exhaustive de tous les programmes, y compris ceux qui pe
+uvent ne pas apparaître immédiatement dans l'arborescence des programmes ou les 
+menus utilisateurs. Cela assure que les administrateurs système et les utilisate
+urs avancés puissent accéder à tous les programmes nécessaires, même ceux qui so
+nt moins visibles, pour la maintenance quotidienne, les mises à jour ou la gesti
+on des flux de travail au sein de l'ERP.
+
+Gestion des paramètres programme « paraprog » :
+
+Note explicative programme « paraprog » :
+Ce que nous voyons ici semble être l'interface de gestion des paramètres de conf
+iguration d'un système ERP. Cet écran spécifique permet aux administrateurs de c
+onfigurer ou de modifier les paramètres qui influencent le comportement de diver
+s programmes ou applications au sein du système. Voici une explication des éléme
+nts de cette interface :
+Société/Exercice/Utilisateur/Application/Programme : Ces colonnes permettent de 
+spécifier à quel niveau le paramètre s'applique. Il peut être global (applicable
+ à toute l'organisation), spécifique à un exercice comptable, à un utilisateur, 
+à une application ou même à un programme spécifique.
+Numéro : Cela pourrait être un identifiant unique pour le paramètre, facilitant 
+sa référence et sa gestion.
+Commentaire : Fournit une description du paramètre ou de sa fonction, ce qui aid
+e à comprendre son objectif et son impact.
+Paramètre : La valeur actuelle du paramètre qui peut être modifiée. Elle peut êt
+re un simple interrupteur (comme vrai/faux), une date, une chaîne de caractères,
+ ou tout autre type de donnée nécessaire pour configurer une fonctionnalité spéc
+ifique du programme.
+La section inférieure de l'écran donne des options pour modifier les paramètres 
+:
+Modifier : Permet de changer la valeur d'un paramètre sélectionné.
+Rétablir : Annuler les changements et revenir à la dernière valeur enregistrée.
+Ajouter : Créer un nouveau paramètre de configuration.
+Copier : Dupliquer un paramètre existant, probablement pour l'adapter ensuite.
+Effacer : Supprimer un paramètre de la liste.
+Annuler : Quitter l'opération actuelle sans sauvegarder les changements.
+Les paramètres illustrés dans cette interface sont divers et pourraient inclure 
+:
+Des chemins de fichiers pour où stocker des documents numérisés.
+Des configurations pour des outils comme des stylos numériques.
+Des paramètres pour la gestion de l'inventaire.
+Des configurations pour le traitement des paiements ou des factures.
+Des ajustements pour les marges de tolérance dans le saisie de données financièr
+es.
+La gestion précise de ces paramètres est essentielle pour le fonctionnement quot
+idien de l'ERP, car elle affecte directement comment les utilisateurs interagiss
+ent avec le système, l'exactitude des données traitées, et l'efficacité générale
+ des opérations d'affaires. Chaque modification peut avoir des répercussions éte
+ndues, d'où l'importance d'une documentation et d'une compréhension claires de c
+haque paramètre.
+
+Numérotation num110 :
+
+Note explicative programme « num110 » :
+Cet écran du système ERP affiche la fonction de numérotation, qui est probableme
+nt utilisée pour gérer et suivre la séquence des numéros utilisés pour différent
+s fichiers ou documents au sein de l'organisation.
+Société : Ce champ indique la société ou l'entité au sein de l'organisation pour
+ laquelle les numéros sont suivis. Cela permet une gestion des numéros par entit
+é distincte, ce qui est courant dans les organisations avec plusieurs filiales o
+u divisions.
+Exercice : Ce champ fait référence à l'exercice financier ou période comptable. 
+Suivre les numéros par exercice peut aider à organiser les documents de manière 
+chronologique et à maintenir l'ordre dans la documentation fiscale et financière
+.
+Fichier : Ici, nous voyons le type de fichier ou de document concerné par la num
+érotation. Cela pourrait être des factures (comme indiqué par "f"), des rapports
+, ou d'autres types de documents importants.
+Dernier no : Le "Dernier numéro" affiché pour chaque fichier ou exercice indique
+ le dernier numéro attribué dans la séquence. Cela aide à identifier rapidement 
+quel sera le prochain numéro disponible ou à vérifier les numéros déjà utilisés.
+Les options en bas de l'écran, "Modifier", "Rétablir", "Ajouter", "Copier", "Eff
+acer" et "Annuler", sont des fonctions de gestion des données. Ces fonctions per
+mettent de manipuler les entrées de numérotation, telles que :
+Modifier : Changer le dernier numéro ou d'autres détails d'une entrée existante.
+Rétablir : Annuler les dernières modifications et revenir aux valeurs précédente
+s.
+Ajouter : Créer une nouvelle ligne de suivi pour un nouveau type de fichier ou u
+n nouvel exercice.
+Copier : Dupliquer les informations d'une entrée pour un usage rapide dans une n
+ouvelle entrée.
+Effacer : Supprimer une entrée de la liste.
+
+[IMAGE HERE: image_089.png]
+
+--- AFTER ---
+Annuler : Annuler la dernière action ou fermer la fenêtre sans enregistrer les c
+hangements.
+En haut, il y a des options pour trier les données par ordre "Ascendant" ou "Des
+cendant", ce qui peut être utile pour visualiser les séquences de numéros de man
+ière chronologique ou pour trouver le dernier numéro attribué le plus rapidement
+ possible.
+Cette fonction de numérotation est cruciale pour garantir la cohérence et l'ordr
+e dans la gestion des documents. Elle évite les doublons, facilite la traçabilit
+é et permet une récupération efficace des documents dans le système ERP.
+
+Tables Médiasoft ms900 :
+
+Note Explicatif programme « ms900 » : 
+Cette capture d'écran montre une interface du système ERP dédiée à la gestion de
+s tables de données, spécifiquement pour une application nommée "ad" qui est lié
+e à la gestion d'adresses. Voici un guide explicatif des éléments de cette inter
+face :
+Colonnes :
+Appl. (Application) : Indique à quelle application appartient la table, ici repr
+ésentée par "ad".
+Langue : La lettre « D » signifie la langue utilisée donc ici Deutsch
+N° : Numéro de séquence ou d'identification unique pour chaque entrée.
+Code : Un identifiant unique supplémentaire, souvent utilisé pour référencer un 
+élément spécifique dans le système.
+Intitulé 1 & Intitulé 2 : Noms ou descriptions associés à chaque code, qui pourr
+aient être des noms de villes ou de districts, comme illustré par les entrées "L
+ausanne", suivis de leur canton correspondant "VD" (probablement pour Vaud).
+Options de tri :
+Ascendant/Descendant : Permet de trier la liste selon l'ordre croissant ou décro
+issant, basé sur la colonne sélectionnée, probablement par défaut sur le "Dernie
+r numéro".
+Fonctions de gestion :
+Modifier : Permet d'éditer les détails de l'entrée sélectionnée dans la table.
+Rétablir : Annule les modifications récentes et revient aux données précédentes.
+Ajouter : Crée une nouvelle entrée dans la table.
+Copier : Duplique les informations de l'entrée sélectionnée pour un usage rapide
+ dans une nouvelle entrée.
+Effacer : Supprime l'entrée sélectionnée de la table.
+Annuler : Quitte l'opération en cours sans sauvegarder les changements.
+Section détaillée pour modification :
+Application/Type/Langue/Numéro/Code/Intitulé 1/Intitulé 2/Divers : Champs de sai
+sie correspondant aux colonnes de la table, utilisés pour saisir ou modifier des
+ informations pour une entrée spécifique.
+Niveau d'autorisation : Définit qui peut voir ou modifier cette entrée dans la t
+able, selon les niveaux d'accès définis dans le système ERP.
+Ce guide explicatif est destiné à aider les utilisateurs à comprendre comment in
+teragir avec cette interface de gestion de tables, comment les données sont orga
+nisées et quelles actions ils peuvent effectuer pour gérer efficacement ces info
+rmations au sein du système ERP.
+
+Gestion des messages ms102 :
+
+Note explicative du programme « ms102 » :
+Assistant ERP MS2000
+La fenêtre présentée est celle du système ERP dédiée à la gestion des messages s
+ystème, spécifiquement pour l'application "ad". Cette interface est conçue pour 
+permettre aux administrateurs de personnaliser les messages d'erreur ou d'inform
+ation qui seront affichés aux utilisateurs dans différentes situations. Voici un
+ guide explicatif des composants de cette interface :
+Colonnes :
+Appl. (Application) : Identifie l'application associée au message, permettant de
+ cibler les messages par application spécifique.
+L (Langue) : Indique la langue du message. "F" peut représenter le français, "D"
+ l'allemand, etc.
+Numéro : Le numéro unique assigné au message, qui pourrait être utilisé pour ide
+ntifier rapidement le message dans le système.
+Message court : Une version abrégée du message qui sera peut-être affichée lorsq
+ue l'espace est limité ou dans des logs.
+Message long : La version complète du message, qui donne une explication plus dé
+taillée ou fournit des informations supplémentaires à l'utilisateur.
+Options de tri :
+Ascendant/Descendant : Ces boutons radio permettent de trier les messages soit e
+n ordre ascendant ou descendant selon le numéro du message, aidant à la navigati
+on et à la recherche dans la liste.
+Fonctions de gestion :
+Modifier : Permet d'éditer le message sélectionné.
+Rétablir : Annule les dernières modifications et revient à la version antérieure
+ du message.
+Ajouter : Crée un nouveau message dans le système.
+Copier : Duplique les informations du message sélectionné pour l'utiliser comme 
+base pour un nouveau message.
+Effacer : Supprime le message sélectionné de la liste.
+Annuler : Quitte l'opération en cours sans sauvegarder les changements.
+Section détaillée pour la modification :
+Application/Code langue/Numéro/Message court/Message long : Ces champs de saisie
+ permettent de spécifier ou de modifier les détails du message sélectionné. Les 
+champs sont pré-remplis avec les données du message sélectionné, mais peuvent êt
+re modifiés selon les besoins.
+Cette interface est essentielle pour maintenir une communication claire et cohér
+ente avec les utilisateurs du système ERP. Les messages bien formulés peuvent ai
+der à la compréhension.
+Médiasoft notes – Règles programme « msnotes » :
+
+
+Note explicative du programme « msnote » :
+Cette interface semble être un gestionnaire de règles ou de notes pour un systèm
+e ERP, conçu pour permettre aux utilisateurs de définir ou de modifier des règle
+s qui peuvent être appliquées à divers processus au sein de l'entreprise.
+Volet de navigation (à gauche) :
+Représente une arborescence de "Règles" ou d'éléments configurables dans le syst
+ème.
+Les utilisateurs peuvent sélectionner une règle spécifique pour la consulter ou 
+la modifier.
+Les icônes "+" et "-" servent à ajouter ou supprimer des éléments de cette arbor
+escence.
+Le bouton de rafraîchissement sert à actualiser la liste, et les flèches permett
+ent de naviguer entre les éléments ou niveaux.
+Section d'information (au centre) :
+Affiche les détails de l'élément sélectionné dans le volet de navigation.
+Le champ "Nom de la règle" indique l'intitulé de la règle ou de la note actuelle
+ment sélectionnée.
+Les champs "ID", "ParentID", "Level", "Order", et "giNotesID" pourraient conteni
+r des métadonnées décrivant l'emplacement de la règle dans la hiérarchie, son or
+dre d'affichage, et des identifiants uniques pour la gestion interne.
+Zone de travail (à droite) :
+Les flèches directionnelles permettent probablement de déplacer des éléments ou 
+des règles à différents niveaux ou entre différents groupes.
+L'espace vide serait là où les informations supplémentaires ou le contenu de la 
+règle sélectionnée peuvent être visualisés ou édités.
+Boutons de fonction en bas :
+Ajouter : Créer une nouvelle règle ou un nouvel élément.
+Modifier : Apporter des modifications à l'élément actuellement sélectionné.
+Enregistrer : Sauvegarder les changements apportés.
+Copier : Dupliquer l'élément sélectionné.
+Supprimer : Éliminer l'élément de la base de données.
+Annuler : Annuler l'action en cours ou les modifications non sauvegardées.
+Sélecteur "Exercice 2024" :
+Peut être utilisé pour filtrer les règles ou les notes selon l'exercice fiscal o
+u l'année.
+Cette interface est probablement utilisée par les administrateurs système pour c
+onfigurer des règles qui influencent le fonctionnement de certaines applications
+ ou modules de l'ERP. Par exemple, une règle peut déterminer comment les données
+ sont validées, comment les transactions sont traitées, ou comment les notificat
+ions sont envoyées aux utilisateurs.
+En gérant ces règles, les administrateurs peuvent s'assurer que les processus mé
+tier sont exécutés selon les normes établies, et ils peuvent les ajuster au beso
+in pour refléter les changements dans les politiques internes ou les exigences r
+églementaires. C'est un élément essentiel pour maintenir l'intégrité des données
+ et l'efficacité opérationnelle dans l'ERP.
+
+
+Gestion des labels ba101 :
+
+Note explicative du programme « ba101 » :
+Cette interface est celle de la gestion des labels (étiquettes) dans un système 
+ERP. Les labels représentent généralement les textes descriptifs utilisés dans l
+'interface utilisateur de l'ERP, tels que les noms de champs, les instructions, 
+ou toute autre étiquette qui aide à guider les utilisateurs dans leurs interacti
+ons avec le système.
+Colonnes :

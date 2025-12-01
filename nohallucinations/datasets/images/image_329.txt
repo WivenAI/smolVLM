@@ -1,0 +1,308 @@
+CONTEXT FOR: image_329.png
+============================================================
+
+--- BEFORE ---
+
+
+Possibilité de changer de collectif
+
+
+Boutons de fonctions : 
+1         2   3      4     5      6          7     8         9
+
+
+1 - Sortie du programme
+2 - Gestion des post-it
+3 - Visualiser l'adresse
+4 - Transfert des débiteurs
+5 - Gestion des documents associés
+6 - Exportation excel
+7 - Recherche multi-sociétés
+8 - Epuration des clients
+9 - Gestion des tâches
+
+
+
+Champs :
+
+§Numéro – Avec la fonction Ajouter, si ce champ est vide, MS 2000 attribue un nu
+méro automatiquement (dernier numéro + 1) ou être identique au numéro d’adresse 
+permettant d’avoir le même numéro dans toute les sociétés gérées dans MS2000.
+        Ce numéro est unique, non modifiable, et peut être utilisé comme critère
+ d’accès et de sélection.
+§Intitulé de recherche – MS 2000 propose par défaut le même que celui de l’adres
+se, mais peut être modifié.
+        Cet intitulé doit être unique, il est modifiable, et peut être utilisé c
+omme critère d’accès et de sélection.
+§Numéro d’adresse – Avec un double clic sur ce champ le programme ad100 de gesti
+on des adresses s’ouvrira automatiquement.
+§Monnaie – Traitement des données comptables du client. Les tables monnaies sont
+ gérées avec le programme co901. Le compte collectif attribué à ce client doit ê
+tre dans la même monnaie.
+§Condition de paiement – Condition de paiement par défaut attribuée à ce client.
+ Elle sera proposée automatiquement dans les programmes traitant cette informati
+on, mais pourra être modifiée pour une       pièce spécifique. Les tables condit
+ions de paiement sont gérées avec le programme db901.
+§T V A – Taux de TVA par défaut attribuée à ce client. Elle sera proposée automa
+tiquement dans les programmes traitant cette information, mais pourra être modif
+iée pour une pièce spécifique. La table       TVA est gérée avec le programme co
+902.
+§Taxe incluse – Les prix facturés à ce client sont TTC et le programme doit extr
+aire la TVA.
+§Organisation internationale. – Paramètre définissant que ce client est une orga
+nisation internationale. Il est utilisé pour les calculs de la TVA dans les prog
+rammes de facturation MS 2000, ainsi que dans  le programme du décompte TVA.
+§Collectif – Compte collectif par défaut attribué à ce client. La monnaie du com
+pte collectif doit être identique à celle du client. Sinon, créer un compte coll
+ectif dans la même monnaie à l’aide du  programme cg100.
+§Groupe client – Sélectionner le groupe client (programme db902) qui sera attrib
+ué à ce client. Pour ce groupe client il sera possible d’attribuer certaines rem
+ises (programme ar950) qui seront traitées  dans le programme facturation (fa100
+-fv100). C’est également un critère de sélection dans certains programmes d’édit
+ion.
+§Succursale – Indiquer à quelle succursale le client est rattaché. Permet de gér
+er les en-têtes des documents factures et rappels/relevés de compte. 
+§Groupe statistique – Sélectionner éventuellement un groupe statistique. (Gérer 
+dans programme db900) 
+§Regroupement  – Indiquer éventuellement le compte de regroupement attribué à ce
+ client. Sinon, créer un compte de regroupement à l’aide du programme db100.
+§Echéancier  PO – Sélectionner éventuellement un échéancier spécifique. (Gérer d
+ans programme db903)
+§Echéancier contentieux – Sélectionner éventuellement un échéancier spécifique. 
+(Gérer dans programme db903) qui sera traiter dans le programme de gestion du co
+ntentieux (db302).
+§Tarif – Sélectionner le tarif de prix du catalogue article (programme ar100) qu
+i sera attribué à ce client dans le programme facturation (fa100-fv100).
+§BVR – Décocher si pas d’impression de BVR dans l’édition des factures.
+§Exemplaire(s) – Nombre d’exemplaire(s) dans l’édition des factures, par défaut 
+1.
+§Factures PDF
+§Factures groupées
+§Limite de crédit – Saisir le montant maximum de crédit accordé à ce client en m
+illiers. Un avertissement signalera le dépassement, dès que celui-ci sera attein
+t.
+§Délai de paiement moyen
+§Remise systématique % – Saisir le pourcentage de remise qui sera attribué à ce 
+client dans le programme facturation (fa100-fv100) ou les autres programmes de f
+acturation spécifiques aux branches d’activités par exemple facturation des cont
+rats de maintenance.
+§Représentant – Sélectionner éventuellement un représentant (programme rp100) qu
+i sera attribué à ce client et traité dans le programme facturation (fa100-fv100
+).
+§Contact email – Saisir l’adresse E-Mail pour le traitement (PDF) de l’envoi des
+ factures et rappels par E-Mail.
+§Répertoire facture(s) PDF – Indiquer le répertoire dans lequel seront déposées 
+les factures PDF afin de pouvoir les transférer sur le portail WEB du client.
+§Adresse de facturation – Saisir l’adresse de facturation si elle différente de 
+l’adresse du client.
+§Relevé – Cette option permet d’éditer systématiquement un relevé de compte, que
+l que soit le niveau des échéances pour les factures impayées.
+§Rappel – Cette option permet d’éditer des rappels, avec indexation du texte de 
+rappel en fonction du niveau des échéances pour les factures impayées. Par exemp
+le, si un des postes ouverts à été rappelé déjà deux fois, le texte sélectionné 
+sera de niveau trois.
+§Contentieux+rappel – Cette option n’est plus traitée.
+§Rappel bloqué – Cette option n’est plus traitée.
+§Contentieux bloqué – Cette option n’est plus traitée.
+§Edition des rappels par chantier – Cette option permet d’imprimer un rappel pou
+r chaque chantier de ce client.
+§Ne sera pas reporté – Cette option permet de ne pas reporter ce client dans le 
+futur exercice comptable. Il restera néanmoins archivé avec toutes ces données d
+ans les exercices concernés.
+§Comptabilisation bloquée  – Cette option signalera par un avertissement que l’o
+n ne peut plus comptabiliser sur ce compte.
+§Est un compte de regroupement  – Cette option est liée au champ Regroupement dé
+crit ci-dessus.
+
+
+Note explicative de l’onglet « Liste » de la gestion des débiteurs programme « d
+b100 » 
+Le programme db100, dédié à la gestion des débiteurs, comporte un onglet "Compte
+" très utile pour le suivi détaillé des informations spécifiques à chaque débite
+ur. Voici une explication détaillée de ses composants et de son fonctionnement :
+Détails du Compte :
+Numéro : Le numéro identifiant unique du débiteur dans le système.
+Intitulé de recherche : Un titre ou une référence rapide utilisée pour identifie
+r le débiteur lors des recherches.
+Numéro d'adresse : Numéro spécifique attribué à l'adresse du débiteur.
+Monnaie : La monnaie dans laquelle les transactions du débiteur sont gérées.
+Conditions de paiement : Conditions sous lesquelles les paiements sont acceptés 
+de ce débiteur.
+T.V.A. : Informations sur la taxe sur la valeur ajoutée applicable, y compris si
+ la taxe est incluse, et autres spécificités relatives à l'organisation internat
+ionale.
+Gestion de Groupe et Collectif :
+Collectif : Catégorie de collectif à laquelle le débiteur appartient, avec une o
+ption pour changer de collectif si nécessaire.
+Groupe clients : Groupe auquel le débiteur est associé pour faciliter la gestion
+ segmentée.
+Sucursale : Branche ou division de l'entreprise à laquelle le débiteur est assoc
+ié.
+Groupe statistique : Groupe pour lequel des données statistiques sont collectées
+.
+Détails de Facturation :
+Adresse de facturation : Où les factures doivent être envoyées.
+Tarif : Identifie le tarif spécifique appliqué au débiteur.
+BVR : Numéro de référence pour le bulletin de versement (utilisé en Suisse).
+Factures PDF : Si les factures doivent être générées en format PDF.
+Factures groupées : Indique si les factures pour ce débiteur doivent être groupé
+es.
+Gestion des Risques et Crédits :
+Limite de crédit : Montant maximal de crédit autorisé pour ce débiteur.
+Options Additionnelles :
+Édition des appels par chantier : Détermine si les appels de paiement doivent êt
+re spécifiques à chaque chantier.
+
+[IMAGE HERE: image_329.png]
+
+--- AFTER ---
+Est un compte de regroupement : Indique si le compte est utilisé pour regrouper 
+plusieurs débiteurs sous une seule entité pour la facturation ou les rapports.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Onglet "Rappels"
+Les informations de traitement des rappels du client sont à disposition dans cet
+te vue :
+
+
+§Référence rappels  – Zone de texte spécial qui sera imprimée sur les rappels de
+ ce client.
+§Nombre de  rappels maximum  – Zones permettant de gérer un nombre de rappels sp
+écifiques pour certains clients.
+§Code pour impression rappels  – Zones permettant de gérer des textes de rappels
+ et d’obtenir une présentation des rappels spécifiques pour certains clients (pr
+ogramme db915).
+§Joindre les factures au rappel - (Uniquement valable si traitement PDF des fact
+ures).
+En contentieux – Cocher si l’on désire conserver l’historique des rappels pour l
+es clients qui sont ou ont été gérer dans le programme de gestion du contentieux
+, (db302).
+
+
+
+
+
+Paramètres des rappels
+
+Paramètres de traitement spécifique des rappels pour le client (traité dans db91
+5)
+
+Valable si édition des factures en PDF
+
+
+
+Sélection "Contentieux"
+
+Cocher si l’on désire conserver l’historique et les documents des rappels pour l
+es clients qui sont ou ont été gérer dans le programme de gestion du contentieux
+ (db302)
+
+
+
+
+
+
+Note explicative de l’onglet « rappel » de la gestion des débiteurs programme « 
+db100 » :
+L'onglet "Rappel" du programme db100, qui fait partie du système de gestion des 
+débiteurs, permet de configurer et de gérer les rappels de paiement pour les cli
+ents. Voici une description détaillée de ses composants principaux :
+Paramètres des Rappels :
+Référence rappels : Identifiant utilisé pour les rappels.
+Nombre de rappel(s) maximum : Le nombre maximum de rappels qui peuvent être envo
+yés à un débiteur.
+Code pour impression rappel : Codes utilisés pour personnaliser les rappels impr
+imés selon le type de rappel (1 à 7, par exemple).
+Titre rappel : Le titre donné au rappel, souvent utilisé pour attirer l'attentio
+n du débiteur.
+Entête rappel : Texte placé en haut de chaque rappel, généralement utilisé pour 
+introduire la raison du rappel.
+Salutations rappel : Formulation de clôture du rappel, pour maintenir la polites
+se et la professionnalité.
+Options de Rappel :
+Joindre les factures au rappel : Permet d'attacher les copies des factures impay
+ées aux rappels pour référence du débiteur.
+Valable si édition des factures en PDF : Indique si cette option doit être utili
+sée uniquement lorsque les factures sont éditées en format PDF.
+Gestion des Contenus Litigieux :
+En contentieux : Cette option, lorsqu'elle est cochée, marque le rappel comme ét
+ant lié à un contentieux, ce qui peut affecter la manière dont le rappel est tra
+ité et suivi.
+Sélection 'Contentieux' : Permet de choisir des rappels spécifiquement pour les 
+situations de contentieux, facilitant la gestion des cas litigieux.
+
+
+Onglet "Historique"
+Cet onglet permet de visualiser l'historique des écritures comptabilisées sur ce
+ débiteur :
+
+
+
+
+
+
+
+Clic sur bouton droit
+Ouvre une liste de fonctionnalités – Voir ci-après :
+
+
+
+
+
+Filtre sur date-valeur
+Saisir une date de départ pour afficher les lignes d’écritures désirées
+
+
+
+
+
+
+
+
+Note explicative de l’onglet « historique » de la gestion des débiteurs programm
+e « db100 » : 
+L'onglet "Historique" du programme db100, qui fait partie de la gestion des débi
+teurs, permet de visualiser et de suivre l'historique des transactions financièr
+es pour chaque compte de débiteur. Voici une explication de ses principales fonc
+tionnalités :
+Tableau des Transactions :
+N° écriture : Numéro d'identification de l'écriture comptable.
+Lot N° de P.O. : Numéro du lot de la pièce d'ordre (P.O.), associé à l'écriture.
+Date Valeur : La date à laquelle la transaction prend effet financièrement.
+N° de pièce : Numéro de la pièce comptable.
+Date pièce : Date d'émission de la pièce comptable.
+Libellé de l'écriture : Description ou libellé associé à l'écriture comptable.
+Montant en monnaie : Montant de la transaction dans la monnaie de base.
+Montant en contre-valeur : Montant de la transaction dans une autre monnaie, si 
+applicable.
+Montant encaissement : Montant effectivement encaissé, si différent du montant f
+acturé.
+Solde : Solde actuel du compte après cette écriture.
+Fonctionnalités de Filtrage et de Recherche :
+Filtre sur date-valeur : Permet de filtrer les écritures basées sur la date à la
+quelle elles ont pris effet, facilitant la recherche de transactions spécifiques
+.

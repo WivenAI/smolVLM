@@ -1,0 +1,308 @@
+CONTEXT FOR: image_135.png
+============================================================
+
+--- BEFORE ---
+m et son code de référence entre parenthèses. Ici, vous pouvez attribuer ou modi
+fier le périphérique de saisie numérique que chaque employé est autorisé à utili
+ser dans sa société spécifique.
+Est un contremaître ou assimilé : Cette case à cocher peut être utilisée pour in
+diquer si un employé occupe une position de supervision, comme un contremaître, 
+ce qui peut lui donner des droits d'accès ou des fonctionnalités spécifiques dan
+s l'utilisation du Digital Pen.
+Chacun de ces composants joue un rôle clé dans la personnalisation de l'expérien
+ce utilisateur du système ERP pour les employés, en garantissant que les bons ou
+tils et permissions sont alloués conformément à leur rôle et leur fonction au se
+in de l'entreprise.
+
+
+Onglet « Droits rub. » :
+
+
+Note explicative de l’onglet « Droits Rub » du programme « sd100 » 
+Dans cet onglet du programme sd100, nous avons une vue détaillée des différents 
+types de paiements et déductions qui peuvent être configurés pour un employé. Ch
+aque ligne représente un élément spécifique de la rémunération ou des déductions
+ :
+Les éléments numérotés de 1 à 24 sont des codes qui représentent différents type
+s de paiements ou déductions, tels que des avantages en nature, des primes ou de
+s contributions de sécurité sociale.
+Les cases à cocher permettent d'activer ou de désactiver ces éléments pour l'emp
+loyé en question.
+Le champ "13ème salaire" avec une case à cocher indique si l'employé reçoit un s
+alaire annuel supplémentaire, souvent appelé le 13ème mois, qui est un paiement 
+additionnel commun dans certains pays ou régions.
+À droite, les numéros correspondent probablement à des références internes ou à 
+des codes spécifiques du système ERP pour des paiements uniques ou des déduction
+s qui sont appliquées spécifiquement à l'employé. Ces codes permettent d'assurer
+ que chaque élément est correctement identifié et traité dans le cadre de la pai
+e de l'employé.
+L'utilisation de ces codes et la possibilité de les cocher permettent une person
+nalisation précise des conditions salariales de chaque employé et garantissent q
+ue le processus de paie reflète avec précision les termes de leur contrat d'empl
+oi et les pratiques de rémunération de l'entreprise.
+
+
+Onglet « Compta » :
+
+Note explicative de l’onglet « Compta » du programme « sd100 » :
+L'onglet du programme sd100 que tu observes dans le système ERP est dédié à la g
+estion des informations relatives aux employés. Ce programme semble être structu
+ré en plusieurs sections, chacune étant destinée à une catégorie spécifique de d
+onnées. Voici une explication détaillée :
+Clé: Ici, tu peux entrer une clé spécifique pour rechercher ou filtrer les donné
+es relatives à un employé.
+Compte(s) C.A. et C.G.: Ces champs sont probablement utilisés pour entrer les co
+mptes de comptabilité analytique (C.A.) et de comptabilité générale (C.G.) liés 
+à l'employé.
+Contrôle SM exp: Ce champ peut être lié à l'expiration des contrôles de sécurité
+ sociale ou à un aspect similaire de la gestion RH.
+Suffixe C.A. et C.G.: Les suffixes pour les comptes de comptabilité analytique e
+t générale peuvent être utilisés pour des fins de segmentation ou de classificat
+ion plus fine dans la comptabilité.
+%: Ces champs pourraient être utilisés pour noter les pourcentages applicables à
+ certaines rubriques de paie ou de cotisations pour cet employé.
+Genr(e)(s) de frais: Ici, tu peux lister les différents types de frais ou d'inde
+mnités attribués à l'employé.
+Compte(s) C.G.: À nouveau, des champs pour les détails de comptabilité générale,
+ probablement pour lier l'employé à des éléments spécifiques dans la comptabilit
+é.
+Les boutons au bas de l'interface sont standard pour de nombreuses applications 
+de gestion de données :
+Modifier: Permet de changer les informations existantes.
+Rétablir: Annule les dernières modifications non sauvegardées.
+Ajouter: Crée une nouvelle entrée pour un employé.
+Copier: Duplique les informations d'un employé existant.
+Effacer: Supprime les informations de l'employé de la base
+
+
+
+
+
+Onglet « Paiement » :
+
+Note explicative de l’onglet « Paiement » du programme « sd100 » :
+L’onglet « Paiement » dans le programme sd100 est une interface qui permet la ge
+stion des modalités de paiement pour les employés au sein d'un système ERP. Voic
+i une description détaillée de cet onglet, tel que tu pourrais l'expliquer dans 
+un guide :
+Mode de paiement : Il s'agit d'une option qui permet de choisir entre un paiemen
+t manuel et un paiement automatique. Dans un paiement automatique, les détails b
+ancaires sont utilisés pour effectuer un virement direct, tandis que le paiement
+ manuel pourrait impliquer la remise d’un chèque ou d’un autre moyen de paiement
+ physique.
+Informations bancaires :
+Compte : Numéro de compte de l'employé sur lequel le salaire sera versé.
+Réf. BVR/IBAN : Référence pour les versements bancaires ou le numéro IBAN intern
+ational pour faciliter les paiements transfrontaliers.
+Nom de la banque : Nom de l'institution bancaire où est tenu le compte.
+Localité de la banque : La ville ou la région où se trouve la banque.
+SWIFT/BIC : Code identifiant chaque banque de manière unique à l'échelle mondial
+e, nécessaire pour les virements internationaux.
+Bénéficiaire : Nom du bénéficiaire du paiement, généralement l'employé.
+Communication : Des détails supplémentaires relatifs au paiement qui pourraient 
+être utilisés dans la transaction bancaire pour l’identification.
+Détails du paiement :
+Montant mensuel / exceptionnel : Montants prédéfinis pour le paiement régulier o
+u pour un paiement non récurrent.
+Monnaie : Devise dans laquelle le paiement est effectué.
+En bas de l'onglet, des boutons permettent de modifier, ajouter, copier ou effac
+er les informations saisies.
+Cette interface assure que chaque employé reçoit son paiement dans le respect de
+ ses préférences et conformément aux exigences bancaires et légales. La précisio
+n et la facilité d’utilisation de cette interface sont essentielles pour la gest
+ion efficace des paiements au sein de l’organisation.
+Pour une description plus approfondie et spécifique au contexte de votre système
+ ERP, je pourrais consulter le document d'aide détaillé que vous m'avez fourni, 
+ce qui me permettrait de donner une explication encore plus précise et adaptée à
+ vos besoins.
+Haut du formulaire
+
+
+Onglet « Impôts » : 
+
+Note explicative de l’onglet « Impôts » du programme « sd100 » :
+
+L'onglet "Impôts" du programme sd100 dans MS est une composante clé pour la gest
+ion des informations fiscales des employés au sein de l'ERP. Voici les éléments 
+qui pourraient y figurer, structurés de manière à fournir un aperçu clair et fon
+ctionnel de cette section :
+Champs pour informations fiscales personnelles : Ces champs permettent de saisir
+ et de mettre à jour les informations fiscales spécifiques à chaque employé, com
+me le numéro d'identification fiscale.
+Taux d’imposition : Un champ où les utilisateurs inscrivent le pourcentage du re
+venu de l'employé qui sera prélevé pour les impôts. Cela peut varier selon le st
+atut fiscal de l'employé ou la législation locale.
+Crédits et déductions fiscales : Des zones de saisie pour enregistrer toutes les
+ déductions fiscales éligibles qui réduisent le revenu imposable de l'employé.
+Calcul des retenues à la source : Une fonctionnalité permettant de calculer auto
+matiquement le montant d'argent à retenir du salaire de l'employé pour couvrir l
+es obligations fiscales.
+Rapports fiscaux : Des outils intégrés pour générer les rapports fiscaux requis 
+par les autorités fiscales, qui pourraient inclure des déclarations annuelles, d
+es récapitulatifs de retenue à la source, et d'autres formulaires légaux.
+Paramètres régionaux : Des réglages pour ajuster le système aux spécificités fis
+cales d'une région ou d'un pays, comme le système d'imposition progressif, les c
+rédits d'impôt locaux, etc.
+Historique des déclarations fiscales : Un registre qui conserve toutes les décla
+rations fiscales précédentes de l'employé, fournissant un historique complet pou
+r référence et audit.
+Intégration avec des services fiscaux externes : Des connexions potentielles ave
+c des services gouvernementaux ou des consultants fiscaux externes pour facilite
+r la transmission électronique des déclarations fiscales et des paiements.
+L’onglet est conçu pour centraliser et simplifier la gestion fiscale des ressour
+ces humaines, garantissant ainsi que l'entreprise respecte les réglementations f
+iscales en vigueur tout en minimisant les erreurs manuelles et en améliorant l'e
+
+[IMAGE HERE: image_135.png]
+
+--- AFTER ---
+fficacité administrative. Pour l'utilisateur final, cette interface doit offrir 
+une saisie de données intuitive et sécurisée, ainsi que des options pour visuali
+ser et éditer les informations fiscales des employés à tout moment.
+Haut du formulaire
+
+Onglet « Certificat » :
+
+Note explicative de l’onglet « Certificat » du programme « sd100 » :
+
+L'onglet en question du programme sd100 semble être destiné à la gestion des dif
+férentes prestations salariales accessoires pour les employés. Voici comment il 
+est structuré et les fonctionnalités qu'il offre :
+Certificats de Salaire: C'est probablement une zone où l'on peut cocher si des c
+ertificats de salaire ou des attestations de rente doivent être produits pour l'
+employé.
+Autres Prestations Salariales: Cette section permettrait de saisir et de gérer d
+'autres formes de rémunération ou d'avantages non évalués comme des remboursemen
+ts de frais ou des avantages en nature.
+Règlement des Frais: Ici, on peut spécifier si les frais sont réglementés selon 
+des critères définis par l'entreprise ou s'il existe un accord spécifique pour c
+et employé.
+Conditions du Ch. marg. 52 respectées: Ces cases à cocher indiquent probablement
+ si les conditions du chiffre marginal 52 sont respectées selon l'entreprise ou 
+selon des cas spécifiques (comme le cas 13.1.1). Cela se réfère probablement à d
+es réglementations ou à des politiques internes spécifiques.
+Participation de Collaborateurs: Il semblerait que cet onglet permette également
+ de déclarer si l'employé bénéficie de participations sans revenu imposable selo
+n les politiques de l'entreprise.
+Options et Motifs de Participation: Cette section permet de cocher diverses opti
+ons liées aux droits des employés sur des actions, des options, ou d'autres form
+es de participation au capital ou aux bénéfices de l'entreprise.
+Diverses Observations et Remarques: Un espace pour saisir des observations spéci
+fiques liées à la situation salariale de l'employé.
+Cet onglet est donc un outil clé dans la gestion des composantes salariales qui 
+ne sont pas directement liées au salaire brut, mais qui font partie de la rémuné
+ration globale. Il assure que tous les éléments de rémunération soient correctem
+ent suivis et gérés conformément aux politiques de l'entreprise et aux règlement
+ations en vigueur. Pour une utilisation optimale de cet onglet, il est important
+ de bien comprendre les réglementations locales et les pratiques internes de l'e
+ntreprise en matière de rémunération et de prestations salariales.
+Haut du formulaire
+
+
+
+Onglet « ESS » :
+
+
+Note explicative de l’onglet « ESS » du programme « sd100 » :
+L’onglet « Formation » dans le programme sd100 de MS est conçu pour gérer les in
+formations relatives à la formation professionnelle et la position professionnel
+le des employés. Il est composé comme suit :
+Formation : Un champ déroulant où l’on sélectionne le niveau de formation ou le 
+type d'école fréquentée par l’employé. Cela peut inclure des options telles que 
+« Formation professionnelle supérieure » ou « Écoles supérieures », par exemple.
+Position professionnelle : Un champ où l’on peut saisir le titre de poste actuel
+ de l'employé ou sa description de fonction, telle que « Responsable de l'exécut
+ion des travaux ».
+Cet onglet permet donc d’enregistrer et de maintenir à jour les qualifications a
+cadémiques et les rôles professionnels des employés au sein de l'organisation. C
+es informations sont essentielles pour diverses raisons, y compris la conformité
+ réglementaire, la planification de la carrière, et la gestion des compétences a
+u sein de l'entreprise.
+Pour obtenir une explication détaillée sur la gestion et la saisie des informati
+ons dans cet onglet, il est conseillé de se référer à la documentation fournie d
+ans le fichier d’aide MS.
+Haut du formulaire
+
+
+
+Onglet « Famille »
+
+
+Note explicative de l’onglet « Famille » du programme « sd100 » :
+L'onglet « Famille » dans le programme sd100 de MS est structuré pour recueillir
+ des informations sur la famille de l'employé. Il se compose de plusieurs sectio
+ns :
+Conjoint et Enfant : Ici, on peut entrer les détails du conjoint et des enfants,
+ si cela est pertinent pour le dossier de l'employé.
+Nom et Prénom : Ces champs sont destinés aux informations sur le nom de famille 
+et le prénom du conjoint ou des enfants.
+Adresse : Il existe une option pour indiquer si le conjoint partage la même adre
+sse que l'employé ou une adresse différente.
+Détails supplémentaires : Cela inclut le numéro de sécurité sociale, la date de 
+naissance, et le sexe, pour fournir une documentation complète sur le conjoint p
+our des raisons administratives ou de conformité.
+Activité et Revenus : Ces champs permettent de préciser si le conjoint travaille
+, le type d'activité exercée, ainsi que les revenus associés, s'ils sont pertine
+nts pour l'employé.
+Permis : Cela concerne le type de permis de séjour ou de travail du conjoint si 
+cela est nécessaire.
+Rente : Si le conjoint reçoit une pension ou une rente, ces informations peuvent
+ être consignées ici.
+Commentaire : Une section est disponible pour ajouter toute remarque ou informat
+ion complémentaire concernant le conjoint ou les enfants.
+Ce segment du programme sd100 est vital pour la gestion des informations familia
+les des employés, ce qui peut influencer les déductions fiscales, les avantages 
+sociaux et d'autres éléments de la gestion des ressources humaines. L'exactitude
+ et la mise à jour de ces informations sont essentielles pour le suivi des avant
+ages des employés et pour répondre aux exigences réglementaires ou de reporting​
+​.
+
+Onglet « Formation » :
+
+Note explicative de l’onglet « Formation » du programme « sd100 » :
+L'onglet « Famille » dans le programme sd100 de MS est structuré pour recueillir
+ des informations sur la famille de l'employé. Il se compose de plusieurs sectio
+ns :
+Conjoint et Enfant : Ici, on peut entrer les détails du conjoint et des enfants,
+ si cela est pertinent pour le dossier de l'employé.
+Nom et Prénom : Ces champs sont destinés aux informations sur le nom de famille 
+et le prénom du conjoint ou des enfants.
+Adresse : Il existe une option pour indiquer si le conjoint partage la même adre
+sse que l'employé ou une adresse différente.
+Détails supplémentaires : Cela inclut le numéro de sécurité sociale, la date de 
+naissance, et le sexe, pour fournir une documentation complète sur le conjoint p
+our des raisons administratives ou de conformité.
+Activité et Revenus : Ces champs permettent de préciser si le conjoint travaille
+, le type d'activité exercée, ainsi que les revenus associés, s'ils sont pertine
+nts pour l'employé.
+Permis : Cela concerne le type de permis de séjour ou de travail du conjoint si 
+cela est nécessaire.
+Rente : Si le conjoint reçoit une pension ou une rente, ces informations peuvent
+ être consignées ici.
+Commentaire : Une section est disponible pour ajouter toute remarque ou informat
+ion complémentaire concernant le conjoint ou les enfants.
+Ce segment du programme sd100 est vital pour la gestion des informations familia
+les des employés, ce qui peut influencer les déductions fiscales, les avantages 
+sociaux et d'autres éléments de la gestion des ressources humaines. L'exactitude
+ et la mise à jour de ces informations sont essentielles pour le suivi des avant
+ages des employés et pour répondre aux exigences réglementaires ou de reporting​
+​.
+
+
+
+
+
+
+
+
+
+
+Saisie d'un nouvel employé sd100 :
+
+Attention : Tous les employés, peu importe leur employeur, sont exclusivement cr
+éés dans la Société 1 (Chèque-Emploi), et ensuite copiés vers leur employeur res
+pectif.
+
+Pour la création d'un employé et la gestion du fichier du personnel, se référer 
+à la section Swissdec
+

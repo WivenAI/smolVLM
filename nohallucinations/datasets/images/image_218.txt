@@ -1,0 +1,308 @@
+CONTEXT FOR: image_218.png
+============================================================
+
+--- BEFORE ---
+ant aux utilisateurs de définir précisément comment et quelles données doivent ê
+tre présentées dans les rapports, ce qui est essentiel pour créer des documents 
+précis et utiles pour la prise de décision et la conformité réglementaire.
+
+Gestion des arrêts de travail sd700 : 
+
+Note explicative de la gestion des arrêts de travail programme « sd700 » : 
+Le programme "sd700" est conçu pour gérer les arrêts de travail des employés dan
+s l'ERP. Il permet de suivre et de gérer les dossiers d'absence liés à des malad
+ies, des accidents ou autres motifs d'arrêt de travail. Voici comment il pourrai
+t être structuré :
+Saisie et Gestion des Arrêts de Travail :
+Il y a des sections pour entrer le nom de l'employé, le numéro de dossier, les m
+otifs d'arrêt de travail, ainsi que les dates de début et de fin d'incapacité.
+Suivi des Déclarations d'Assurance :
+Le programme permet d'entrer les informations relatives aux déclarations envoyée
+s à l'assurance et le numéro de sinistre associé, si applicable.
+Répartition Analytique :
+Il peut y avoir une partie pour attribuer les coûts associés à l'absence aux dif
+férents centres analytiques, permettant ainsi un suivi comptable précis.
+Gestion des Dossiers :
+Avec des options pour filtrer les dossiers (tous, ouverts, fermés), le programme
+ aide à organiser et à accéder rapidement aux dossiers en cours ou clôturés.
+Enregistrement des Commentaires :
+Il y a un espace pour ajouter des commentaires relatifs à chaque dossier, ce qui
+ est utile pour les notes administratives ou les suivis spécifiques.
+Commandes Fonctionnelles :
+Des boutons pour enregistrer les nouvelles entrées, modifier les données existan
+tes ou effacer les entrées erronées.
+Ce programme est un composant crucial pour la gestion des ressources humaines, p
+ermettant un suivi détaillé et la documentation des absences pour des raisons de
+ santé ou personnelles, essentiel pour la conformité légale et le bien-être des 
+employés.
+
+
+Impôts à la source :
+Barèmes I.S – Genève bi960 :
+
+Note explicative du barème I.S de Genève programme « bi961 » : 
+Le programme "bi960" est un tableau de barèmes utilisé pour le calcul des impôts
+ sur le revenu dans le canton de Genève. Voici les composantes typiques d'un tel
+ programme :
+Barèmes d'Impôt :
+Le tableau affiche différents niveaux de revenu et les taux d'imposition corresp
+ondants, probablement organisés par colonne pour chaque catégorie fiscale ou sit
+uation.
+Année et Périodicité :
+Le programme permet de sélectionner l'année concernée pour le calcul des impôts 
+et peut-être la périodicité (mensuelle, dans ce cas).
+Calculs Progressifs :
+Les taux progressifs en fonction des tranches de revenu permettent de calculer l
+e montant de l'impôt dû selon le système fiscal progressif.
+Contribution Écclésiastique :
+Une case à cocher indique que le programme peut également calculer la contributi
+on ecclésiastique pour ceux qui y sont assujettis.
+Saisie et Mise à Jour :
+Le programme offre probablement des fonctionnalités pour saisir ou mettre à jour
+ les revenus et appliquer les barèmes pour obtenir le calcul de l'impôt correspo
+ndant.
+Options de Rapport et d'Exportation :
+Des outils pour générer des rapports ou exporter les données pour d'autres utili
+sations, comme la déclaration fiscale ou l'analyse interne.
+En résumé, "bi960" est un outil clé pour la gestion fiscale au sein de l'ERP, pe
+rmettant aux utilisateurs de calculer précisément les obligations fiscales des e
+mployés ou de l'entreprise en fonction des revenus et des barèmes établis par l'
+autorité fiscale.
+
+Barèmes I.S Berne bi961 : 
+
+
+Note explicative du barème I.S de Berne programme « bi961 » : 
+Le programme "bi961" est un tableau de barèmes utilisé pour le calcul des impôts
+ sur le revenu dans le canton de Genève. Voici les composantes typiques d'un tel
+ programme :
+Barèmes d'Impôt :
+Le tableau affiche différents niveaux de revenu et les taux d'imposition corresp
+ondants, probablement organisés par colonne pour chaque catégorie fiscale ou sit
+uation.
+Année et Périodicité :
+Le programme permet de sélectionner l'année concernée pour le calcul des impôts 
+et peut-être la périodicité (mensuelle, dans ce cas).
+Calculs Progressifs :
+Les taux progressifs en fonction des tranches de revenu permettent de calculer l
+e montant de l'impôt dû selon le système fiscal progressif.
+Contribution Écclésiastique :
+Une case à cocher indique que le programme peut également calculer la contributi
+on ecclésiastique pour ceux qui y sont assujettis.
+Saisie et Mise à Jour :
+Le programme offre probablement des fonctionnalités pour saisir ou mettre à jour
+ les revenus et appliquer les barèmes pour obtenir le calcul de l'impôt correspo
+ndant.
+Options de Rapport et d'Exportation :
+Des outils pour générer des rapports ou exporter les données pour d'autres utili
+sations, comme la déclaration fiscale ou l'analyse interne.
+En résumé, "bi961" est un outil clé pour la gestion fiscale au sein de l'ERP, pe
+rmettant aux utilisateurs de calculer précisément les obligations fiscales des e
+mployés ou de l'entreprise en fonction des revenus et des barèmes établis par l'
+autorité fiscale.
+
+
+
+
+Barèmes I.S Fribourg bi962 :
+
+
+Note explicative du barème I.S de Fribourg programme « bi962 » :
+Le programme "bi962" est un tableau de barèmes utilisé pour le calcul des impôts
+ sur le revenu dans le canton de Genève. Voici les composantes typiques d'un tel
+ programme :
+Barèmes d'Impôt :
+Le tableau affiche différents niveaux de revenu et les taux d'imposition corresp
+ondants, probablement organisés par colonne pour chaque catégorie fiscale ou sit
+uation.
+Année et Périodicité :
+Le programme permet de sélectionner l'année concernée pour le calcul des impôts 
+et peut-être la périodicité (mensuelle, dans ce cas).
+Calculs Progressifs :
+Les taux progressifs en fonction des tranches de revenu permettent de calculer l
+e montant de l'impôt dû selon le système fiscal progressif.
+Contribution Écclésiastique :
+Une case à cocher indique que le programme peut également calculer la contributi
+on ecclésiastique pour ceux qui y sont assujettis.
+Saisie et Mise à Jour :
+Le programme offre probablement des fonctionnalités pour saisir ou mettre à jour
+ les revenus et appliquer les barèmes pour obtenir le calcul de l'impôt correspo
+ndant.
+Options de Rapport et d'Exportation :
+Des outils pour générer des rapports ou exporter les données pour d'autres utili
+sations, comme la déclaration fiscale ou l'analyse interne.
+En résumé, "bi962" est un outil clé pour la gestion fiscale au sein de l'ERP, pe
+rmettant aux utilisateurs de calculer précisément les obligations fiscales des e
+mployés ou de l'entreprise en fonction des revenus et des barèmes établis par l'
+autorité fiscale.
+
+
+
+Barèmes I.S Vaud bi963 :
+
+
+Note explicative du barème I.S de Vaud programme « bi963 » :
+Le programme "bi963" est un tableau de barèmes utilisé pour le calcul des impôts
+ sur le revenu dans le canton de Genève. Voici les composantes typiques d'un tel
+ programme :
+Barèmes d'Impôt :
+Le tableau affiche différents niveaux de revenu et les taux d'imposition corresp
+ondants, probablement organisés par colonne pour chaque catégorie fiscale ou sit
+uation.
+Année et Périodicité :
+Le programme permet de sélectionner l'année concernée pour le calcul des impôts 
+et peut-être la périodicité (mensuelle, dans ce cas).
+
+[IMAGE HERE: image_218.png]
+
+--- AFTER ---
+Calculs Progressifs :
+Les taux progressifs en fonction des tranches de revenu permettent de calculer l
+e montant de l'impôt dû selon le système fiscal progressif.
+Contribution Écclésiastique :
+Une case à cocher indique que le programme peut également calculer la contributi
+on ecclésiastique pour ceux qui y sont assujettis.
+Saisie et Mise à Jour :
+Le programme offre probablement des fonctionnalités pour saisir ou mettre à jour
+ les revenus et appliquer les barèmes pour obtenir le calcul de l'impôt correspo
+ndant.
+Options de Rapport et d'Exportation :
+Des outils pour générer des rapports ou exporter les données pour d'autres utili
+sations, comme la déclaration fiscale ou l'analyse interne.
+En résumé, "bi963" est un outil clé pour la gestion fiscale au sein de l'ERP, pe
+rmettant aux utilisateurs de calculer précisément les obligations fiscales des e
+mployés ou de l'entreprise en fonction des revenus et des barèmes établis par l'
+autorité fiscale.
+
+
+
+Barèmes I.S Valais bi966 : 
+
+
+Note explicative du barème I.S de Valais programme « bi966 » :
+Le programme "bi966" est un tableau de barèmes utilisé pour le calcul des impôts
+ sur le revenu dans le canton de Genève. Voici les composantes typiques d'un tel
+ programme :
+Barèmes d'Impôt :
+Le tableau affiche différents niveaux de revenu et les taux d'imposition corresp
+ondants, probablement organisés par colonne pour chaque catégorie fiscale ou sit
+uation.
+Année et Périodicité :
+Le programme permet de sélectionner l'année concernée pour le calcul des impôts 
+et peut-être la périodicité (mensuelle, dans ce cas).
+Calculs Progressifs :
+Les taux progressifs en fonction des tranches de revenu permettent de calculer l
+e montant de l'impôt dû selon le système fiscal progressif.
+Contribution Écclésiastique :
+Une case à cocher indique que le programme peut également calculer la contributi
+on ecclésiastique pour ceux qui y sont assujettis.
+Saisie et Mise à Jour :
+Le programme offre probablement des fonctionnalités pour saisir ou mettre à jour
+ les revenus et appliquer les barèmes pour obtenir le calcul de l'impôt correspo
+ndant.
+Options de Rapport et d'Exportation :
+Des outils pour générer des rapports ou exporter les données pour d'autres utili
+sations, comme la déclaration fiscale ou l'analyse interne.
+En résumé, "bi966" est un outil clé pour la gestion fiscale au sein de l'ERP, pe
+rmettant aux utilisateurs de calculer précisément les obligations fiscales des e
+mployés ou de l'entreprise en fonction des revenus et des barèmes établis par l'
+autorité fiscale.
+
+
+Barèmes I.S Neuchâtel bi967 : 
+
+
+Note explicative du barème I.S de Neuchâtel programme « bi967 » :
+Le programme "bi967" est un tableau de barèmes utilisé pour le calcul des impôts
+ sur le revenu dans le canton de Genève. Voici les composantes typiques d'un tel
+ programme :
+Barèmes d'Impôt :
+Le tableau affiche différents niveaux de revenu et les taux d'imposition corresp
+ondants, probablement organisés par colonne pour chaque catégorie fiscale ou sit
+uation.
+Année et Périodicité :
+Le programme permet de sélectionner l'année concernée pour le calcul des impôts 
+et peut-être la périodicité (mensuelle, dans ce cas).
+Calculs Progressifs :
+Les taux progressifs en fonction des tranches de revenu permettent de calculer l
+e montant de l'impôt dû selon le système fiscal progressif.
+Contribution Écclésiastique :
+Une case à cocher indique que le programme peut également calculer la contributi
+on ecclésiastique pour ceux qui y sont assujettis.
+Saisie et Mise à Jour :
+Le programme offre probablement des fonctionnalités pour saisir ou mettre à jour
+ les revenus et appliquer les barèmes pour obtenir le calcul de l'impôt correspo
+ndant.
+Options de Rapport et d'Exportation :
+Des outils pour générer des rapports ou exporter les données pour d'autres utili
+sations, comme la déclaration fiscale ou l'analyse interne.
+En résumé, "bi967" est un outil clé pour la gestion fiscale au sein de l'ERP, pe
+rmettant aux utilisateurs de calculer précisément les obligations fiscales des e
+mployés ou de l'entreprise en fonction des revenus et des barèmes établis par l'
+autorité fiscale.
+
+
+
+
+
+Formation :
+Gestion de la formation sd109 : 
+
+
+Note explicative de la formation programme « sd109 » : 
+Le programme "sd109" est une application ERP conçue pour la gestion de la format
+ion des employés. Il est probablement utilisé pour saisir, suivre et gérer les i
+nformations relatives aux formations professionnelles des salariés. Voici commen
+t il est composé, basé sur les éléments typiques d'un tel système :
+Tableau de Suivi :
+Le tableau principal sert à répertorier toutes les formations avec des détails t
+els que le type de formation, la désignation, la date, l'institut de formation, 
+la présence ou non d'un certificat, le prix, et le coût approuvé pour chaque for
+mation.
+Filtres de Recherche :
+Des options pour filtrer les données par salarié, type de formation ou statut (o
+uverts, fermés) permettent une navigation et une recherche efficaces dans les do
+ssiers de formation.
+Entrée de Données :
+Des champs pour entrer de nouvelles informations de formation ou pour mettre à j
+our des dossiers existants. Cela comprend le budget alloué, le nom du salarié, l
+es détails de la formation, les dates, l'institut de formation, et les commentai
+res associés.
+Gestion des Dossiers :
+Des boutons fonctionnels comme "Modifier", "Rétablir", "Ajouter", "Copier", "Eff
+acer", et "Annuler" pour la gestion complète des entrées.
+Répartition Budgétaire :
+Il peut y avoir des fonctions pour allouer le budget de formation aux différents
+ salariés ou départements, en indiquant le pourcentage du budget attribué à chaq
+ue formation.
+En résumé, le programme "sd109" est un outil essentiel dans la gestion des compé
+tences et du développement professionnel au sein d'une organisation, assurant qu
+e les employés reçoivent la formation nécessaire et que les coûts associés sont 
+suivis et gérés de manière appropriée.
+
+
+
+
+Gestion des types de formation sd907 : 
+
+Note explicative de la gestion des types de formations programme « sd907 » : 
+Le programme "sd907" est conçu pour gérer les types de formation au sein d'une o
+rganisation. Il permet aux utilisateurs d'ERP de cataloguer et de maintenir une 
+base de données des différentes formations disponibles, des qualifications et de
+s certifications que les employés peuvent obtenir. Voici les éléments principaux
+ du programme :
+Liste des Formations :
+Un tableau répertorie toutes les formations disponibles avec un code unique, leu
+r désignation officielle, et d'autres détails pertinents tels que les éventuelle
+s soumissions, la langue de la formation, et si elle est liée à des questions de
+ sécurité.
+Détails des Formations :
+Les champs en bas permettent de saisir ou de modifier des informations sur une f
+ormation spécifique, y compris la désignation, le numéro de code, la langue, et 
+si elle concerne la sécurité.
+Gestion des Données :
+Les boutons "Modifier", "Rétablir", "Ajouter", "Copier", "Effacer" et "Annuler" 
+facilitent la mise à jour et la manipulation des données de formation.
+Ce programme joue un rôle essentiel dans la planification du développement des c
+ompétences des employés et dans la gestion des ressources de formation. Il assur
+e que toutes les formations suivies ou requises sont enregistrées de manière cen

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_356.png
+============================================================
+
+--- BEFORE ---
+
+
+
+
+
+Fenêtre de Comptabilisation des encaissements débiteurs/clients :
+Partie « Comptabilité Générale – compte financier »
+
+
+Sélection d’un compte CG :
+
+
+
+
+
+§ Débit Crédit – Par défaut le programme positionne sur Débit (Financier), si l’
+on souhaite comptabiliser une annulation d’encaissement, positionner sur Crédit.
+ 
+Ce champ est obligatoire.
+§ Libellé – MS propose par défaut, le libellé "Attribution automatique". Cela ve
+ut dire que l’intitulé du client/débiteur sera chargé automatiquement dans cette
+ zone. Valider ou saisir dans ce champ un libellé. C’est le libellé officiel qui
+ sera édité dans les historiques des comptes généraux.
+Ce champ est obligatoire.
+§ Libellé privé – Saisir dans ce champ un libellé complémentaire, qui ne sera pa
+s édité dans les historiques des comptes généraux.
+Ce champ est facultatif.
+Fenêtre de Comptabilisation des factures clients/ débiteurs : 
+Partie « Frais bancaires »
+
+Si la case "frais bancaires" a été cochée ci-dessus (partie "Pièce"), cette fenê
+tre va apparaître :
+
+
+
+
+Fenêtre de saisie des frais bancaires si Oui :
+
+
+
+
+Fenêtre de Comptabilisation des factures clients /débiteurs : 
+Partie « Contrepartie Client/Débiteur »
+
+Sélection d’un compte Client/Débiteur :
+
+
+Saisie du montant encaissé, après sélection du débiteur.
+
+
+
+
+
+§ Montant encaissé – Par défaut le programme affiche le montant saisi au niveau 
+du compte financier. Si ce montant concerne plusieurs clients, et pour un client
+ plusieurs postes ouverts, il faut saisir le montant respectif à chaque client, 
+et ensuite sélectionner les postes ouverts concernés par cet encaissement.
+
+Sélection d’un Poste Ouvert concerné par cet encaissement.
+
+
+
+  Si une note de crédit fait partie de l'encaissement => il faut toujours commen
+cer par sélectionner la note de crédit, et ensuite poursuivre avec les factures
+
+
+
+
+
+
+
+Saisie du montant encaissé, après sélection du débiteur.
+
+
+
+
+
+S’il y a une différence entre le montant du versement et celui du poste ouvert s
+électionné, le programme propose de passer automatiquement la différence sur le 
+compte escompte et de fermer le poste ouvert, si l’option "Oui" a été sélectionn
+ée ci-dessus. Sinon la différence restera comme poste ouvert.
+Le programme permet de comptabiliser des encaissements sans facture. Pour ce fai
+re cocher la case prévue à cet effet. Attention ! Une condition de paiement « Ac
+ompte » avec zéro jour doit être créée dans la table des conditions de paiements
+. Voir programme db901.
+
+Calcul du montant et du % d’escompte après acceptation.
+
+
+
+
+
+
+
+Fenêtre de Comptabilisation des encaissements débiteurs/clients : 
+ Partie « Mise à jour des comptes » 
+Approbation de la pièce et mise à jour des comptes :
+
+Lorsque les soldes sont à zéro le message ci-dessous apparaît. A ce niveau, la p
+ossibilité de modifier, d’effacer tout ou partie de l’écriture reste ouverte.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Encaissements clients sans fermeture P.O po104 : 
+
+Note explicative des encaissements clients sans fermeture Poste ouvert programme
+ « po104 » :
+
+Le programme po104 est conçu pour gérer les encaissements des clients sans ferme
+ture de commande ouverte (P.O.). Voici les éléments clés de ce programme pour mi
+eux comprendre son fonctionnement :
+Numéro de pièce : C’est l’identifiant unique de chaque enregistrement d'encaisse
+ment. Il permet de suivre chaque transaction de façon unique.
+Date de pièce : C’est la date à laquelle l'encaissement a été effectué ou enregi
+stré dans le système. Elle aide à organiser chronologiquement les transactions.
+Journal : Ce champ permet de spécifier le journal comptable dans lequel l'encais
+sement est enregistré, ce qui aide à la catégorisation et à l'analyse financière
+.
+Date de valeur : Il s'agit de la date utilisée pour le calcul des intérêts ou d'
+autres implications financières. Elle peut différer de la date de pièce et est c
+ruciale pour la gestion de la trésorerie.
+Intitulé et détails de l'écriture : Ces champs permettent de saisir des informat
+ions détaillées sur chaque transaction, incluant le compte concerné, le libellé 
+de l’écriture, et les montants en monnaie de transaction et en contre-valeur.
+Préférences : Cette section permet de personnaliser le comportement du système l
+ors de la saisie des encaissements, comme par exemple conserver le même numéro d
+e pièce pour chaque écriture ou incrémenter automatiquement ce numéro.
+
+
+
+
+
+
+
+
+
+
+Escomptes clients semi-automatiques co105
+
+[IMAGE HERE: image_356.png]
+
+--- AFTER ---
+
+Fenêtre de Comptabilisation des escomptes clients semi-automatiques
+Ce programme a pour but d’analyser et de proposer éventuellement la comptabilisa
+tion des résidus de montant sur certains postes ouverts.
+Fenêtre des réponses de sélection possible :
+
+
+
+Champs :
+
+§ Solde maxi. % – Saisir le pourcentage maximum pris en compte par rapport au so
+lde du poste ouvert, lors du calcul qui sera proposé pour la comptabilisation da
+ns le compte escompte.
+
+§ Solde maxi. Fr. – Saisir le montant maximum pris en compte par rapport au sold
+e du poste ouvert, lors du calcul qui sera proposé pour la comptabilisation dans
+ le compte escompte.
+
+
+
+Cocher les options désirées
+
+
+
+Cliquer pour sélectionner un journal
+
+
+
+Cliquer pour sélectionner un type de pièce
+
+
+
+Saisir la date de pièce
+
+
+
+Saisir la date de valeur
+
+
+
+Cliquer pour sélectionner un lot d'écritures
+
+
+
+Choisir un montant OU un pourcentage de tolérance
+
+Toutes les soldes entre facture et encaissement(s) ne dépassant pas 1% seront tr
+aités (possibilité de choisr un montant)
+
+Champs :
+
+§ Solde maxi. % – Saisir le pourcentage maximum pris en compte par rapport au so
+lde du poste ouvert, lors du calcul qui sera proposé pour la comptabilisation da
+ns le compte escompte.
+
+§ Solde maxi. Fr. – Saisir le montant maximum pris en compte par rapport au sold
+e du poste ouvert, lors du calcul qui sera proposé pour la comptabilisation dans
+ le compte escompte.
+
+
+
+Cliquer pour valider les données 
+et lancer la procédure de calcul
+
+
+
+Affichage du mode de mise à jour comptable
+Si le mode différé est activé, la comptabilisation se fera à l'aide du programme
+ co110
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre de proposition de comptabilisation :
+Cliquer pour générer la comptabilisation et solder le poste ouvert : 
+
+
+
+Note : Pour la comptabilisation en mode différé, suivre le lien Comptabilisation
+ externe
+
+
+
+
+
+
+Note explicative de l’escompte clients semi-automatique programme « co105 » : 
+
+Le programme co105 est conçu pour la gestion semi-automatique des escomptes clie
+nts. Voici les éléments clés pour comprendre son fonctionnement :
+Sélection des clients : Vous pouvez choisir entre traiter tous les clients ou fa
+ire une sélection alphabétique ou numérique. Cette fonction permet de filtrer le
+s clients pour lesquels les escomptes seront calculés.
+Journal : Ce champ permet de sélectionner le journal comptable où les écritures 
+d'escompte seront enregistrées, permettant une traçabilité et un regroupement ad
+équats des transactions.
+Type de pièce : Ce choix définit la catégorie de la transaction pour l'escompte,
+ ce qui aide à la classification comptable et au suivi des types d'opérations.
+Date de pièce : La date à laquelle l'escompte est enregistré, ce qui est crucial
+ pour le respect des périodes comptables.
+Date de valeur : La date utilisée pour le calcul des intérêts ou autres implicat
+ions financières de l'escompte.
+Lot d'écritures : Option pour sélectionner un nouveau lot d'écritures ou un lot 
+déjà existant. Cela permet de grouper les écritures d'escompte pour un traitemen
+t ou une révision simplifiée.
+Montant ou pourcentage de tolérance : Définir un montant fixe ou un pourcentage 
+pour le calcul des escomptes, offrant une flexibilité dans la gestion des réduct
+ions accordées.
+Bouton OK : Pour valider les données saisies et commencer le calcul des escompte
+s.
+Mode de mise à jour comptable : Choix entre une mise à jour immédiate ou différé
+e dans le système comptable, ce qui permet de contrôler le moment de l'enregistr
+ement des transactions dans les livres.
+
+
+
+
+
+
+
+
+
+Encaissements BVR (aussi encaissement QR maintenant) db660 : 
+
+Ce programme a pour but de traiter un fichier BVR (fichier QR), d’établir les co
+ntrôles adéquates et de réaliser la comptabilisation des montants encaissés en c
+oncordance avec les postes ouverts.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Cocher les options
+désirées
+
+
+
+Cliquer pour sélectionner un journal
+
+
+
+Cliquer pour sélectionner un type de pièce
+

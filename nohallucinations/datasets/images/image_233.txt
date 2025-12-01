@@ -1,0 +1,308 @@
+CONTEXT FOR: image_233.png
+============================================================
+
+--- BEFORE ---
+
+
+La gestion des temporaires :
+C’est ici dans le sd001 que nous pouvons activer l’onglet « temporaire » qui app
+araitra dans le sd100 
+
+Haut du formulaire
+Onglet « Certificat » : 
+
+Note explicative de l’onglet « Certificat » des paramètres de salaires programme
+ « sd001 » :
+L'onglet "Certificat" est typiquement utilisé pour configurer les paramètres rel
+atifs à la génération et à la gestion des certificats de salaire. Voici ce qu'il
+ inclut :
+Génération de Certificats :
+Options pour automatiser la création de certificats de salaire pour les employés
+, souvent pour des besoins spécifiques comme des prêts bancaires ou des vérifica
+tions de revenu.
+Paramètres de Certificat :
+Configuration de l'information qui doit apparaître sur les certificats, tel que 
+les revenus annuels, les déductions, et les informations personnelles de l'emplo
+yé.
+Options de Sécurité :
+Réglages liés à la confidentialité et à la sécurité des données qui apparaîtront
+ sur le certificat.
+Personnalisation :
+Options pour personnaliser le format du certificat, y compris les logos de l'ent
+reprise, l'entête, et le pied de page.
+Envoi et Distribution :
+Paramètres pour l'envoi électronique des certificats aux employés ou à d'autres 
+parties prenantes, comme les autorités fiscales.
+Archivage :
+Mécanismes pour archiver les certificats générés de manière sécurisée pour la co
+nformité réglementaire et les audits futurs.
+Intégration :
+Assurer que les certificats sont intégrés avec les autres modules ERP, comme la 
+paie et les ressources humaines, pour un transfert de données en temps réel.
+Haut du formulaire
+
+Onglet « SwissDec » :
+
+Note explicative de l’onglet « SwissDec » des paramètres de salaires programme «
+ sd001 » :
+
+L'onglet "SwissDec" dans un système de paramètres salariaux ERP est typiquement 
+utilisé pour gérer les déclarations salariales et les certifications conformémen
+t aux normes et aux exigences suisses. Voici ce qu'il inclut  :
+Identification de l'Entreprise :
+Numéros d'identification unique (UID) pour l'entreprise, qui sont nécessaires po
+ur toutes les communications avec les autorités fiscales suisses.
+Réglages SwissDec :
+Paramètres spécifiques pour la déclaration des salaires selon les normes SwissDe
+c, qui est un standard en Suisse pour la transmission électronique de données de
+ salaires et sociales.
+Gestion des Accords et Contrats :
+Options pour gérer les accords salariaux individuels et les contrats de travail 
+dans le cadre de la déclaration des salaires.
+Conformité :
+Assurer que tous les paramètres de paie sont conformes avec la législation suiss
+e et les exigences de SwissDec.
+Transmission des Données :
+Réglages pour la transmission sécurisée des données salariales aux autorités per
+tinentes.
+Archivage et Rapports :
+Options pour archiver les déclarations et générer des rapports nécessaires pour 
+la conformité et les audits.
+Ces paramètres sont essentiels pour garantir que les processus de paie de l'entr
+eprise respectent les exigences réglementaires et que les données sont transmise
+s de manière précise et sécurisée aux autorités compétentes.
+
+
+Paramètres transmetteur SwissDEC sd002 :
+
+Note explicative des paramètres transmetteur SwissDec programme « sd002 » : 
+Le programme "sd002" est un module dans le système ERP qui gère la configuration
+ des paramètres liés à la transmission des données salariales et sociales en uti
+lisant le standard SwissDec. Voici ce que cela inclut :
+Configuration du Chemin d'Accès :
+Définir le chemin d'accès aux outils ou applications nécessaires à la transmissi
+on des données SwissDec.
+Répertoire des Journaux :
+Spécifier l'emplacement où les journaux de transmission et les rapports d'erreur
+ seront enregistrés.
+Utilisation d'un Webservice :
+Configurer l'utilisation d'un service web pour la transmission des données, si n
+écessaire.
+Monitoring et Versions :
+Indiquer les identifiants de monitoring et gérer les versions du logiciel utilis
+é pour les transmissions SwissDec.
+Caractères Spéciaux et Opérateurs :
+Configurer le système pour gérer les caractères spéciaux et établir les valeurs 
+par défaut pour les opérateurs impliqués dans les calculs ou les transmissions d
+e données.
+Conformité et Sécurité :
+Assurer que les paramètres répondent aux exigences de sécurité et de conformité 
+du SwissDec.
+Gestion des Erreurs :
+Établir des mécanismes pour la détection, le rapport et la correction des erreur
+s dans le processus de transmission.
+Encore une fois, sans l'image spécifique, cette description reste générique et b
+asée sur les fonctions typiques associées à un module de transmission SwissDec d
+ans un ERP. Si vous pouvez fournir plus de détails ou si vous avez besoin d'info
+rmations supplémentaires sur d'autres aspects du programme "sd002", n'hésitez pa
+s à me le faire savoir.
+
+
+Tables simples salaires sd900 : 
+
+Note explicative des tables simples salaires programme « sd900 » : 
+Le programme "sd900" est une interface de gestion de diverses tables simples au 
+sein d'un système ERP. Ces tables sont des référentiels de données utilisés pour
+ classer et organiser l'information dans le système. Voici comment il peut être 
+composé :
+Liste des Types de Données :
+À gauche, nous voyons une liste de catégories ou types de données (comme des cod
+es pour les allocations familiales, les annuités, les types d'arrêt de travail, 
+etc.) qui servent à organiser l'information dans le système.
+Table de Données :
+Au centre, il y a la table principale qui affiche les enregistrements spécifique
+s pour le type sélectionné. Par exemple, si "Types d'adresse" est sélectionné, c
+ette table afficherait toutes les adresses enregistrées dans le système.
+Détails et Actions :
+En bas, il y a une section pour ajouter ou modifier les détails des enregistreme
+nts. Par exemple, si un nouvel arrêt de travail doit être enregistré, cela peut 
+être fait ici.
+Fonctionnalités de Recherche et de Filtrage :
+Il y a des options pour filtrer la liste en fonction de la langue ou du code, ce
+ qui simplifie la recherche d'enregistrements spécifiques.
+Champs de Saisie :
+La zone inférieure comprend des champs de saisie pour entrer ou modifier des inf
+ormations telles que le numéro de code, la désignation, et d'autres données pert
+inentes.
+Fonctionnalités Supplémentaires :
+La fonction "Saisie horaire DigitalPen" indique que le système peut intégrer des
+ données saisies via un stylet numérique, ce qui peut être utile pour la saisie 
+de données en déplacement ou sur des appareils mobiles.
+Intégration et Exportation :
+Il y a probablement aussi des moyens d'exporter les données pour des utilisation
+s externes, comme des rapports ou des analyses.
+En résumé, "sd900" est une interface fonctionnelle conçue pour gérer de manière 
+centralisée des enregistrements et des références qui sont utilisés à travers le
+ système ERP pour diverses fonctions et analyses. C'est un outil important pour 
+garantir que les informations clés sont accessibles et maintenues à jour.
+Haut du formulaire
+
+Constantes salaire sd901 :
+Onglet « Avs »
+
+Note explicative de l’onglet « Avs » des constantes salaires programme « sd901 »
+ : 
+
+[IMAGE HERE: image_233.png]
+
+--- AFTER ---
+Le programme "sd901" sous l'onglet "AVS" est une composante d'un système ERP qui
+ gère les constantes relatives aux contributions de sécurité sociale pour les em
+ployés en Suisse, spécifiquement pour l'Assurance Vieillesse et Survivants (AVS)
+, l'Assurance Chômage (AC), l'Allocation pour Perte de Gain (APG), l'Assurance I
+nvalidité (AI), et les Caisses de compensation familiales (CAF).
+Voici les éléments clés de cet onglet :
+Dates de validité et taux de cotisation : Chaque ligne représente une période de
+ validité spécifique avec les taux de cotisation AVS correspondants pour l'emplo
+yé et l'employeur.
+Abattement AVS : Le montant spécifié comme abattement AVS mensuel et annuel indi
+que le plafond avant lequel les cotisations AVS ne sont pas dues.
+Cotisations AVS : Les pourcentages indiquent la part de cotisation qui est préle
+vée sur le salaire de l'employé et la part équivalente payée par l'employeur.
+Âge de retraite : Il y a des champs pour l'âge standard de début d'obligation de
+ cotiser ainsi que pour l'âge de la retraite pour les femmes et les hommes, qui 
+peuvent varier en fonction des règlementations et pratiques de l'entreprise.
+Base annuelle minimum : Un champ où l'on peut entrer la base de calcul minimale 
+pour l'année pour les cotisations.
+Historique des modifications : Avec un numéro historique, ce qui permet de suivr
+e les changements dans le temps pour les audits ou les clarifications nécessaire
+s.
+Cette interface est cruciale pour s'assurer que les données relatives aux contri
+butions sociales sont précises et conformes aux réglementations en vigueur. Elle
+ facilite également la gestion des contributions pour les ressources humaines et
+ la comptabilité.
+
+Onglet « AC » :
+
+
+Note explicative de l’onglet « AC » des constantes salaires programme « sd901 » 
+: 
+L'onglet "AC" du programme "sd901" dans un système ERP gère les constantes relat
+ives à l'Assurance Chômage en Suisse.
+Dans cet onglet, les éléments clés sont :
+Date de validité: Cela indique depuis quand les taux de cotisation sont en vigue
+ur.
+Salaire maximum mensuel pour la cotisation: Il s'agit du plafond de salaire sur 
+lequel les cotisations sont calculées.
+Cotisation employé et employeur: Pourcentage de cotisation à l'assurance chômage
+ qui est prélevé sur le salaire de l'employé et la contribution correspondante d
+e l'employeur.
+Salaire annuel complémentaire maximum: C'est un plafond supplémentaire qui pourr
+ait être appliqué pour des revenus spécifiques ou des bonus.
+Cotisation complémentaire employé et employeur: Ces champs sont destinés aux cot
+isations complémentaires pour l'assurance chômage, s'il y a lieu.
+N° historique: Un enregistrement des changements effectués dans cet onglet pour 
+référence future et audit.
+Cette section est essentielle pour le calcul précis des cotisations à l'assuranc
+e chômage et pour garantir la conformité avec les réglementations de l'assurance
+ chômage suisse. Elle est utilisée par les départements RH et comptabilité pour 
+s'assurer que toutes les contributions sont correctement calculées et versées.
+Haut du formulaire
+
+
+
+
+Onglet « LAA » :
+
+Note explicative de l’onglet « LAA » des constantes salaires programme « sd901 »
+ : 
+L'onglet "LAA" du programme "sd901" est dédié à la gestion des paramètres relati
+fs à la Loi sur l'Assurance Accident (LAA) suisse, aussi connue sous le nom de "
+UVG" en allemand ou "LAA" en italien.
+Voici les détails fonctionnels que vous trouverez dans cet onglet :
+Succursale: Il s'agit de la succursale ou de la caisse d'assurance accident affi
+liée à l'entreprise, comme "SUVA Lausanne" dans ce cas.
+Date de validité: C'est la date à partir de laquelle les taux et les plafonds sp
+écifiés sont applicables.
+Salaire annuel max.: Il représente le salaire maximum annuel sujet aux cotisatio
+ns LAA.
+Taux employé AAP (Assurance Accident Professionnelle) et Taux employeur AAP: Ces
+ champs indiquent les pourcentages de cotisation pour l'assurance accident profe
+ssionnelle qui sont déduits du salaire de l'employé et la part correspondante pa
+yée par l'employeur. "A" indique généralement le taux de base et d'autres lettre
+s peuvent représenter des taux supplémentaires pour des situations spécifiques o
+u des catégories d'employés.
+Taux employé & employeur AANP (Assurance Accident Non Professionnelle): Ces taux
+ s'appliquent aux accidents non liés au travail et sont habituellement payés ent
+ièrement par l'employé.
+Cet onglet est essentiel pour garantir que l'entreprise respecte les obligations
+ légales liées à l'assurance accident en Suisse et pour calculer avec précision 
+les cotisations dues pour chaque employé selon les taux en vigueur. Il est impor
+tant pour les RH et le département comptabilité de maintenir ces informations à 
+jour pour assurer la conformité et la gestion appropriée des risques liés aux ac
+cidents de travail.
+
+
+
+Onglet « LAAC » :
+
+Note explicative de l’onglet « LAAC » des constantes salaires programme « sd901 
+» : 
+L'onglet "LAAC" du programme "sd901" sert à configurer les paramètres relatifs à
+ l'assurance contre les accidents non professionnels, ce qui est souvent une com
+posante obligatoire de l'assurance accidents en Suisse.
+Voici ce que vous trouverez dans cet onglet :
+Succursale: Désigne la caisse d'assurance spécifique ou la succursale associée à
+ l'entreprise pour l'assurance contre les accidents non professionnels.
+Date de validité: Indique la période de validité des informations renseignées. C
+'est à partir de cette date que les taux et conditions spécifiés seront appliqué
+s.
+Caisse: Le nom de la caisse d'assurance, par exemple "Vaudoise LAAC" dans cet ex
+emple.
+Code Solution d'assurance: Ces codes sont utilisés pour identifier différents ré
+gimes ou options d'assurance au sein de la caisse. Par exemple, "A1" pourrait dé
+signer des employés avec un salaire inférieur à un certain montant, tandis que "
+A2" pour des salaires supérieurs.
+Sal. min. mens., Sal. max. mens.: Représentent respectivement le salaire mensuel
+ minimum et maximum sur lequel la cotisation est calculée.
+Taux H/F: Ces champs indiquent les taux de cotisation pour l'assurance accidents
+ non professionnelle, qui peuvent varier selon le genre.
+Ces configurations permettent de s'assurer que l'entreprise applique correctemen
+t les cotisations d'assurance pour tous les employés en fonction de leur salaire
+ et des exigences de la caisse d'assurance. Il est crucial que les paramètres so
+ient correctement configurés pour garantir la conformité avec la législation en 
+vigueur et pour s'assurer que les employés soient couverts en cas d'accident hor
+s du travail.
+
+
+Onglet « IJM » :
+
+
+Note explicative de l’onglet « IJM » des constantes salaires programme « sd901 »
+ : 
+L'onglet "IJM" dans le programme "sd901" fait référence à l'Indemnité Journalièr
+e de Maladie. Voici un guide explicatif de cet onglet :
+Succursale: Ce champ permet de sélectionner la caisse d'assurance maladie liée à
+ la succursale de l'entreprise pour laquelle on définit les paramètres.
+Date de validité: Chaque ligne représente une période de validité pour les taux 
+et les plafonds définis. Elle commence à partir de la date indiquée pour l'appli
+cation de ces paramètres.
+Caisse: Nom de la caisse d'assurance maladie pour laquelle les paramètres sont d
+éfinis, par exemple "Vaudoise IJM" dans ce cas.
+Code Solution d'assurance: Ce code désigne le type de couverture offert par la c
+aisse d'assurance. Des exemples pourraient inclure "A1-IJM Exploitation" ou "A2-
+IJM Contremaître", indiquant différents niveaux de couverture ou des plans spéci
+fiques pour différents rôles au sein de l'entreprise.
+Sal. min. mens., Sal. max. mens.: Indiquent respectivement le salaire mensuel mi
+nimum et maximum éligible pour l'indemnisation. Ce sont les plafonds en dessous 
+et au-dessus desquels l'indemnité n'est pas calculée.
+Taux H/F: Taux de cotisation pour l'assurance indemnité journalière en cas de ma
+ladie, qui peuvent différer entre les hommes et les femmes.
+Ces réglages sont essentiels pour assurer le paiement approprié des indemnités j
+ournalières en cas de maladie des employés et pour maintenir la conformité avec 
+les exigences de l'assurance maladie. Les configurations incorrectes pourraient 
+entraîner des paiements incorrects, soit en défaveur de l'employé soit en surcoû
+t pour l'employeur.
+
+
+

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_572.png
+============================================================
+
+--- BEFORE ---
+es influences sur le traitement ultérieur des programmes de facturation.
+
+Les champs spécifiques du programme fa901:
+« No» : Numéro de séquence dans la table
+« Code» : Code du type de facture – 2 positions alpha-numérique..
+« Désignation » : Désignation du type de facture.
+« Groupe de facture » : Sélectionner le groupe de facture avec lequel ce type se
+ra traité – (les groupes sont définis par Médiasoft dans le programme ms900. Des
+ traitements spécifiques seront réalisés selon le groupe).
+« Type pour numérotation facture » : Type de numérotation spécifique ou utilisan
+t la numérotation d’un autre type (si pour les types il y a une seule numérotati
+on des factures, laisser ce champ vide).
+« Compte CG » : Saisir ou sélectionner un compte de produit sur lequel les imput
+ations comptables seront réalisées.
+« Compte CA » : Saisir ou sélectionner un compte analytique sur lequel les imput
+ations comptables seront réalisées.
+« Catalogue par défaut » : Sélectionner le groupe catalogue des articles qui ser
+a proposé dans la saisie des lignes à facturer, pour ce type de facture.
+« Catalogue sélectionné uniquement » : Coché si le catalogue sélectionné ci-dess
+us sera uniquement traité dans la saisie des lignes à facturer.
+« Facturation TTC » : Coché si ce type de facture est traité en TTC – Un tarif T
+TC doit être paramétré dans la gestion des tarifs – (Programme ar901).
+« Edition des factures à 0 » : Coché si l’on désire traiter les factures dont le
+ montant à facturer est égal à zéro (Programme fa661).
+« Comptabilisation des factures lors de l’édition avec MAJ » : Coché si l’on dés
+ire comptabiliser les factures lors de l’édition (Programme fa661).
+Sinon le traitement de la comptabilisation sera réalisé de manière différée (pro
+gramme fa662) – Voir le paramètre dans « Xstes » – Onglet « MAJ ».
+« Imputation de la TVA sur les comptes produits » : Coché si l’on désire que le 
+montant de la TVA soit comptabilisée sur les comptes de produits et non sur le c
+ompe TVA (Programme co902).
+« Edition avec fa660 » : Coché pour traiter les factures de type « contrats ».
+« Numérotation manuelle » : Coché si l’on désire attribuer manuellement les numé
+ros de facture .
+« Edition BVR » : Coché pour traiter l’impression des BVR .
+« Site obligatoire » : Coché si l’on désire traiter la notion de site pour ce ty
+pe de facture .
+« Codification mise sous pli » : Coché pour traiter sur l’édition des factures l
+es codes de traitement automatique de la mise sous pli des documents.
+« Arrondi aux 5 centimes » : Sélectionner le type de traitement de l’arrondi, se
+lon les 3 possibilités.
+« Comptabilisation» : Coché pour traiter la comptabilisation des factures dans M
+S2000.
+« Comptabilisation directe» : Coché pour traiter la comptabilisation des facture
+s directement. (programme fa661 avec mise à jour). Sinon, comptabilisation avec 
+le programme fa662.
+« Factures contrat» : Coché pour traiter les factures de type « contrats ».
+
+Traitement de la mise en pages des factures :
+Standard : Mise en page et traitement classique.
+Excel : Mise en page et traitement avec Excel.
+1 PDF : Facture et BVR sur la même page. Pas d’accès aux zones BVR dans fa661 (t
+exte ou d’image sur page BVR).
+2 PDF : Facture et BVR sur 2 pages distinctes. Les zones BVR sont accessibles da
+ns fa661 (texte ou d’image sur page BVR).
+Facture et BVR dans le même PDF : Ne sert uniquement quand on est en option « 2P
+DF ». Permet de générer un seul document contenant Facture 1, BVR 1, Facture 2, 
+BVR 2… au lieu de 2 documents, l’un avec toutes les factures et l’autre avec tou
+s les BVR n’est utilisable que si l’imprimante permet de dispatcher automatiquem
+ent les BVR sur un autre bac et demande un développement de Médiasoft pour bien 
+calibrer la position du BVR
+Visualisation PDF uniquement : Si coché, l’option visualiser du fa661 est non ut
+ilisable et nous avons automatiquement la visualisation du pdf. Sinon, dans le f
+a661 on peut : Visualiser le pdf Imprimer le pdf : ouvre le pdf avec la boite de
+ dialogue d’impression. 
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de la gestion des types de factures programme « fa901 » : 
+
+Le programme "fa901" est utilisé pour la gestion des types de factures dans le s
+ystème ERP. Voici une description détaillée de sa composition et de son fonction
+nement :
+1. Liste des Types de Factures
+La partie supérieure de l'écran affiche une liste des types de factures existant
+s. Les colonnes incluent :
+N° : Numéro du type de facture.
+Code : Code unique pour le type de facture.
+Désignation : Nom du type de facture.
+Fact. TTC : Indication si la facture inclut les taxes.
+Fact. à 0 : Indication si la facture peut être éditée avec un montant de zéro.
+Catalogue par défaut : Indication si un catalogue par défaut est utilisé.
+Cat. uniq. : Indication de l'utilisation d'une catégorie unique.
+Compte C.A. : Compte de chiffre d'affaires associé.
+Compte C.G. : Compte général associé.
+Type pour numérotation : Type de numérotation utilisé.
+2. Détails du Type de Facture Sélectionné
+La partie inférieure de l'écran affiche les détails du type de facture sélection
+né. Elle est divisée en plusieurs sections :
+Type
+Langue : Sélection de la langue pour le type de facture.
+Numéro : Numéro unique du type de facture.
+Code : Code unique du type de facture.
+Désignation : Nom ou désignation du type de facture.
+Groupe de facture : Groupe auquel appartient le type de facture.
+Type pour numérotation factures : Type de numérotation utilisé pour les factures
+.
+Compte C.G. : Compte général associé.
+Compte C.A. : Compte de chiffre d'affaires associé.
+Catalogue par défaut : Sélection du catalogue par défaut.
+Options de Facturation
+Facturation TTC : Indication si la facturation inclut les taxes.
+Édition des factures à 0 : Permet l'édition des factures avec un montant de zéro
+.
+Comptabilisation factures lors de l'édition avec MAJ : Comptabilisation des fact
+ures lors de leur édition.
+Comptabilisation directe : Comptabilisation directe des factures.
+Imputation de la T.V.A. sur les comptes produits : Imputation de la T.V.A. sur l
+es comptes produits.
+Édition avec fa660 : Utilisation de l'édition avec le programme fa660.
+Numérotation manuelle : Permet la numérotation manuelle des factures.
+Site obligatoire : Indication si le site est obligatoire.
+Codification mise sous pli : Codification pour la mise sous pli.
+Édition BVR : Permet l'édition des bulletins de versement.
+Type d'édition : Sélection du format d'édition (Standard, Excel, PDF).
+Visualisation PDF uniquement : Permet la visualisation PDF uniquement.
+Envoi par email autorisé : Autorisation de l'envoi par email.
+Arrondi Total T.V.A.
+Arrondi aux 5 centimes : Arrondi au plus proche 5 centimes.
+Arrondi au ct sans arrondi de la facture : Arrondi au centime sans arrondi de la
+ facture.
+Arrondi au ct avec arrondi automatique de la facture : Arrondi au centime avec a
+rrondi automatique de la facture.
+Type de Refacturation
+Aucun : Pas de refacturation.
+M.O. : Main d'œuvre.
+Matériaux : Matériaux.
+Transports : Transports.
+Machines : Machines.
+Coffrage : Coffrage.
+Divers : Divers.
+Carburants : Carburants.
+Paramétrage des impressions des factures fa903 :
+
+Note explicative du paramétrage des impressions des factures programme « fa903 »
+ : 
+
+Le programme "fa903" est utilisé pour le paramétrage des impressions des facture
+s dans le système ERP. Voici une description détaillée de sa composition et de s
+on fonctionnement :
+1. Liste des Paramètres d'Impression
+La partie gauche de l'écran affiche une liste des configurations d'impression ex
+
+[IMAGE HERE: image_572.png]
+
+--- AFTER ---
+istantes. Les colonnes incluent :
+Type Facture : Type de facture concerné.
+Groupe Client : Groupe de clients concerné.
+Succursale : Succursale concernée par les paramètres d'impression.
+Exempl. : Nombre d'exemplaires à imprimer.
+Blanc : Nombre de copies en bac blanc.
+Coul. 1 : Nombre de copies en couleur 1.
+Coul. 2 : Nombre de copies en couleur 2.
+2. Détails du Paramétrage Sélectionné
+La partie droite de l'écran affiche les détails du paramétrage d'impression séle
+ctionné. Elle est composée des éléments suivants :
+Sélection des Critères
+Succursale : Menu déroulant pour sélectionner la succursale concernée par le par
+amétrage d'impression.
+Groupe Client : Menu déroulant pour sélectionner le groupe de clients concerné p
+ar le paramétrage d'impression.
+Type de facture : Menu déroulant pour sélectionner le type de facture concerné p
+ar le paramétrage d'impression.
+Paramétrage des Copies
+Nombre d'exemplaires client (dont l'original) : Permet de définir le nombre tota
+l d'exemplaires à imprimer pour le client, y compris l'original.
+Nombre de copies bac blanc : Permet de définir le nombre de copies à imprimer en
+ utilisant le bac de papier blanc.
+Nombre de copies bac "couleur 1" : Permet de définir le nombre de copies à impri
+mer en utilisant le bac de papier de la première couleur.
+Nombre de copies bac "couleur 2" : Permet de définir le nombre de copies à impri
+mer en utilisant le bac de papier de la deuxième couleur.
+Paramètres pour l’interface avec Centrale programme « param » :
+
+Note explicative des paramètres pour l’interface avec Central programme « param 
+» : 
+
+Le programme "param" est utilisé pour gérer les paramètres d'interface entre dif
+férents systèmes, en particulier pour l'importation et l'exportation de données 
+entre l'ERP et d'autres systèmes. Voici une explication détaillée de sa composit
+ion et de son fonctionnement :
+1. Liste des Paramètres d'Interface
+La partie supérieure de l'écran affiche une liste des paramètres d'interface act
+uels. Les colonnes incluses sont :
+Société : Identifiant de la société concernée par le paramétrage.
+Dossier Export Chantier : Répertoire utilisé pour exporter les données de chanti
+er.
+Dossier Export Débiteur : Répertoire utilisé pour exporter les données des débit
+eurs.
+Dossier Import Chantier : Répertoire utilisé pour importer les données de chanti
+er.
+Dossier Import Débiteur : Répertoire utilisé pour importer les données des débit
+eurs.
+2. Détails des Paramètres Sélectionnés
+La partie inférieure de l'écran affiche les détails du paramétrage sélectionné, 
+permettant de modifier ou de configurer les paramètres d'interface spécifiques.
+Répertoires pour les Exports depuis MS2000
+Débiteur : Spécifie le chemin du répertoire où les données des débiteurs seront 
+exportées.
+Chantier : Spécifie le chemin du répertoire où les données des chantiers seront 
+exportées.
+Répertoires pour les Imports depuis AMMANN
+Débiteur : Spécifie le chemin du répertoire où les données des débiteurs seront 
+importées.
+Chantier : Spécifie le chemin du répertoire où les données des chantiers seront 
+importées.
+
+Ms Offre :
+Validation des chantiers créés par Grav  ar360 : 
+
+Note explicative de la validation des chantiers crée par Grav programme « ar360 
+» : 
+Le programme "ar360" est utilisé pour la validation des chantiers créés par la g
+ravière. Ce programme permet de gérer et de valider les chantiers importés avant
+ de les intégrer dans le système principal. Voici une explication détaillée de s
+a composition et de son fonctionnement :
+1. Liste des Chantiers
+La partie supérieure de l'écran affiche une liste des chantiers importés ou vali
+dés. Les colonnes incluses sont :
+Nom du fichier d'import : Le nom du fichier à partir duquel les chantiers ont ét
+é importés.
+N° Chantier Source : Le numéro du chantier tel qu'il apparaît dans le fichier so
+urce.
+N° Chantier MS : Le numéro du chantier dans le système MS.
+Nom chantier : Le nom du chantier.
+Adresse 1 : La première ligne de l'adresse du chantier.
+Npa : Le code postal du chantier.
+Localité : La localité du chantier.
+2. Détails du Chantier Sélectionné
+La partie inférieure de l'écran permet de visualiser et de modifier les détails 
+du chantier sélectionné. Les champs disponibles incluent :
+Informations Générales
+N° Chantier source : Le numéro du chantier dans le fichier source.
+Créé à partir du fichier : Le fichier à partir duquel le chantier a été créé.
+N° Chantier MS : Le numéro du chantier dans le système MS.
+N° CA : Le numéro du compte client associé au chantier.
+Désignation source : La désignation du chantier telle qu'elle apparaît dans le f
+ichier source.
+Désignation compl. : Compléments de désignation du chantier.
+Adresse 1, 2, 3 : Les lignes d'adresse du chantier.
+Npa : Le code postal du chantier.
+Localité : La localité du chantier.
+Pays : Le pays du chantier.
+Informations Client
+Client source : Le nom du client tel qu'il apparaît dans le fichier source.
+Zone : La zone géographique du chantier.
+Client source : Informations supplémentaires sur le client.
+
+Gestion des affaires ar960 : 
+
+
+Edition paramétrable des affaires ar961 :
+
+
+
+Onglet « Edition » :
+
+
+
+
+
+Edition paramétrable ar971 : 
+
+
+Note explicative de l’Edition paramétrable des liste d’offre programme « ar971 »
+ : 
+Le programme "ar971" est utilisé pour l'édition paramétrable des listes d'offres
+. Il permet de configurer et de générer des rapports personnalisés sur les offre
+s commerciales en fonction des critères définis par l'utilisateur. Voici une exp
+lication détaillée de sa composition et de son fonctionnement :
+1. Sélection des Offres
+La partie supérieure de l'écran permet de sélectionner les critères de génératio
+n de la liste des offres :
+Exercice : Sélectionner l'année pour laquelle les offres doivent être générées.
+Titre document : Donnez un titre au document qui sera généré.
+Visualisation requête : Permet de prévisualiser la requête avant de générer la l
+iste.
+Format Ligne/Page : Choisir si le format doit être en ligne ou en page.
+Portrait/Paysage : Choisir l'orientation de la page.
+12ème de pouce/15ème de pouce : Sélectionner la taille des marges.
+2. Onglet Sélections
+Cet onglet permet de spécifier les enregistrements à inclure dans la liste des o
+ffres :
+Lire : Choisir de lire tous les enregistrements ou filtrer selon des critères sp
+écifiques.
+Du fichier : Sélectionner le fichier source contenant les données à utiliser (da
+ns ce cas, "affaires (affaires)").
+3. Onglet Édition
+Cet onglet permet de définir les critères d'édition et les champs à inclure dans
+ le rapport :
+Liste des critères : Affiche les critères utilisés pour filtrer les enregistreme
+nts.
+Ajouter : Ajouter de nouveaux critères pour filtrer les offres.
+Modifier : Modifier les critères existants.
+Supprimer : Supprimer des critères de filtrage.

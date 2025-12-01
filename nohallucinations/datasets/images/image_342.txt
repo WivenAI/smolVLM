@@ -1,0 +1,308 @@
+CONTEXT FOR: image_342.png
+============================================================
+
+--- BEFORE ---
+
+Note explicative de la surveillance des débiteurs programme « db302 » : 
+Le programme db302, dédié à la surveillance des débiteurs, permet une gestion dé
+taillée et une visualisation complète de la situation financière des clients. Vo
+ici une description de ses fonctionnalités principales telles qu'illustrées dans
+ l'interface :
+Vue d'Ensemble des Débiteurs :
+Client : Nom du client associé à chaque compte débiteur.
+N° P.O. : Numéro du bon de commande pour traçabilité.
+Valeur : Date à laquelle la transaction ou l'engagement a été enregistré.
+N° pièce : Référence du document ou de la facture associée.
+Date pièce : La date à laquelle le document ou la facture a été généré.
+Libellé : Description brève de la transaction ou de l'opération.
+Échu depuis : Nombre de jours depuis l'échéance du paiement.
+Montant dû : Montant restant dû par le débiteur.
+Fonctionnalités de Filtrage :
+Clients/P.O. : Permet de filtrer les données affichées par client ou bon de comm
+ande.
+Contentieux : Option pour afficher uniquement les comptes en litige.
+Rappels : Filtrage basé sur le statut des rappels envoyés aux clients.
+Technicien(s) et Collectif(s) : Filtres pour affiner la visualisation des donnée
+s par technicien responsable ou groupe de débiteurs.
+Options de Gestion :
+Bouton droit : Cliquer avec le bouton droit de la souris permet d'accéder à des 
+options supplémentaires telles que la modification des détails du débiteur, l'aj
+out de notes ou de rappels supplémentaires.
+Barre d'outils :
+La barre d'outils en haut offre des raccourcis rapides pour les opérations coura
+ntes, telles que l'ajout de nouveaux débiteurs, l'édition de transactions exista
+ntes, ou la gestion des rappels.
+
+Onglet « Contentieux » : 
+
+Note explicative de l’onglet « contentieux » de la surveillance des débiteurs pr
+ogramme « db302 » : 
+L'onglet "Contentieux" du programme db302 est conçu pour gérer et suivre les cas
+ de litiges avec les débiteurs. Voici une explication détaillée de ses principal
+es composantes :
+Liste des Transactions en Litige :
+N° de P.O. : Numéro du bon de commande associé à la transaction.
+Date valeur : La date à laquelle la transaction a été valorisée.
+N° de pièce : Numéro de référence de la transaction ou de la facture.
+Date pièce : Date à laquelle la transaction ou la facture a été générée.
+Libellé de l'écriture : Description de la transaction.
+Échu depuis : Nombre de jours écoulés depuis la date d'échéance du paiement.
+Montant en monnaie : Montant dû en monnaie locale.
+Contrevaleur : Montant dû en monnaie de référence.
+Solde P.O. : Solde actuel du bon de commande.
+Gestion des Actions de Recouvrement :
+N° ordre Action : Identifiant de l'action de recouvrement entreprise.
+Texte : Description ou notes relatives à l'action entreprise.
+Interlocuteur : Contact chez le débiteur avec qui l'action a été coordonnée.
+Accord : Détails de tout accord éventuel atteint avec le débiteur.
+Règlement : Indique si un règlement a été réalisé.
+Montant à régler : Montant qui reste à être payé par le débiteur dans le cadre d
+e l'accord.
+Relance : Date prévue pour la prochaine action de recouvrement.
+Options de Gestion de Dossier :
+Action : Sélection des différentes mesures à prendre (par exemple, envoi de rapp
+els, négociation, etc.).
+Dossier externe/Interne : Choix entre la gestion du dossier comme externe ou int
+erne.
+Date d'accord et Date de relance : Dates clés pour le suivi des engagements pris
+ avec le débiteur.
+Onglet « rappel » : 
+
+
+Note explicative de l’onglet « Rappel » de la surveillance des débiteurs program
+me « db302 » : 
+L'onglet "Rappel" du programme db302 est structuré pour assister les utilisateur
+s dans la gestion et le suivi des rappels envoyés aux débiteurs. Voici les détai
+ls de sa composition et fonctionnement :
+Informations de Base:
+N° de P.O. : Numéro du bon de commande associé à la transaction.
+Date de valeur : La date de valeur de la transaction ou facture.
+N° de pièce : Numéro de référence de la transaction ou facture.
+Date de pièce : La date de création de la transaction ou facture.
+Libellé : Description ou titre de la transaction.
+Échu depuis : Indique le nombre de jours écoulés depuis la date d'échéance de la
+ facture.
+Gestion des Rappels:
+Date : Date à laquelle le rappel a été envoyé ou programmé pour être envoyé.
+Heure : Heure à laquelle le rappel a été envoyé.
+Niveau Date rappel : Niveau ou stade du rappel dans le processus de recouvrement
+ (par exemple, premier rappel, deuxième rappel, etc.).
+Programme : Identifiant ou nom du programme de rappel utilisé pour cette action 
+spécifique.
+Utilisateur/Commentaire : Identifiant de l'utilisateur qui a géré l'envoi du rap
+pel et commentaires associés à l'action.
+
+Cette configuration permet de suivre de manière détaillée toutes les actions de 
+rappel entreprises envers un débiteur spécifique, facilitant ainsi la gestion de
+s créances et la communication avec les débiteurs. Cela aide les entreprises à m
+aintenir un contrôle sur les paiements en retard et à prendre des mesures proact
+ives pour assurer le recouvrement des dettes.
+
+Validation des débiteurs créés par la Grav db360 : 
+
+Note explicative des débiteurs créés par Grav programme « db360 » : 
+Le programme db360 est conçu pour la validation des débiteurs qui ont été import
+és dans le système à partir de différentes sources. Il s'agit d'un outil essenti
+el pour garantir que les informations sur les débiteurs sont exactes et complète
+s avant leur intégration définitive dans la base de données principale de l'entr
+eprise. Voici une explication fonctionnelle de ses composants clés :
+Nom du fichier d'import : Ce champ affiche le nom du fichier à partir duquel les
+ données des débiteurs ont été importées. Cela permet de suivre la source des do
+nnées et de s'assurer que le fichier correct est utilisé pour la mise à jour ou 
+l'ajout de débiteurs.
+N° Client source : Numéro d'identification du client tel qu'il est fourni dans l
+e fichier source. Ce numéro est essentiel pour vérifier et valider l'unicité du 
+débiteur dans le système.
+Nom client : Le nom complet du débiteur tel qu'il apparaît dans le fichier sourc
+e. Ce champ est utilisé pour l'identification visuelle et la validation des donn
+ées de débiteur.
+Adresse 1, 2, 3 : Les adresses détaillées du débiteur. Ces champs sont utilisés 
+pour enregistrer l'emplacement précis du débiteur et sont cruciaux pour des opér
+ations comme la facturation et la livraison.
+Npa et Localité : Code postal et localité associés à l'adresse du débiteur. Ces 
+informations sont utilisées pour des vérifications géographiques et la distribut
+ion régionale.
+Type Client : Catégorie ou type du client, qui peut influencer les conditions co
+mmerciales ou la gestion des comptes.
+Titre adresse : Utilisé pour des salutations ou des en-têtes personnalisés dans 
+la communication avec le débiteur.
+Pays : Indique le pays du débiteur pour des opérations internationales et la con
+formité réglementaire.
+Lié au débiteur MS2000 : Indique si ce débiteur est lié à des enregistrements da
+ns d'autres systèmes ou bases de données internes, facilitant ainsi l'intégratio
+n et la gestion des données entre systèmes.
+
+Ce programme est essentiel pour maintenir l'intégrité des données dans le systèm
+e de gestion des débiteurs, en s'assurant que toutes les informations importées 
+sont correctes et complètes avant leur utilisation dans des processus commerciau
+x ou financiers.
+
+
+
+
+Comptabilisations :
+Comptabilisation des factures débiteurs/clients :
+Information : Dans tous les programmes de saisie comptable, la touche Enter peut
+ être utilisée à la place de la souris
+Factures clients co103 : 
+
+Partie "Pièce"
+
+
+Note explicative des factures clients programme « co103 » : 
+
+Le programme co103, dédié à la gestion des factures clients, permet de saisir, m
+
+[IMAGE HERE: image_342.png]
+
+--- AFTER ---
+odifier et consulter les écritures de facturation dans le système. Voici une exp
+lication détaillée de ses principaux composants et de leur fonctionnalité :
+N° de pièce : Permet de saisir ou rechercher un numéro spécifique de facture ou 
+de document financier associé à un client. C'est essentiel pour retracer des tra
+nsactions spécifiques ou corriger des entrées.
+Date de la pièce : Il s'agit de la date à laquelle la transaction ou la facture 
+a été générée. Cette information est cruciale pour la tenue des registres compta
+bles et le suivi temporel des transactions.
+Date valeur comptable : Correspond à la date à laquelle la transaction affecte l
+es comptes financiers de l'entreprise. Cette date peut différer de la date de la
+ pièce pour des raisons de rapprochement bancaire ou de traitement comptable.
+Recherche du dernier numéro de pièce du lot sélectionné : Fonction qui permet de
+ récupérer automatiquement le dernier numéro de pièce utilisé dans un lot spécif
+ique, simplifiant la saisie de nouvelles transactions dans des séries continues.
+Sélectionner un lot d'écritures : Permet de choisir un lot spécifique pour la sa
+isie des factures, organisant ainsi les écritures par catégorie ou par période.
+Afficher les écritures déjà saisies : Cette fonctionnalité offre une visibilité 
+sur les transactions déjà enregistrées sous le numéro de pièce ou le lot actuel,
+ permettant ainsi des vérifications rapides et la modification si nécessaire.
+Chiffres relatifs à la déclaration de TVA : Affiche les montants relatifs à la T
+VA qui doivent être déclarés, aidant à la conformité fiscale et à l'exactitude d
+es déclarations de TVA.
+Valider les données et continuer : Ce bouton permet de valider les données saisi
+es pour la facture avant de procéder à l'enregistrement final dans le système. C
+ela assure que toutes les informations sont correctes et complètes.
+
+
+
+
+
+
+
+Champs :
+§N° de Pièce – Le numéro de pièce peut être : soit le numéro de facture ou note 
+de crédit, ou un numéro de pièce interne (par exemple, numéro séquentiel attribu
+é par un composteur).
+
+
+Ce bouton permet d’aller rechercher le dernier numéro de pièce du lot sélectionn
+é. Il est souhaitable que ce numéro soit unique. Ce champ est obligatoire.
+
+§ Date de pièce – MS propose par défaut la date du jour, mais elle peut être mod
+ifiée. 
+ Ce champ est obligatoire, car la date d’échéance sera calculée à partir de cett
+e date.
+
+§ Date de valeur – MS propose par défaut la date de pièce, mais elle peut être m
+odifiée.
+Ce champ est obligatoire, voir ci-dessous les explications importantes de cette 
+donnée.
+La date de valeur comptable détermine le classement de l’écriture : son apparten
+ance à un certain mois (mouvements mensuels, chiffres d’affaires, trimestre TVA)
+ et à un critère de tri par rapport aux autres écritures d’un même mois comptabl
+e. MS permet d’attribuer une écriture à tout mois comptable ouvert, c’est-à-dire
+ pas encore bloqué par le chef comptable de manière à ne pas revenir sur une pér
+iode pour laquelle les résultats ne doivent plus être modifiés. La date de valeu
+r comptable doit être comprise entre les dates de début et de fin de l’exercice 
+comptable.
+
+
+
+
+
+
+
+
+
+
+Partie « Lot »
+
+
+§ Lot – Dans le système de gestion MS, un lot n’a pas de valeur comptable comme,
+ par exemple, un journal. Un lot n’a qu’une valeur pratique pour organiser le tr
+avail de saisie des écritures.
+C’est un groupe de pièces qu’un utilisateur va saisir : pièces de banque de la s
+emaine, factures de la semaine ou de la journée, pièces diverses pour une périod
+e quelconque, qui représentent un ensemble pratique dans la répartition des tâch
+es des différents collaborateurs.
+Un lot peut être utilisé par plusieurs utilisateurs. Chacun travaille dans ce lo
+t, mais on peut avoir plusieurs lots ouverts simultanément. Chacun contrôle la c
+omptabilisation effectuée en ayant la possibilité d’imprimer un "brouillard" de 
+saisie (journal des comptabilisations correspondant à un certain lot). Ce docume
+nt n’est pas le journal officiel de comptabilisation : il n’a pas d’autre foncti
+on que celle d’aider à la découverte d’éventuelles erreurs de saisie.
+Il est vivement conseillé d’ouvrir plutôt de nombreux lots ne comptant pas trop 
+de pièces comptables, que peu de lots très volumineux, car les brouillards de co
+ntrôle impriment toujours le détail des écritures d’un lot. Voir édition du lot,
+ programmes co150, co155.
+
+
+
+
+§Afficher détail Lot – En cliquant sur ce bouton, la liste des écritures saisies
+ dans ce lot s’affiche, selon exemple ci-dessous. Pour masquer le détail des écr
+itures du lot, cliquer sur le bouton « Masquer détail lot ».
+
+
+
+Fonctions offertes après clic-droit sur une écriture dans l’affichage du détail 
+du lot.
+
+
+
+
+
+
+
+Partie « Journal »
+
+
+
+
+Journal  – Dans le système de gestion MS, toute pièce comptable doit appartenir 
+à l’un des types de journaux comptables reconnus dans la société. La liste en es
+t dressée par le chef comptable, dans une table gérée par le programme "co900". 
+Cliquer sur le bouton OK pour choisir le type approprié dans une liste des types
+ de journaux comptables reconnus. Les pièces d’un même lot peuvent toutes appart
+enir à un même type de journal, mais elles peuvent aussi appartenir à toutes sor
+tes de types de journaux différents. Ce sont les programmes qui éditent les jour
+naux provisoires "co610" et définitifs "co620" qui opèrent le regroupement des é
+critures par mois dans les différents journaux en fonction du type indiqué à ce 
+niveau et selon les dates de valeur des écritures saisies.
+
+
+
+
+
+
+
+Fenêtre de Comptabilisation des factures débiteurs/clients : 
+Partie « Client »
+ Sélection d’un client :
+
+
+§ Débit Crédit – Par défaut  le programme positionne sur Débit (Facture), si l’o
+n souhaite comptabiliser une note de crédit : Cliquer sur Crédit. 
+Ce champ est obligatoire.
+§ Libellé – MS propose par défaut, le libellé « Facture » ou « Note de crédit »,
+ valider ou saisir dans ce champ un complément du libellé. C’est le libellé offi
+ciel qui sera édité dans les historiques des comptes clients.
+Ce champ est obligatoire.
+§ Libellé privé – Saisir éventuellement dans ce champ un libellé complémentaire,
+ qui ne sera édité optionnellement dans les historiques des comptes clients, (db
+700).
+Ce champ est facultatif.
+§ Commentaires – Saisir éventuellement dans ce champ des commentaires relatifs à
+ cette écriture, qui ne sera pas édité dans les historiques des comptes clients,
+ mais consultable dans les lignes, (option Détail de la ligne).
+Ce champ est facultatif.
+§ Succursale – Sélectionner éventuellement la succursale à affecter à cette écri

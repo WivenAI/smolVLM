@@ -1,0 +1,324 @@
+CONTEXT FOR: image_767.png
+============================================================
+
+--- BEFORE ---
+La sélection multiple est possible avec la touche "Ctrl" + clic gauche
+Par clic droit de la souris, certaines fonctionnalités seront proposées :
+
+
+
+Clôture provisoire d'un mois comptable co600 :
+
+
+Clôture partielle d’un mois comptable
+
+Ce programme à pour but d’effectuer une clôture partielle pour les utilisateurs 
+ayant un niveau d’autorisation inférieur à 8. Les lots de niveaux inférieurs, ai
+nsi que le mois seront fermés aux utilisateurs de niveaux inférieurs.
+
+Remarques : Pour pouvoir établir la fermeture des lots de niveaux supérieurs à 8
+, utiliser le programme co605.
+
+
+
+
+
+
+
+
+
+Edition journaux provisoires co610 : 
+
+
+Edition des journaux provisoires :
+
+Le but de ce programme est d’imprimer un journal détaillé des écritures saisies 
+relatives à cette période et ce journal.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Cliquer pour sélectionner le mois désiré
+
+
+
+Cliquer pour sélectionner le type de journal désiré
+
+
+Clôture définitive d'un mois comptable co620 :
+
+
+Clôture définitive et édition des journaux d’un mois :
+
+Le but de ce programme est d’imprimer les écritures détaillées des différents jo
+urnaux pour cette période.
+Tous les lots du mois doivent auparavant être fermés (co605).
+Le traitement se déroule de manière séquentielle pour chacun des mois de l’exerc
+ice comptable.
+Si le traitement c’est déroulé correctement pour le mois traité, un blocage de s
+aisie des écritures est activé.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+
+
+Sélection du mois
+
+
+
+
+
+
+
+Clôture annuelle et réouverture :
+
+Chronologie des travaux de report annuel avec MS2000 :
+
+1. Sélectionner les comptes qui ne doivent pas être reportés dans le nouvel exer
+cice (cg100)
+
+
+
+2. Contrôle des utilisateurs actifs (ba999)
+
+
+
+3. Fermeture des lots (co120)
+
+
+
+
+
+4. ouverture nouvel exercice (co710)
+5. Actualisation des reports (co720)
+6. Création de la ligne de résultats (co725)
+
+Lorsque deux exercices sont ouverts (par exemple en janvier ou l'on comptabilise
+ sur le nouvel exercice mais aussi sur le précédent), le report des soldes se  f
+ait automatiquement
+une fois par jour (peut-être aussi lancé à la demande avec la transaction ci-des
+sus).
+
+Ouverture de l'exercice comptable suivant co710 :
+
+Ouverture de l’exercice comptable :
+
+Le but de ce programme est d’ouvrir le nouvel exercice comptable dès que des piè
+ces concernant le nouvel exercice doivent être saisies.
+Avant d’exécuter ce programme il est vivement conseillé de mettre à jour les dif
+férents comptes afin de ne pas les reporter dans le nouvel exercice. (Programmes
+ db100, ca100, cr100, cg100. Case à cocher « Ne sera pas reporté »).
+Ce programme réouvre tous les comptes avec les données comptables respectives se
+lon le type de compte.
+Au moment de l’exécution de ce programme, aucun utilisateur ne doit être actif d
+ans MS 2000.
+Attention ! Ce programme ne doit être lancé qu’une seule fois.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Compléter le texte adéquat
+
+
+
+Modifier le texte si nécessaire
+
+
+
+Modifier les coefficients de majoration des budgets pour le nouvel exercice
+
+
+
+Niveau d'arrondi
+Niveau d’arrondi souhaité.
+En l’occurrence le montant sera arrondi au franc le plus proche
+
+Actualisation des soldes reportés co720 : 
+
+Actualisation des soldes reportés :
+
+Le but de ce programme est de réactualiser les soldes reportés (solde à nouveau)
+ ainsi que les soldes de l’exercice courant.
+De part la possibilité de pouvoir comptabiliser sur les deux exercices en parall
+èle pendant une certaine période, ce programme est exécuté automatiquement chaqu
+e nuit par le gestionnaire des tâches planifiées. Néanmoins, ce programme peut ê
+tre exécuté individuellement.
+Au moment de l’exécution de ce programme, aucun utilisateur ne doit être actif d
+ans MS 2000.
+
+Attention ! Si des écritures ont été effacées dans l’exercice précédent, il faut
+
+[IMAGE HERE: image_767.png]
+
+--- AFTER ---
+ lancer les programmes de re-calcul des soldes (co987) dans l’exercice précédent
+ avant d’exécuter ce programme dans l’exercice courant.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Modifier le texte si nécessaire
+
+
+Création/modification de la ligne de résultat co725 : 
+
+Création / modification de la ligne de résultat:
+
+Le but de ce programme est de calculer et de comptabiliser le résultat de l’exer
+cice.
+Préalables : 
+1) Les comptes de résultats Actif, Passif et PP, doivent être paramétrés dans le
+s comptes respectifs (cg100).
+2) Les comptes de l'exercice à clôturer doivent avoir été complètement audités.
+
+
+
+Ce programme peut être exécuté plusieurs fois. Après exécution, il faut lancer l
+e programme de réactualisation des soldes dans l’exercice courant.
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Modifier le texte si nécessaire
+
+
+Consultation des journaux co650 : 
+
+Consultation des journaux :
+
+Le but de ce programme est pouvoir consulter l’ensemble des journaux d’une socié
+té et d’un exercice comptable.
+
+Préalables : Les lots doivent être fermés (programmes co605 ou co600), ainsi que
+ la clôture définitive du mois. (Programme édition des journaux définitifs (prog
+ramme co620).
+
+Fenêtre des informations à disposition :
+
+
+
+
+Informations détaillées :
+
+
+
+Table : 
+
+Monnaies étrangères co901 : 
+
+Gestion des tables monnaies étrangères :
+
+Le but de ce programme, est de pouvoir gérer de manière centralisée les taux de 
+change permettant de calculer les montants en contre-valeur de la monnaie de la 
+société.
+Néanmoins, dans la saisie des différents types d’écritures, la possibilité de mo
+difier le taux de change proposé par défaut est réalisable.
+Le genre de table de conversion est fixé dans le programme de gestion de société
+, ainsi que la monnaie de base de la société.
+Les comptes bénéfice et perte de change doivent être créé au préalable dans le p
+lan comptable.
+
+
+
+Cliquer pour sélectionner la monnaie
+
+
+
+Sélection du genre de table
+
+
+
+Paramètres comptables
+
+Pour les monnaies différentes de la monnaie de base, saisir le(s) compte(s) diff
+érences de change
+
+Choix du type d'arrondi
+
+
+
+Dans la première colonne, on définit la positiion de l'arrondi (position définie
+ depuis la droite)
+Dans la deuxième colonne, on choisit le traitement de l'arrondi désiré
+
+Le code "32" correspond à :
+
+Position de l'arrondi = 3 
+Type d'arrondi = 2 (arrondi au 5 centimes supérieur)
+
+
+Mise à jour de la note explicative le 23.06.2025 : Le programme CO901 – Paramètr
+es comptables généraux permet de définir plusieurs types de comptes, notamment :
+
+
+Compte pour les gains de change
+Compte pour les pertes de change
+
+Ces comptes 
+sont utilisés automatiquement par CO260 lors de la génération des écritures d'éc
+art de change.
+
+Étapes à suivre :
+1. Ouvrir le programme CO901
+2. Sélectionner l
+a société concernée
+3. Aller à l’onglet ou à la section liée aux paramètres géné
+raux / comptes par défaut
+4. Renseigner :
+   - Compte gain de change (CG) : par 
+exemple, 6970
+   - Compte perte de change (CG) : par exemple, 6971
+5. Sauvegarde
+r le paramétrage
+
+Ensuite, lors de l’exécution du programme CO260, MS.ERP utilis
+e automatiquement ces comptes pour comptabiliser les écarts selon que la variati
+on soit favorable ou défavorable.
+
+
+
+T.V.A. co902 :
+
+Le but de ce programme, est de pouvoir gérer de manière centralisée tous les tau
+x de TVA permettant de calculer les montants de TVA à récupérer ou à facturer.
+
+
+Onglet Code T.V.A.
+
+
+
+
+Cliquer pour sélectionner le code TVA désiré
+
+Onglet Taux de T.V.A.
+
+
+Saisie des paramètres du taux
+sélectionné
+
+
+Tables simples co900 :
+
+Gestion des tables simples :
+
+Le but de ce programme, est pouvoir définir les informations nécessaires dans le
+s divers programmes de comptabilité, selon différents types de tables comme le m
+ontre l’exemple ci-après.
+
+Avant de pouvoir gérer une nouvelle entrée dans la table, sélectionner en priori
+té le type de table désiré.
+
+Exemple ci-dessous : à gauche, le type de table pour les journaux comptables, à 
+droite, les différents types de journaux pouvant être supprimés, étendus ou modi
+fiés selon ses besoins.
+
+
+
+

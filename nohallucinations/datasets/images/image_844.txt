@@ -1,0 +1,308 @@
+CONTEXT FOR: image_844.png
+============================================================
+
+--- BEFORE ---
+
+Types de lignes «MB », « QB », « MT », « QT » champs avec valeurs annuelles de t
+otalisation et traitement de(s) genre(s) de frais (soldes année en cours).
+
+
+
+
+D)Informations de types «Montant Budget», « Quantité Budget », « Montant réel »,
+ « Quantité réelle » :
+
+- Code de la liste    Nom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter 
+(incrément de 10 en 10 recommandé).
+- Type« MT » ou « QT » ou « MB » ou « QB » .
+- Fichier Pour ce type de données, seul les informations provenant du fichier
+» caso « (Soldes genres de frais, ca142) peuvent être traitées.
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur   Saisir le nombre de caractères que l’on désire imprimer.
+- Période Saisir la période (01 à 12) relative aux valeurs des genres de frais
+ saisies ci-dessous.
+- Exercice précédent  Cocher, si l’on désire traiter les valeurs cumulées des ex
+ercices 
+  précédents pour les genres de frais saisis ci-dessous.
+- Totalisation générale Cocher, si un total doit être imprimé à la fin du traite
+ment.
+- Totalisation compte   Cocher, si un total doit être imprimé après  chaque comp
+te analytique.
+- Cumul annuel  Cocher, si l’on désire traiter les valeurs cumulées pour les 
+                      genres de frais saisis ci-dessous.
+- Genres de fraisSaisir le(s) numéro(s) 
+de(s) genre(s) de frais que l’on désire traiter dans cette colonne (min. 1 max. 
+30).
+
+
+Types de lignes «MC », « QC » champs avec valeurs de totalisation et traitement 
+de(s) genre(s) de frais (soldes cumulés).
+
+
+
+
+E)Informations de types «Montant Cumul», « Quantité Cumul »:
+
+- Code de la listeNom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter 
+(incrément de 10 en 10 recommandé).
+- Type« MC » ou « QC ».
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur   Saisir le nombre de caractères que l’on désire imprimer.
+- AnnuelCocher, si l’on désire traiter les valeurs de l’année en cours pour les 
+genres de frais saisis ci-dessous.
+- PluriannuelCocher, si l’on désire traiter les valeurs cumulées pour les genres
+ de 
+frais saisis ci-dessous.
+- Exercice précédent (cumul)   Cocher, si l’on désire traiter les valeurs cumulé
+es des exercices 
+ précédents pour les genres de frais saisis ci-dessous.
+- Exercice précédent (périodique)  Cocher, si l’on désire traiter les valeurs cu
+mulées des exercices 
+précédents pour les genres de frais saisis ci-dessous, selon la période 
+qui sera saisie dans les réponses du programme ca650.
+- Totalisation généraleCocher, si un total doit être imprimé à la fin du traitem
+ent.
+- Totalisation compteCocher, si un total doit être imprimé après  chaque compte 
+analytique.
+- Genres de fraisSaisir le(s) numéro(s) de(s) genre(s) de frais que l’on désire 
+traiter dans cette colonne (min. 1 max. 30).
+
+Type de ligne «CA » calcul avec valeurs de totalisation et traitement opérationn
+el des colonnes :
+
+
+
+
+F)Informations de types «Montant Cumul», « Quantité Cumul »:
+
+- Code de la listeNom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter 
+ (incrément de 10 en 10 recommandé).
+- Type« CA » .
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur  Saisir le nombre de caractères que l’on désire imprimer.
+- Pourcentage       Cocher, si l’on désire traiter les valeurs avec un résultat 
+en %.
+- Totalisation générale    Cocher, si un total doit être imprimé à la fin du tra
+itement.
+- Totalisation compte      Cocher, si un total doit être imprimé après  chaque c
+ompte analytique.
+- Calcul  Saisir les numéros de colonnes pour les valeurs que l’on désire traite
+r.
+
+
+
+Type de ligne «CA » calcul avec valeurs de totalisation et traitement opérationn
+el des colonnes avec % :
+
+
+
+
+Type de ligne «I«  champ sans valeur de totalisation et traitement de rubrique(s
+) salaire :
+
+
+
+H) Informations de type «Informations»  :
+
+- Code de la liste    Nom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à 
+traiter (incrément de 10 en 10 recommandé).
+- Type« I » .
+- Fichier   Saisir le nom du fichier tel que défini dans le dictionnaire PROGRES
+S.
+- Champ  Saisir le nom du champ tel que défini dans le dictionnaire ROGRESS.
+- Position Saisir la position à partir de laquelle l’impression doit s’effectuer
+.
+- Longueur    Saisir le nombre de caractères que l’on désire imprimer.
+- TexteSaisir le texte d’information souhaité que l’on désire imprimer.
+- report s/total salarié  Cocher, si un total doit être imprimé après chaque sal
+arié.
+- SubstitutSaisir le texte désiré.
+- report s/total général Cocher, si un total doit être imprimé à la fin du trait
+ement.
+- Substitut   Saisir le texte désiré.
+Descriptions des champs pour les tables « caba » et « cava ».
+
+============================= Table: caba ===============================
+
+Order Field NameDataTypeFlagsFormatInitial
+
+10nsteinteI>>90
+30licacharIx(15)
+40 nocacharIx(10)
+50tycacharIx0
+60gecacharIx
+70lib1charx(30)
+80lib2charx(30)
+90langlogiyes/nono
+100ctpalogiyes/nono
+120ctaslogiyes/nono
+130adnointe>>>>>>>>90
+140intccharx(20)
+150imnocharx(10)
+160imtccharx(20)
+230autointe990
+235bloclogiyes/nono
+240derochar!C
+250dericharx(6)
+
+[IMAGE HERE: image_844.png]
+
+--- AFTER ---
+260derddate99/99/9999
+270derhinte>>>>90
+280rec1charx(10)
+290rec2charx(10)
+300rec3charx(10)
+310rec4charx(10)
+320rec5charx(10)
+330rec6charx(10)
+350imprlogiyes/noyes
+360codxchar[3]x(10)
+370codninte[3]>>>90
+380codllogi[3]yes/nono
+390dafedate99/99/9999?
+400techcharx(20)
+410codecharx(10)
+420exerinteI>>>90
+430nodointeI>>>>>>>>0
+440notechinteI>>>90
+450nodbinte>>>>>>>90
+460nocrinte>>>>>>>90
+470nstefisinte>>>0
+480majdetlogiyes/nono
+490tarifinte>,>>>,>>90
+Field NameLabel
+
+NsteNuméro de société
+LicaLibellé court (= code)
+NocaNuméro centre/charge
+TycaType de compte
+GecaGenre de compte
+lib1Intitulé 1
+lib2Intitulé 2
+langAutre langue
+ctpaCpte pluriannuel
+ctasCompte à solder
+adnoNuméro
+intcIntitulé court
+imnoNuméro immobilisation
+imtcLibellé court immobilisation
+autoNiveau autorisation
+blocCompte bloqué (yes/no)
+deroDernière opération
+deriIdentité dernière opération
+DerdDate dernière opération
+DerhHeures (TIME) dernière opération
+rec1No cpte récap. 1
+rec2No récap. 2
+rec3No récap. 3
+rec4No récap. 4
+rec5No récap. 5
+rec6No. cpte recap. 6
+imprImpression
+codxCode alpha en réserve
+codnCodes numériques en réserve
+codlCode logique en réserve
+dafeDate de fermeture
+TechTechnicien-responsable
+CodeCode
+ExerExercice
+NodoNo de dossier
+NotechNo de responsable
+NodbClient
+NocrFournisseur
+NstefisNo de société facturation
+MajdetMajoration détaillée
+TarifTarif
+
+============================= Table: cava ===============================
+Order Field NameData TypeFlags FormatInitial
+
+10nsteinteI>>90
+20 exerinteI>>>90
+30licacharIx(15)
+40nocacharIx(10)
+62 factdeci-4[6]>>>9.9999-0
+64coefdeci-4[6]>>>9.9999-0
+66 repachar[25]x(6)
+70 zmntdeci-2[30]>>>>>>>>,>>9.99 0
+80zdatdate[10]99/99/9999?
+90 ztaudeci-4[10]>>>>9.9999-0
+100 ztxlchar[10]x(30)
+110 ztxcchar[30]x(15)
+120 zcodchar[10]x(3)
+130 zloglogi[10]yes/nono
+140 znumchar[10]x(10)
+160 derochar!C
+170 dericharx(6)
+180 derddate99/99/9999?
+190 derhinte>>>>90
+
+Field NameLabel
+
+NsteNuméro de société
+ExerExercice
+LicaLibellé court (Recherche)
+NocaNuméro
+FactFacteur
+CoefCoefficient
+RepaCode répartition
+ZmntMontant
+zdatDate
+ztauTaux
+ztxlLibellé long
+ztxcChamps alphan. courts
+zcodCodes xxx
+zlogSélection yes/no
+znumNuméros en alpha
+deroDernière opération
+deriIdentité dernière opération
+derdDate dernière opération
+derhHeures (TIME) dernière opération
+
+Editions paramétrables ca650 :
+
+
+Ce programme utilise les listes paramétrées avec ca655 (section précédente) pour
+ générer des fichier excel, word, ou une impression :
+
+
+
+
+Sélection du compte CA
+
+Alphabétique ou numérique (sélection multiple possible avec ctrl+clic gauche)
+
+Sélection des comptes de récapitulation
+
+Ces comptes sont paramétrés avec le programme ca655
+
+Edition test
+
+Permet de voir les lignes de type E pour paramétrer correctement les espaces
+
+Sélection par responsable
+
+Par exemple pour diviser les listes par responsable de chantier
+
+Choix des périodes et cumuls
+
+
+Date de fin de chantier (il faut lire ici date de fermeture)
+
+Permet de ne pas faire apparaître les comptes CA qui ont été fermés avant la dat
+e choisie dans ce champ.
+Exemple : si l'on veut un état des travaux en cours à fin décembre 2016, il faut
+ exclure les chantiers fermés dans le courant de l'année (ex. spécifier  la date
+ de fermeture "31.12.2016" va permettre d'exclure tous les chantiers terminés (f
+ermés) avant le 31.12.2016) => seuls les chantiers en cours vont apparaître
+
+Choix du genre de compte CA

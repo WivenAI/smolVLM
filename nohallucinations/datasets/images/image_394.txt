@@ -1,0 +1,308 @@
+CONTEXT FOR: image_394.png
+============================================================
+
+--- BEFORE ---
+ée, soit en pourcentage, soit en montant fixe.
+
+
+
+
+
+Liste soldes :
+Soldes db200 :
+Listes des soldes débiteurs/clients :
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée.
+
+
+
+
+
+Cocher pour imprimer également 
+les clients ayant des soldes à zéro
+
+
+Saisir la date d’arrêté de la balance.
+Calcul des soldes à cette date
+
+Note explicative des soldes programme « db200 » : 
+
+Le programme db200 est spécifiquement conçu pour gérer et analyser les soldes de
+s débiteurs dans un système ERP. Il offre un moyen efficace de contrôler les sol
+des des clients à une date spécifique, permettant aux utilisateurs de suivre l'é
+volution des comptes clients. Voici un guide explicatif sur sa composition et se
+s fonctionnalités principales :
+Fonctionnalités Principales du Programme db200
+Sélection du Critère de Recherche :
+Par numéro de débiteur : Permet aux utilisateurs de rechercher des soldes spécif
+iques par le numéro attribué à chaque client dans la base de données.
+Options de Filtrage et d'Affichage :
+Cocher pour imprimer également les clients ayant des soldes à zéro : Cette optio
+n donne la possibilité d'inclure dans les rapports les clients qui ont un solde 
+nul à la date d'arrêté, ce qui est utile pour l'analyse de la complétude des don
+nées.
+Soldes à zéro : Active la visibilité des soldes nuls directement sur l'interface
+, sans avoir besoin d'imprimer.
+Gestion des Dates :
+Saisir la date d'arrêté de la balance : Les utilisateurs doivent entrer la date 
+pour laquelle ils souhaitent consulter les soldes. Le système calcule et affiche
+ les soldes de tous les débiteurs à cette date précise, permettant un contrôle f
+inancier précis à des moments clés, comme la fin d'un exercice fiscal ou d'un mo
+is.
+
+Liste chiffre d'affaires db210 :
+
+Listes de chiffre d’affaires débiteurs/clients :
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre des réponses de sélection possible :
+
+Saisir les bornes des mois désirés 
+pour le calcul du chiffre d’affaires périodique
+
+Sélection
+Cocher pour imprimer les clients ayant un chiffre d’affaires à zéro
+
+Note explicative du chiffre d’affaires par débiteur sans compte de regroupement 
+programme « db210 : 
+Le programme db210 est conçu pour fournir une analyse détaillée du chiffre d'aff
+aires généré par les débiteurs d'une société sans impliquer les comptes de regro
+upement. Voici une explication détaillée de ses composants et de son fonctionnem
+ent pour faciliter la compréhension de son utilité comme un outil de reporting f
+inancier dans un environnement ERP.
+Fonctionnalités Principales du Programme db210
+Sélection de la Période:
+Les utilisateurs peuvent saisir les bornes des mois souhaités pour le calcul du 
+chiffre d'affaires périodique. Cela permet d'examiner le rendement des ventes ou
+ des services sur des périodes spécifiques, facilitant l'analyse saisonnière ou 
+mensuelle.
+Sélection des Clients:
+Tous les clients : Permet d'inclure tous les clients de la base de données dans 
+l'analyse.
+Sélection alphabétique : Offre la possibilité de filtrer les clients selon l'alp
+habet, ce qui est pratique pour les rapports ciblés ou lorsqu'on recherche des d
+onnées spécifiques sur un segment de clientèle.
+Sélection numérique : Permet un filtrage basé sur des critères numériques, proba
+blement utilisé pour des identifiants de client ou des codes spécifiques.
+Options de Reporting:
+Visualiser : Permet de voir les résultats directement dans le système avant de p
+rocéder à d'autres opérations, comme l'impression ou l'exportation.
+Imprimer vers fichier : Donne l'option d'imprimer les résultats directement dans
+ un fichier pour une conservation ou une analyse ultérieure.
+Export Excel : Facilite l'exportation des données recueillies vers un fichier Ex
+cel pour une manipulation et une analyse plus détaillée.
+Chiffre d'affaires à zéro:
+Cette option, lorsqu'elle est cochée, inclut dans les rapports les clients dont 
+le chiffre d'affaires est nul pour la période spécifiée, utile pour identifier l
+es comptes inactifs ou les anomalies potentielles.
+Liste extraite de compte db230 :
+
+Extraits de compte semestriel :
+Le but de ce programme, est d’analyser l’évolution de la situation des soldes cl
+ients sur une période donnée.
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard :
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fenêtre des réponses de sélection possible :
+
+
+Note explicative de l’extrait de compte programme « db230 » : 
+
+Le programme db230 est conçu pour générer des extraits de compte pour des débite
+urs sur des périodes spécifiques, permettant une gestion efficace et un suivi de
+s mouvements financiers associés à chaque client. Voici une explication détaillé
+e de ses composants et fonctionnalités principales :
+Fonctionnalités Principales du Programme db230
+Choix du Type de Sélection des Clients :
+Tous les clients : Cette option permet de générer des extraits pour tous les cli
+ents enregistrés dans le système, offrant une vue globale des mouvements financi
+ers.
+Sélection alphabétique : Permet de filtrer et de générer des extraits pour des c
+lients selon l'ordre alphabétique. Cela est utile pour les entreprises avec un g
+rand nombre de clients et nécessitant des rapports spécifiques.
+
+[IMAGE HERE: image_394.png]
+
+--- AFTER ---
+Sélection numérique : Facilite la sélection de clients basée sur des critères nu
+mériques, probablement liés à des identifiants spécifiques ou des numéros de com
+pte.
+Spécification de la Période :
+Les utilisateurs peuvent définir l'exercice fiscal et choisir la période spécifi
+que pour laquelle ils veulent examiner les mouvements de compte, de "Janvier" à 
+"Mai" dans cet exemple, permettant des analyses périodiques adaptées aux besoins
+ de l'entreprise.
+Options de Visualisation et d’Impression :
+Imprimer vers fichier : Cette fonction permet d'imprimer les résultats dans un f
+ichier pour un archivage ou une analyse plus approfondie.
+Visualiser : Avant de procéder à l'impression ou l'exportation, les utilisateurs
+ peuvent prévisualiser les extraits pour s'assurer de leur exactitude.
+Édition des Comptes sans Mouvements :
+Il est possible de cocher une option pour inclure dans le rapport les comptes qu
+i n'ont pas enregistré de mouvements durant la période spécifiée, ce qui est cru
+cial pour l'identification des comptes inactifs ou dormant.
+
+
+
+
+
+Postes Ouverts à ce jour db300 : 
+
+
+Note explicative des postes ouverts à ce jour programme « db300 » : 
+
+Le programme db300 est un outil de gestion qui permet de visualiser et de gérer 
+les postes ouverts pour différents clients d'une société. Voici une explication 
+détaillée de ses composants et fonctionnalités principales :
+Fonctionnalités Principales du Programme db300
+Vue Client :
+Liste des Clients : Le programme affiche une liste détaillée des clients avec le
+ur numéro d'identification, leur localité et le total dû. Cela permet aux utilis
+ateurs de suivre facilement les créances et d'identifier rapidement les clients 
+avec des montants significatifs dus.
+Détails des Créances :
+Total dû : Chaque ligne représente un client spécifique et montre le montant tot
+al dû. Cela inclut toutes les transactions non réglées jusqu'à la date actuelle.
+Condition Vérifiée : Cette colonne spécifie les conditions de paiement ou les ac
+cords de crédit que chaque client a respectés, par exemple, si les paiements son
+t dans le cadre d'un échéancier standard ou d'une condition spécifique à une aff
+aire.
+Fonctionnalités de Recherche et de Filtrage :
+Recherche de Clients : Les utilisateurs peuvent rechercher des clients spécifiqu
+es pour affiner la liste basée sur des critères de recherche comme le nom du cli
+ent, la localité, ou le numéro de client.
+Filtrage : Le programme offre la possibilité de filtrer les données selon plusie
+urs critères, facilitant ainsi la gestion des comptes clients en fonction des be
+soins spécifiques de reporting ou d'analyse.
+Options de Visualisation et de Sortie :
+Impression et Export : Les données peuvent être imprimées directement ou exporté
+es pour un traitement ultérieur, ce qui est pratique pour les réunions de revue 
+de crédit ou les analyses financières.
+
+
+Onglet « détail » : 
+
+
+Note explicative de l’onglet « détail » des postes ouverts à ce jour programme «
+ db300 » : 
+L'onglet "Détail" dans l'interface du programme "db300" vous permet de gérer et 
+d'afficher des informations détaillées sur les transactions ou les postes ouvert
+s. Voici une explication détaillée de ses composants :
+Client : Identifie le client concerné par le poste ouvert, comme illustré par le
+s valeurs "10735 À Carré SA & Chocapa" et "1027 Lonay".
+Montant dû et Contrevaleur : Ces champs montrent respectivement le montant dû pa
+r le client et sa contrepartie, souvent dans la devise principale de l'opération
+. Par exemple, ici, les deux montants sont de "80'000.00 CHF".
+Société & Désignation : Indique la société associée au poste ouvert et sa désign
+ation, telle que "110 Orlait (VD) SA - TD".
+Échéancier : Gère les échéances liées à la transaction. Il peut afficher les dét
+ails de l'échéance comme "Échéancier standard" et indique le montant total dû et
+ l'échéancier dans des champs séparés.
+Montant total dû, Montant échéancier et Différence : Ces champs fournissent des 
+informations financières détaillées sur le total dû, ce qui est dû selon l'échéa
+ncier, et toute différence entre ces deux montants.
+N° de P.O., Date valeur, N° de pièce, Date pièce, Libellé de l'écriture, Libellé
+ interne : Ces colonnes listent les détails spécifiques de chaque poste ouvert, 
+incluant son numéro, les dates associées, et les descriptions internes et extern
+es des transactions. Par exemple, vous avez des entrées comme "51487199" avec de
+s dates et des libellés spécifiques à la transaction.
+Mt en monnaie, Contrevaleur, Solde P.O. : Ces champs fournissent des information
+s sur le montant de la transaction dans la monnaie de transaction, sa contrevale
+ur en monnaie locale, et le solde actuel du poste ouvert.
+
+Liste postes ouverts arrêtés au db320 :
+
+Liste des postes ouverts à ce jour :
+Le but de ce programme, est d’imprimer la situation des P.O. clients au moment d
+e l’exécution de ce programme.
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard :
+
+
+
+
+Cette date est pour information
+(elle sera éditée sur la liste)
+Détail
+Cocher pour imprimer le détail des postes ouverts par client
+Impression des échéancies
+
+Cocher pour imprimer le détail des échéances par client
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de la liste des poste ouverts arrêtés au db320 : 
+
+Le programme "db320" est conçu pour gérer et visualiser les postes ouverts arrêt
+és à une date donnée dans un système ERP. Voici une explication détaillée de ses
+ composants principaux et de leur fonctionnalité :
+Visualiser et Export Excel : Ces options permettent de visualiser les données à 
+l'écran ou de les exporter vers Excel pour une analyse plus approfondie.
+Imprimer vers fichier : Cette fonction permet d'imprimer les données directement
+ dans un fichier, facilitant le partage ou l'archivage des informations.
+Tous les clients / Sélection alphabétique / Sélection numérique : Vous pouvez ch
+oisir de visualiser les postes pour tous les clients ou effectuer une sélection 
+plus ciblée soit par ordre alphabétique, soit par ordre numérique.
+Groupes de clients, Succursales, Collectifs, Échéanciers: Ces menus déroulants p
+ermettent de filtrer les données affichées selon différents critères tels que le
+ groupe de clients, la succursale, le collectif ou l'échéancier spécifique.
+Type(s) de facture et Situation au: Ces options donnent la possibilité de filtre
+r les données basées sur le type de facture et la date de situation des postes o
+uverts.
+Avec suivi contentieux / Impression des échéanciers: Vous pouvez spécifier si le
+s postes avec suivi contentieux doivent être inclus et si vous souhaitez imprime
+r les échéanciers.
+% min. P.O./facture et Montant min. P.O.: Ces champs permettent de définir des s
+euils minimums pour le pourcentage et le montant des postes ouverts par rapport 
+aux factures, filtrant ainsi les postes qui ne répondent pas aux critères spécif
+iés.
+Impression P.O. détaillés, Impression libellé interne, etc.: Ces options permett
+ent de personnaliser l'output imprimé en incluant des détails supplémentaires te
+ls que les libellés internes, les noms des chantiers et responsables, et diverse
+s méthodes de récapitulation des postes ouverts.
