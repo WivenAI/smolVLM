@@ -175,6 +175,92 @@ class QCMDataset(torch.utils.data.Dataset):
         return inputs
 
 
+class DPOSFTDataset(torch.utils.data.Dataset):
+    """Dataset for SFT training on DPO dataset (using chosen responses)"""
+
+    def __init__(self, json_path: str, image_dir: str, processor):
+        self.processor = processor
+        self.image_dir = Path(image_dir)
+
+        with open(json_path, 'r', encoding='utf-8') as f:
+            self.data = json.load(f)
+
+        logger.info(f"Loaded {len(self.data)} DPO examples for SFT")
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        item = self.data[idx]
+
+        # Load image
+        image_name = item.get('image_name', '')
+        if image_name:
+            image_path = self.image_dir / image_name
+            if image_path.exists():
+                image = Image.open(image_path).convert('RGB')
+                # Resize large images
+                max_size = 1024
+                if image.size[0] > max_size or image.size[1] > max_size:
+                    image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+            else:
+                image = Image.new('RGB', (224, 224), color='white')
+        else:
+            image = Image.new('RGB', (224, 224), color='white')
+
+        prompt = item['prompt']
+        chosen_response = item['chosen']  # Use the good response for SFT
+
+        # Create messages
+        user_message = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image"},
+                    {"type": "text", "text": prompt}
+                ]
+            }
+        ]
+
+        full_messages = user_message + [
+            {
+                "role": "assistant",
+                "content": [{"type": "text", "text": chosen_response}]
+            }
+        ]
+
+        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True, tokenize=False)
+        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False, tokenize=False)
+
+        prompt_inputs = self.processor(
+            text=prompt_text,
+            images=image,
+            return_tensors="pt",
+            padding=True,
+            size={"longest_edge": 1024}
+        )
+
+        full_inputs = self.processor(
+            text=full_text,
+            images=image,
+            return_tensors="pt",
+            padding=True,
+            size={"longest_edge": 1024}
+        )
+
+        # Mask prompt tokens (only train on response)
+        prompt_length = prompt_inputs["input_ids"].shape[1]
+        labels = full_inputs["input_ids"].clone()
+        labels[:, :prompt_length] = -100
+
+        inputs = {}
+        for key in full_inputs:
+            inputs[key] = full_inputs[key].squeeze(0)
+        inputs["labels"] = labels.squeeze(0)
+
+        return inputs
+
+
 class BenchmarkDataset(torch.utils.data.Dataset):
     """Dataset for training on benchmark datasets (DocVQA, OCRBench, ChartQA)"""
 
@@ -418,6 +504,82 @@ class SFTTrainer:
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
+    def train_dpo_sft(self, dataset_path: str, image_dir: str, output_dir: str,
+                      epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
+                      base_model: str = None) -> str:
+        """Train on DPO dataset using SFT (chosen responses only)"""
+        if self.model is None:
+            self.load_model(base_model)
+
+        logger.info(f"Training SFT on DPO dataset: {dataset_path}")
+
+        # Create dataset
+        full_dataset = DPOSFTDataset(dataset_path, image_dir, self.processor)
+
+        # Limit dataset size if max_samples specified
+        dataset_size = len(full_dataset)
+        if max_samples and max_samples < dataset_size:
+            logger.info(f"Limiting dataset from {dataset_size} to {max_samples} samples")
+            indices = list(range(max_samples))
+            full_dataset = torch.utils.data.Subset(full_dataset, indices)
+            dataset_size = max_samples
+
+        # Split dataset
+        train_size = int(0.9 * dataset_size)
+        eval_size = dataset_size - train_size
+
+        train_dataset, eval_dataset = torch.utils.data.random_split(
+            full_dataset,
+            [train_size, eval_size],
+            generator=torch.Generator().manual_seed(42)
+        )
+
+        logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
+
+        # Training arguments
+        training_args = TrainingArguments(
+            output_dir=output_dir,
+            num_train_epochs=epochs,
+            per_device_train_batch_size=1,
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=8,
+            learning_rate=1e-5,
+            lr_scheduler_type="cosine",
+            warmup_steps=100,
+            weight_decay=0.01,
+            logging_steps=10,
+            eval_strategy="steps",
+            eval_steps=100,
+            save_steps=200,
+            save_total_limit=2,
+            bf16=torch.cuda.is_available(),
+            dataloader_pin_memory=False,
+            remove_unused_columns=False,
+            report_to="wandb" if use_wandb else "none",
+            load_best_model_at_end=True,
+            metric_for_best_model="eval_loss",
+            greater_is_better=False,
+            gradient_checkpointing=True,
+            optim="adamw_8bit",
+        )
+
+        trainer = Trainer(
+            model=self.model,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            data_collator=VisionLanguageDataCollator(),
+        )
+
+        trainer.train()
+
+        # Save model
+        trainer.save_model()
+        self.processor.save_pretrained(output_dir)
+
+        logger.info(f"Model saved to: {output_dir}")
+        return output_dir
+
     def train_benchmark(self, benchmark_name: str, output_dir: str,
                         epochs: int = 3, use_wandb: bool = True, max_samples: int = None) -> str:
         """Train on a benchmark dataset (DocVQA, OCRBench, ChartQA)"""
@@ -529,6 +691,21 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             epochs=config.get("training", {}).get("epochs", 3),
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
             max_samples=config.get("training", {}).get("train_samples")
+        )
+
+    if strategy["type"] == "sft_dpo":
+        base_path = Path(__file__).parent.parent
+        dataset_path = base_path / strategy["dataset"]
+        image_dir = base_path / strategy["image_dir"]
+
+        return trainer.train_dpo_sft(
+            dataset_path=str(dataset_path),
+            image_dir=str(image_dir),
+            output_dir=output_dir,
+            epochs=config.get("training", {}).get("epochs", 3),
+            use_wandb=config.get("pipeline", {}).get("use_wandb", True),
+            max_samples=config.get("training", {}).get("train_samples"),
+            base_model=base_model
         )
 
     raise ValueError(f"Unknown training type: {strategy['type']}")

@@ -80,6 +80,34 @@ training:
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
+    # SFT on DPO datasets (using chosen responses only - no preference learning)
+    - name: "erp_sft_dpo_gemini"
+      enabled: true
+      type: "sft_dpo"
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "erp_sft_dpo_nova"
+      enabled: true
+      type: "sft_dpo"
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # Combined: QCM then SFT on DPO dataset
+    - name: "erp_qcm_sft_dpo_gemini"
+      enabled: true
+      type: "sft_qcm_dpo"
+      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "erp_qcm_sft_dpo_nova"
+      enabled: true
+      type: "sft_qcm_dpo"
+      qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
+      dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
 # Evaluation settings
 evaluation:
   benchmarks:

@@ -173,10 +173,27 @@ class Pipeline:
             model_output_dir = self.output_dir / name
 
             try:
-                if strategy_type == "sft_qcm" or strategy_type == "sft_benchmark":
+                if strategy_type in ("sft_qcm", "sft_benchmark", "sft_dpo"):
                     train_sft(self.config, strategy, str(model_output_dir))
                 elif strategy_type == "dpo":
                     train_dpo(self.config, strategy, str(model_output_dir))
+                elif strategy_type == "sft_qcm_dpo":
+                    # First train with QCM
+                    qcm_strategy = {
+                        "type": "sft_qcm",
+                        "dataset": strategy["qcm_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    qcm_output = model_output_dir / "qcm_stage"
+                    train_sft(self.config, qcm_strategy, str(qcm_output))
+
+                    # Then SFT on DPO dataset (using chosen responses)
+                    dpo_sft_strategy = {
+                        "type": "sft_dpo",
+                        "dataset": strategy["dpo_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    train_sft(self.config, dpo_sft_strategy, str(model_output_dir), base_model=str(qcm_output))
                 elif strategy_type == "qcm_then_dpo":
                     # First train with QCM
                     qcm_strategy = {
