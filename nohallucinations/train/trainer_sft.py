@@ -504,6 +504,90 @@ class SFTTrainer:
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
+    def train_qcm_combined(self, dataset_paths: list, image_dir: str, output_dir: str,
+                           epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
+                           base_model: str = None) -> str:
+        """Train on combined QCM datasets (Gemini + Nova)"""
+        if self.model is None:
+            self.load_model(base_model)
+
+        logger.info(f"Training on combined QCM datasets: {dataset_paths}")
+
+        # Load all datasets and concatenate
+        datasets = []
+        for dataset_path in dataset_paths:
+            ds = QCMDataset(dataset_path, image_dir, self.processor)
+            datasets.append(ds)
+            logger.info(f"  Loaded {len(ds)} samples from {Path(dataset_path).name}")
+
+        # Combine datasets
+        full_dataset = torch.utils.data.ConcatDataset(datasets)
+        logger.info(f"Combined dataset: {len(full_dataset)} total samples")
+
+        # Limit dataset size if max_samples specified
+        dataset_size = len(full_dataset)
+        if max_samples and max_samples < dataset_size:
+            logger.info(f"Limiting dataset from {dataset_size} to {max_samples} samples")
+            indices = list(range(max_samples))
+            full_dataset = torch.utils.data.Subset(full_dataset, indices)
+            dataset_size = max_samples
+
+        # Split dataset
+        train_size = int(0.9 * dataset_size)
+        eval_size = dataset_size - train_size
+
+        train_dataset, eval_dataset = torch.utils.data.random_split(
+            full_dataset,
+            [train_size, eval_size],
+            generator=torch.Generator().manual_seed(42)
+        )
+
+        logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
+
+        # Training arguments
+        training_args = TrainingArguments(
+            output_dir=output_dir,
+            num_train_epochs=epochs,
+            per_device_train_batch_size=1,
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=8,
+            learning_rate=1e-5,
+            lr_scheduler_type="cosine",
+            warmup_steps=100,
+            weight_decay=0.01,
+            logging_steps=10,
+            eval_strategy="steps",
+            eval_steps=100,
+            save_steps=200,
+            save_total_limit=2,
+            bf16=torch.cuda.is_available(),
+            dataloader_pin_memory=False,
+            remove_unused_columns=False,
+            report_to="wandb" if use_wandb else "none",
+            load_best_model_at_end=True,
+            metric_for_best_model="eval_loss",
+            greater_is_better=False,
+            gradient_checkpointing=True,
+            optim="adamw_8bit",
+        )
+
+        trainer = Trainer(
+            model=self.model,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            data_collator=VisionLanguageDataCollator(),
+        )
+
+        trainer.train()
+
+        # Save model
+        trainer.save_model()
+        self.processor.save_pretrained(output_dir)
+
+        logger.info(f"Model saved to: {output_dir}")
+        return output_dir
+
     def train_dpo_sft(self, dataset_path: str, image_dir: str, output_dir: str,
                       epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
                       base_model: str = None) -> str:
@@ -672,6 +756,21 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
 
         return trainer.train_qcm(
             dataset_path=str(dataset_path),
+            image_dir=str(image_dir),
+            output_dir=output_dir,
+            epochs=config.get("training", {}).get("epochs", 3),
+            use_wandb=config.get("pipeline", {}).get("use_wandb", True),
+            max_samples=config.get("training", {}).get("train_samples"),
+            base_model=base_model
+        )
+
+    if strategy["type"] == "sft_qcm_combined":
+        base_path = Path(__file__).parent.parent
+        dataset_paths = [str(base_path / d) for d in strategy["datasets"]]
+        image_dir = base_path / strategy["image_dir"]
+
+        return trainer.train_qcm_combined(
+            dataset_paths=dataset_paths,
             image_dir=str(image_dir),
             output_dir=output_dir,
             epochs=config.get("training", {}).get("epochs", 3),

@@ -47,6 +47,14 @@ training:
       dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
+    - name: "erp_qcm_combined"
+      enabled: true
+      type: "sft_qcm_combined"
+      datasets:
+        - "datasets/qcm/qcm_dataset_gemini.json"
+        - "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
     - name: "erp_dpo_gemini"
       enabled: false  # Disabled: DPO trainer needs image handling fix
       type: "dpo"
@@ -131,9 +139,15 @@ evaluation:
 
   # ERP-specific evaluations
   erp_evaluation:
-    qcm:
+    qcm_gemini:
       enabled: true
       dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      image_dir: "datasets/images"
+      max_samples: 100  # Limit for testing
+
+    qcm_nova:
+      enabled: true
+      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
       max_samples: 100  # Limit for testing
 

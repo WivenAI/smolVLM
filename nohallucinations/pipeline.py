@@ -173,7 +173,7 @@ class Pipeline:
             model_output_dir = self.output_dir / name
 
             try:
-                if strategy_type in ("sft_qcm", "sft_benchmark", "sft_dpo"):
+                if strategy_type in ("sft_qcm", "sft_benchmark", "sft_dpo", "sft_qcm_combined"):
                     train_sft(self.config, strategy, str(model_output_dir))
                 elif strategy_type == "dpo":
                     train_dpo(self.config, strategy, str(model_output_dir))
