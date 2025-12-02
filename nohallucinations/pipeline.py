@@ -159,8 +159,8 @@ class Pipeline:
         print("PHASE 1: TRAINING")
         print("=" * 80)
 
-        from train.trainer_sft import train_sft
-        from train.trainer_dpo import train_dpo
+        from trainers.trainer_sft import train_sft
+        from trainers.trainer_dpo import train_dpo
 
         for strategy in strategies:
             name = strategy["name"]
