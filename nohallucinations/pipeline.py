@@ -159,7 +159,8 @@ class Pipeline:
         print("PHASE 1: TRAINING")
         print("=" * 80)
 
-        from train import train_sft, train_dpo
+        from train.trainer_sft import train_sft
+        from train.trainer_dpo import train_dpo
 
         for strategy in strategies:
             name = strategy["name"]
@@ -225,6 +226,57 @@ class Pipeline:
                     qcm_strategy = {
                         "type": "sft_qcm",
                         "dataset": strategy["qcm_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    train_sft(self.config, qcm_strategy, str(model_output_dir), base_model=str(dpo_output))
+                elif strategy_type == "sft_dpo_qcm":
+                    # Reverse order: SFT-DPO first, then QCM
+                    dpo_sft_strategy = {
+                        "type": "sft_dpo",
+                        "dataset": strategy["dpo_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    dpo_output = model_output_dir / "dpo_stage"
+                    train_sft(self.config, dpo_sft_strategy, str(dpo_output))
+
+                    # Then QCM on top
+                    qcm_strategy = {
+                        "type": "sft_qcm",
+                        "dataset": strategy["qcm_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    train_sft(self.config, qcm_strategy, str(model_output_dir), base_model=str(dpo_output))
+                elif strategy_type == "sft_qcm_dpo_combined":
+                    # Combined: QCM (both) then SFT-DPO (both)
+                    qcm_strategy = {
+                        "type": "sft_qcm_combined",
+                        "datasets": strategy["qcm_datasets"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    qcm_output = model_output_dir / "qcm_stage"
+                    train_sft(self.config, qcm_strategy, str(qcm_output))
+
+                    # Then SFT-DPO combined
+                    dpo_sft_strategy = {
+                        "type": "sft_dpo_combined",
+                        "datasets": strategy["dpo_datasets"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    train_sft(self.config, dpo_sft_strategy, str(model_output_dir), base_model=str(qcm_output))
+                elif strategy_type == "sft_dpo_qcm_combined":
+                    # Combined reverse: SFT-DPO (both) then QCM (both)
+                    dpo_sft_strategy = {
+                        "type": "sft_dpo_combined",
+                        "datasets": strategy["dpo_datasets"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    dpo_output = model_output_dir / "dpo_stage"
+                    train_sft(self.config, dpo_sft_strategy, str(dpo_output))
+
+                    # Then QCM combined
+                    qcm_strategy = {
+                        "type": "sft_qcm_combined",
+                        "datasets": strategy["qcm_datasets"],
                         "image_dir": strategy["image_dir"]
                     }
                     train_sft(self.config, qcm_strategy, str(model_output_dir), base_model=str(dpo_output))
