@@ -110,7 +110,7 @@ class Pipeline:
                 if isinstance(erp_eval, dict) and "max_samples" in erp_eval:
                     erp_eval["max_samples"] = 10
 
-    def run(self, eval_only: bool = False) -> Dict[str, Any]:
+    def run(self, eval_only: bool = False, compare_only: bool = False) -> Dict[str, Any]:
         """Run the full pipeline"""
         self._apply_debug_mode()
 
@@ -127,16 +127,21 @@ class Pipeline:
         strategies = self.config.get("training", {}).get("strategies", [])
         enabled_strategies = [s for s in strategies if s.get("enabled", True)]
 
-        print(f"\nEnabled training strategies: {len(enabled_strategies)}")
-        for s in enabled_strategies:
-            print(f"  - {s['name']} ({s['type']})")
+        if not compare_only:
+            print(f"\nEnabled training strategies: {len(enabled_strategies)}")
+            for s in enabled_strategies:
+                print(f"  - {s['name']} ({s['type']})")
 
-        # Phase 1: Training (if not eval-only)
-        if not eval_only:
+        # Phase 1: Training (if not eval-only or compare-only)
+        if not eval_only and not compare_only:
             self._run_training_phase(enabled_strategies)
 
-        # Phase 2: Evaluation
-        self._run_evaluation_phase(enabled_strategies)
+        # Phase 2: Evaluation (if not compare-only)
+        if not compare_only:
+            self._run_evaluation_phase(enabled_strategies)
+        else:
+            # Load existing results from result files
+            self._load_existing_results()
 
         # Phase 3: Comparison
         self._generate_comparison()
@@ -381,6 +386,53 @@ class Pipeline:
                     raise
                 print(f"  ERROR: {e}")
 
+    def _load_existing_results(self):
+        """Load existing evaluation results from result files"""
+        print("\n" + "=" * 80)
+        print("LOADING EXISTING RESULTS")
+        print("=" * 80)
+
+        # Get all JSON result files
+        result_files = sorted(self.results_dir.glob("*_*.json"))
+
+        if not result_files:
+            logger.warning("No existing result files found in results directory")
+            return
+
+        # Group files by model name (files are named like "baseline_20251203_101937.json")
+        model_files = {}
+        for file_path in result_files:
+            # Extract model name (everything before the last timestamp)
+            filename = file_path.stem  # removes .json
+            # Split by underscore and find where timestamp starts (YYYYMMDD_HHMMSS)
+            parts = filename.split('_')
+
+            # Find the timestamp parts (8 digits followed by 6 digits)
+            timestamp_idx = None
+            for i in range(len(parts) - 1):
+                if len(parts[i]) == 8 and parts[i].isdigit() and len(parts[i+1]) == 6 and parts[i+1].isdigit():
+                    timestamp_idx = i
+                    break
+
+            if timestamp_idx is not None:
+                model_name = '_'.join(parts[:timestamp_idx])
+                timestamp_str = '_'.join(parts[timestamp_idx:])
+
+                if model_name not in model_files or timestamp_str > model_files[model_name][1]:
+                    model_files[model_name] = (file_path, timestamp_str)
+
+        # Load the most recent result file for each model
+        for model_name, (file_path, _) in model_files.items():
+            try:
+                with open(file_path, 'r') as f:
+                    results = json.load(f)
+                    self.all_results[model_name] = results
+                    print(f"  Loaded: {model_name} from {file_path.name}")
+            except Exception as e:
+                logger.error(f"Failed to load {file_path.name}: {e}")
+
+        print(f"\nLoaded {len(self.all_results)} model results")
+
     def _generate_comparison(self):
         """Generate comparison report"""
         print("\n" + "=" * 80)
@@ -509,6 +561,8 @@ def main():
                        help="Path to config YAML file")
     parser.add_argument("--eval-only", action="store_true",
                        help="Run evaluation only (skip training)")
+    parser.add_argument("--compare-only", action="store_true",
+                       help="Generate comparison only (skip training and evaluation)")
     parser.add_argument("--debug", action="store_true",
                        help="Debug mode (10 samples)")
 
@@ -522,7 +576,7 @@ def main():
         pipeline.config["pipeline"]["debug_mode"] = True
 
     # Run pipeline
-    pipeline.run(eval_only=args.eval_only)
+    pipeline.run(eval_only=args.eval_only, compare_only=args.compare_only)
 
 
 if __name__ == "__main__":
