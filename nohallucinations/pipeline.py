@@ -392,8 +392,9 @@ class Pipeline:
         print("LOADING EXISTING RESULTS")
         print("=" * 80)
 
-        # Get all JSON result files
-        result_files = sorted(self.results_dir.glob("*_*.json"))
+        # Get all JSON result files (exclude comparison files)
+        result_files = [f for f in sorted(self.results_dir.glob("*_*.json"))
+                       if not f.stem.startswith("comparison_")]
 
         if not result_files:
             logger.warning("No existing result files found in results directory")
