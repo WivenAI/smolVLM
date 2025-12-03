@@ -403,10 +403,24 @@ class Pipeline:
                 if "accuracy" in bench_data:
                     row[f"{bench_name}_acc"] = bench_data["accuracy"]
 
-            # Add ERP QCM accuracy
+            # Add ERP-specific evaluations
             erp = results.get("erp_evaluation", {})
-            if "qcm" in erp and "accuracy" in erp["qcm"]:
-                row["erp_qcm_acc"] = erp["qcm"]["accuracy"]
+
+            # QCM Gemini
+            if "qcm_gemini" in erp and "accuracy" in erp["qcm_gemini"]:
+                row["qcm_gemini_acc"] = erp["qcm_gemini"]["accuracy"]
+
+            # QCM Nova
+            if "qcm_nova" in erp and "accuracy" in erp["qcm_nova"]:
+                row["qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
+
+            # QCM Claudette
+            if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
+                row["qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
+
+            # DPO LogProb
+            if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
+                row["dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
 
             # Calculate average
             accuracies = [v for k, v in row.items() if k.endswith("_acc")]
