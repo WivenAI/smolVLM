@@ -1,0 +1,36 @@
+# Model weights and checkpoints
+modelweights/
+*.pt
+*.pth
+*.safetensors
+*.bin
+
+# Logs
+logs/
+*.log
+
+# Cache directories
+datasets/cache/
+hf_cache/
+__pycache__/
+*.pyc
+
+# Results
+results/
+wandb/
+
+# Python
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

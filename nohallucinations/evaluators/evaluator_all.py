@@ -105,7 +105,7 @@ class EvaluatorAll:
                 except Exception as e:
                     logger.error(f"Error evaluating {name}: {e}")
                     all_results["benchmarks"][name] = {"error": str(e)}
-
+        #*p - paste from system clipboard in normal mode
         # ERP-specific evaluations
         erp_config = eval_config.get("erp_evaluation", {})
 
