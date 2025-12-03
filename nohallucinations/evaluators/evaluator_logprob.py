@@ -40,7 +40,11 @@ class LogProbEvaluator(BaseEvaluator):
             return_tensors="pt",
             padding=True,
             size={"longest_edge": 1024}
-        ).to(self.device)
+        )
+
+        # Get device from model's first parameter (handles device_map="auto")
+        model_device = next(self.model.parameters()).device
+        inputs = {k: v.to(model_device) if isinstance(v, torch.Tensor) else v for k, v in inputs.items()}
 
         # Get model outputs
         with torch.no_grad():
@@ -58,7 +62,8 @@ class LogProbEvaluator(BaseEvaluator):
             return_tensors="pt",
             padding=True,
             size={"longest_edge": 1024}
-        ).to(self.device)
+        )
+        prompt_inputs = {k: v.to(model_device) if isinstance(v, torch.Tensor) else v for k, v in prompt_inputs.items()}
 
         prompt_length = prompt_inputs['input_ids'].shape[1]
 
@@ -68,6 +73,9 @@ class LogProbEvaluator(BaseEvaluator):
 
         # Compute log probabilities
         log_probs = F.log_softmax(shift_logits, dim=-1)
+
+        # Ensure shift_labels is on same device as log_probs
+        shift_labels = shift_labels.to(log_probs.device)
 
         # Gather log probs for actual tokens
         token_log_probs = torch.gather(

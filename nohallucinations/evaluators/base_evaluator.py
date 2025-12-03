@@ -149,7 +149,11 @@ class BaseEvaluator(ABC):
             text=prompt,
             images=image,
             return_tensors="pt"
-        ).to(self.device)
+        )
+
+        # Get device from model's first parameter (handles device_map="auto")
+        model_device = next(self.model.parameters()).device
+        inputs = {k: v.to(model_device) if isinstance(v, torch.Tensor) else v for k, v in inputs.items()}
 
         with torch.no_grad():
             outputs = self.model.generate(

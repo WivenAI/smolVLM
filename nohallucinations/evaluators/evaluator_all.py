@@ -105,6 +105,9 @@ class EvaluatorAll:
                 except Exception as e:
                     logger.error(f"Error evaluating {name}: {e}")
                     all_results["benchmarks"][name] = {"error": str(e)}
+                finally:
+                    # Clean up GPU memory after each evaluation
+                    evaluator._cleanup_model()
         #*p - paste from system clipboard in normal mode
         # ERP-specific evaluations
         erp_config = eval_config.get("erp_evaluation", {})
@@ -139,6 +142,9 @@ class EvaluatorAll:
                 except Exception as e:
                     logger.error(f"Error evaluating ERP {qcm_name}: {e}")
                     all_results["erp_evaluation"][qcm_name] = {"error": str(e)}
+                finally:
+                    # Clean up GPU memory after each evaluation
+                    self.qcm_evaluator._cleanup_model()
 
         # QCM Claudette evaluation (black images)
         qcm_claudette_config = erp_config.get("qcm_claudette", {})
@@ -167,6 +173,9 @@ class EvaluatorAll:
             except Exception as e:
                 logger.error(f"Error evaluating QCM Claudette: {e}")
                 all_results["erp_evaluation"]["qcm_claudette"] = {"error": str(e)}
+            finally:
+                # Clean up GPU memory after evaluation
+                self.qcm_claudette_evaluator._cleanup_model()
 
         # DPO LogProb evaluation
         logprob_config = erp_config.get("dpo_logprobs", {})
@@ -196,6 +205,9 @@ class EvaluatorAll:
             except Exception as e:
                 logger.error(f"Error evaluating DPO LogProbs: {e}")
                 all_results["erp_evaluation"]["dpo_logprobs"] = {"error": str(e)}
+            finally:
+                # Clean up GPU memory after evaluation
+                self.logprob_evaluator._cleanup_model()
 
         # BERTScore evaluation
         bertscore_config = erp_config.get("bertscore", {})
