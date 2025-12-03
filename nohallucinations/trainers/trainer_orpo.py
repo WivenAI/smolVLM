@@ -1,5 +1,16 @@
 """
-DPO Trainer - Direct Preference Optimization for SmolVLM
+ORPO Trainer - Odds Ratio Preference Optimization for SmolVLM
+
+ORPO is a reference-free preference optimization method that combines SFT and
+preference alignment in a single training step. It's more memory-efficient than
+DPO because it doesn't require loading a reference model.
+
+Key advantages over DPO:
+- ~50% less GPU memory (no reference model)
+- Faster training (single-stage vs multi-stage)
+- Same data format as DPO (prompt, chosen, rejected)
+
+Paper: https://arxiv.org/abs/2403.07691
 """
 
 import os
@@ -24,7 +35,7 @@ from transformers import (
     AutoModelForImageTextToText,
     BitsAndBytesConfig
 )
-from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
+from trl import ORPOTrainer as TRLORPOTrainer, ORPOConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import Dataset
 
@@ -32,8 +43,17 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class DPOTrainerWrapper:
-    """Wrapper for DPO training"""
+class ORPOTrainerWrapper:
+    """
+    Wrapper for ORPO (Odds Ratio Preference Optimization) training.
+
+    ORPO is a reference-free alternative to DPO that:
+    - Combines SFT and preference alignment in one step
+    - Uses odds ratio to contrast chosen vs rejected responses
+    - Requires ~50% less GPU memory than DPO (no reference model)
+
+    Works with 8GB GPUs when combined with QLoRA (4-bit quantization).
+    """
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
@@ -42,14 +62,15 @@ class DPOTrainerWrapper:
         self.hf_cache_dir = _hf_cache
 
     def load_model(self, base_model: str = None):
-        """Load model with LoRA for DPO training"""
+        """Load model with QLoRA for memory-efficient ORPO training"""
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", "HuggingFaceTB/SmolVLM-500M-Instruct")
 
-        logger.info(f"Loading model: {base_model}")
+        logger.info(f"Loading model for ORPO: {base_model}")
 
         self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
 
+        # 4-bit quantization for 8GB GPU compatibility
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_use_double_quant=True,
@@ -67,6 +88,7 @@ class DPOTrainerWrapper:
 
         self.model = prepare_model_for_kbit_training(self.model)
 
+        # LoRA config - same as DPO for consistency
         lora_config = LoraConfig(
             r=16,
             lora_alpha=32,
@@ -79,17 +101,24 @@ class DPOTrainerWrapper:
         self.model = get_peft_model(self.model, lora_config)
         self.model.print_trainable_parameters()
 
-    def prepare_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
-        """Prepare DPO dataset from JSON file"""
-        logger.info(f"Preparing DPO dataset from: {dataset_path}")
+    def prepare_orpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
+        """
+        Prepare ORPO dataset from JSON file.
+
+        ORPO uses the same format as DPO:
+        - prompt: The input prompt/question
+        - chosen: The preferred response
+        - rejected: The non-preferred response
+        """
+        logger.info(f"Preparing ORPO dataset from: {dataset_path}")
 
         with open(dataset_path, 'r', encoding='utf-8') as f:
             raw_data = json.load(f)
 
         image_dir = Path(image_dir)
 
-        # Convert to DPO format
-        dpo_data = []
+        # Convert to ORPO format (same as DPO)
+        orpo_data = []
         for item in raw_data:
             image_name = item.get('image_name', '')
             if image_name:
@@ -104,7 +133,7 @@ class DPOTrainerWrapper:
             rejected = item.get('rejected', '')
 
             if prompt and chosen and rejected:
-                dpo_data.append({
+                orpo_data.append({
                     'prompt': prompt,
                     'chosen': chosen,
                     'rejected': rejected,
@@ -112,23 +141,31 @@ class DPOTrainerWrapper:
                 })
 
         # Apply sample limit if specified
-        if max_samples is not None and len(dpo_data) > max_samples:
-            logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
-            dpo_data = dpo_data[:max_samples]
+        if max_samples is not None and len(orpo_data) > max_samples:
+            logger.info(f"Limiting dataset from {len(orpo_data)} to {max_samples} samples")
+            orpo_data = orpo_data[:max_samples]
 
-        logger.info(f"Prepared {len(dpo_data)} DPO samples")
-        return Dataset.from_list(dpo_data)
+        logger.info(f"Prepared {len(orpo_data)} ORPO samples")
+        return Dataset.from_list(orpo_data)
 
     def train(self, dataset_path: str, image_dir: str, output_dir: str,
               use_wandb: bool = True, max_samples: int = None) -> str:
-        """Train using DPO"""
+        """
+        Train using ORPO.
+
+        ORPO combines SFT and preference optimization:
+        - SFT loss on chosen responses
+        - Odds ratio loss to contrast chosen vs rejected
+
+        The beta parameter controls the strength of preference learning.
+        """
         if self.model is None:
             self.load_model()
 
-        logger.info(f"Training with DPO on: {dataset_path}")
+        logger.info(f"Training with ORPO on: {dataset_path}")
 
         # Prepare dataset
-        full_dataset = self.prepare_dpo_dataset(dataset_path, image_dir, max_samples=max_samples)
+        full_dataset = self.prepare_orpo_dataset(dataset_path, image_dir, max_samples=max_samples)
 
         # Split dataset
         dataset_split = full_dataset.train_test_split(test_size=0.1, seed=42)
@@ -137,14 +174,17 @@ class DPOTrainerWrapper:
 
         logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
 
-        # DPO config
-        training_args = DPOConfig(
+        # ORPO config - optimized for 8GB GPU
+        # Key differences from DPO:
+        # - No reference model needed
+        # - beta controls odds ratio strength (typically 0.1)
+        training_args = ORPOConfig(
             output_dir=output_dir,
             num_train_epochs=3,
             per_device_train_batch_size=1,
             per_device_eval_batch_size=1,
             gradient_accumulation_steps=4,
-            learning_rate=5e-7,
+            learning_rate=5e-6,  # ORPO typically uses lower LR than DPO
             lr_scheduler_type="cosine",
             warmup_steps=50,
             weight_decay=0.01,
@@ -158,20 +198,26 @@ class DPOTrainerWrapper:
             dataloader_num_workers=2,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
-            beta=0.1,
-            loss_type="sigmoid",
+            # ORPO-specific parameters
+            beta=0.1,  # Odds ratio strength (controls preference learning)
             max_length=512,
             max_prompt_length=256,
             dataset_num_proc=2,
+            # Memory optimizations
+            gradient_checkpointing=True,
+            optim="adamw_8bit",  # 8-bit optimizer for memory savings
         )
 
-        trainer = TRLDPOTrainer(
+        # Use tokenizer instead of processor - ORPOTrainer expects pad_token_id
+        # which exists on the tokenizer, not the Idefics3Processor
+        tokenizer = self.processor.tokenizer
+
+        trainer = TRLORPOTrainer(
             model=self.model,
-            ref_model=None,  # Use implicit reference model
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
-            processing_class=self.processor,
+            processing_class=tokenizer,
         )
 
         trainer.train()
@@ -185,14 +231,19 @@ class DPOTrainerWrapper:
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-        logger.info(f"Model saved to: {output_dir}")
+        logger.info(f"ORPO model saved to: {output_dir}")
         return output_dir
 
 
-def train_dpo(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
-              base_model: str = None) -> str:
+def train_orpo(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
+               base_model: str = None) -> str:
     """
-    Train a model using DPO
+    Train a model using ORPO (Odds Ratio Preference Optimization).
+
+    ORPO advantages over DPO:
+    - ~50% less GPU memory (no reference model)
+    - Single-stage training (combines SFT + preference)
+    - Works well with limited data
 
     Args:
         config: Full configuration
@@ -203,7 +254,7 @@ def train_dpo(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
     Returns:
         Path to trained model
     """
-    trainer = DPOTrainerWrapper(config)
+    trainer = ORPOTrainerWrapper(config)
 
     if base_model:
         trainer.load_model(base_model)
