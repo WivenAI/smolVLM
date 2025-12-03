@@ -105,6 +105,10 @@ class Pipeline:
             self.config["training"]["epochs"] = 1
             for bench in self.config.get("evaluation", {}).get("benchmarks", []):
                 bench["max_samples"] = 10
+            # Apply to ERP evaluations too
+            for erp_eval in self.config.get("evaluation", {}).get("erp_evaluation", {}).values():
+                if isinstance(erp_eval, dict) and "max_samples" in erp_eval:
+                    erp_eval["max_samples"] = 10
 
     def run(self, eval_only: bool = False) -> Dict[str, Any]:
         """Run the full pipeline"""
