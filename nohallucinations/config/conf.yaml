@@ -206,19 +206,19 @@ evaluation:
       enabled: true
       dataset: "echo840/OCRBench"
       split: "test"
-      max_samples: 100  # Reduced for quick testing
+      max_samples: 30000
 
     - name: "docvqa"
       enabled: true
       dataset: "nielsr/docvqa_1200_examples"  # Fixed: original dataset requires auth
       split: "train"
-      max_samples: 100
+      max_samples: 30000
 
     - name: "chartqa"
       enabled: true
       dataset: "HuggingFaceM4/ChartQA"
       split: "test"
-      max_samples: 100
+      max_samples: 30000
 
   # ERP-specific evaluations
   erp_evaluation:
@@ -226,30 +226,30 @@ evaluation:
       enabled: true
       dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
-      max_samples: 100  # Limit for testing
+      max_samples: 30000
 
     qcm_nova:
       enabled: true
       dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
-      max_samples: 100  # Limit for testing
+      max_samples: 30000
 
     qcm_claudette:
       enabled: true
       dataset: "datasets/qcm/qcm_claudette.json"
-      max_samples: 10  # Limit for testing
+      max_samples: 30000
 
     dpo_logprobs:
       enabled: true
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
-      max_samples: 10  # Limit for testing
+      max_samples: 30000
 
     bertscore:
       enabled: false  # Disabled: too slow on CPU, use LogProb instead
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
-      max_samples: 10  # Limit for testing
+      max_samples: 30000
       lang: "en"  # Language for BERTScore
 
 # Paths
