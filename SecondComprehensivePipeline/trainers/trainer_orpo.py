@@ -100,6 +100,8 @@ class EpochEvaluationCallback(TrainerCallback):
                     metrics["eval/qcm_gemini_acc"] = erp["qcm_gemini"]["accuracy"]
                 if "qcm_nova" in erp and "accuracy" in erp["qcm_nova"]:
                     metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
+                if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
+                    metrics["eval/qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
                 if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
                     metrics["eval/dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
 
