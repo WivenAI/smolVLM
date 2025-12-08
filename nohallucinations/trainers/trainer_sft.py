@@ -24,13 +24,99 @@ from transformers import (
     AutoModelForImageTextToText,
     TrainingArguments,
     Trainer,
-    BitsAndBytesConfig
+    BitsAndBytesConfig,
+    TrainerCallback
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import load_dataset
 
+try:
+    import wandb
+    WANDB_AVAILABLE = True
+except ImportError:
+    WANDB_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+class EpochEvaluationCallback(TrainerCallback):
+    """Callback to run full evaluation at the end of each epoch"""
+
+    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor=None):
+        self.config = config
+        self.output_dir = Path(output_dir)
+        self.strategy_name = strategy_name
+        self.processor = processor
+        self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
+
+    def on_epoch_end(self, args, state, control, model=None, **kwargs):
+        """Run full evaluation at end of each epoch"""
+        epoch = int(state.epoch)
+        logger.info(f"[{self.strategy_name}] Running evaluation at epoch {epoch}...")
+
+        # Save model temporarily for evaluation
+        temp_model_dir = self.output_dir / f"epoch_{epoch}_eval"
+        temp_model_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            # Save the current model state
+            model.save_pretrained(str(temp_model_dir))
+            if self.processor is not None:
+                self.processor.save_pretrained(str(temp_model_dir))
+
+            # Import evaluator here to avoid circular imports
+            from evaluators import EvaluatorAll
+
+            # Run evaluation
+            evaluator = EvaluatorAll(self.config, str(self.cache_dir))
+            results = evaluator.evaluate_all(
+                model_path=str(temp_model_dir),
+                model_name=f"{self.strategy_name}_epoch{epoch}"
+            )
+
+            # Log to WandB
+            if WANDB_AVAILABLE and wandb.run is not None:
+                metrics = {}
+
+                # Log benchmark accuracies
+                for bench_name, bench_data in results.get("benchmarks", {}).items():
+                    if "accuracy" in bench_data:
+                        metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+
+                # Log ERP evaluation metrics
+                erp = results.get("erp_evaluation", {})
+                if "qcm_gemini" in erp and "accuracy" in erp["qcm_gemini"]:
+                    metrics["eval/qcm_gemini_acc"] = erp["qcm_gemini"]["accuracy"]
+                if "qcm_nova" in erp and "accuracy" in erp["qcm_nova"]:
+                    metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
+                if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
+                    metrics["eval/dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
+
+                # Log average
+                if results.get("summary", {}).get("avg_benchmark_accuracy"):
+                    metrics["eval/avg_benchmark_acc"] = results["summary"]["avg_benchmark_accuracy"]
+
+                # Log all metrics at current step
+                wandb.log(metrics, step=state.global_step)
+                logger.info(f"[{self.strategy_name}] Epoch {epoch} eval metrics logged to WandB")
+
+            # Log summary
+            logger.info(f"[{self.strategy_name}] Epoch {epoch} evaluation complete:")
+            for key, value in results.get("summary", {}).items():
+                if "accuracy" in key:
+                    logger.info(f"  {key}: {value:.2f}%")
+
+        except Exception as e:
+            logger.error(f"[{self.strategy_name}] Evaluation failed at epoch {epoch}: {e}")
+
+        finally:
+            # Clean up temp model (optional - keep for debugging)
+            # import shutil
+            # shutil.rmtree(temp_model_dir, ignore_errors=True)
+            pass
+
+        return control
 
 
 @dataclass
@@ -430,7 +516,7 @@ class SFTTrainer:
 
     def train_qcm(self, dataset_path: str, image_dir: str, output_dir: str,
                   epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                  base_model: str = None) -> str:
+                  base_model: str = None, strategy_name: str = "qcm") -> str:
         """Train on QCM dataset"""
         if self.model is None:
             self.load_model(base_model)
@@ -487,12 +573,21 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -506,7 +601,7 @@ class SFTTrainer:
 
     def train_qcm_combined(self, dataset_paths: list, image_dir: str, output_dir: str,
                            epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                           base_model: str = None) -> str:
+                           base_model: str = None, strategy_name: str = "qcm_combined") -> str:
         """Train on combined QCM datasets (Gemini + Nova)"""
         if self.model is None:
             self.load_model(base_model)
@@ -571,12 +666,21 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -590,7 +694,7 @@ class SFTTrainer:
 
     def train_dpo_sft(self, dataset_path: str, image_dir: str, output_dir: str,
                       epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                      base_model: str = None) -> str:
+                      base_model: str = None, strategy_name: str = "dpo_sft") -> str:
         """Train on DPO dataset using SFT (chosen responses only)"""
         if self.model is None:
             self.load_model(base_model)
@@ -647,12 +751,21 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -666,7 +779,7 @@ class SFTTrainer:
 
     def train_dpo_sft_combined(self, dataset_paths: list, image_dir: str, output_dir: str,
                                epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                               base_model: str = None) -> str:
+                               base_model: str = None, strategy_name: str = "dpo_sft_combined") -> str:
         """Train on combined DPO datasets using SFT (chosen responses only)"""
         if self.model is None:
             self.load_model(base_model)
@@ -731,12 +844,21 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -749,7 +871,8 @@ class SFTTrainer:
         return output_dir
 
     def train_benchmark(self, benchmark_name: str, output_dir: str,
-                        epochs: int = 3, use_wandb: bool = True, max_samples: int = None) -> str:
+                        epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
+                        strategy_name: str = None) -> str:
         """Train on a benchmark dataset (DocVQA, OCRBench, ChartQA)"""
         if self.model is None:
             self.load_model()
@@ -799,12 +922,21 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name or f"sft_{benchmark_name}",
+            processor=self.processor
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -832,6 +964,7 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
         Path to trained model
     """
     trainer = SFTTrainer(config)
+    strategy_name = strategy.get("name", strategy["type"])
 
     if strategy["type"] == "sft_qcm":
         base_path = Path(__file__).parent.parent
@@ -845,7 +978,8 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             epochs=config.get("training", {}).get("epochs", 3),
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
             max_samples=config.get("training", {}).get("train_samples"),
-            base_model=base_model
+            base_model=base_model,
+            strategy_name=strategy_name
         )
 
     if strategy["type"] == "sft_qcm_combined":
@@ -860,7 +994,8 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             epochs=config.get("training", {}).get("epochs", 3),
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
             max_samples=config.get("training", {}).get("train_samples"),
-            base_model=base_model
+            base_model=base_model,
+            strategy_name=strategy_name
         )
 
     if strategy["type"] == "sft_benchmark":
@@ -873,7 +1008,8 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             output_dir=output_dir,
             epochs=config.get("training", {}).get("epochs", 3),
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
-            max_samples=config.get("training", {}).get("train_samples")
+            max_samples=config.get("training", {}).get("train_samples"),
+            strategy_name=strategy_name
         )
 
     if strategy["type"] == "sft_dpo":
@@ -888,7 +1024,8 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             epochs=config.get("training", {}).get("epochs", 3),
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
             max_samples=config.get("training", {}).get("train_samples"),
-            base_model=base_model
+            base_model=base_model,
+            strategy_name=strategy_name
         )
 
     if strategy["type"] == "sft_dpo_combined":
@@ -903,7 +1040,8 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             epochs=config.get("training", {}).get("epochs", 3),
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
             max_samples=config.get("training", {}).get("train_samples"),
-            base_model=base_model
+            base_model=base_model,
+            strategy_name=strategy_name
         )
 
     raise ValueError(f"Unknown training type: {strategy['type']}")
