@@ -201,15 +201,12 @@ class QCMDataset(torch.utils.data.Dataset):
         question = qcm_data['question']
         options = qcm_data['options']
         correct_answer = qcm_data['correct_answer']
-        explanation = qcm_data.get('explanation', '')
 
         options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
-        prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer:"
+        prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
 
-        correct_option_text = options[correct_answer]
-        answer = f"{correct_answer} - {correct_option_text}"
-        if explanation:
-            answer += f"\n\nExplanation: {explanation}"
+        # Train to output just the letter (matching evaluation format)
+        answer = correct_answer
 
         # Create messages
         user_message = [
