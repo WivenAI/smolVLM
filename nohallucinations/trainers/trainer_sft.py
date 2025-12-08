@@ -43,12 +43,47 @@ logger = logging.getLogger(__name__)
 class EpochEvaluationCallback(TrainerCallback):
     """Callback to run full evaluation at the end of each epoch"""
 
-    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor=None):
+    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor=None, full_dataset=None):
         self.config = config
         self.output_dir = Path(output_dir)
         self.strategy_name = strategy_name
         self.processor = processor
+        self.full_dataset = full_dataset
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
+
+    def _compute_full_dataset_loss(self, model, state):
+        """Compute loss on the full dataset"""
+        if self.full_dataset is None:
+            return None
+
+        model.eval()
+        total_loss = 0.0
+        num_batches = 0
+
+        # Create a simple dataloader for the full dataset
+        from torch.utils.data import DataLoader
+        dataloader = DataLoader(self.full_dataset, batch_size=1, shuffle=False)
+
+        with torch.no_grad():
+            for batch in dataloader:
+                try:
+                    # Move batch to model device
+                    device = next(model.parameters()).device
+                    inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
+
+                    outputs = model(**inputs)
+                    if hasattr(outputs, 'loss') and outputs.loss is not None:
+                        total_loss += outputs.loss.item()
+                        num_batches += 1
+                except Exception as e:
+                    logger.warning(f"Error computing loss for batch: {e}")
+                    continue
+
+        model.train()
+
+        if num_batches > 0:
+            return total_loss / num_batches
+        return None
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
         """Run full evaluation at end of each epoch"""
@@ -60,6 +95,11 @@ class EpochEvaluationCallback(TrainerCallback):
         temp_model_dir.mkdir(parents=True, exist_ok=True)
 
         try:
+            # Compute loss on full dataset first (before saving model)
+            full_dataset_loss = self._compute_full_dataset_loss(model, state)
+            if full_dataset_loss is not None:
+                logger.info(f"[{self.strategy_name}] Epoch {epoch} full dataset loss: {full_dataset_loss:.4f}")
+
             # Save the current model state
             model.save_pretrained(str(temp_model_dir))
             if self.processor is not None:
@@ -78,6 +118,10 @@ class EpochEvaluationCallback(TrainerCallback):
             # Log to WandB
             if WANDB_AVAILABLE and wandb.run is not None:
                 metrics = {}
+
+                # Log full dataset loss
+                if full_dataset_loss is not None:
+                    metrics["eval/full_dataset_loss"] = full_dataset_loss
 
                 # Log benchmark accuracies
                 for bench_name, bench_data in results.get("benchmarks", {}).items():
@@ -575,7 +619,8 @@ class SFTTrainer:
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
-            processor=self.processor
+            processor=self.processor,
+            full_dataset=full_dataset
         )
 
         trainer = Trainer(
@@ -668,7 +713,8 @@ class SFTTrainer:
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
-            processor=self.processor
+            processor=self.processor,
+            full_dataset=full_dataset
         )
 
         trainer = Trainer(
@@ -753,7 +799,8 @@ class SFTTrainer:
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
-            processor=self.processor
+            processor=self.processor,
+            full_dataset=full_dataset
         )
 
         trainer = Trainer(
@@ -846,7 +893,8 @@ class SFTTrainer:
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
-            processor=self.processor
+            processor=self.processor,
+            full_dataset=full_dataset
         )
 
         trainer = Trainer(
@@ -924,7 +972,8 @@ class SFTTrainer:
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name or f"sft_{benchmark_name}",
-            processor=self.processor
+            processor=self.processor,
+            full_dataset=full_dataset
         )
 
         trainer = Trainer(
