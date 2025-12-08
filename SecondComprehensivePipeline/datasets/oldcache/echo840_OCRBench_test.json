@@ -1,0 +1,92 @@
+[
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "CENTRE"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_0.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "FRIEND"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_1.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "CHAIN"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_2.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "CLOSE"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_3.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "MARKET"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_4.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "EXTRA"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_5.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "MOBI"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_6.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "COTTAGE"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_7.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "AHEAD"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_8.jpg"
+  },
+  {
+    "dataset": "IIIT5K",
+    "question": "what is written in the image?",
+    "question_type": "Regular Text Recognition",
+    "answer": [
+      "TIMES"
+    ],
+    "image_path": "/home/david-lacour/Documents/smolvlm/smolVLM/SecondComprehensivePipeline/datasets/cache/echo840_OCRBench_test_9.jpg"
+  }
+]
