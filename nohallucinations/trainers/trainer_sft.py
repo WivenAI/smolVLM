@@ -562,6 +562,14 @@ class SFTTrainer:
         if self.model is None:
             self.load_model(base_model)
 
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
+
         logger.info(f"Training on QCM dataset: {dataset_path}")
 
         # Create dataset
@@ -638,6 +646,10 @@ class SFTTrainer:
         trainer.save_model()
         self.processor.save_pretrained(output_dir)
 
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
@@ -647,6 +659,14 @@ class SFTTrainer:
         """Train on combined QCM datasets (Gemini + Nova)"""
         if self.model is None:
             self.load_model(base_model)
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
 
         logger.info(f"Training on combined QCM datasets: {dataset_paths}")
 
@@ -732,6 +752,10 @@ class SFTTrainer:
         trainer.save_model()
         self.processor.save_pretrained(output_dir)
 
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
@@ -741,6 +765,14 @@ class SFTTrainer:
         """Train on DPO dataset using SFT (chosen responses only)"""
         if self.model is None:
             self.load_model(base_model)
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
 
         logger.info(f"Training SFT on DPO dataset: {dataset_path}")
 
@@ -818,6 +850,10 @@ class SFTTrainer:
         trainer.save_model()
         self.processor.save_pretrained(output_dir)
 
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
@@ -827,6 +863,14 @@ class SFTTrainer:
         """Train on combined DPO datasets using SFT (chosen responses only)"""
         if self.model is None:
             self.load_model(base_model)
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
 
         logger.info(f"Training SFT on combined DPO datasets: {dataset_paths}")
 
@@ -912,6 +956,10 @@ class SFTTrainer:
         trainer.save_model()
         self.processor.save_pretrained(output_dir)
 
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
@@ -921,6 +969,14 @@ class SFTTrainer:
         """Train on a benchmark dataset (DocVQA, OCRBench, ChartQA)"""
         if self.model is None:
             self.load_model()
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name or f"sft_{benchmark_name}",
+                reinit=True
+            )
 
         logger.info(f"Training on benchmark: {benchmark_name}")
 
@@ -990,6 +1046,10 @@ class SFTTrainer:
         # Save model
         trainer.save_model()
         self.processor.save_pretrained(output_dir)
+
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
 
         logger.info(f"Model saved to: {output_dir}")
         return output_dir

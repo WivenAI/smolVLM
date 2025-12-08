@@ -22,14 +22,79 @@ os.environ["HF_DATASETS_CACHE"] = os.path.join(_hf_cache, "datasets")
 from transformers import (
     AutoProcessor,
     AutoModelForImageTextToText,
-    BitsAndBytesConfig
+    BitsAndBytesConfig,
+    TrainerCallback
 )
 from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import Dataset
 
+try:
+    import wandb
+    WANDB_AVAILABLE = True
+except ImportError:
+    WANDB_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+class EpochEvaluationCallback(TrainerCallback):
+    """Callback to run full evaluation at the end of each epoch"""
+
+    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor):
+        self.config = config
+        self.output_dir = Path(output_dir)
+        self.strategy_name = strategy_name
+        self.processor = processor
+        self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
+
+    def on_epoch_end(self, args, state, control, model=None, **kwargs):
+        """Run full evaluation at end of each epoch"""
+        epoch = int(state.epoch)
+        logger.info(f"[{self.strategy_name}] Running evaluation at epoch {epoch}...")
+
+        temp_model_dir = self.output_dir / f"epoch_{epoch}_eval"
+        temp_model_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            model.save_pretrained(str(temp_model_dir))
+            if self.processor is not None:
+                self.processor.save_pretrained(str(temp_model_dir))
+
+            from evaluators import EvaluatorAll
+            evaluator = EvaluatorAll(self.config, str(self.cache_dir))
+            results = evaluator.evaluate_all(
+                model_path=str(temp_model_dir),
+                model_name=f"{self.strategy_name}_epoch{epoch}"
+            )
+
+            if WANDB_AVAILABLE and wandb.run is not None:
+                metrics = {}
+                for bench_name, bench_data in results.get("benchmarks", {}).items():
+                    if "accuracy" in bench_data:
+                        metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+
+                erp = results.get("erp_evaluation", {})
+                if "qcm_gemini" in erp and "accuracy" in erp["qcm_gemini"]:
+                    metrics["eval/qcm_gemini_acc"] = erp["qcm_gemini"]["accuracy"]
+                if "qcm_nova" in erp and "accuracy" in erp["qcm_nova"]:
+                    metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
+                if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
+                    metrics["eval/dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
+
+                if results.get("summary", {}).get("avg_benchmark_accuracy"):
+                    metrics["eval/avg_benchmark_acc"] = results["summary"]["avg_benchmark_accuracy"]
+
+                wandb.log(metrics, step=state.global_step)
+                logger.info(f"[{self.strategy_name}] Epoch {epoch} eval metrics logged to WandB")
+
+            logger.info(f"[{self.strategy_name}] Epoch {epoch} evaluation complete")
+
+        except Exception as e:
+            logger.error(f"[{self.strategy_name}] Evaluation failed at epoch {epoch}: {e}")
+
+        return control
 
 
 class DPOTrainerWrapper:
@@ -120,10 +185,19 @@ class DPOTrainerWrapper:
         return Dataset.from_list(dpo_data)
 
     def train(self, dataset_path: str, image_dir: str, output_dir: str,
-              use_wandb: bool = True, max_samples: int = None) -> str:
+              use_wandb: bool = True, max_samples: int = None,
+              strategy_name: str = "dpo") -> str:
         """Train using DPO"""
         if self.model is None:
             self.load_model()
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
 
         logger.info(f"Training with DPO on: {dataset_path}")
 
@@ -165,6 +239,14 @@ class DPOTrainerWrapper:
             dataset_num_proc=2,
         )
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor
+        )
+
         trainer = TRLDPOTrainer(
             model=self.model,
             ref_model=None,  # Use implicit reference model
@@ -172,6 +254,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=self.processor,
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -179,6 +262,10 @@ class DPOTrainerWrapper:
         # Save model
         trainer.save_model(output_dir)
         self.processor.save_pretrained(output_dir)
+
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
 
         # Cleanup
         gc.collect()
@@ -204,6 +291,7 @@ def train_dpo(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
         Path to trained model
     """
     trainer = DPOTrainerWrapper(config)
+    strategy_name = strategy.get("name", "dpo")
 
     if base_model:
         trainer.load_model(base_model)
@@ -219,5 +307,6 @@ def train_dpo(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
         image_dir=str(image_dir),
         output_dir=output_dir,
         use_wandb=config.get("pipeline", {}).get("use_wandb", True),
-        max_samples=config.get("training", {}).get("train_samples")
+        max_samples=config.get("training", {}).get("train_samples"),
+        strategy_name=strategy_name
     )
