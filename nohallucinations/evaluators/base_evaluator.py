@@ -177,9 +177,14 @@ class BaseEvaluator(ABC):
             logger.info(f"Loading {dataset_name} from cache...")
             with open(cache_path, 'r') as f:
                 data = json.load(f)
-            if max_samples:
-                data = data[:max_samples]
-            return data
+
+            # Check if cache has enough samples
+            if max_samples and len(data) < max_samples:
+                logger.warning(f"Cache has {len(data)} samples but {max_samples} requested. Re-downloading...")
+            else:
+                if max_samples:
+                    data = data[:max_samples]
+                return data
 
         # Download and cache
         logger.info(f"Downloading {dataset_name}...")
