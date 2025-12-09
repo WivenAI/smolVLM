@@ -35,6 +35,38 @@ training:
       type: "sft_benchmark"
       benchmark: "chartqa"
 
+    # DPO on benchmarks (using random wrong answers as rejected)
+    - name: "dpo_docvqa"
+      enabled: true
+      type: "dpo_benchmark"
+      benchmark: "docvqa"
+
+    - name: "dpo_ocrbench"
+      enabled: true
+      type: "dpo_benchmark"
+      benchmark: "ocrbench"
+
+    - name: "dpo_chartqa"
+      enabled: true
+      type: "dpo_benchmark"
+      benchmark: "chartqa"
+
+    # ORPO on benchmarks (text-only, using random wrong answers as rejected)
+    - name: "orpo_docvqa"
+      enabled: true
+      type: "orpo_benchmark"
+      benchmark: "docvqa"
+
+    - name: "orpo_ocrbench"
+      enabled: true
+      type: "orpo_benchmark"
+      benchmark: "ocrbench"
+
+    - name: "orpo_chartqa"
+      enabled: true
+      type: "orpo_benchmark"
+      benchmark: "chartqa"
+
     - name: "erp_qcm_gemini"
       enabled: true
       type: "sft_qcm"

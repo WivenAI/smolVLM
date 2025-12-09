@@ -27,7 +27,8 @@ from transformers import (
 )
 from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from datasets import Dataset
+from datasets import Dataset, load_dataset
+import random
 
 try:
     import wandb
@@ -198,6 +199,194 @@ class DPOTrainerWrapper:
 
         logger.info(f"Prepared {len(dpo_data)} DPO samples with images")
         return Dataset.from_list(dpo_data)
+
+    def prepare_benchmark_dpo_dataset(self, benchmark_name: str, max_samples: int = None) -> Dataset:
+        """Prepare DPO dataset from benchmark by using correct answer as chosen and random wrong answer as rejected"""
+        logger.info(f"Preparing DPO dataset from benchmark: {benchmark_name}")
+
+        # Load benchmark dataset
+        if benchmark_name == "docvqa":
+            dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
+        elif benchmark_name == "ocrbench":
+            dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
+        elif benchmark_name == "chartqa":
+            dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
+        else:
+            raise ValueError(f"Unknown benchmark: {benchmark_name}")
+
+        # Limit samples if specified
+        if max_samples and max_samples < len(dataset):
+            dataset = dataset.select(range(max_samples))
+
+        # Collect all answers for generating wrong answers
+        all_answers = []
+        for item in dataset:
+            if 'answers' in item:
+                answers = item['answers']
+                if isinstance(answers, list) and len(answers) > 0:
+                    all_answers.append(answers[0])
+                else:
+                    all_answers.append(str(answers))
+            elif 'answer' in item:
+                all_answers.append(item['answer'])
+            elif 'label' in item:
+                all_answers.append(str(item['label']))
+
+        # Convert to DPO format
+        dpo_data = []
+        for idx, item in enumerate(dataset):
+            # Extract image
+            if 'image' in item:
+                image = item['image']
+            elif 'img' in item:
+                image = item['img']
+            else:
+                continue
+
+            # Convert to RGB and resize
+            if image.mode != 'RGB':
+                image = image.convert('RGB')
+            image.thumbnail((384, 384))
+
+            # Extract question
+            if 'query' in item:
+                if isinstance(item['query'], dict):
+                    question = item['query'].get('en', '')
+                else:
+                    question = item['query']
+            elif 'question' in item:
+                question = item['question']
+            else:
+                question = "What do you see in this image?"
+
+            # Extract correct answer (chosen)
+            if 'answers' in item:
+                answers = item['answers']
+                if isinstance(answers, list) and len(answers) > 0:
+                    chosen = answers[0]
+                else:
+                    chosen = str(answers)
+            elif 'answer' in item:
+                chosen = item['answer']
+            elif 'label' in item:
+                chosen = str(item['label'])
+            else:
+                continue
+
+            # Generate rejected answer (random wrong answer from other samples)
+            rejected_candidates = [a for a in all_answers if a != chosen]
+            if not rejected_candidates:
+                rejected = "I don't know"
+            else:
+                rejected = random.choice(rejected_candidates)
+
+            # Format prompt with image token
+            prompt = f"<image>Answer briefly. {question}"
+
+            dpo_data.append({
+                'prompt': prompt,
+                'chosen': chosen,
+                'rejected': rejected,
+                'images': [image]
+            })
+
+        logger.info(f"Prepared {len(dpo_data)} DPO samples from {benchmark_name}")
+        return Dataset.from_list(dpo_data)
+
+    def train_benchmark(self, benchmark_name: str, output_dir: str,
+                        use_wandb: bool = True, max_samples: int = None,
+                        strategy_name: str = "dpo_benchmark") -> str:
+        """Train using DPO on a benchmark dataset"""
+        if self.model is None:
+            self.load_model()
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
+
+        logger.info(f"Training with DPO on benchmark: {benchmark_name}")
+
+        # Prepare dataset
+        full_dataset = self.prepare_benchmark_dpo_dataset(benchmark_name, max_samples=max_samples)
+
+        # Split dataset
+        dataset_split = full_dataset.train_test_split(test_size=0.1, seed=42)
+        train_dataset = dataset_split['train']
+        eval_dataset = dataset_split['test']
+
+        logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
+
+        # Get training config values
+        num_epochs = int(self.config.get("training", {}).get("epochs", 3))
+        learning_rate = float(self.config.get("training", {}).get("learning_rate", 5e-7))
+        gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
+
+        # DPO config
+        training_args = DPOConfig(
+            output_dir=output_dir,
+            num_train_epochs=num_epochs,
+            per_device_train_batch_size=1,
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=gradient_accumulation_steps,
+            learning_rate=learning_rate,
+            lr_scheduler_type="cosine",
+            warmup_steps=50,
+            weight_decay=0.01,
+            logging_steps=10,
+            eval_strategy="epoch",
+            save_strategy="epoch",
+            save_total_limit=2,
+            bf16=torch.cuda.is_available(),
+            dataloader_pin_memory=True,
+            dataloader_num_workers=2,
+            remove_unused_columns=False,
+            report_to="wandb" if use_wandb else "none",
+            beta=0.1,
+            loss_type="sigmoid",
+            max_length=512,
+            max_prompt_length=256,
+            dataset_num_proc=2,
+        )
+
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor
+        )
+
+        trainer = TRLDPOTrainer(
+            model=self.model,
+            ref_model=None,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            processing_class=self.processor,
+            callbacks=[eval_callback],
+        )
+
+        trainer.train()
+
+        # Save model
+        trainer.save_model(output_dir)
+        self.processor.save_pretrained(output_dir)
+
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
+        # Cleanup
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        logger.info(f"Model saved to: {output_dir}")
+        return output_dir
 
     def train(self, dataset_path: str, image_dir: str, output_dir: str,
               use_wandb: bool = True, max_samples: int = None,

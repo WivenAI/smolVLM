@@ -189,8 +189,34 @@ class Pipeline:
                     train_sft(self.config, strategy, str(model_output_dir))
                 elif strategy_type == "dpo":
                     train_dpo(self.config, strategy, str(model_output_dir))
+                elif strategy_type == "dpo_benchmark":
+                    # DPO training on benchmark dataset
+                    from trainers.trainer_dpo import DPOTrainerWrapper
+                    trainer = DPOTrainerWrapper(self.config)
+                    trainer.load_model()
+                    benchmark_name = strategy.get("benchmark")
+                    trainer.train_benchmark(
+                        benchmark_name=benchmark_name,
+                        output_dir=str(model_output_dir),
+                        use_wandb=self.config.get("pipeline", {}).get("use_wandb", True),
+                        max_samples=self.config.get("training", {}).get("train_samples"),
+                        strategy_name=name
+                    )
                 elif strategy_type == "orpo":
                     train_orpo(self.config, strategy, str(model_output_dir))
+                elif strategy_type == "orpo_benchmark":
+                    # ORPO training on benchmark dataset
+                    from trainers.trainer_orpo import ORPOTrainerWrapper
+                    trainer = ORPOTrainerWrapper(self.config)
+                    trainer.load_model()
+                    benchmark_name = strategy.get("benchmark")
+                    trainer.train_benchmark(
+                        benchmark_name=benchmark_name,
+                        output_dir=str(model_output_dir),
+                        use_wandb=self.config.get("pipeline", {}).get("use_wandb", True),
+                        max_samples=self.config.get("training", {}).get("train_samples"),
+                        strategy_name=name
+                    )
                 elif strategy_type == "qcm_then_orpo":
                     # First train with QCM, then ORPO on preference data
                     qcm_strategy = {
