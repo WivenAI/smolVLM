@@ -242,7 +242,11 @@ class DPOTrainerWrapper:
                 else:
                     all_answers.append(str(answers))
             elif 'answer' in item:
-                all_answers.append(item['answer'])
+                answer = item['answer']
+                if isinstance(answer, list) and len(answer) > 0:
+                    all_answers.append(answer[0])
+                else:
+                    all_answers.append(str(answer))
             elif 'label' in item:
                 all_answers.append(str(item['label']))
 
@@ -285,7 +289,11 @@ class DPOTrainerWrapper:
                 else:
                     chosen = str(answers)
             elif 'answer' in item:
-                chosen = item['answer']
+                answer = item['answer']
+                if isinstance(answer, list) and len(answer) > 0:
+                    chosen = answer[0]
+                else:
+                    chosen = str(answer)
             elif 'label' in item:
                 chosen = str(item['label'])
             else:
