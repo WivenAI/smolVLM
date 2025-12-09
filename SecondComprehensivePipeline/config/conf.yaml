@@ -37,7 +37,7 @@ training:
 
     # DPO on benchmarks (using random wrong answers as rejected)
     - name: "dpo_docvqa"
-      enabled: true
+      enabled: true  # Testing DPO benchmark
       type: "dpo_benchmark"
       benchmark: "docvqa"
 
@@ -51,19 +51,19 @@ training:
       type: "dpo_benchmark"
       benchmark: "chartqa"
 
-    # ORPO on benchmarks (text-only, using random wrong answers as rejected)
+    # ORPO on benchmarks - DISABLED: TRL ORPOTrainer doesn't officially support VLMs
     - name: "orpo_docvqa"
-      enabled: true
+      enabled: false
       type: "orpo_benchmark"
       benchmark: "docvqa"
 
     - name: "orpo_ocrbench"
-      enabled: true
+      enabled: false
       type: "orpo_benchmark"
       benchmark: "ocrbench"
 
     - name: "orpo_chartqa"
-      enabled: true
+      enabled: false
       type: "orpo_benchmark"
       benchmark: "chartqa"
 
@@ -120,46 +120,44 @@ training:
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # ORPO - Odds Ratio Preference Optimization (reference-free, ~50% less memory than DPO)
-    # ORPO combines SFT + preference alignment in one step, no reference model needed
-    # NOTE: TRL ORPOTrainer does not officially support VLMs - text-only training
+    # ORPO - DISABLED: TRL ORPOTrainer doesn't officially support VLMs
     - name: "erp_orpo_gemini"
-      enabled: true
+      enabled: false
       type: "orpo"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"  # Same format as DPO
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_orpo_nova"
-      enabled: true
+      enabled: false
       type: "orpo"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Combined: QCM first, then ORPO
+    # Combined: QCM first, then ORPO - DISABLED: ORPO doesn't support VLMs
     - name: "erp_qcm_orpo_gemini"
-      enabled: true
+      enabled: false
       type: "qcm_then_orpo"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       orpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_qcm_orpo_nova"
-      enabled: true
+      enabled: false
       type: "qcm_then_orpo"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       orpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Combined: ORPO first, then QCM
+    # Combined: ORPO first, then QCM - DISABLED: ORPO doesn't support VLMs
     - name: "erp_orpo_qcm_gemini"
-      enabled: true
+      enabled: false
       type: "orpo_then_qcm"
       orpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_orpo_qcm_nova"
-      enabled: true
+      enabled: false
       type: "orpo_then_qcm"
       orpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
@@ -279,7 +277,7 @@ evaluation:
       max_samples: 30000
 
     bertscore:
-      enabled: false  # Disabled: too slow on CPU, use LogProb instead
+      enabled: true  # Disabled: too slow on CPU, use LogProb instead
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
       max_samples: 30000

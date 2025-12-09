@@ -277,9 +277,22 @@ class ORPOTrainerWrapper:
             elif 'label' in item:
                 all_answers.append(str(item['label']))
 
-        # Convert to ORPO format (text-only, no images for ORPO)
+        # Convert to ORPO format with images (experimental VLM support)
         orpo_data = []
         for idx, item in enumerate(dataset):
+            # Extract image
+            if 'image' in item:
+                image = item['image']
+            elif 'img' in item:
+                image = item['img']
+            else:
+                continue
+
+            # Convert to RGB and resize
+            if image.mode != 'RGB':
+                image = image.convert('RGB')
+            image.thumbnail((384, 384))
+
             # Extract question
             if 'query' in item:
                 if isinstance(item['query'], dict):
@@ -312,16 +325,17 @@ class ORPOTrainerWrapper:
             else:
                 rejected = random.choice(rejected_candidates)
 
-            # Format prompt (text-only for ORPO)
-            prompt = f"Answer briefly. {question}"
+            # Format prompt with image token for VLM
+            prompt = f"<image>Answer briefly. {question}"
 
             orpo_data.append({
                 'prompt': prompt,
                 'chosen': chosen,
                 'rejected': rejected,
+                'images': [image]  # Add images column for VLM support
             })
 
-        logger.info(f"Prepared {len(orpo_data)} ORPO samples from {benchmark_name}")
+        logger.info(f"Prepared {len(orpo_data)} ORPO samples with images from {benchmark_name}")
         return Dataset.from_list(orpo_data)
 
     def train_benchmark(self, benchmark_name: str, output_dir: str,
@@ -384,9 +398,6 @@ class ORPOTrainerWrapper:
             optim="adamw_8bit",
         )
 
-        # Use tokenizer for ORPO
-        tokenizer = self.processor.tokenizer
-
         # Create evaluation callback
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -394,6 +405,10 @@ class ORPOTrainerWrapper:
             strategy_name=strategy_name,
             processor=self.processor
         )
+
+        # Use tokenizer for ORPO (it requires pad_token_id which processor doesn't have)
+        # Images are still in the dataset - experimental VLM support
+        tokenizer = self.processor.tokenizer
 
         trainer = TRLORPOTrainer(
             model=self.model,
