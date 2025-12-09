@@ -182,8 +182,10 @@ class DPOTrainerWrapper:
             rejected = item.get('rejected', '')
 
             if prompt and chosen and rejected and image:
+                # Add <image> token to prompt for VLM - required for image-text alignment
+                prompt_with_image = f"<image>{prompt}"
                 dpo_data.append({
-                    'prompt': prompt,
+                    'prompt': prompt_with_image,
                     'chosen': chosen,
                     'rejected': rejected,
                     'images': [image]  # TRL DPO expects 'images' column with list of PIL Images
@@ -241,9 +243,8 @@ class DPOTrainerWrapper:
             warmup_steps=50,
             weight_decay=0.01,
             logging_steps=10,
-            eval_strategy="steps",
-            eval_steps=50,
-            save_steps=100,
+            eval_strategy="epoch",
+            save_strategy="epoch",
             save_total_limit=2,
             bf16=torch.cuda.is_available(),
             dataloader_pin_memory=True,
