@@ -176,7 +176,7 @@ class QCMDatasetSFT(torch.utils.data.Dataset):
 
         # Format the prompt with question and options
         options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
-        prompt = f"{question}\n\nOptions:\n{options_text}\n\nFirst, state the letter of the correct answer. YOU MUST OUTPUT THE CORRECT LETTER FIRST, then provide your explanation.\n\nAnswer:"
+        prompt = f"{question}\n\nOptions:\n{options_text}\n\nFirst, state the letter of the correct answer. YOU MUST OUTPUT THE CORRECT LETTER FIRST, then the text of the answer, then provide your explanation.\n\nAnswer:"
 
         # Format the correct answer with explanation
         correct_option_text = options[correct_answer]
