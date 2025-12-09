@@ -205,6 +205,9 @@ class ORPOTrainerWrapper:
 
         # Convert to ORPO format with images column (for VLM support)
         orpo_data = []
+        skipped_missing_image = 0
+        skipped_no_image_name = 0
+        skipped_load_error = 0
         for item in raw_data:
             image_name = item.get('image_name', '')
             image = None
@@ -218,10 +221,15 @@ class ORPOTrainerWrapper:
                         image.thumbnail((384, 384))
                     except Exception as e:
                         logger.warning(f"Failed to load image {image_path}: {e}")
+                        skipped_load_error += 1
                         continue
                 else:
+                    logger.debug(f"Image not found: {image_path}")
+                    skipped_missing_image += 1
                     continue
             else:
+                logger.debug(f"No image_name in item, using placeholder")
+                skipped_no_image_name += 1
                 # Create black placeholder for text-only samples
                 image = Image.new('RGB', (384, 384), color='black')
 
@@ -241,6 +249,12 @@ class ORPOTrainerWrapper:
         if max_samples is not None and len(orpo_data) > max_samples:
             logger.info(f"Limiting dataset from {len(orpo_data)} to {max_samples} samples")
             orpo_data = orpo_data[:max_samples]
+
+        # Log summary of skipped samples
+        total_skipped = skipped_missing_image + skipped_no_image_name + skipped_load_error
+        if total_skipped > 0:
+            logger.warning(f"Skipped {total_skipped} samples: {skipped_missing_image} missing images, "
+                          f"{skipped_load_error} load errors, {skipped_no_image_name} no image_name")
 
         logger.info(f"Prepared {len(orpo_data)} ORPO samples with images")
         return Dataset.from_list(orpo_data)
@@ -279,6 +293,8 @@ class ORPOTrainerWrapper:
 
         # Convert to ORPO format with images (experimental VLM support)
         orpo_data = []
+        skipped_no_image = 0
+        skipped_no_answer = 0
         for idx, item in enumerate(dataset):
             # Extract image
             if 'image' in item:
@@ -286,6 +302,8 @@ class ORPOTrainerWrapper:
             elif 'img' in item:
                 image = item['img']
             else:
+                logger.debug(f"Sample {idx}: No image field found")
+                skipped_no_image += 1
                 continue
 
             # Convert to RGB and resize
@@ -316,6 +334,8 @@ class ORPOTrainerWrapper:
             elif 'label' in item:
                 chosen = str(item['label'])
             else:
+                logger.debug(f"Sample {idx}: No answer field found")
+                skipped_no_answer += 1
                 continue
 
             # Generate rejected answer (random wrong answer from other samples)
@@ -334,6 +354,12 @@ class ORPOTrainerWrapper:
                 'rejected': rejected,
                 'images': [image]  # Add images column for VLM support
             })
+
+        # Log summary of skipped samples
+        total_skipped = skipped_no_image + skipped_no_answer
+        if total_skipped > 0:
+            logger.warning(f"Skipped {total_skipped} samples from {benchmark_name}: "
+                          f"{skipped_no_image} no image, {skipped_no_answer} no answer")
 
         logger.info(f"Prepared {len(orpo_data)} ORPO samples with images from {benchmark_name}")
         return Dataset.from_list(orpo_data)

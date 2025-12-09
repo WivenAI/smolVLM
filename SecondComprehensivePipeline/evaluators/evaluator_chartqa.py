@@ -30,13 +30,17 @@ class ChartQAEvaluator(BaseEvaluator):
         dataset = self.load_cached_dataset(self.dataset_name, "test", max_samples)
 
         results = []
+        skipped_no_path = 0
+        skipped_load_failed = 0
         for item in tqdm(dataset, desc="ChartQA"):
             image_path = item.get('image_path')
             if not image_path:
+                skipped_no_path += 1
                 continue
 
             image = self.load_image(image_path)
             if image is None:
+                skipped_load_failed += 1
                 continue
 
             question = item.get('question', item.get('query', ''))
@@ -51,12 +55,18 @@ class ChartQAEvaluator(BaseEvaluator):
                 "dataset": "chartqa"
             })
 
+        # Log skipped samples summary
+        total_skipped = skipped_no_path + skipped_load_failed
+        if total_skipped > 0:
+            logger.warning(f"ChartQA: Skipped {total_skipped} samples ({skipped_no_path} no path, {skipped_load_failed} load failed)")
+
         accuracy = self.calculate_accuracy(results)
 
         return {
             "benchmark": "chartqa",
             "accuracy": accuracy,
             "total_samples": len(results),
+            "skipped_samples": total_skipped,
             "results": results
         }
 

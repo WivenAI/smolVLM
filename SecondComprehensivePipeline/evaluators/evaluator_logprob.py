@@ -127,12 +127,16 @@ class LogProbEvaluator(BaseEvaluator):
         preferences_correct = 0
 
         image_dir = Path(image_dir)
+        skipped_missing_image = 0
+        skipped_error = 0
 
         for item in tqdm(dataset, desc="LogProb"):
             try:
                 # Load image
                 image_path = image_dir / item['image_name']
                 if not image_path.exists():
+                    logger.debug(f"Image not found: {image_path}")
+                    skipped_missing_image += 1
                     continue
 
                 image = Image.open(image_path).convert('RGB')
@@ -171,7 +175,13 @@ class LogProbEvaluator(BaseEvaluator):
 
             except Exception as e:
                 logger.warning(f"Error processing example: {e}")
+                skipped_error += 1
                 continue
+
+        # Log skipped samples summary
+        total_skipped = skipped_missing_image + skipped_error
+        if total_skipped > 0:
+            logger.warning(f"LogProb: Skipped {total_skipped} samples ({skipped_missing_image} missing images, {skipped_error} errors)")
 
         # Calculate overall metrics
         num_examples = len(results)
