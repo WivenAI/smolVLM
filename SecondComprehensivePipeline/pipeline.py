@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NoHallucinations Pipeline - Clean, modular training and evaluation pipeline
+Pipeline - Clean, modular training and evaluation pipeline
 
 This pipeline:
 1. Reads configuration from config/conf.yaml

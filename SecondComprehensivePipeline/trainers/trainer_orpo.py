@@ -10,6 +10,9 @@ Key advantages over DPO:
 - Faster training (single-stage vs multi-stage)
 - Same data format as DPO (prompt, chosen, rejected)
 
+NOTE: TRL's ORPOTrainer does NOT officially support VLMs with images (unlike DPOTrainer).
+This implementation uses text-only training. For VLM preference optimization, use DPO instead.
+
 Paper: https://arxiv.org/abs/2403.07691
 """
 
@@ -184,12 +187,13 @@ class ORPOTrainerWrapper:
 
     def prepare_orpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
         """
-        Prepare ORPO dataset from JSON file.
+        Prepare ORPO dataset from JSON file with actual image loading.
 
         ORPO uses the same format as DPO:
         - prompt: The input prompt/question
         - chosen: The preferred response
         - rejected: The non-preferred response
+        - images: List of PIL Image objects (for VLM support)
         """
         logger.info(f"Preparing ORPO dataset from: {dataset_path}")
 
@@ -198,27 +202,38 @@ class ORPOTrainerWrapper:
 
         image_dir = Path(image_dir)
 
-        # Convert to ORPO format (same as DPO)
+        # Convert to ORPO format with images column (for VLM support)
         orpo_data = []
         for item in raw_data:
             image_name = item.get('image_name', '')
+            image = None
+
             if image_name:
                 image_path = image_dir / image_name
-                if not image_path.exists():
+                if image_path.exists():
+                    try:
+                        image = Image.open(image_path).convert('RGB')
+                        # Resize to prevent OOM (SmolVLM uses 384x384)
+                        image.thumbnail((384, 384))
+                    except Exception as e:
+                        logger.warning(f"Failed to load image {image_path}: {e}")
+                        continue
+                else:
                     continue
             else:
-                image_path = None
+                # Create black placeholder for text-only samples
+                image = Image.new('RGB', (384, 384), color='black')
 
             prompt = item.get('prompt', '')
             chosen = item.get('chosen', '')
             rejected = item.get('rejected', '')
 
-            if prompt and chosen and rejected:
+            if prompt and chosen and rejected and image:
                 orpo_data.append({
                     'prompt': prompt,
                     'chosen': chosen,
                     'rejected': rejected,
-                    'image_path': str(image_path) if image_path else None
+                    'images': [image]  # TRL expects 'images' column with list of PIL Images
                 })
 
         # Apply sample limit if specified
@@ -226,7 +241,7 @@ class ORPOTrainerWrapper:
             logger.info(f"Limiting dataset from {len(orpo_data)} to {max_samples} samples")
             orpo_data = orpo_data[:max_samples]
 
-        logger.info(f"Prepared {len(orpo_data)} ORPO samples")
+        logger.info(f"Prepared {len(orpo_data)} ORPO samples with images")
         return Dataset.from_list(orpo_data)
 
     def train(self, dataset_path: str, image_dir: str, output_dir: str,
@@ -270,9 +285,9 @@ class ORPOTrainerWrapper:
         # Key differences from DPO:
         # - No reference model needed
         # - beta controls odds ratio strength (typically 0.1)
-        num_epochs = self.config.get("training", {}).get("epochs", 3)
-        learning_rate = self.config.get("training", {}).get("learning_rate", 5e-6)
-        gradient_accumulation_steps = self.config.get("training", {}).get("gradient_accumulation_steps", 4)
+        num_epochs = int(self.config.get("training", {}).get("epochs", 3))
+        learning_rate = float(self.config.get("training", {}).get("learning_rate", 5e-6))
+        gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
 
         training_args = ORPOConfig(
             output_dir=output_dir,

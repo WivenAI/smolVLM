@@ -147,7 +147,7 @@ class DPOTrainerWrapper:
         self.model.print_trainable_parameters()
 
     def prepare_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
-        """Prepare DPO dataset from JSON file"""
+        """Prepare DPO dataset from JSON file with actual image loading for VLM DPO"""
         logger.info(f"Preparing DPO dataset from: {dataset_path}")
 
         with open(dataset_path, 'r', encoding='utf-8') as f:
@@ -155,27 +155,38 @@ class DPOTrainerWrapper:
 
         image_dir = Path(image_dir)
 
-        # Convert to DPO format
+        # Convert to DPO format with images column (required for VLM DPO)
         dpo_data = []
         for item in raw_data:
             image_name = item.get('image_name', '')
+            image = None
+
             if image_name:
                 image_path = image_dir / image_name
-                if not image_path.exists():
+                if image_path.exists():
+                    try:
+                        image = Image.open(image_path).convert('RGB')
+                        # Resize to prevent OOM (SmolVLM uses 384x384)
+                        image.thumbnail((384, 384))
+                    except Exception as e:
+                        logger.warning(f"Failed to load image {image_path}: {e}")
+                        continue
+                else:
                     continue
             else:
-                image_path = None
+                # Create black placeholder for text-only samples
+                image = Image.new('RGB', (384, 384), color='black')
 
             prompt = item.get('prompt', '')
             chosen = item.get('chosen', '')
             rejected = item.get('rejected', '')
 
-            if prompt and chosen and rejected:
+            if prompt and chosen and rejected and image:
                 dpo_data.append({
                     'prompt': prompt,
                     'chosen': chosen,
                     'rejected': rejected,
-                    'image_path': str(image_path) if image_path else None
+                    'images': [image]  # TRL DPO expects 'images' column with list of PIL Images
                 })
 
         # Apply sample limit if specified
@@ -183,7 +194,7 @@ class DPOTrainerWrapper:
             logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
             dpo_data = dpo_data[:max_samples]
 
-        logger.info(f"Prepared {len(dpo_data)} DPO samples")
+        logger.info(f"Prepared {len(dpo_data)} DPO samples with images")
         return Dataset.from_list(dpo_data)
 
     def train(self, dataset_path: str, image_dir: str, output_dir: str,
@@ -214,9 +225,9 @@ class DPOTrainerWrapper:
         logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
 
         # Get training config values
-        num_epochs = self.config.get("training", {}).get("epochs", 3)
-        learning_rate = self.config.get("training", {}).get("learning_rate", 5e-7)
-        gradient_accumulation_steps = self.config.get("training", {}).get("gradient_accumulation_steps", 4)
+        num_epochs = int(self.config.get("training", {}).get("epochs", 3))
+        learning_rate = float(self.config.get("training", {}).get("learning_rate", 5e-7))
+        gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
 
         # DPO config
         training_args = DPOConfig(

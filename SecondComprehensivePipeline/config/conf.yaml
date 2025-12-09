@@ -12,43 +12,43 @@ training:
   train_samples: 1000
   batch_size: 1
   gradient_accumulation_steps: 8
-  learning_rate: 1e-5
+  learning_rate: 0.00001
 
   # Which training strategies to run
   strategies:
     - name: "baseline"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "none"  # No training, just evaluate base model
 
     - name: "sft_docvqa"
-      enabled: true  # Now implemented
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_benchmark"
       benchmark: "docvqa"
 
     - name: "sft_ocrbench"
-      enabled: true  # Now implemented
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_benchmark"
       benchmark: "ocrbench"
 
     - name: "sft_chartqa"
-      enabled: true  # Now implemented
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_benchmark"
       benchmark: "chartqa"
 
     - name: "erp_qcm_gemini"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_qcm"
       dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_qcm_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_qcm"
       dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
     - name: "erp_qcm_combined"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_qcm_combined"
       datasets:
         - "datasets/qcm/qcm_dataset_gemini.json"
@@ -90,28 +90,29 @@ training:
 
     # ORPO - Odds Ratio Preference Optimization (reference-free, ~50% less memory than DPO)
     # ORPO combines SFT + preference alignment in one step, no reference model needed
+    # NOTE: TRL ORPOTrainer does not officially support VLMs - text-only training
     - name: "erp_orpo_gemini"
-      enabled: true
+      enabled: true  # Testing ORPO
       type: "orpo"
       dataset: "datasets/dpo/dpo_dataset_gemini.json"  # Same format as DPO
       image_dir: "datasets/images"
 
     - name: "erp_orpo_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "orpo"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
     # Combined: QCM first, then ORPO
     - name: "erp_qcm_orpo_gemini"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "qcm_then_orpo"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       orpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_qcm_orpo_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "qcm_then_orpo"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       orpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
@@ -119,14 +120,14 @@ training:
 
     # Combined: ORPO first, then QCM
     - name: "erp_orpo_qcm_gemini"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "orpo_then_qcm"
       orpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_orpo_qcm_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "orpo_then_qcm"
       orpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
@@ -134,27 +135,27 @@ training:
 
     # SFT on DPO datasets (using chosen responses only - no preference learning)
     - name: "erp_sft_dpo_gemini"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_dpo"
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_sft_dpo_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_dpo"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
     # Combined: QCM then SFT on DPO dataset
     - name: "erp_qcm_sft_dpo_gemini"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_qcm_dpo"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_qcm_sft_dpo_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_qcm_dpo"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
@@ -162,14 +163,14 @@ training:
 
     # Reverse order: SFT-DPO first, then QCM (to compare training order)
     - name: "erp_sft_dpo_qcm_gemini"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_dpo_qcm"
       dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "erp_sft_dpo_qcm_nova"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_dpo_qcm"
       dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
@@ -177,7 +178,7 @@ training:
 
     # Combined datasets: QCM (both) then SFT-DPO (both)
     - name: "erp_qcm_sft_dpo_combined"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_qcm_dpo_combined"
       qcm_datasets:
         - "datasets/qcm/qcm_dataset_gemini.json"
@@ -189,7 +190,7 @@ training:
 
     # Combined datasets: SFT-DPO (both) then QCM (both)
     - name: "erp_sft_dpo_qcm_combined"
-      enabled: true
+      enabled: false  # Temporarily disabled to test ORPO only
       type: "sft_dpo_qcm_combined"
       dpo_datasets:
         - "datasets/dpo/dpo_dataset_gemini.json"
