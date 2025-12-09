@@ -322,7 +322,9 @@ class DPOTrainerWrapper:
 
         # Get training config values
         num_epochs = int(self.config.get("training", {}).get("epochs", 3))
-        learning_rate = float(self.config.get("training", {}).get("learning_rate", 5e-7))
+        # Use DPO-specific learning rate if available, otherwise fall back to general LR
+        learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
+                              self.config.get("training", {}).get("learning_rate", 5e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
 
         # DPO config
@@ -337,7 +339,8 @@ class DPOTrainerWrapper:
             warmup_steps=50,
             weight_decay=0.01,
             logging_steps=10,
-            eval_strategy="epoch",
+            eval_strategy="steps",
+            eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
             bf16=torch.cuda.is_available(),
@@ -417,7 +420,9 @@ class DPOTrainerWrapper:
 
         # Get training config values
         num_epochs = int(self.config.get("training", {}).get("epochs", 3))
-        learning_rate = float(self.config.get("training", {}).get("learning_rate", 5e-7))
+        # Use DPO-specific learning rate if available, otherwise fall back to general LR
+        learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
+                              self.config.get("training", {}).get("learning_rate", 5e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
 
         # DPO config
@@ -432,7 +437,8 @@ class DPOTrainerWrapper:
             warmup_steps=50,
             weight_decay=0.01,
             logging_steps=10,
-            eval_strategy="epoch",
+            eval_strategy="steps",
+            eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
             bf16=torch.cuda.is_available(),

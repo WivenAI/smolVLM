@@ -13,6 +13,7 @@ training:
   batch_size: 1
   gradient_accumulation_steps: 8
   learning_rate: 0.00001
+  dpo_learning_rate: 0.0000005  # 5e-7, DPO typically needs lower LR than SFT
 
   # Which training strategies to run
   strategies:
