@@ -103,6 +103,7 @@ class Pipeline:
             logger.info("DEBUG MODE - Using 10 samples for everything")
             self.config["training"]["train_samples"] = 10
             self.config["training"]["epochs"] = 1
+            self.config["pipeline"]["use_wandb"] = False  # Disable wandb in debug mode
             for bench in self.config.get("evaluation", {}).get("benchmarks", []):
                 bench["max_samples"] = 10
             # Apply to ERP evaluations too
