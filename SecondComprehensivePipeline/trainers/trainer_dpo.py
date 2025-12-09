@@ -213,14 +213,19 @@ class DPOTrainerWrapper:
 
         logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
 
+        # Get training config values
+        num_epochs = self.config.get("training", {}).get("epochs", 3)
+        learning_rate = self.config.get("training", {}).get("learning_rate", 5e-7)
+        gradient_accumulation_steps = self.config.get("training", {}).get("gradient_accumulation_steps", 4)
+
         # DPO config
         training_args = DPOConfig(
             output_dir=output_dir,
-            num_train_epochs=3,
+            num_train_epochs=num_epochs,
             per_device_train_batch_size=1,
             per_device_eval_batch_size=1,
-            gradient_accumulation_steps=4,
-            learning_rate=5e-7,
+            gradient_accumulation_steps=gradient_accumulation_steps,
+            learning_rate=learning_rate,
             lr_scheduler_type="cosine",
             warmup_steps=50,
             weight_decay=0.01,

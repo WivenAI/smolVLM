@@ -270,13 +270,17 @@ class ORPOTrainerWrapper:
         # Key differences from DPO:
         # - No reference model needed
         # - beta controls odds ratio strength (typically 0.1)
+        num_epochs = self.config.get("training", {}).get("epochs", 3)
+        learning_rate = self.config.get("training", {}).get("learning_rate", 5e-6)
+        gradient_accumulation_steps = self.config.get("training", {}).get("gradient_accumulation_steps", 4)
+
         training_args = ORPOConfig(
             output_dir=output_dir,
-            num_train_epochs=3,
+            num_train_epochs=num_epochs,
             per_device_train_batch_size=1,
             per_device_eval_batch_size=1,
-            gradient_accumulation_steps=4,
-            learning_rate=5e-6,  # ORPO typically uses lower LR than DPO
+            gradient_accumulation_steps=gradient_accumulation_steps,
+            learning_rate=learning_rate,
             lr_scheduler_type="cosine",
             warmup_steps=50,
             weight_decay=0.01,
