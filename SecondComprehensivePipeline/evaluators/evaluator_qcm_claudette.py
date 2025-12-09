@@ -62,7 +62,7 @@ class QCMClaudetteEvaluator(BaseEvaluator):
             correct_answer = qcm_data['correct_answer']
 
             options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
-            prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
+            prompt = f"{question}\n\nOptions:\n{options_text}\n\nFirst, state the letter of the correct answer. YOU MUST OUTPUT THE CORRECT LETTER FIRST, then provide your explanation.\n\nAnswer:"
 
             response = self.generate_response(black_image, prompt)
 
