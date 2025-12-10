@@ -133,10 +133,12 @@ class BaseEvaluator(ABC):
         if self.model is None or self.processor is None:
             raise RuntimeError("Model not loaded. Call load_model() first.")
 
+        # Match the training prompt format (with "Answer briefly." prefix)
         messages = [
             {
                 "role": "user",
                 "content": [
+                    {"type": "text", "text": "Answer briefly."},
                     {"type": "image"},
                     {"type": "text", "text": question}
                 ]
