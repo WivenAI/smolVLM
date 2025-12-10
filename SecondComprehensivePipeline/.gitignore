@@ -15,10 +15,10 @@ logs/
 # Cache directories
 datasets/cache/
 
-# Dataset files (images and JSON data)
-datasets/images/
-datasets/dpo/
-datasets/qcm/
+# Dataset cache only (actual datasets tracked via Git LFS)
+# datasets/images/ - tracked via LFS
+# datasets/dpo/ - tracked via LFS
+# datasets/qcm/ - tracked via LFS
 hf_cache/
 __pycache__/
 *.pyc

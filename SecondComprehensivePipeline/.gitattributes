@@ -1,0 +1,13 @@
+# Git LFS tracking for large dataset files
+
+# Images
+datasets/images/**/*.png filter=lfs diff=lfs merge=lfs -text
+datasets/images/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+datasets/images/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+datasets/images/**/*.gif filter=lfs diff=lfs merge=lfs -text
+datasets/images/**/*.bmp filter=lfs diff=lfs merge=lfs -text
+datasets/images/**/*.webp filter=lfs diff=lfs merge=lfs -text
+
+# JSON datasets (if large)
+datasets/dpo/*.json filter=lfs diff=lfs merge=lfs -text
+datasets/qcm/*.json filter=lfs diff=lfs merge=lfs -text
