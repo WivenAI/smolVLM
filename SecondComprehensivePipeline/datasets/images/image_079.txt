@@ -1,0 +1,308 @@
+CONTEXT FOR: image_079.png
+============================================================
+
+--- BEFORE ---
+En bas, il y a des boutons pour différentes actions :
+Modifier: Permet de modifier les paramètres de l'imprimante sélectionnée. Rétabl
+ir: Réinitialiser les modifications apportées aux paramètres de l'imprimante. Aj
+outer: Ajouter une nouvelle imprimante à la liste. Copier: Dupliquer les paramèt
+res d'une imprimante sélectionnée. Effacer: Supprimer une imprimante de la liste
+. Annuler: Annuler la dernière action effectuée.
+Enfin, il y a une case à cocher "Visible" dans le coin supérieur droit de la lis
+te des imprimantes, qui détermine si l'imprimante est visible pour les utilisate
+urs ou non.
+
+
+Onglet « Code Escape » : 
+
+
+
+Note explicative programme « imprim », onglet « Code escape » :
+Dans le contexte des systèmes ERP et de l'impression, les "Codes Escape" sont de
+s séquences de caractères qui permettent de communiquer des commandes d'impressi
+on spécifiques à une imprimante. Voici une explication de l'onglet "Codes Escape
+" tel qu'il apparaît dans votre interface ERP :
+Codes Escape : Cette section est probablement destinée à configurer des codes sp
+éciaux qui commandent le comportement de l'imprimante. Ces codes permettent de c
+hanger la mise en forme du texte, comme l'orientation, la police, la taille de c
+aractère, et d'autres options d'impression.
+Numéro Fonction : Chaque code est associé à un numéro qui semble correspondre à 
+une fonction d'impression spécifique. Par exemple :
+1 Portrait : Imprime le document en orientation portrait.
+2 Paysage : Imprime le document en orientation paysage.
+Les autres numéros pourraient correspondre à des fonctions telles que la taille 
+du texte, le type de police, la marge, etc.
+Code Escape : Dans la zone de texte, vous pouvez entrer la séquence de code esca
+pe spécifique. Par exemple, "[ESCAPE]&l0O" est une séquence de codes escape PCL 
+(Printer Command Language) qui peut être utilisée pour définir le mode d'impress
+ion portrait sur une imprimante HP.
+Exemples de codes :
+&l0O : Définit l'orientation en portrait.
+&l1O : Définit l'orientation en paysage.
+Les codes supplémentaires (comme "PC-8", "ECMA-94 latin", etc.) font probablemen
+t référence à différentes configurations de caractères, polices ou formats d'imp
+ression que l'imprimante peut prendre en charge.
+Les utilisateurs peuvent sélectionner un "Code Escape" dans la liste pour l'appl
+iquer aux tâches d'impression ou en saisir un nouveau manuellement si nécessaire
+. Ces codes sont très spécifiques à chaque modèle d'imprimante et à la langue de
+ commande de l'imprimante utilisée (comme PCL ou PostScript).
+
+
+
+Onglet « BAC fact. PDF » : 
+
+
+Note explicative programme « imprim », onglet « BAC fact. PDF » :
+L'onglet "BAC fact. PDF" dans cette interface de gestion des imprimantes ERP sem
+ble concerner les paramètres de bac d'alimentation pour l'impression de factures
+ au format PDF. Voici une explication détaillée :
+Nom utilisateur: Indique le nom de l'utilisateur actuellement sélectionné pour l
+equel les paramètres de bac sont configurés, dans ce cas, "FAIGLE REZ".
+Impression de l'original de la facture:
+Page 1: Définit le bac d'alimentation de l'imprimante à utiliser pour imprimer l
+a première page de la facture originale.
+Page suite: Spécifie le bac d'alimentation pour les pages suivantes de la factur
+e originale. Cela peut être différent du bac utilisé pour la première page, par 
+exemple, si l'en-tête de la facture doit être imprimé sur un type de papier diff
+érent.
+Impression des copies clients de la facture:
+Similaire à l'impression de l'original, mais dédié aux copies des factures qui s
+eront envoyées aux clients.
+Impression des copies bac blanc: Configure le bac d'alimentation pour imprimer d
+es copies de la facture sur du papier blanc. Cela peut être utilisé pour des cop
+ies internes ou supplémentaires.
+Impression des copies bac "couleur 1" et Impression des copies bac "couleur 2":
+Ces options permettent de sélectionner les bacs qui contiennent du papier de dif
+férentes couleurs. Ces paramètres sont utiles lorsque différentes copies de fact
+ures nécessitent d'être imprimées sur des papiers de couleur spécifique pour une
+ identification facile ou pour se conformer aux politiques internes de l'entrepr
+ise (par exemple, une couleur pour les copies comptables, une autre pour le serv
+ice client).
+Chaque paramètre du bac a probablement une liste déroulante pour sélectionner pa
+rmi les bacs disponibles sur l'imprimante configurée. Ces réglages assurent que 
+les différents éléments de la facturation sont imprimés correctement et selon le
+s besoins spécifiques de l'entreprise.
+Haut du formulaire
+
+
+
+
+Gestion des imprimantes par défaut programme « impdef » :
+
+Note explicative programme «  impdef » :
+L'interface que vous voyez est conçue pour la gestion des imprimantes par défaut
+ dans un système ERP. C'est un outil utilisé pour assigner des imprimantes spéci
+fiques à des utilisateurs, des groupes d'utilisateurs ou à des applications au s
+ein d'une société. Voici les détails pour comprendre et utiliser cette interface
+ :
+Société: Ce champ déroulant permet de sélectionner la société ou l'entité légale
+ au sein de laquelle l'imprimante par défaut sera configurée. Cela est utile si 
+l'ERP est utilisé par plusieurs sociétés au sein d'un groupe.
+Groupe d'utilisateurs: Ici, vous pouvez définir un groupe d'utilisateurs spécifi
+que qui partagera la même imprimante par défaut. Cela peut faciliter la gestion 
+des imprimantes pour des départements entiers ou des rôles fonctionnels.
+Utilisateur: Ce champ permet d'assigner une imprimante par défaut à un utilisate
+ur individuel, surclassant potentiellement le réglage du groupe d'utilisateurs s
+i nécessaire.
+Application: Ce menu déroulant permet de spécifier l'application ERP dans laquel
+le l'imprimante par défaut sera utilisée. Par exemple, une application de compta
+bilité peut nécessiter l'utilisation d'une imprimante différente de celle d'une 
+application de gestion d'entrepôt.
+Programme: Si l'application sélectionnée contient plusieurs programmes ou module
+s, ce champ permet de spécifier celui auquel l'imprimante est assignée.
+Liste: Ce champ pourrait servir à désigner une liste ou un rapport spécifique au
+ sein du programme choisi qui nécessite l'impression.
+Désignation: Ici, vous pouvez donner une description ou un nom à la configuratio
+n de l'imprimante pour aider à l'identifier.
+Imprimante: Ce champ déroulant est utilisé pour sélectionner l'imprimante qui se
+ra désignée comme l'imprimante par défaut pour les paramètres choisis ci-dessus.
+Les boutons situés en bas de l'interface sont :
+Enregistrer: Cliquez ici pour sauvegarder toutes les configurations que vous ave
+z définies.
+Rétablir: Si vous avez apporté des modifications et que vous souhaitez revenir à
+ la dernière configuration sauvegardée, utilisez ce bouton.
+Ajouter: Pour créer une nouvelle configuration d'imprimante par défaut.
+Copier: Si vous souhaitez dupliquer une configuration existante pour ensuite la 
+modifier.
+Effacer: Utilisez ce bouton pour supprimer une configuration existante.
+Annuler: Annulez l'action en cours ou fermez la fenêtre sans enregistrer les mod
+ifications.
+
+Programme et sous-domaines programme « program » : 
+
+Note explicative du programme « program » :
+La fenêtre à l'écran est une vue d'ensemble des programmes et des sous-domaines 
+associés à un système ERP spécifique. Cette interface permet aux utilisateurs de
+ gérer et d'accéder à différents programmes fonctionnels du système ERP. Voici u
+ne explication des différents composants de cette interface :
+Appl. (Application) : Indique le code de l'application associée à chaque program
+me. C'est une sorte de catégorisation ou de regroupement de programmes sous une 
+fonctionnalité commune de l'ERP.
+Programme : Le nom technique du fichier programme, utilisé par le système pour e
+xécuter différentes tâches et processus.
+Désignation : La description ou le nom commun du programme qui indique sa foncti
+on ou son but, par exemple, "Commandes d'achat", "Impressions des commandes", "G
+estion des adresses", etc.
+Path : Le chemin d'accès au programme dans le système de fichiers ou la base de 
+données de l'ERP, indiquant où le programme est stocké ou comment y accéder.
+Client : Peut faire référence à une entité spécifique pour laquelle le programme
+ est configuré ou à un espace client au sein de l'ERP où le programme est utilis
+é.
+Groupe client : Un champ supplémentaire qui peut être utilisé pour définir des g
+roupes d'utilisateurs ou des permissions basées sur les clients ou les groupes d
+e clients.
+Accès 1, Accès 2, Accès 3, Salaires : Ces colonnes pourraient indiquer différent
+
+[IMAGE HERE: image_079.png]
+
+--- AFTER ---
+s niveaux d'accès ou des permissions spécifiques liées au programme. "Salaires" 
+peut indiquer si le programme est associé à la gestion des salaires ou des infor
+mations connexes.
+En bas de l'écran, il y a des contrôles d'accès supplémentaires :
+MS2000 Classique/MS2000 Consolidation/Les 2 : Des options pour sélectionner une 
+version ou un mode de l'ERP. Ceci est crucial pour les entreprises qui peuvent a
+voir différentes instances de l'ERP pour différents besoins ou phases de consoli
+dation.
+Programme d'impression, Excel, Taille de la police modifiable, Gestion de base, 
+Mot de passe nécessaire : Ce sont des contrôles d'accès qui pourraient activer o
+u restreindre l'utilisation de fonctionnalités spécifiques dans chaque programme
+.
+La section inférieure permet à l'utilisateur de "Modifier" la configuration d'un
+ programme sélectionné ou de "Rétablir" les paramètres par défaut, et d'autres o
+ptions comme "Copier", "Effacer" et "Annuler" pour gérer les configurations de p
+rogramme.
+Cette interface est donc essentielle pour la gestion centralisée des programmes 
+ERP. Elle offre une vue exhaustive de tous les programmes, y compris ceux qui pe
+uvent ne pas apparaître immédiatement dans l'arborescence des programmes ou les 
+menus utilisateurs. Cela assure que les administrateurs système et les utilisate
+urs avancés puissent accéder à tous les programmes nécessaires, même ceux qui so
+nt moins visibles, pour la maintenance quotidienne, les mises à jour ou la gesti
+on des flux de travail au sein de l'ERP.
+
+Gestion des paramètres programme « paraprog » :
+
+Note explicative programme « paraprog » :
+Ce que nous voyons ici semble être l'interface de gestion des paramètres de conf
+iguration d'un système ERP. Cet écran spécifique permet aux administrateurs de c
+onfigurer ou de modifier les paramètres qui influencent le comportement de diver
+s programmes ou applications au sein du système. Voici une explication des éléme
+nts de cette interface :
+Société/Exercice/Utilisateur/Application/Programme : Ces colonnes permettent de 
+spécifier à quel niveau le paramètre s'applique. Il peut être global (applicable
+ à toute l'organisation), spécifique à un exercice comptable, à un utilisateur, 
+à une application ou même à un programme spécifique.
+Numéro : Cela pourrait être un identifiant unique pour le paramètre, facilitant 
+sa référence et sa gestion.
+Commentaire : Fournit une description du paramètre ou de sa fonction, ce qui aid
+e à comprendre son objectif et son impact.
+Paramètre : La valeur actuelle du paramètre qui peut être modifiée. Elle peut êt
+re un simple interrupteur (comme vrai/faux), une date, une chaîne de caractères,
+ ou tout autre type de donnée nécessaire pour configurer une fonctionnalité spéc
+ifique du programme.
+La section inférieure de l'écran donne des options pour modifier les paramètres 
+:
+Modifier : Permet de changer la valeur d'un paramètre sélectionné.
+Rétablir : Annuler les changements et revenir à la dernière valeur enregistrée.
+Ajouter : Créer un nouveau paramètre de configuration.
+Copier : Dupliquer un paramètre existant, probablement pour l'adapter ensuite.
+Effacer : Supprimer un paramètre de la liste.
+Annuler : Quitter l'opération actuelle sans sauvegarder les changements.
+Les paramètres illustrés dans cette interface sont divers et pourraient inclure 
+:
+Des chemins de fichiers pour où stocker des documents numérisés.
+Des configurations pour des outils comme des stylos numériques.
+Des paramètres pour la gestion de l'inventaire.
+Des configurations pour le traitement des paiements ou des factures.
+Des ajustements pour les marges de tolérance dans le saisie de données financièr
+es.
+La gestion précise de ces paramètres est essentielle pour le fonctionnement quot
+idien de l'ERP, car elle affecte directement comment les utilisateurs interagiss
+ent avec le système, l'exactitude des données traitées, et l'efficacité générale
+ des opérations d'affaires. Chaque modification peut avoir des répercussions éte
+ndues, d'où l'importance d'une documentation et d'une compréhension claires de c
+haque paramètre.
+
+Numérotation num110 :
+
+Note explicative programme « num110 » :
+Cet écran du système ERP affiche la fonction de numérotation, qui est probableme
+nt utilisée pour gérer et suivre la séquence des numéros utilisés pour différent
+s fichiers ou documents au sein de l'organisation.
+Société : Ce champ indique la société ou l'entité au sein de l'organisation pour
+ laquelle les numéros sont suivis. Cela permet une gestion des numéros par entit
+é distincte, ce qui est courant dans les organisations avec plusieurs filiales o
+u divisions.
+Exercice : Ce champ fait référence à l'exercice financier ou période comptable. 
+Suivre les numéros par exercice peut aider à organiser les documents de manière 
+chronologique et à maintenir l'ordre dans la documentation fiscale et financière
+.
+Fichier : Ici, nous voyons le type de fichier ou de document concerné par la num
+érotation. Cela pourrait être des factures (comme indiqué par "f"), des rapports
+, ou d'autres types de documents importants.
+Dernier no : Le "Dernier numéro" affiché pour chaque fichier ou exercice indique
+ le dernier numéro attribué dans la séquence. Cela aide à identifier rapidement 
+quel sera le prochain numéro disponible ou à vérifier les numéros déjà utilisés.
+Les options en bas de l'écran, "Modifier", "Rétablir", "Ajouter", "Copier", "Eff
+acer" et "Annuler", sont des fonctions de gestion des données. Ces fonctions per
+mettent de manipuler les entrées de numérotation, telles que :
+Modifier : Changer le dernier numéro ou d'autres détails d'une entrée existante.
+Rétablir : Annuler les dernières modifications et revenir aux valeurs précédente
+s.
+Ajouter : Créer une nouvelle ligne de suivi pour un nouveau type de fichier ou u
+n nouvel exercice.
+Copier : Dupliquer les informations d'une entrée pour un usage rapide dans une n
+ouvelle entrée.
+Effacer : Supprimer une entrée de la liste.
+Annuler : Annuler la dernière action ou fermer la fenêtre sans enregistrer les c
+hangements.
+En haut, il y a des options pour trier les données par ordre "Ascendant" ou "Des
+cendant", ce qui peut être utile pour visualiser les séquences de numéros de man
+ière chronologique ou pour trouver le dernier numéro attribué le plus rapidement
+ possible.
+Cette fonction de numérotation est cruciale pour garantir la cohérence et l'ordr
+e dans la gestion des documents. Elle évite les doublons, facilite la traçabilit
+é et permet une récupération efficace des documents dans le système ERP.
+
+Tables Médiasoft ms900 :
+
+Note Explicatif programme « ms900 » : 
+Cette capture d'écran montre une interface du système ERP dédiée à la gestion de
+s tables de données, spécifiquement pour une application nommée "ad" qui est lié
+e à la gestion d'adresses. Voici un guide explicatif des éléments de cette inter
+face :
+Colonnes :
+Appl. (Application) : Indique à quelle application appartient la table, ici repr
+ésentée par "ad".
+Langue : La lettre « D » signifie la langue utilisée donc ici Deutsch
+N° : Numéro de séquence ou d'identification unique pour chaque entrée.
+Code : Un identifiant unique supplémentaire, souvent utilisé pour référencer un 
+élément spécifique dans le système.
+Intitulé 1 & Intitulé 2 : Noms ou descriptions associés à chaque code, qui pourr
+aient être des noms de villes ou de districts, comme illustré par les entrées "L
+ausanne", suivis de leur canton correspondant "VD" (probablement pour Vaud).
+Options de tri :
+Ascendant/Descendant : Permet de trier la liste selon l'ordre croissant ou décro
+issant, basé sur la colonne sélectionnée, probablement par défaut sur le "Dernie
+r numéro".
+Fonctions de gestion :
+Modifier : Permet d'éditer les détails de l'entrée sélectionnée dans la table.
+Rétablir : Annule les modifications récentes et revient aux données précédentes.
+Ajouter : Crée une nouvelle entrée dans la table.
+Copier : Duplique les informations de l'entrée sélectionnée pour un usage rapide
+ dans une nouvelle entrée.
+Effacer : Supprime l'entrée sélectionnée de la table.
+Annuler : Quitte l'opération en cours sans sauvegarder les changements.
+Section détaillée pour modification :
+Application/Type/Langue/Numéro/Code/Intitulé 1/Intitulé 2/Divers : Champs de sai
+sie correspondant aux colonnes de la table, utilisés pour saisir ou modifier des
+ informations pour une entrée spécifique.
+Niveau d'autorisation : Définit qui peut voir ou modifier cette entrée dans la t
+able, selon les niveaux d'accès définis dans le système ERP.
+Ce guide explicatif est destiné à aider les utilisateurs à comprendre comment in
+teragir avec cette interface de gestion de tables, comment les données sont orga
+nisées et quelles actions ils peuvent effectuer pour gérer efficacement ces info
+rmations au sein du système ERP.
+
+Gestion des messages ms102 :
+

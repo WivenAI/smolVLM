@@ -1,0 +1,308 @@
+CONTEXT FOR: image_516.png
+============================================================
+
+--- BEFORE ---
+
+
+Les boutons spécifiques à la mise en forme des lignes:
+
+
+
+ Affichage des lignes de la facture suivante ou précédente.
+ Insertion d’un saut de page.
+ Insertion d’une ligne vide (interligne).
+ Insertion d’une ligne de texte
+ Génération d’un sous-total en fonction des lignes sélectionnées par les touches
+ « Ctrl » ou « Majuscule ».
+ Appliquer un rabais sur le sous-total.
+  Appliquer un sous-total net après rabais (lignes sous-total & rabais).
+ Génération d’une récapitulation en fonction des lignes sélectionnées par les to
+uches « Ctrl » ou « Majuscule ».
+
+
+ Génération d’un chapitre et d’une récapitulation, avec la possibilité de sélect
+ionner un code de chapitre selon le CAN (liste déroulante en cliquant sur le tri
+angle noir, flèche en bas).
+ Renumérotation automatique des chapitres.
+ Déplacement de ligne(s) sélectionnée(s) vers le haut ou vers le bas.
+
+Conseil pour le traitement des lignes :
+·Saisir en priorité toutes les lignes articles de calcul.
+·Ensuite définir les chapitres.
+·Définir les sous-totaux et les remises-rabais.
+·Terminer par la mise en page (lignes vides et saut de page éventuel).
+
+
+Les champs spécifiques pour la saisie des lignes (programme fv100):
+
+
+« No ligne » : Attribution automatique par le programme.
+« Chapitre » : Attribution automatique des numéros de chapitre et ligne du chapi
+tre, si un chapitre a été constitué. (voir fonctionnalités de traitement des cha
+pitres).
+« Article » : Dés que la fonction « Ajouter » a été sélectionnée soit par clic s
+ur le bouton « Ajouter » ou par la combinaison de touches Alt+a le programme ouv
+re la possibilité de saisir un code article à valider avec la touche Enter, ou d
+e sélectionner dans la liste déroulante un article (gérer dans ar100)
+en cliquant sur le bouton : .
+Remarques et conseils pour une sélection rapide et restreinte des articles :
+Etant donné qu’il y a la possibilité d’attribuer un groupe catalogue à un type d
+e facture (fa901), il serait préférable d’avoir des articles rattachés au groupe
+ catalogue de base pour le type de facture traité.
+Affichage de la désignation de l’article, du format de traitement et d’impressio
+n (défini dans ar100).
+Possibilité de saisir ou de corriger le texte qui sera imprimé sur la facture.
+
+Options de traitement de la ligne d’article :
+
+
+
+Tarif : Automatique, provenant du client, peut être modifié. (voir gestion des t
+arifs et des prix dans ar100, bouton $).
+TVA : : Automatique, provenant du client, peut être modifié. (voir gestion des t
+aux de TVA dans co902).
+
+
+
+
+« Quantité » : Saisie de la quantité à facturer.
+« Unité de facturation » Automatique, provenant de l’article, peut être modifié 
+selon liste déroulante.
+« Prix HT » Affichage du prix unitaire selon tarif ou saisie du prix s’il n’y a 
+pas de prix enregistré dans ar100.
+
+
+
+« Remise en % » Possibilité de saisir un taux pour la ligne en cours de traiteme
+nt. (la remise doit être saisie avec le signe moins " - ") . La majoration n’est
+ pas signée. Valider avec Enter pour déclencher le calcul.
+« Montant remise » Possibilité de saisir un montant pour la ligne en cours de tr
+aitement. (la remise doit être saisie avec le signe moins " - ") . La majoration
+ n’est pas signée. Valider avec Enter pour déclencher le calcul.
+
+
+
+« Montant ligne HT » Résultat des calculs réalisés selon explications ci-dessus.
+« A totaliser » : Utilisé généralement pour une variante qui n’est pas totalisée
+ dans la facture.
+« Compte CG – Compte CA – Genre de frais » Affichage provenant de l’onglet « Bas
+e » de l’en-tête de facture.
+
+Champs d’affichage et de calculs des TOTAUX de la facture :
+
+
+
+
+« HT » : Montant total hors TVA de la facture, calculé au fur et à mesure de la 
+saisie des lignes.
+« TVA » : Montant total de la TVA de la facture, calculé au fur et à mesure de l
+a saisie des lignes.
+« TTC » : Montant total TTC de la facture, calculé au fur et à mesure de la sais
+ie des lignes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Principe de base pour la création de sous-total et de chapître :
+Ne sélectionner que les lignes valorisées dans la colonne "Montant". Ne jamais s
+électionner les lignes de « sous-total » ou de « récapitulation ».
+
+Fonctions pour la création d’un sous-total (programme fv100):
+Sélectionner les lignes articles qui doivent constituer le sous-total à l’aide d
+es touches « Majuscule » ou « Ctrl ».
+
+Exemple : deux lignes sélectionnées :
+
+Cliquer ensuite sur le bouton :  Génération d’un sous-total.
+Le sous-total est créé automatiquement, selon le résultat ci-dessous :
+
+
+Fonctions pour la création d’un chapître (programme fv100):
+Sélectionner les lignes articles qui doivent constituer le chapître à l’aide des
+ touches « Majuscule » ou « Ctrl ».
+(la ligne « sous-total », n’est pas sélectionnée).
+
+
+
+Cliquer ensuite sur le bouton :  Génération automatique d’un chapître et d’une r
+écapitulation.
+
+
+Le chapitre et la récapitulation du chapitre sont créés automatiquement, selon l
+e résultat ci-dessous (incluant un sous-total dans le chapitre).
+
+
+
+
+
+
+
+[IMAGE HERE: image_516.png]
+
+--- AFTER ---
+
+
+
+
+
+
+
+Note explicative de la fonction de création de « sous-total » dans le programme 
+« fv100 » :
+Le programme "fv100" permet de gérer les factures de vente, y compris la créatio
+n de sous-totaux pour des groupes de lignes d'articles. Voici une explication fo
+nctionnelle de la création de sous-totaux, avec un focus sur la manière dont cet
+te fonctionnalité est intégrée dans le programme :
+Fonctionnalité de Création de Sous-total
+Sélection des Lignes d'Articles :
+Pour créer un sous-total, commencez par sélectionner les lignes d'articles que v
+ous souhaitez inclure dans le sous-total. Utilisez les touches « Majuscule » pou
+r sélectionner une plage continue de lignes ou « Ctrl » pour sélectionner des li
+gnes individuelles.
+Bouton de Génération de Sous-total :
+Une fois les lignes sélectionnées, cliquez sur le quatrième bouton en partant de
+ la gauche sur la ligne "Mise en forme des lignes". Ce bouton est spécifiquement
+ dédié à la génération d'un sous-total.
+Fenêtre de Sous-total :
+Une fenêtre s'ouvre pour configurer le sous-total. Cette fenêtre comporte plusie
+urs champs et options :
+N° ligne : Numéro de la ligne de sous-total.
+Chapitre : Identification de la section ou du chapitre, si applicable.
+Article : Code de l'article de sous-total (exemple : st pour sous-total).
+Format : Champ texte pour entrer une description ou un format pour le sous-total
+ (exemple : Sous-total).
+Options de Texte : Options pour formater le texte, telles que texte à imprimer, 
+texte en gras, en italique, ou souligné.
+Détails du Sous-total :
+Tarif : Sélection du tarif applicable, s'il y en a un.
+TVA : Taux de TVA applicable pour le sous-total.
+Commandée, Livrée, Reliquat : Quantités commandées, livrées et restant à livrer.
+Quantité et Prix HT : Quantité et prix hors taxe.
+Remise et Majoration : Pourcentage et montant de remise ou majoration, s'il y en
+ a.
+Montant Ligne HT : Montant hors taxe de la ligne de sous-total.
+Comptes Associés :
+Compte C.G. et C.A. : Comptes de grand livre et de comptabilité analytique assoc
+iés à la ligne de sous-total.
+Genre de Frais : Catégorie de frais pour le sous-total.
+Procédure de Création de Sous-total
+Sélectionner les lignes d'articles que vous souhaitez inclure dans le sous-total
+ en utilisant les touches « Majuscule » ou « Ctrl ».
+Cliquer sur le bouton "Génération d’un sous-total", le quatrième bouton en parta
+nt de la gauche sur la ligne "Mise en forme des lignes".
+Configurer les détails du sous-total dans la fenêtre qui s'ouvre :
+Entrer les informations nécessaires dans les champs requis (N° ligne, Chapitre, 
+Article, etc.).
+Sélectionner les options de texte et de formatage appropriées.
+Valider le sous-total en remplissant les informations sur le tarif, la TVA, les 
+quantités, les prix, les remises ou majorations, et les comptes associés.
+Enregistrer et finaliser la création du sous-total.
+
+
+
+
+
+
+
+
+
+
+
+Fonctions pour la création d’un chapître (programme fv100):
+Sélectionner les lignes articles qui doivent constituer le chapître à l’aide des
+ touches « Majuscule » ou « Ctrl ».
+
+
+
+Cliquer ensuite sur le petit triangle noir à droite du bouton :   sélectionner d
+ans la liste déroulante la position adéquate. Génération automatique d’un chapît
+re et d’une récapitulation.
+
+Le chapitre et la récapitulation du chapitre sont créés automatiquement, selon l
+e résultat ci-dessous :
+
+
+Fonction de création d’un sous-total et d'un sous-total après remise pour l’appl
+ication de rabais en cascade. (Programme fv100):
+Sélectionner les lignes articles qui doivent constituer le sous-total à l’aide d
+es touches « Majuscule » ou « Ctrl ».
+
+
+
+
+Exemple : les lignes ci-dessus sont sélectionnées.
+
+Cliquer ensuite sur le bouton :  Génération d’un sous-total.
+
+Le sous-total est créé automatiquement, selon le résultat ci-dessous.
+
+
+
+
+Cliquer ensuite sur le bouton :  Appliquer un rabais sur le sous-total.
+
+
+
+
+Saisir le % de remise et valider avec la touche Enter pour que le calcul ce réal
+ise.
+
+Cliquer ensuite sur le bouton :   pour appliquer un sous-total net après rabais 
+(lignes sous-total & rabais).
+
+
+
+
+Sélectionner les lignes articles (en vert foncé) qui doivent constituer le deuxi
+ème sous-total à l’aide des touches « Majuscule » ou « Ctrl », pour appliquer un
+ deuxième rabais.
+
+Sélection de toutes les lignes ainsi que la ligne du premier rabais.
+
+Cliquer ensuite sur le bouton :  Génération d’un sous-total.
+
+
+
+Cliquer ensuite sur le bouton :  Appliquer un rabais complémentaire sur le sous-
+total.
+
+Cliquer ensuite sur le bouton :   pour appliquer un sous-total net après le raba
+is complémentaire (lignes sous-total & rabais).
+
+
+
+
+Sélectionner les lignes articles qui doivent constituer le troisième sous-total 
+à l’aide des touches « Majuscule » ou « Ctrl », pour appliquer un troisième raba
+is.
+
+
+
+Sélection de toutes les lignes ainsi que les lignes du premier et deuxième rabai
+s.
+
+
+Cliquer ensuite sur le bouton :  Génération d’un sous-total.
+
+
+Cliquer ensuite sur le bouton :  Appliquer un rabais pour escompte de paiement s
+ur le sous-total.
+
+Lorsqu’on arrive au dernier calcul de réduction ou de majoration, il ne faut pas
+ cliquer sur le bouton :  car cela ferait double emploi au moment de l’impressio

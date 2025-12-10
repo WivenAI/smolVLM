@@ -1,0 +1,308 @@
+CONTEXT FOR: image_586.png
+============================================================
+
+--- BEFORE ---
+Informations Client
+Client existant/inexistant : Sélectionner si le client existe déjà dans la base 
+de données ou s'il s'agit d'un nouveau client.
+Adresse client existante : Permet de sélectionner une adresse existante pour le 
+client.
+Désignation client : Le nom du client.
+Conditions de paiement : Les conditions de paiement proposées au client.
+Tarif : Le tarif appliqué pour cette offre.
+N° Fax : Le numéro de fax du client.
+N° Tel : Le numéro de téléphone du client.
+À l'attention de : La personne de contact chez le client.
+Localité : La localité du client.
+Informations Chantier
+N° Chantier : Le numéro du chantier.
+Objet du chantier : La description du chantier.
+Zone : La zone géographique du chantier.
+Qté M3 totale : La quantité totale en mètre cube (M3) pour le chantier.
+Désignation affaire : La désignation de l'affaire liée à l'offre.
+Gestion des Conditions
+Offre fermée : Indique si l'offre est fermée.
+Adjugée à l'entreprise : Indique si l'offre a été adjugée à l'entreprise.
+Soumission : Indique si l'offre a été soumise.
+Saut de page avant les textes divers : Ajoute un saut de page avant les textes d
+ivers dans l'impression de l'offre.
+Avec saut de page avant les conditions : Ajoute un saut de page avant les condit
+ions dans l'impression de l'offre.
+Informations Responsables
+Responsable : Le nom du responsable de l'offre.
+Nom Resp. : Le nom du responsable.
+Fonction : La fonction du responsable.
+N° Tel : Le numéro de téléphone du responsable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Gestion des offres of110 :
+
+Ce programme permet de créer des offres (sans compte CA - Analytique), qui une f
+ois acceptées permettront d'éditer des factures de demande d'acomptes.
+
+Résumé du flux :
+
+1) Création offre avec le bouton  
+2) Validation de l'offre par le client (saisie du compte CA)  par le bouton Vali
+der  
+3) Saisie d'une demande d'acompte avec le bouton  Attention : la génération d'ac
+omptes est impossible si l'offre n'a pas été validée auparavant (voir point 2)
+
+4) Comptabilisation de la facture d'acompte avec le programme fa661
+
+
+
+
+
+
+Filtre des genres d'offres
+
+Filtre par dates
+
+Panneau de commandes spécifique : 
+
+ Fonctions "Post-it"
+ Visualiser l'adresse du client
+ Tableau des taxes
+ Copier l'offre depuis un autre exercice
+ Impression offre / envoi par email
+            Validation de l'offre (si acceptation par le client)
+  Générer une demande d'acompte
+ Dévalider l'offre / offre refusée / créer une nouvelle version de l'offre
+
+
+Sélection par utilisateur
+
+Historique des demandes d'acompte
+
+
+Statut actuel de l'offre
+Pour changer le statut, voir fonction  expliquée ci-dessus (point 3)
+
+Filtre selon statut
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de la gestion des offres programme « of110 » : 
+
+Le programme "of110" est utilisé pour la gestion des offres. Il permet de suivre
+ et de gérer les offres commerciales émises par l'entreprise. Voici une explicat
+ion détaillée de sa composition et de son fonctionnement :
+1. Filtre des genres d'offres
+Cette section permet de filtrer les offres selon leur genre :
+Type de facture : Sélectionner le type d'offre à afficher, comme "Offre simple",
+ "Offre complexe", etc.
+2. Filtre par dates
+Permet de filtrer les offres en fonction de la période spécifiée :
+Factures du : Définir une plage de dates pour filtrer les offres en fonction de 
+leur date de création ou de leur date de validation.
+3. Panneau de commandes spécifique
+Ce panneau contient diverses commandes pour gérer les offres :
+Ajouter, Modifier, Supprimer : Permet d'ajouter une nouvelle offre, de modifier 
+une offre existante ou de supprimer une offre.
+Sauvegarder, Annuler : Enregistrer les modifications apportées à une offre ou an
+nuler les modifications non enregistrées.
+4. Sélection par utilisateur
+Permet de filtrer les offres selon l'utilisateur :
+Mes factures : Affiche les offres créées par l'utilisateur connecté.
+Toutes les factures : Affiche toutes les offres, indépendamment de l'utilisateur
+ qui les a créées.
+5. Historique des demandes d'acompte
+Cette section affiche l'historique des demandes d'acompte associées à l'offre sé
+lectionnée :
+Acomptes : Détaille les acomptes demandés et leur statut (validé, en attente, et
+c.).
+6. Statut actuel de l'offre
+Affiche le statut actuel de l'offre sélectionnée :
+Statut : Indique si l'offre est validée, en attente de validation, refusée, etc.
+Date de valeur : Date de la dernière mise à jour du statut de l'offre.
+7. Filtre selon statut
+Permet de filtrer les offres en fonction de leur statut :
+Factures non imputées, Imputées, Toutes : Filtrer les offres selon qu'elles soie
+nt encore à traiter, déjà traitées ou afficher toutes les offres.
+
+
+
+
+[IMAGE HERE: image_586.png]
+
+--- AFTER ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Générer une facture depuis une offre of110, fv100 :
+
+
+Temps 1 : Impression de l’offre  Création du no de devis (différent du no de piè
+ce)
+
+
+
+
+Temps 2 : Valider l’offre en cliquant sur le ‘Vu’ en vert : 
+
+
+
+Temps 3 : aller dans le FV100.. Créer la facture depuis un document
+
+
+
+
+
+Temps 4 : Choisir l’offre et le type facture et OK
+
+
+
+MS Comptabilité Générale :
+Compte générale : 
+MS2000 permet de créer, de paramétrer et d'éditer le plan comptable d'une sociét
+é, mais aussi de gérer des budgets et d'effectuer des lettrages de comptes.
+
+Plan comptable cg100 :
+
+
+Volet de visualisation du compte
+
+
+
+Solde actuel du compte
+
+
+
+Onglet "Liste"
+
+Permet de visualiser les comptes du Plan Comptable
+
+
+
+
+
+
+
+
+
+
+Note explicative du plan comptable programme « cg100 » : 
+
+Le programme "cg100" est un outil intégré dans le système ERP destiné à la gesti
+on du plan comptable. Voici une description détaillée de ses composants et fonct
+ionnalités pour une compréhension claire et exhaustive :
+1. Volet de Visualisation du Compte
+Le volet de visualisation du compte est une section du programme où l'utilisateu
+r peut sélectionner et afficher les détails d'un compte spécifique. Cela permet 
+de voir en un coup d'œil les informations essentielles d'un compte comptable, y 
+compris les transactions et les soldes actuels.
+2. Solde Actuel du Compte
+Le solde actuel du compte est une information cruciale affichée en haut de la fe
+nêtre. Il indique le montant disponible ou dû dans le compte sélectionné. Cette 
+valeur est mise à jour en temps réel en fonction des transactions enregistrées d
+ans le système.
+3. Onglet "Liste"
+L'onglet "Liste" est une interface de visualisation où sont listés tous les comp
+tes du plan comptable. Voici une description détaillée des colonnes et des infor
+mations affichées :
+Numéro : Le numéro unique attribué à chaque compte, utilisé pour l'identificatio
+n et le suivi.
+Intitulé court : Un nom abrégé du compte pour une identification rapide.
+Monnaie : La devise dans laquelle les transactions du compte sont effectuées.
+Type : Indique la nature du compte (Actif, Passif, etc.).
+Intitulé : Le nom complet du compte, donnant plus de détails que l'intitulé cour
+t.
+Intitulé (suite) : Informations supplémentaires ou descriptions étendues du comp
+te.
+Compte C.A. : Référence au compte de Centre d'Analyse (C.A.) si applicable.
+Genre de frais : Type de dépenses associées au compte, le cas échéant.
+Fonctionnalités Clés :
+Navigation et Sélection :
+Type de compte : Un filtre permettant de sélectionner un type de compte spécifiq
+ue pour une visualisation plus ciblée.
+Saisie du compte : Une zone de saisie pour entrer directement le numéro de compt
+e que l'utilisateur souhaite consulter.
+Visualisation des Soldes :
+Soldes actuels en monnaie : Affiche le solde actuel dans la devise principale du
+ compte.
+En contre-valeur : Montre la valeur équivalente dans une autre devise, facilitan
+t ainsi les opérations multicurrency.
+Gestion des Comptes :
+Hist-lettre : Onglet permettant l'accès à l'historique des lettrages, important 
+pour les réconciliations bancaires et autres ajustements comptables.
+Écr. effacées : Section où les écritures annulées ou supprimées sont affichées p
+our référence et audit.
+
+
+
+
+Onglet « Compte » :
+
+
+Paramètres de base du compte
+
+
+
+Paramètres Comptabilité Analytique
+
+Association avec un compte analytique et un compte par nature (Genre de frais)
+
+
+Sélections spéciale et blocage du compte
+
+Lorsque le blocage du compte est coché, aucune écriture ne peut être entrée sur 
+ce compte
+
+Choix du type de compte
+
+S'il s'agit d'un compte de regroupement, sélectionner "Collectif clients" ou "Co
+llectif fournisseurs"
+
+Paramétrage de l'accès au données
+
+0 = accès à tous les utilisateurs 9= accès restreint au minimum (par exemple Dir
+ection de l'entreprise)
+
+Panel de fonctions standard MS2000
+
+Pour ajouter, modifier ou effacer un compte

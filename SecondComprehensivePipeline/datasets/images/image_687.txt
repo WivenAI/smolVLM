@@ -1,0 +1,309 @@
+CONTEXT FOR: image_687.png
+============================================================
+
+--- BEFORE ---
+6. Visualisation et Impression
+Bouton Imprimer/Visualiser : Situé en bas à gauche, ce bouton permet de visualis
+er ou d'imprimer les résultats de la recherche. Cela est utile pour conserver un
+e trace des écritures consultées ou modifiées.
+Utilisation Pratique
+Définir les Critères de Recherche
+Sélectionnez le critère de recherche approprié en fonction des informations dont
+ vous disposez (numéro d'écriture, type de compte, etc.).
+Choisir l'Exercice Comptable
+Utilisez le menu déroulant pour choisir l'exercice comptable dans lequel vous so
+uhaitez rechercher des écritures.
+Inclure les Écritures Effacées
+Si vous devez rechercher des écritures qui ont été effacées, cochez la case "Écr
+iture(s) effacée(s)".
+Saisir le Numéro d'Écriture
+Si vous connaissez le numéro exact de l'écriture, entrez-le dans le champ dédié 
+pour accéder directement à cette écriture.
+Valider et Visualiser
+Cliquez sur "OK" pour afficher les écritures correspondant à vos critères.
+Utilisez le bouton "Imprimer/Visualiser" pour examiner ou imprimer les résultats
+ de votre recherche.
+
+En résumé, le programme "co340" est un outil essentiel pour la gestion des écrit
+ures comptables, offrant une interface intuitive pour la recherche et l'édition 
+des écritures dans le système ERP. Il permet de trouver rapidement des écritures
+ spécifiques et de les modifier si nécessaire, tout en offrant la possibilité de
+ gérer également les écritures effacées.
+
+
+
+
+
+
+
+
+Edition d'une écriture co355 :
+
+Ce programme à pour but d’imprimer des écritures, selon les critères de recherch
+es sélectionnés :
+
+
+
+Choisir l'exercice
+Choix du type de journal
+Choix du type de compte
+Bornes des No(s) de pièce
+Bornes des numéros de compte
+Bornes des dates-valeurs
+
+Bornes des montants
+
+
+
+Valider  les choix ci-dessus et traitement
+
+
+
+
+Effacement d'écritures imputées co115 :
+
+
+Choix de la sélection des écritures :
+
+
+
+Effacement par numéro d'écriture :
+
+
+
+
+Cocher pour visualiser le résultat
+(avant impression)
+
+
+
+Cliquer pour saisir le/les numéros d'écriture
+
+
+
+Cocher pour exporter les données
+
+
+
+Fenêtre d’effacement d’écriture(s) imputée(s) par numéro de lot
+
+Ce programme à pour but de supprimer des écritures déjà imputées dans les compte
+s.
+Un blocage (signalé par un message) peut survenir sur les écritures ayant une in
+fluence sur la gestion des postes ouverts et la déclaration de TVA.
+
+Exemples : Effacement d’une écriture facture, alors que l’encaissement ou le pai
+ement ont déjà été comptabilisés et déclarer comme définitif dans le décompte TV
+A.
+
+
+Note explicative de l’effacement d’écritures imputées programme « co115 » : 
+
+Le programme "co115" est conçu pour gérer l'effacement des écritures comptables 
+imputées dans le système ERP. Il permet d'éditer des rapports détaillés des écri
+tures effacées, soit par numéro d'écriture, soit par numéro de lot. Voici une ex
+plication détaillée de la composition et des fonctionnalités de ce programme.
+Sélection du Type d'Impression
+Lors de l'accès au programme "co115", vous avez deux options principales pour l'
+édition des écritures effacées :
+Edition des écritures effacées par numéro d'écriture (co115e11) : Cette option p
+ermet d'éditer un rapport des écritures effacées en fonction des numéros d'écrit
+ure spécifiques.
+Edition des écritures effacées par numéro de lot (co115e12) : Cette option génèr
+e un rapport basé sur les lots d'écritures effacées.
+1. Visualisation des Écritures Effacées
+Imprimer vers fichier / Visualiser : Ces options vous permettent de choisir comm
+ent vous souhaitez consulter les écritures effacées :
+Imprimer vers fichier : Génère un rapport imprimable que vous pouvez sauvegarder
+.
+Visualiser : Affiche les écritures directement à l'écran pour une consultation r
+apide.
+2. Saisie des Numéros d'Écriture
+No(s) d'écriture(s) : Champs de saisie où vous pouvez entrer les numéros d'écrit
+ure spécifiques que vous souhaitez éditer ou examiner. Plusieurs champs sont dis
+ponibles pour permettre l'entrée de plusieurs numéros d'écriture à la fois.
+3. Exportation des Données
+Cochez pour exporter les données : Cette option vous permet d'exporter les donné
+es des écritures effacées sous forme de fichier, facilitant ainsi leur archivage
+ ou leur analyse externe.
+Utilisation Pratique
+Choix du Type d'Impression
+Sélectionnez si vous souhaitez éditer les écritures effacées par numéro d'écritu
+re ou par numéro de lot, selon vos besoins.
+Saisie des Numéros d'Écriture
+Entrez les numéros d'écriture spécifiques dans les champs dédiés si vous avez ch
+oisi l'édition par numéro d'écriture.
+Visualisation ou Impression
+Cochez "Imprimer vers fichier" pour générer un fichier rapport ou "Visualiser" p
+our voir les résultats directement à l'écran.
+Exportation des Données
+Si vous souhaitez conserver un fichier des écritures effacées pour une utilisati
+on ultérieure, cochez l'option d'exportation.
+En résumé, le programme "co115" est un outil essentiel pour la gestion et la con
+sultation des écritures effacées dans un système ERP. Il offre une flexibilité d
+ans l'affichage et l'édition des rapports, permettant aux utilisateurs de gérer 
+efficacement les écritures supprimées, que ce soit par numéro d'écriture ou par 
+lot. Ce programme est particulièrement utile pour assurer la traçabilité et la c
+onformité des données comptables au sein de l'organisation.
+Haut du formulaire
+Bas du formulaire
+
+
+
+
+Recalcul des soldes co987 :
+
+
+[IMAGE HERE: image_687.png]
+
+--- AFTER ---
+Sélection d’un type d’impression
+
+Les différents types d’impression et de re-calcul de soldes sont à disposition d
+ans ce programme :
+
+
+
+
+But du programme :
+
+A la suite d’effacement de certaines écritures et de comptabilisation à cheval s
+ur deux exercices, il se peut que certaines données ne soient pas totalement coh
+érentes. Le programme repart des écritures et des lignes d’historiques pour régé
+nérer les soldes de chaque compte.
+C’est pourquoi nous conseillons de lancer ces programmes avant les traitements d
+e contrôle périodique, ou certaines procédures telles que les Rappels ou les Pai
+ements automatiques aux fournisseurs.
+
+
+
+
+Note explicative des recalculs des soldes programmes « co987 »
+Le programme "co987" est un outil utilisé pour effectuer le recalcul des soldes 
+dans différents contextes comptables. Il offre plusieurs options pour recalculer
+ les soldes analytiques, les soldes de Comptabilité Générale (C.G.), ainsi que l
+es soldes spécifiques aux comptes débiteurs et créditeurs. Voici une explication
+ détaillée de la composition et des fonctionnalités de ce programme.
+Sélection d'un Type de Recalcul
+Lors de l'accès au programme "co987", vous devez sélectionner le type de recalcu
+l des soldes que vous souhaitez effectuer parmi les options suivantes :
+co987e01 Recalcul des soldes analytiques
+Cette option permet de recalculer les soldes des comptes analytiques, utilisés p
+our la comptabilité analytique et la gestion de centres de coûts.
+co987e02 Recalcul des soldes analytiques et des comptes de récapitulation
+Utilisée pour recalculer non seulement les soldes analytiques, mais aussi les so
+ldes des comptes de récapitulation, qui agrègent les informations de plusieurs c
+omptes.
+co987e11 Recalcul des soldes CG
+Cette option effectue un recalcul des soldes pour la Comptabilité Générale (C.G.
+), assurant que tous les comptes de la comptabilité générale sont à jour et corr
+ects.
+co987e21 Recalcul des soldes créditeurs
+Spécifique aux comptes créditeurs, cette option permet de recalculer les soldes 
+des comptes où l'entreprise a des dettes envers des tiers.
+co987e22 Recalcul des soldes créditeurs et des comptes de regroupement
+En plus de recalculer les soldes des comptes créditeurs, cette option inclut les
+ comptes de regroupement, qui sont utilisés pour synthétiser les soldes de plusi
+eurs comptes créditeurs.
+co987e31 Recalcul des soldes débiteurs
+Destinée aux comptes débiteurs, cette option recalculer les soldes des comptes o
+ù l'entreprise détient des créances.
+co987e32 Recalcul des soldes débiteurs et des comptes de regroupement
+Effectue le recalcul des soldes des comptes débiteurs ainsi que des comptes de r
+egroupement qui agrègent les soldes de plusieurs comptes débiteurs.
+
+
+
+Provisions et transitoires co200 :
+
+1) Ecriture de type « Provision »
+Les écritures de provision sont des écritures répétitives comme des leasings, de
+s loyers, etc. qui peuvent être comptabilisées automatiquement (programme co210)
+ et qui génèrent de vraies écritures comptables.
+Exemple d’une écriture pour un leasing :
+
+
+
+2) Ecriture de type « Ajustement » (=transitoires)
+
+Les écritures d’ajustement sont des écritures (dites d’inventaires ou transitoir
+es) qui permettent d’ajuster les soldes lors d’un bouclement intermédiaire comme
+ la valorisation de l’inventaire, les travaux en cours, etc.
+Ces écritures peuvent être comptabilisées automatiquement dans la période du bou
+clement intermédiaire et comptabilisées comme extournes sur le mois suivant. (Pr
+ogramme co220). Cette fonctionnalité offre l’avantage de générer de vraies écrit
+ures comptables sur les deux périodes et de pouvoir les interroger et/ou les imp
+rimer rétroactivement au bouclement.
+
+Il est ensuite possible demettre à jour les écritures à l'aide du programme co11
+0, ou de les consulter à l'aide de co120
+Exemple d’une écriture d’ajustement :
+
+
+
+
+NB : Si une provision doit être passée uniquement en Décembre, il faut saisir "0
+" au niveau des mois et "1" en décembre, et entrer un montant uniquement sur le 
+mois de Décembre.
+Note explicative des provisions et transitoires programme « co200 » : 
+
+Le programme "co200" est conçu pour gérer les provisions et ajustements dans un 
+système comptable. Il permet d'enregistrer et de suivre les mouvements comptable
+s liés aux provisions, ainsi qu'aux ajustements nécessaires en fonction des beso
+ins financiers de l'entreprise. Voici une explication détaillée de la compositio
+n et des fonctionnalités de ce programme.
+Liste des Objets
+Liste des objets : La partie supérieure gauche de l'interface affiche la liste d
+es objets pour lesquels des provisions ou ajustements sont en cours. Chaque lign
+e de la liste comprend :
+Objet : Désignation de l'objet (par exemple, "Leasing VHC1").
+C.G. Débit : Le compte de Comptabilité Générale (C.G.) où le débit sera enregist
+ré.
+C.A. Débit : Le compte de Centre d'Analyse (C.A.) où le débit sera enregistré, s
+'il y en a un.
+Genre de Frais Débit : Le type de frais associé au débit.
+C.G. Crédit : Le compte de Comptabilité Générale où le crédit sera enregistré.
+C.A. Crédit : Le compte de Centre d'Analyse où le crédit sera enregistré.
+Genre de Frais Crédit : Le type de frais associé au crédit.
+Montant Annuel : Le montant total annuel prévu pour cet objet.
+Section de Saisie et Détail de l'Objet
+Objet : Nom de l'objet auquel la provision ou l'ajustement se rapporte.
+Type de Mouvement : Sélection entre "Provision" ou "Ajustement", indiquant le ty
+pe de mouvement comptable que vous enregistrez.
+Saisie Périodique : Options disponibles pour la saisie des montants :
+11 x : Saisie sur 11 mois.
+12 x : Saisie sur 12 mois.
+Imp. Mois : Saisie pour des mois spécifiques.
+Imp. Cumul : Saisie cumulée pour l'année.
+Comptes Débit et Crédit :
+Compte C.G. Débit : Le compte de débit en Comptabilité Générale (exemple : 62600
+ pour "Véhicule leasing").
+Compte C.A. Débit : Le compte de débit en Centre d'Analyse associé.
+Genre de Frais Débit : Type de frais associé au compte de débit.
+Compte C.G. Crédit : Le compte de crédit en Comptabilité Générale (exemple : 100
+00 pour "Caisse").
+Compte C.A. Crédit : Le compte de crédit en Centre d'Analyse associé.
+Genre de Frais Crédit : Type de frais associé au compte de crédit.
+Libellé : Description du mouvement pour chaque compte, facilitant la compréhensi
+on et le suivi.
+Saisie des Valeurs Annuelles et Mensuelles
+Saisie valeurs annuelles + coefficients : Permet de saisir une valeur annuelle t
+otale qui est ensuite répartie selon des coefficients mensuels.
+Saisie valeurs mensuelles : Permet de saisir des montants spécifiques pour chaqu
+e mois de l'année, offrant une flexibilité dans la gestion des provisions ou aju
+stements.
+Montant Annuel : Montant total pour l'année.
+Quantité Annuelle : Quantité associée à l'objet pour l'année.
+Valeurs Mensuelles : Montant prévu pour chaque mois, qui peut être uniforme ou v
+arier selon les besoins.
+
+
+En résumé, le programme "co200" est un outil essentiel pour la gestion des provi
+sions et des ajustements dans une entreprise. Il permet de structurer et de suiv
+re les mouvements financiers liés aux prévisions budgétaires, assurant ainsi une
+ gestion financière précise et en conformité avec les objectifs comptables de l'
+organisation.
+Editions des provisions et transitoires co201 :
+
+
+Sélection d’un type d’impression

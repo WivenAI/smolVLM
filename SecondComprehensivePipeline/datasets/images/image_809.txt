@@ -1,0 +1,308 @@
+CONTEXT FOR: image_809.png
+============================================================
+
+--- BEFORE ---
+directe bloquée :  Cette option signifie que la saisie directe d’écriture sur ce
+ genre de frais n’est pas possible.
+  Cocher cette option pour les genres de frais qui reçoivent des écritures prove
+nant d’applications auxiliaires, tel que les répartitions analytiques, ou les ra
+pports de travail.
+
+Code SMIT :Champ optionnel
+
+Codes divers :  Champ utilisé de façon spécifique.
+Article :    La possibilité d’établir une relation d’un genre de frais analytiqu
+e avec un article créé avec (programme ar100) peut être réalisée.
+
+Compte C.G. :    Correspondance du compte CA en Comptabilité Générale
+
+
+
+Onglet Historique :
+
+
+Le détail des écritures sur le compte sélectionné sont à disposition dans cette 
+vue :
+
+
+
+Onlget Cumul :
+
+
+Le solde du compte sélectionné est à disposition dans cette vue :
+
+
+
+Onglet écritures effacées :
+
+Les informations des écritures effacées d’un genre de frais sont à disposition d
+ans cette vue :
+
+
+
+
+
+
+Transfert des écritures d’un compte ca102 :
+
+
+
+Edition paramétrable des genres de frais ca104
+
+
+Note : l'exemple ci-dessous se réfère à l'édition des comptes analytiques, mais 
+le principe est le même pour toutes les éditions paramétrables de MS2000 :
+
+
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+
+
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+
+
+
+
+
+Edition paramétrable Répartitions ca105 : 
+
+
+Edition paramétrable des soldes analytiques ca106 :
+
+
+Edition paramétrable historique CA ca107 :
+
+
+
+
+Gestion des budgets ca110 :
+
+
+Le but de ce programme, est de pouvoir gérer les budgets pour les différents cen
+tres de charges et leurs genres de frais respectifs. Les informations traitées d
+ans ce programme permettront d’avoir un contrôle budgétaire, d’éditer des états 
+comparatifs à l’aide des tables pilotes et du programme d’édition des décomptes 
+analytiques (ca510-520-530).
+
+
+
+
+
+Options :
+Saisie totaux et coefficients : Saisir les valeurs annuelles totales et les coef
+ficients, soit linéaires par mois ou aléatoires sur les mois concernés afin que 
+l’ordinateur calcule et répartisse les valeurs sur chacun des mois.
+Saisie des valeurs mensuelles : Saisir les valeurs sur chacun des mois concernés
+, afin que l’ordinateur calcule le total du budget des valeurs annuelles.
+
+Remarques : Pour les comptes analytiques « pluriannuels », les valeurs cumulées 
+du budget pour un projet devront être réparties sur les différents exercices. Ce
+la signifie que l’on doit saisir les budgets dans chacun des exercices, ou alors
+ la totalité sur le premier exercice. Dans les décomptes comparatifs budgétaires
+ « Cumuls », la somme des valeurs des exercices antérieurs par rapport à la date
+ d’arrêté du décompte sera calculée au moment de l’édition.
+
+
+
+
+
+
+
+
+[IMAGE HERE: image_809.png]
+
+--- AFTER ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+Répartitions analytiques :
+
+Les programmes de répartitions permettent de définir des clés de répartition ent
+re les différents niveaux analytiques. Par exemple, si le département Administra
+tion doit être imputé,en fin d'année, à tous les départements de production, il 
+sera possible de définir une méthode ainsi qu'un pourcentage ou montant de répar
+tition.
+
+Note importante relative aux corrections en cours d'année
+
+
+Cas 1 - Modification d'une clé en cours d'année avec possibilité d'annuler les r
+épartitions
+
+Si l'on modifie une clé (p.ex. pourcentage passe de 20% à 30% en Juin) alors que
+ les répartitions ont déjà été imputées de Janvier à Juin, le nouveau pourcentag
+e sera pris en compte dès le mois de Juillet, avec les chiffres de ce dernier. S
+i l'on désire une répartition ajustée depuis le 1er janvier, il faut d'abord ann
+uler les répartitions (ca480). Dans ce cas, les calculs repartent au 1er janvier
+ et les répartitions seront correctes sur tous les mois de l'année.
+
+Cas 2 - Modification d'une clé en cours d'année sans possibilité d'annuler les r
+épartitions
+
+Dans le cas ou les répartitions ne peuvent pas être annulées (comptes déjà repor
+tés), ne pas modifier la clé mais en créer une nouvelle.
+Par exemple si la clé 1 a imputé 15% des comptes "Genre de frais" 4000, et qu'il
+ aurait du aussi prendre le compte 4001, il faudra créer une deuxième clé :
+
+Clé 2 / 15% du compte 4001 / validité 1er janvier
+
+Puis installer cette clé sur les comptes correspondants (ca410). Lors du calcul 
+des répartitions, répondre oui à la question "Date égale au dernier calcul des r
+épartitions - êtes vous sûr?".
+Résultat : MS2000 va calculer 2% des charges du compte 4001 depuis le 1er janvie
+r, mais comptabiliser ce montant en Juin (=montant de rattrapage).
+
+
+
+Gestion des clés de répartition ca400 :
+
+Le but de ce programme, est de pouvoir gérer les différentes clés de répartition
+s analytiques qui seront à définir selon l’organisation de votre comptabilité an
+alytique. Différents modes de répartitions analytiques peuvent y être définies.
+
+Exemple :
+
+Nous devons imputer 10% du département "Véhicules" au département "Montage" :
+
+1- cliquer sur 
+
+2 - remplir les champs ci_dessous :
+
+
+
+
+Dénomination
+
+
+
+Compte à créditer
+
+
+
+Compte à débiter
+
+
+
+Champs :
+
+Clé de répartition :La zone est de 6 caractères au maximum cadrée à gauche. Une 
+structure ascendante doit être respectée, à cause du traitement des calculs en c
+ascade.                      Cette information est unique, non modifiable, et pe
+u être utilisée comme critère d’accès et de sélection.
+Désignation :    Intitulé alpha-numérique de 20 caractères, utilisé comme critèr
+e de recherche rapide d’une clé si l’on ne connaît pas le numéro. Il devra être 
+composé de mots   clés significatifs pour les utilisateurs. Cet intitulé doit êt
+re unique, il est modifiable, et peu être utilisé comme critère d’accès et de sé
+lection.
+Base : Zone pouvant comporter un numéro de centre de charges servant de base pou
+r les calculs à appliquer. Si cette zone n’est pas remplie, ce sera les centres 
+de   charges porteurs de la clé sur lesquels les calculs seront appliquer.
+Genre(s) de frais :Saisir les genres de frais servant de base de calcul pour la 
+répartition. Le(s) bloc(s) séquentiel(s) de genres de frais doivent être séparés
+ par un tiret (voir   exemple ci-dessus). Il faut au minimum un genre de frais, 
+sinon tous les genres de frais seront traités (dans ce cas, saisir un étoile *)
+Montant :     Saisir le montant à appliquer …………….. *.
+Pourcentage : Saisir le pourcentage de calcul à appliquer sur le montant des gen
+res de frais servant de base pour les centres de charges porteurs de la clé.
+Débit - Crédit :Cocher pour définir le genre d’écriture analytique à générer
+Compte CA :   Saisir le(s) compte(s) analytique(s) sur lequel les écritures de r
+épartitions seront comptabilisées.
+Si le champ est vide, cela signifie que le(s) compte(s) porteur(s) de la clé rec
+evra(ont) les écritures de répartitions.
+Genre de frais :   Saisir le genre de frais Débit et Crédit sur lequel les écrit
+ures de répartitions seront comptabilisées. 
+Ce champ est obligatoire.
+
+Onglet Taux :
+
+3- Définir le pourcentage ainsi que la date de validité (possibilité de choisir 
+soit un %, soit un montant à imputer) :
+
+
+
+Champs :
+
+Montant :    Saisir le montant à appliquer …………….. *.
+Pourcentage : Saisir le pourcentage de calcul à appliquer sur le montant des gen
+res de frais servant de base pour les centres de charges porteurs de la clé.
+Edition des clés de répartition ca401 :
+
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+
+
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+
+Fenêtre de sélections possibles
+
+Choix à disposition :
+1- Toutes les clés
+2- Choisir par Libellé
+3- Choisir par Numéro de clé
+Installation des clés de répartition ca410 :
+
+Le but de ce programme est de pouvoir installer automatiquement sur les comptes 
+analytiques, les clés de répartitions relatives aux comptes concernés :
+
+

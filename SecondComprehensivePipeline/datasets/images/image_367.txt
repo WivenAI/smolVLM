@@ -1,0 +1,308 @@
+CONTEXT FOR: image_367.png
+============================================================
+
+--- BEFORE ---
+Ce programme a pour but d’épurer et de balancer les postes ouverts d’un client, 
+il est souhaitable de travailler avec ce programme sur la base de la liste des P
+.O (programme db300). 
+Chaque poste ouvert traité dans ce programme n’apparaîtra plus dans les listes r
+elatives au traitement des P.O. C'est pourquoi il est recommandé d’exécuter ce p
+rogramme 
+avant la procédure des rappels :
+
+
+Cliquer pour sélectionner un client
+
+Case "Soldes nuls uniquement"
+
+Cliquer pour afficher les clients ayant un solde à zéro avec des postes ouverts 
+non lettrés
+
+Sélection des lignes à épurer
+Cliquer en maintenant la touche Majuscule enfoncée, pour sélectionner les lignes
+ à épurer jusqu’à ce que le montant de la balance soit à zéro. 
+Ensuite cliquez sur OK
+
+Bouton OK
+Cliquer pour valider les données et lancer la procédure de traitement
+
+
+
+
+
+
+
+
+Note explicative de l’épuration des P.O programme « db410 » : 
+
+Le programme db410 est utilisé pour gérer et évaluer les écritures comptables li
+ées à des Poste Ouverts (P.O.) pour différents clients. Voici une explication dé
+taillée de son fonctionnement et de ses composants principaux :
+Client et N° Adresse : Chaque ligne commence par indiquer le client et son numér
+o d'adresse, facilitant l'identification et la gestion des paiements par client 
+et par lieu.
+Numéro de P.O. et de P.F. : Chaque écriture est associée à un numéro de Postes O
+uvert (P.O.) et à un numéro de Pièce Financière (P.F.), qui correspondent à des 
+transactions spécifiques. Ces numéros permettent de suivre les détails de chaque
+ transaction.
+Dates et N° de Pièce : Les colonnes suivantes contiennent les dates de valeur et
+ de pièce, ainsi que les numéros de pièce, fournissant un contexte temporel pour
+ chaque écriture.
+Détails de Transaction : Les colonnes supplémentaires incluent le nom de la succ
+ursale, le libellé de l'écriture, ainsi que les montants débités ou crédités. Ce
+s détails sont essentiels pour comprendre la nature des transactions et leur imp
+act sur le compte du client.
+Solde en monnaie et Solde en contre-valeur : Ces colonnes montrent le solde actu
+el dans la monnaie de transaction et sa contre-valeur, permettant une évaluation
+ rapide de l'état financier du client dans différentes devises.
+Soldes nuls uniquement : Une option pour filtrer et afficher uniquement les comp
+tes qui ont été équilibrés à zéro, aidant à clarifier les comptes qui ne nécessi
+tent plus d'attention active.
+
+Consultation des comptes co300 :
+
+Ce programme a pour but d’interroger de façon centrale tous les types de comptes
+ traités en comptabilité dans MS. Des fonctionnalités spécifiques sont à disposi
+tion pour chaque type de compte. La majorité de ces fonctionnalités a été décrit
+e dans la gestion des données de base Comptabilité Générale. 
+
+Note : Pour consulter les comptes "Clients", cliquer sur catégorie "Clients" (po
+int 2. Ci-dessous) :
+
+Cliquer pour sélectionner le type de compte souhaité
+Liste déroulante proposant Actif - Passif - Charges - Produits
+
+Filtre de catégorie de compte
+CG - CA - Genre de frais - Clients
+Cliquer pour sélectionner une fonctionnalité
+
+
+Cette variante permet d'afficher également les écritures lettrées (cg410)
+
+
+Date de départ
+Saisir une date de départ pour afficher les lignes désirées
+
+
+
+
+
+
+
+Note explicative de la consultation des comptes programme « co300 » : 
+
+Le programme co300 est conçu pour la consultation détaillée des comptes dans un 
+système de gestion ERP. Voici comment il est structuré pour offrir une vision cl
+aire et fonctionnelle des opérations comptables :
+Sélection du Type de Compte :
+Permet de choisir entre les comptes de comptabilité générale (Comptes C.G.) et l
+es comptes de comptabilité analytique (Comptes C.A.), facilitant ainsi le ciblag
+e spécifique des opérations comptables selon le besoin de l'utilisateur.
+Filtre de Catégorie de Compte :
+Offre une option pour filtrer les comptes par leur catégorie, ce qui permet une 
+recherche rapide et efficace parmi les divers types de comptes, comme les caisse
+s, les comptes courants postaux (CCP), et autres comptes financiers spécifiques.
+Sélection de Fonctionnalités Supplémentaires :
+Fournit des fonctionnalités supplémentaires telles que l'historique complet du c
+ompte, le lettrage de compte (matching des crédits et débits), et la visualisati
+on des mouvements et des écritures effacées. Ceci permet une analyse approfondie
+ de l'activité d'un compte au fil du temps.
+Variantes d’Affichage :
+Inclut des options pour afficher les écritures sous différentes formes, par exem
+ple, lettrées ou non, offrant ainsi une flexibilité dans l'analyse des transacti
+ons.
+Date de Départ :
+Un champ pour définir une date de départ pour l'affichage de l'historique, perme
+ttant de personnaliser la période durant laquelle les transactions sont examinée
+s.
+
+Recherche et édition d'une écriture co340
+Ce programme a pour but d’interroger et éventuellement d’imprimer une écriture d
+e façon centrale, selon certains critères de recherches.
+Critère de recherche par Numéro d’écriture :
+
+Cliquer pour sélectionner le critère souhaité
+
+
+Choisir l'exercice dans la liste déroulante
+
+
+Cocher pour voir les ecritures effacées
+
+
+Saisir le numéro d'écriture
+
+
+Valider les choix ci-dessus
+
+
+
+
+
+
+
+Note explicative de la recherche et édition d’une écriture programme « co340 » :
+ 
+
+Le programme co340 est conçu pour faciliter la recherche et l'édition d'écriture
+s comptables dans le système ERP. Voici une explication détaillée de ses composa
+ntes et fonctionnalités principales, rendant l'interface utilisateur intuitive e
+t efficace :
+Sélection du critère de recherche :
+L'utilisateur peut rechercher des écritures en fonction de plusieurs critères te
+ls que le numéro d'écriture, le type de compte, le numéro de pièce, le type de c
+ompte combiné au type de journal, ou une recherche basée sur la date de valeur c
+
+[IMAGE HERE: image_367.png]
+
+--- AFTER ---
+omptable.
+Choix de l'exercice :
+Un menu déroulant permet à l'utilisateur de sélectionner l'exercice comptable co
+ncerné pour la recherche, ce qui aide à filtrer les écritures pour une période s
+pécifique.
+Option pour voir les écritures effacées :
+L'utilisateur peut choisir de visualiser également les écritures qui ont été eff
+acées, permettant une transparence totale des mouvements comptables, même ceux a
+nnulés ou corrigés.
+Saisie du numéro d'écriture :
+Pour une recherche rapide, l'utilisateur peut entrer directement le numéro d'une
+ écriture spécifique afin de la localiser rapidement dans le système.
+Validation des choix :
+Après la saisie des critères de recherche, l'utilisateur peut valider ses choix 
+pour afficher les résultats correspondants.
+Visualisation et impression :
+Une fois les écritures trouvées, l'utilisateur a la possibilité de visualiser ou
+ d'imprimer les détails, facilitant la revue et l'archivage des données comptabl
+es.
+
+
+Critère de recherche par type de compte et Num. de pièce co340
+
+
+Saisir une partie libellé désiré
+
+
+
+Saisir la tranche du numéro de pièce
+
+
+
+Sélectionner le type de compte
+
+
+
+Valider les choix ci-dessus
+
+
+
+Cliquer pour imprimer ou visualiser les valeurs ci-dessous
+
+
+Critère de recherche par type de compte et type de journal co340 :
+
+
+
+Choix du critère de sélection
+
+
+
+Sélection des dates valeurs
+
+
+
+Choix du sens de l'écriture
+
+
+
+Cliquer pour sélectionner 
+le type de compte ou le type de journal
+
+
+Cliquer  pour imprimer ou visualiser les valeurs ci-dessous
+
+<A FAIRE>: Insérer ici le texte de description...
+Edition des écritures co355
+Ce programme a pour but d’imprimer des écritures, selon les critères de recherch
+es sélectionnés :
+
+
+Choisir l'exercice
+
+
+Choix du type de journal
+
+
+Choix du type de compte
+
+
+Bornes des No(s) de pièce
+
+
+Bornes des numéros de compte
+
+
+Bornes des dates-valeurs
+
+
+Bornes des montants
+
+
+Valider les choix ci-dessus et traitement
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de l’édition des écritures programme « co355 » : 
+Le programme co355 est conçu pour permettre une édition flexible des écritures c
+omptables. Cette fonction est particulièrement utile pour les utilisateurs ayant
+ besoin de générer des rapports détaillés ou de faire des vérifications précises
+. Voici une description détaillée de ses fonctionnalités principales :
+Choix de l'exercice comptable :
+Permet de sélectionner l'exercice comptable pour lequel les écritures doivent êt
+re éditées ou examinées.
+Choix du type de journal :
+Cette option permet de filtrer les écritures par le type de journal (par exemple
+, opérations diverses, ventes, achats), facilitant la recherche d'écritures spéc
+ifiques.
+Choix du type de compte :
+Permet de spécifier le type de compte pour affiner la recherche, par exemple, co
+mptes généraux ou comptes auxiliaires.
+Bornes des numéros de pièce :
+Définit une plage de numéros de pièce pour limiter la recherche à certaines écri
+tures.
+Bornes des numéros de compte :
+Similaire aux numéros de pièce, cette option permet de filtrer les écritures en 
+fonction d'une plage de numéros de compte.
+Bornes des dates-valeurs :
+Permet de définir une période spécifique en fonction de la date de valeur des éc
+ritures pour cibler les transactions survenant pendant cette période.
+Bornes des montants :
+Utilisé pour rechercher des écritures comptables dans une certaine plage de mont
+ants, ce qui est utile pour identifier les transactions de grande ou petite tail
+le.
+Validation et traitement :
+Après avoir défini tous les critères de recherche, cette fonction permet de vali
+der les choix et de générer les résultats correspondants.
+
+
+Conrtôle lignes DB db399
+Fenêtre de contrôle de lignes comptabilisées.
+Ce programme a pour but de contrôler la cohérence entre le montant des lignes et
+ le solde de chaque compte, ainsi que la somme des montants des lignes postes ou
+verts avec le solde et que la somme des montants des lignes postes fermés fasse 

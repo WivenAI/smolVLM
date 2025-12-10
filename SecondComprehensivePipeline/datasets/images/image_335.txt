@@ -1,0 +1,308 @@
+CONTEXT FOR: image_335.png
+============================================================
+
+--- BEFORE ---
+Date pièce : Date d'émission de la pièce comptable.
+Libellé de l'écriture : Description ou libellé associé à l'écriture comptable.
+Montant en monnaie : Montant de la transaction dans la monnaie de base.
+Montant en contre-valeur : Montant de la transaction dans une autre monnaie, si 
+applicable.
+Montant encaissement : Montant effectivement encaissé, si différent du montant f
+acturé.
+Solde : Solde actuel du compte après cette écriture.
+Fonctionnalités de Filtrage et de Recherche :
+Filtre sur date-valeur : Permet de filtrer les écritures basées sur la date à la
+quelle elles ont pris effet, facilitant la recherche de transactions spécifiques
+.
+Clic droit : Offre des options supplémentaires pour gérer ou modifier les écritu
+res, telles que des corrections ou des ajustements.
+
+
+
+Onglet "P.O. par No"
+Les informations Postes ouverts d’un client triés par Numéro sont à disposition 
+dans cette vue :
+
+
+Critère de sélection
+
+Saisir un critère de sélection pour afficher les factures ouvertes selon critère
+
+Récapitulatif
+
+Cliquer pour afficher l’échéancier récapitulé. Voir exemple ci-dessous
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de l’onglet « P.O par NO » de la gestion des débiteurs programm
+e « db100 » : 
+L'onglet "P.O. par n°" du programme db100 permet de gérer et de consulter les éc
+ritures comptables liées aux commandes de débiteurs en utilisant leurs numéros d
+e poste ouvert (P.O.). Voici une explication de sa composition :
+Liste des Écritures Comptables :
+N° écriture : Numéro d'identification unique pour chaque écriture comptable.
+N° suite : Référence à des suites d'opérations ou des écritures connexes.
+Lot N° : Numéro de lot pour les écritures groupées.
+Désignation : Détails sur le contenu ou le motif de l'écriture.
+N° de P.O. : Numéro du poste ouvert associée à l'écriture.
+Date valeur : Date à laquelle la transaction a été enregistrée.
+N° de pièce : Numéro de la pièce justificative de l'écriture.
+Date pièce : Date de la pièce justificative.
+Libellé de l'écriture : Description ou détails supplémentaires de l'écriture.
+Montant en monnaie : Montant de l'écriture dans la monnaie principale.
+Montant en contre-valeur : Montant de l'écriture dans une autre monnaie, si appl
+icable.
+Solde P.O. : Solde actuel associé au numéro de P.O. après cette écriture.
+Fonctions Utilitaires :
+Critère de sélection : Permet de filtrer les écritures basées sur des critères s
+pécifiques, tels que le numéro de P.O., la date ou le montant.
+Voir le récapitulatif : Option pour afficher un résumé ou un rapport détaillé de
+s transactions associées au numéro de P.O. sélectionné.
+
+Cet onglet est crucial pour les entreprises cherchant à suivre de manière précis
+e les transactions financières par commande ou par client, offrant une visibilit
+é sur la séquence des événements financiers et leur impact sur les comptes de dé
+biteurs.
+Onglet "P.O. par date"
+
+
+
+Champ de sélection date
+Entrer la date à partir de laquelle les postes ouverts doivent apparaître, puis 
+valider avec 
+Onglet "Factures"
+Les informations Factures d’un client triées par Facture sont à disposition dans
+ cette vue :
+
+
+
+Saisir un num. de facture
+
+Saisir un numéro de facture pour afficher les écritures relatives à cette factur
+e. Ou une date de valeur, ou un No de pièce, ou une date de pièce
+
+Cliquer pour afficher plus d'informations  
+
+Chiffre d’affaires, escomptes octroyés, etc. voir exemple ci-dessous :
+
+
+
+
+
+On peut y voir par exemple un comparatif des CA des années précédentes.
+
+
+Note explicative de l’onglet « facture » de la gestion des débiteurs « db100 » :
+ 
+
+L'onglet "Factures" du programme db100 offre une vue d'ensemble des transactions
+ facturées associées à un compte de débiteur spécifique. Voici une explication d
+e sa composition et fonctionnalités :
+Colonnes de Données :
+Année : Les colonnes sont séparées par année pour une visualisation et une analy
+se chronologique des montants facturés.
+Travaux : Montant total des travaux effectués pour le débiteur.
+Contrats : Montant total provenant de contrats établis avec le débiteur.
+Matériel contrat : Valeur du matériel facturé dans le cadre des contrats.
+Pro-rata-TEC/DiffChg : Ajustements pro rata ou différences de charges appliquées
+.
+Cut-Off contrat : Montants calculés lors de la clôture de périodes contractuelle
+s.
+Rabais + Escomptes : Total des rabais et escomptes accordés au débiteur.
+CA total : Chiffre d'affaires total généré par le débiteur.
+Fonctionnalités :
+Calcul Escompte : Un bouton permettant de calculer les escomptes pour les paieme
+nts anticipés ou dans les conditions de paiement convenues.
+Retour aux factures : Ce bouton permet de revenir à la liste complète des factur
+es émises pour le compte du débiteur.
+
+Chaque ligne représente un ensemble de transactions pour une année donnée, perme
+ttant aux utilisateurs de suivre les variations annuelles des activités avec le 
+débiteur. Cet onglet est essentiel pour la gestion des relations financières ave
+c les clients, offrant une traçabilité détaillée des montants facturés et des co
+nditions de paiement associées.
+
+Onglets « Ecritures effacés »
+
+Les informations des écritures effacées d’un client sont à disposition dans cett
+e vue :
+Clic bouton droit, affiche une liste de fonctionnalités. Voir ci-dessous :
+
+
+Note explicative de l’onglet « Ecriture effacés » de la gestion des débiteurs « 
+db100 » : 
+L'onglet "Ecr. effacés" du programme db100 est dédié à l'affichage et à la gesti
+on des écritures comptables qui ont été annulées ou effacées pour un débiteur sp
+écifique. Voici une explication détaillée de sa composition et de ses fonctionna
+lités :
+Liste des Écritures Effacées :
+N° écriture : Numéro unique identifiant chaque écriture comptable.
+Version : Indique les révisions ou modifications de l'écriture si applicables.
+N° suite : Une suite numérique qui peut être utilisée pour le suivi des écriture
+s liées ou consécutives.
+
+[IMAGE HERE: image_335.png]
+
+--- AFTER ---
+Lot : Identifiant du lot auquel appartient l'écriture, facilitant le regroupemen
+t par batch ou lot de traitement.
+Désignation : Description ou titre de l'écriture pour faciliter l'identification
+.
+N° de P.O. : Numéro du bon de commande associé à l'écriture, si applicable.
+Date valeur : La date à laquelle l'écriture est valorisée financièrement.
+N° de pièce : Référence au document source ou à la pièce justificative.
+Date pièce : Date de la pièce justificative.
+Libellé de l'écriture : Explication ou commentaire détaillé sur l'écriture.
+Mt en monnaie : Montant de l'écriture dans la monnaie du compte.
+Mt en contre-valeur : Montant de l'écriture dans une autre monnaie, si applicabl
+e.
+Fonctionnalités Intégrées :
+Détail de l'écriture : Permet d'accéder à des détails plus spécifiques sur chaqu
+e écriture effacée.
+Réintégrer l'écriture : Option pour rétablir une écriture précédemment effacée d
+ans les comptes.
+Supprimer définitivement l'écriture : Supprime complètement l'écriture du systèm
+e, à utiliser avec prudence pour assurer la conformité et l'intégrité des donnée
+s.
+
+
+
+Edition des débiteurs db100e :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard d’édition des clients.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée.
+ Attention ! La sélection par page utilise une page pour chaque client.
+
+
+
+Edition paramétrable des comptes clients db101 :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard d’édition des clients.
+Pour sélectionner le type d’édition désiré, double-cliquer sur la liste désirée.
+ Attention ! La sélection par page utilise une page pour chaque client.
+
+
+Utilisation des listes paramétrables :
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant aux débiteurs :
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+
+
+
+
+Surveillance des débiteurs db302 : 
+
+
+Note explicative de la surveillance des débiteurs programme « db302 » : 
+Le programme db302, dédié à la surveillance des débiteurs, permet une gestion dé
+taillée et une visualisation complète de la situation financière des clients. Vo
+ici une description de ses fonctionnalités principales telles qu'illustrées dans
+ l'interface :
+Vue d'Ensemble des Débiteurs :
+Client : Nom du client associé à chaque compte débiteur.
+N° P.O. : Numéro du bon de commande pour traçabilité.
+Valeur : Date à laquelle la transaction ou l'engagement a été enregistré.
+N° pièce : Référence du document ou de la facture associée.
+Date pièce : La date à laquelle le document ou la facture a été généré.
+Libellé : Description brève de la transaction ou de l'opération.
+Échu depuis : Nombre de jours depuis l'échéance du paiement.
+Montant dû : Montant restant dû par le débiteur.
+Fonctionnalités de Filtrage :
+Clients/P.O. : Permet de filtrer les données affichées par client ou bon de comm
+ande.
+Contentieux : Option pour afficher uniquement les comptes en litige.
+Rappels : Filtrage basé sur le statut des rappels envoyés aux clients.
+Technicien(s) et Collectif(s) : Filtres pour affiner la visualisation des donnée
+s par technicien responsable ou groupe de débiteurs.
+Options de Gestion :
+Bouton droit : Cliquer avec le bouton droit de la souris permet d'accéder à des 
+options supplémentaires telles que la modification des détails du débiteur, l'aj
+out de notes ou de rappels supplémentaires.
+Barre d'outils :
+La barre d'outils en haut offre des raccourcis rapides pour les opérations coura
+ntes, telles que l'ajout de nouveaux débiteurs, l'édition de transactions exista
+ntes, ou la gestion des rappels.
+
+Onglet « Contentieux » : 
+
+Note explicative de l’onglet « contentieux » de la surveillance des débiteurs pr
+ogramme « db302 » : 
+L'onglet "Contentieux" du programme db302 est conçu pour gérer et suivre les cas
+ de litiges avec les débiteurs. Voici une explication détaillée de ses principal
+es composantes :
+Liste des Transactions en Litige :
+N° de P.O. : Numéro du bon de commande associé à la transaction.
+Date valeur : La date à laquelle la transaction a été valorisée.
+N° de pièce : Numéro de référence de la transaction ou de la facture.
+Date pièce : Date à laquelle la transaction ou la facture a été générée.
+Libellé de l'écriture : Description de la transaction.
+Échu depuis : Nombre de jours écoulés depuis la date d'échéance du paiement.
+Montant en monnaie : Montant dû en monnaie locale.
+Contrevaleur : Montant dû en monnaie de référence.
+Solde P.O. : Solde actuel du bon de commande.
+Gestion des Actions de Recouvrement :
+N° ordre Action : Identifiant de l'action de recouvrement entreprise.
+Texte : Description ou notes relatives à l'action entreprise.
+Interlocuteur : Contact chez le débiteur avec qui l'action a été coordonnée.
+Accord : Détails de tout accord éventuel atteint avec le débiteur.
+Règlement : Indique si un règlement a été réalisé.

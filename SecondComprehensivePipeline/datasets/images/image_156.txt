@@ -1,0 +1,308 @@
+CONTEXT FOR: image_156.png
+============================================================
+
+--- BEFORE ---
+ue est associée uniquement avec les comptes analytiques appropriés, afin d'assur
+er une concordance avec la gestion des coûts ou des dépenses.
+Ces paramètres sont essentiels pour une gestion efficace et précise de la compta
+bilité analytique, car ils garantissent que les coûts et revenus sont correcteme
+nt alloués et analysés pour une meilleure prise de décision et un suivi financie
+r.
+Haut du formulaire
+
+
+Onglet « Calcul » :
+
+Note explicative de l’onglet « Calculs » de la gestion des rubriques programme «
+ sd120 » :
+
+L'onglet "Calculs" du programme sd120 dans MS sert à définir la logique de calcu
+l pour les différentes rubriques de paie. Voici une explication de ses composant
+s :
+Formule : Cette section permet de saisir la formule mathématique utilisée pour c
+alculer la valeur de la rubrique. Par exemple, une formule peut combiner des élé
+ments de plusieurs autres rubriques ou faire référence à des données externes.
+Opérations : Ici, vous pouvez effectuer des opérations de base comme addition, s
+oustraction, multiplication, ou division en fonction des besoins de calcul spéci
+fiques à la rubrique.
+Fichier : Cela désigne le fichier de données (par exemple, le fichier du personn
+el ou un fichier de référence externe) qui est utilisé dans le calcul.
+Critère d'égalité : Ce champ vous permet de définir des conditions ou des critèr
+es qui doivent être remplis pour que le calcul s'applique, comme un certain stat
+ut d'emploi ou une période de paie.
+Résultat : Ici, vous spécifiez le résultat attendu ou la sortie du calcul, qui p
+ourrait être la rémunération, les déductions, les primes, etc.
+Edition colonnes : Cette partie permet de personnaliser l'affichage de la rubriq
+ue dans les rapports ou sur les bulletins de paie, y compris le nombre de colonn
+es à utiliser.
+Options diverses :
+Inverser le signe : Si sélectionné, le signe du montant calculé sera inversé.
+Cumul base : Permet de cumuler les valeurs de base au fil du temps ou sur plusie
+urs périodes.
+Pourcentage : Si coché, le montant sera traité comme un pourcentage.
+Arrondi résultat : Vous pouvez choisir comment arrondir le résultat du calcul, c
+omme au centime le plus proche.
+Minimum / Maximum : Ces champs permettent de définir des valeurs minimales ou ma
+ximales pour le résultat du calcul, assurant que le montant reste dans les limit
+es acceptables.
+Cet onglet est essentiel pour configurer précisément la manière dont les montant
+s sont calculés pour chaque rubrique, en veillant à ce que le processus de paie 
+soit à la fois précis et conforme aux règles de l'entreprise.
+
+
+Onglet « Soumissions » :
+
+Note explicative de l’onglet « Soumissions » de la gestion des rubriques program
+me « sd120 » :
+
+L'onglet "Soumissions" du programme sd120 dans MS est un espace dédié à la gesti
+on des soumissions des rubriques de salaire. Voici une explication détaillée de 
+ses composants et fonctionnalités :
+Liste des Soumissions : Cet espace énumère toutes les soumissions enregistrées p
+our les rubriques salariales. Chaque soumission est probablement liée à une rubr
+ique spécifique et détaille les informations concernant les montants et les cond
+itions sous lesquelles ces montants sont soumis.
+Numéros de Soumission : Chaque soumission est identifiée par un numéro unique. C
+e système de numérotation aide à trier et à accéder rapidement aux soumissions p
+our la gestion et l'édition.
+Détails de la Soumission : Pour chaque soumission, des détails tels que la pério
+de de validité, le montant soumis, et la relation avec d'autres rubriques ou con
+ditions spécifiques peuvent être définis et visualisés.
+Gestion des Soumissions : Les utilisateurs peuvent ajouter, modifier ou supprime
+r des soumissions selon les exigences de la gestion des salaires. Ces fonctionna
+lités permettent une personnalisation selon les politiques de rémunération de l'
+entreprise et les événements spécifiques tels que les augmentations de salaire o
+u les bonus.
+Intégration avec les Rubriques : L'onglet "Soumissions" est intégré avec l'ensem
+ble du programme sd120, assurant que toute modification apportée à une soumissio
+n soit correctement reflétée dans la rubrique correspondante lors du calcul du s
+alaire.
+Automatisation des Calculs : En configurant les détails de la soumission, il est
+ possible d'automatiser les calculs de paie en fonction de divers facteurs, tels
+ que le nombre d'heures travaillées, la performance, ou d'autres indicateurs de 
+productivité.
+Conformité Réglementaire : Il est essentiel que les soumissions soient gérées en
+ tenant compte de la conformité avec les lois et réglementations en matière de r
+émunération. Cet onglet permet donc d'assurer que toutes les soumissions respect
+ent les exigences légales et conventionnelles.
+Historique des Soumissions : Un historique des soumissions pourrait également êt
+re disponible pour tracer les changements apportés au fil du temps, ce qui est c
+rucial pour la vérification, l'audit et l'analyse des tendances de la rémunérati
+on.
+Interface Utilisateur : L'onglet est conçu pour être intuitif et facile à utilis
+er, permettant aux gestionnaires de paie de gérer efficacement les soumissions s
+ans avoir besoin d'une expertise technique approfondie.
+Sécurité des Données : La sécurité et la confidentialité des données de soumissi
+on sont primordiales. Des mesures appropriées sont mises en place pour protéger 
+les informations contre les accès non autorisés ou les pertes de données.
+L'onglet "Soumissions" est donc un outil clé dans le programme sd120, offrant au
+x entreprises la flexibilité et le contrôle nécessaires pour gérer efficacement 
+la rémunération de leurs employés.
+
+
+Onglet « IS » : 
+
+Note explicative de l’onglet « IS » de la gestion des rubriques programme « sd12
+0 » :
+L'onglet "IS" dans le programme sd120 de votre système ERP se réfère à la gestio
+n des soumissions et des devis liés à la fiscalité des salaires. Cet onglet cont
+ient diverses catégories de revenus et déductions qui sont pertinentes pour le c
+alcul de l'impôt à la source (IS) sur les salaires des employés. Voici une expli
+cation détaillée des éléments de l'onglet "IS" :
+Hors IS : Cette option s'applique aux montants qui ne sont pas soumis à l'impôt 
+à la source, comme certaines indemnités ou remboursements de frais qui peuvent ê
+tre exonérés d'impôts.
+A - Salaire IS : Ici, on entre le salaire ou revenu brut qui est sujet à l'impôt
+ à la source. Cela comprend généralement le salaire de base et les autres compos
+ants salariaux imposables.
+B - Montant IS : Cette section est utilisée pour saisir le montant spécifique de
+ l'impôt à la source calculé sur le revenu imposable du salarié.
+C - Impôt ecclésiastique GE : Cela se réfère à une taxe spécifique ou à un impôt
+ d'église qui peut être applicable dans certains cantons, comme Genève (GE), pou
+r les membres de certaines communautés religieuses.
+D - Indemnités de départ : Si un employé reçoit des indemnités de départ, ces mo
+ntants sont indiqués ici et peuvent être traités différemment en fonction des rè
+gles fiscales relatives à l'impôt à la source.
+E - Prestations non périodiques : Ce champ est réservé pour les paiements non ré
+guliers ou occasionnels, tels que les bonus ou les primes qui sont également sou
+mis à l'impôt à la source.
+F - Droits de participation : Cela pourrait inclure les revenus provenant de pla
+ns de participation des employés, tels que les options d'achat d'actions ou les 
+parts de profits.
+G - Honoraires versés aux membres d'un conseil d'administration : Les honoraires
+ perçus par les membres du conseil en raison de leurs fonctions sont inscrits ic
+i.
+H - Allocations familiales : Les allocations familiales sont souvent non imposab
+les, mais leur montant peut devoir être reporté dans le système pour des raisons
+ de déclaration complète.
+I - Frais effectifs : Ce sont les dépenses réelles engagées par les employés dan
+s l'exercice de leurs fonctions, qui peuvent être déductibles de l'impôt à la so
+urce.
+J - Indemnités forfaitaires : À l'inverse des frais effectifs, les indemnités fo
+rfaitaires sont des montants fixes versés pour couvrir les dépenses présumées.
+R - Revenu déterminant le taux : Il s'agit du revenu qui est utilisé pour déterm
+iner le taux d'imposition à la source applicable à l'employé.
+T - Taux : Ici, le taux d'imposition à la source actuel est inséré, qui sera app
+liqué sur le revenu imposable pour calculer l'impôt dû.
+Paiement 13ème salaire : Certaines juridictions ou entreprises fournissent un 13
+ème mois de salaire qui est aussi souvent soumis à l'impôt à la source.
+L'utilisation correcte de cet onglet garantit que les impôts à la source sont ca
+lculés précisément conformément aux réglementations locales et que les salaires 
+sont traités de manière appropriée dans l'ERP. Cela permet également une traçabi
+lité et une transparence des données fiscales pour l'audit et le reporting.
+Edition des rubriques paramétrable sd121 :
+
+
+[IMAGE HERE: image_156.png]
+
+--- AFTER ---
+Note explicative de l’Edition des rubriques paramétrable programme « sd121 » :
+
+Le programme "sd121" est un module de gestion des rubriques de salaires. Cette i
+nterface est utilisée pour configurer et éditer les différentes composantes du s
+alaire qui seront traitées dans le système de paie. Voici un guide explicatif de
+ l'interface, sans les détails de l'en-tête de la fenêtre :
+Liste des rubriques : Cela vous permet de sélectionner et d'afficher les différe
+ntes rubriques salariales disponibles dans l'ERP. Ces rubriques peuvent inclure 
+des éléments comme le salaire de base, les heures supplémentaires, les déduction
+s, les contributions, etc.
+Imprimer vers fichier : Cette case à cocher permet de sauvegarder la liste des r
+ubriques dans un fichier, pour une utilisation en dehors du système, comme pour 
+les rapports ou les analyses.
+Visualiser : Si cochée, cette option permet de prévisualiser la liste des rubriq
+ues directement dans l'interface de l'ERP, sans avoir à imprimer ou exporter les
+ données.
+Toutes les rubriques/Sélection : Ici, vous pouvez choisir d'afficher toutes les 
+rubriques disponibles ou de faire une sélection spécifique basée sur certains cr
+itères.
+Par genre/Par numéro : Ces options permettent de trier ou de filtrer les rubriqu
+es selon leur catégorie ou leur numéro de référence, pour une meilleure organisa
+tion et recherche.
+Décompte(s) : Ce menu déroulant permet de sélectionner un ou plusieurs types de 
+décompte pour affiner les rubriques affichées selon le type de traitement de pai
+e.
+Succursale(s) : Ici, on peut sélectionner la succursale ou le lieu de travail po
+ur lequel les rubriques doivent être appliquées, ce qui est utile dans les organ
+isations ayant plusieurs emplacements.
+Département(s) : Cette option offre un filtre supplémentaire pour afficher les r
+ubriques en fonction des départements au sein de l'entreprise.
+Décompte(s) et Succursale(s) : Ce sont des filtres supplémentaires qui permetten
+t de choisir spécifiquement quelles rubriques afficher en fonction des décomptes
+ (par exemple, les heures travaillées, les absences, etc.) et de la localisation
+ au sein de l'entreprise.
+Tous les décomptes/Aucun décompte et Toutes les succursales/Aucune succursale : 
+Ces options servent à sélectionner rapidement tous les éléments ou à effacer la 
+sélection actuelle.
+Ce programme est un outil important pour la gestion de la paie, car il permet au
+x gestionnaires de paie de définir précisément quels éléments doivent être inclu
+s lors du calcul du salaire des employés et de générer des rapports personnalisé
+s basés sur des critères spécifiques.
+
+Soumissions des rubriques sd122 :
+
+Note explicative de la soumission des rubriques programme « sd122 » : 
+
+Le programme "sd122" est conçu pour la gestion des soumissions des rubriques de 
+paie dans le système ERP. Voici une explication détaillée de ses composants :
+Succursale(s) : Ce menu déroulant permet de sélectionner la ou les succursales c
+oncernées par la gestion des rubriques de paie.
+Exercice : Ce champ déroulant permet de choisir l'exercice fiscal pour lequel le
+s rubriques de paie sont soumises ou ajustées.
+Employé(e) : Ici, vous pouvez entrer ou sélectionner les employés pour lesquels 
+vous souhaitez gérer les données de paie.
+Période : Ce champ est utilisé pour définir la période de paie concernée, comme 
+mensuelle, bi-hebdomadaire ou hebdomadaire.
+N° historique : Il peut s'agir d'un numéro de suivi ou de référence qui enregist
+re toutes les soumissions effectuées pour une période donnée ou pour un employé 
+individuel.
+Toutes les bases, Seulement les bases utilisées, Seulement les bases non utilisé
+es, Sélection : Ces boutons radio permettent de filtrer les rubriques en fonctio
+n de leur utilisation dans les calculs de paie.
+Bases : La liste à droite présente les différentes composantes de la paie, telle
+s que le salaire brut, les cotisations de sécurité sociale, les déductions fisca
+les, le net à payer, etc.
+Décompte(s) : Vous pouvez sélectionner des comptes ou des types de paie spécifiq
+ues pour gérer les rubriques qui leur sont associées.
+Département(s) : Ce filtre permet de limiter les rubriques au niveau du départem
+ent en sélectionnant un ou plusieurs départements.
+Liste des soumissions des rubriques : Dans cette section principale, vous pouvez
+ consulter, gérer et soumettre les rubriques. Elle peut inclure des fonctionnali
+tés pour ajouter, supprimer ou modifier les détails des composantes de la paie p
+our chaque succursale, période ou employé sélectionné.
+Tout sélectionner, Rien sélectionner : Ces options permettent de sélectionner ou
+ de désélectionner rapidement toutes les composantes de la paie pour la soumissi
+on ou l'édition.
+Ce programme est essentiel pour la gestion de la paie car il aide à configurer e
+t enregistrer avec précision les différents éléments constitutifs de la paie d'u
+n employé. Il assure que toutes les soumissions liées à la paie sont conformes a
+ux politiques de paie de l'entreprise et respectent les exigences légales.
+
+Statistiques sur des effectifs sd125 : 
+
+
+Note explicative des statistiques sur des effectifs programme « sd125 » :
+
+Le programme "sd125" est conçu pour gérer les statistiques des effectifs au sein
+ de l'entreprise. Voici les composants clés de ce programme :
+Société : Indique l'entreprise ou la division pour laquelle les statistiques son
+t affichées.
+Exercice : Représente l'année pour laquelle les données statistiques sont affich
+ées.
+Les mois (Janvier, Février, etc.) : Chaque colonne correspond à un mois de l'ann
+ée, permettant de visualiser les données statistiques mensuellement.
+Les lignes : Chaque ligne semble représenter une année différente avec les chiff
+res correspondant aux effectifs ou à une autre mesure statistique pertinente par
+ mois.
+Modification des données : Les boutons "Modifier", "Ajouter", "Copier", et "Effa
+cer" en bas permettent probablement de gérer les entrées de données pour les sta
+tistiques.
+Résumé : En bas de l'écran, il semble y avoir un résumé ou un agrégat des donnée
+s pour certains mois sélectionnés ou pour une année spécifique.
+Ce programme serait utilisé pour suivre et analyser les tendances des effectifs 
+sur différentes périodes, ce qui est crucial pour la planification des ressource
+s humaines et l'analyse opérationnelle. Il fournit des insights sur l'évolution 
+du nombre d'employés, aide à la gestion prévisionnelle des emplois, et peut serv
+ir à l'élaboration de rapports pour la direction.
+
+
+
+
+
+
+Edition paramétrable des rubriques sd129 : 
+
+
+Note explicative de l’onglet « Sélection » de l’Edition paramétrable des rubriqu
+e programme « sd129 »
+
+Le programme "sd129" est utilisé pour créer des listes personnalisées pour le co
+ntrôle et la gestion des rubriques de paie dans le système ERP. Voici comment il
+ est structuré :
+Sélection d’une liste :
+Vous pouvez choisir entre "Mes listes" pour voir vos listes personnalisées ou "T
+outes les listes" pour afficher toutes les listes disponibles.
+"Nouvelle Liste…" permet de créer une nouvelle liste personnalisée.
+Les options telles que "Contrôle code personnel" et "Contrôle constantes utilisé
+es" servent probablement à vérifier les données de paie et les paramètres liés à
+ chaque employé.
+
+Onglet « Edition » :
+
+
+Note explicative de l’onglet « Edition » de l’Edition paramétrable des rubrique 
+programme « sd129 »
+
+Onglet "Sélection" et "Édition" :
+"Exercice" vous permet de sélectionner l’année pour laquelle vous voulez faire l
+a vérification ou l’édition des rubriques.
+"Visualisation requête" permet d'afficher la requête avant de l'exécuter, ce qui
+ peut aider à vérifier les critères de sélection.
+"Format Ligne" et "Format Page" offrent des options pour personnaliser l'afficha
+ge ou l'impression des listes.
+Vous avez la possibilité de choisir le format de l’impression ("Portrait" ou "Pa
+ysage") et la taille du papier.
+"Liste des critères" montre les conditions ou filtres appliqués pour la sélectio
+n des données à afficher ou à imprimer.
+"Ajouter", "Modifier", "Supprimer" sont des boutons qui permettent de gérer les 
+critères de sélection pour affiner les listes de rubriques.
+Champs disponibles et à imprimer ou exporter :

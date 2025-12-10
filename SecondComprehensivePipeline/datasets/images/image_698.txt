@@ -1,0 +1,308 @@
+CONTEXT FOR: image_698.png
+============================================================
+
+--- BEFORE ---
+Comptes Débit et Crédit :
+Compte C.G. Débit : Le compte de débit en Comptabilité Générale (exemple : 62600
+ pour "Véhicule leasing").
+Compte C.A. Débit : Le compte de débit en Centre d'Analyse associé.
+Genre de Frais Débit : Type de frais associé au compte de débit.
+Compte C.G. Crédit : Le compte de crédit en Comptabilité Générale (exemple : 100
+00 pour "Caisse").
+Compte C.A. Crédit : Le compte de crédit en Centre d'Analyse associé.
+Genre de Frais Crédit : Type de frais associé au compte de crédit.
+Libellé : Description du mouvement pour chaque compte, facilitant la compréhensi
+on et le suivi.
+Saisie des Valeurs Annuelles et Mensuelles
+Saisie valeurs annuelles + coefficients : Permet de saisir une valeur annuelle t
+otale qui est ensuite répartie selon des coefficients mensuels.
+Saisie valeurs mensuelles : Permet de saisir des montants spécifiques pour chaqu
+e mois de l'année, offrant une flexibilité dans la gestion des provisions ou aju
+stements.
+Montant Annuel : Montant total pour l'année.
+Quantité Annuelle : Quantité associée à l'objet pour l'année.
+Valeurs Mensuelles : Montant prévu pour chaque mois, qui peut être uniforme ou v
+arier selon les besoins.
+
+
+En résumé, le programme "co200" est un outil essentiel pour la gestion des provi
+sions et des ajustements dans une entreprise. Il permet de structurer et de suiv
+re les mouvements financiers liés aux prévisions budgétaires, assurant ainsi une
+ gestion financière précise et en conformité avec les objectifs comptables de l'
+organisation.
+Editions des provisions et transitoires co201 :
+
+
+Sélection d’un type d’impression
+
+Ce programme permet d'imprimer des listes de provisions et ajustements. Les diff
+érents types d’impression suivants sont à disposition dans le programme standard
+ :
+
+
+
+
+
+
+Cliquer pour sélectionner
+Sélection du compte CG
+
+
+Cliquer pour sélectionner
+Différentes sélection sont possibles : par période, par statut, sens de l'écritu
+re (débit/crédit) etc..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative des Edition des provisions et transitoires « co201 » : 
+
+Le programme "co201" est utilisé pour générer des rapports d'édition des provisi
+ons et ajustements effectués dans le système comptable. Il offre plusieurs optio
+ns pour l'affichage et l'impression des données en fonction de différents critèr
+es tels que les objets, les comptes de Comptabilité Générale (C.G.), ou les comp
+tes de Centre d'Analyse (C.A.). Voici une explication détaillée de la compositio
+n et des fonctionnalités de ce programme.
+Sélection du Type d'Impression
+Le programme "co201" propose plusieurs modes d'édition pour les provisions et aj
+ustements :
+co201e11 Par objet (15'') :
+Génère un rapport basé sur les objets individuels pour lesquels des provisions o
+u ajustements ont été effectués.
+co201e12 Par compte CG (15'') :
+Permet de générer un rapport des provisions et ajustements regroupés par compte 
+de Comptabilité Générale (C.G.).
+co201e13 Par compte CA (15'') :
+Génère un rapport des provisions et ajustements regroupés par compte de Centre d
+'Analyse (C.A.).
+1. Critères de Sélection
+Choisir le Critère de Tri : Après avoir sélectionné le type d'édition, vous pouv
+ez choisir comment trier les données :
+Tous les comptes C.G. : Affiche toutes les entrées liées aux comptes de Comptabi
+lité Générale.
+Sélection alphabétique : Trie les données par ordre alphabétique selon l'intitul
+é des comptes ou objets.
+Sélection numérique : Trie les données selon les numéros des comptes ou objets.
+2. Filtrage des Données
+Mois : Sélectionnez un mois spécifique pour filtrer les données à imprimer ou vi
+sualiser. Cela permet de concentrer l'édition sur une période donnée.
+Type de Données : Vous pouvez choisir de filtrer les provisions ou ajustements s
+pécifiques, en utilisant les options suivantes :
+Toutes : Affiche toutes les données sans distinction.
+Imputées : Affiche uniquement les provisions ou ajustements qui ont été imputés.
+Non imputées : Affiche uniquement les provisions ou ajustements qui n'ont pas en
+core été imputés.
+Type de Compte : Choisissez de générer le rapport pour les comptes de débit ou d
+e crédit.
+Un Compte par Page : Option permettant d'afficher un compte par page dans le rap
+port généré.
+Options de Sortie
+Imprimer vers fichier : Génère un fichier imprimable contenant les informations 
+sélectionnées, ce qui permet de conserver une trace physique ou numérique des pr
+ovisions et ajustements.
+Visualiser : Permet de voir à l'écran les données avant de les imprimer ou de le
+s enregistrer.
+
+
+En résumé, le programme "co201" est un outil flexible pour l'édition des provisi
+ons et ajustements dans un système ERP. Il permet de générer des rapports détail
+lés et personnalisés en fonction des besoins spécifiques de l'utilisateur, garan
+tissant ainsi une gestion rigoureuse et transparente des opérations comptables.
+
+Imputation des provisions co210
+
+Ce programme à pour but de générer des écritures comptables pour la période conc
+ernée. Si le mode de mise à jour comptable est « différé », ces écritures seront
+ imputées soit de manière directe, soit à l’aide du programme co110 (comptabilis
+ations externes). Le mode de comptabilisation apparaît en bas de l'écran en roug
+e (voir ci-dessous).
+
+Selon les paramètres choisis au niveau de la société (xstes), la comptabilisatio
+n de ces écritures se fera de manière DIRECTE ou INDIRECTE.
+
+
+Comptabilisation directe
+
+Lors de l'ouverture du programme co210, le message suivant apparaît pour indique
+r le mode de comptabilisation :
+
+
+
+Cela veut dire que les données saisies ci-dessous (co200),  une fois imputées pa
+r le programme co210, apparaîtront en comptabilité
+en tant qu'écritures (consultation de ces dernières avec le programme co300).
+
+
+
+Comptabilisation indirecte
+
+Si le mode est différé, une fois les données saisies (co200), et imputées (co210
+), il faudra encore lancer les comptabilisations externes (co110)
+pour que les écritures soient générées.
+
+[IMAGE HERE: image_698.png]
+
+--- AFTER ---
+
+
+
+
+Exemple des réponses à donner pour que le programme s’exécute :
+
+
+
+Cliquer pour sélectionner le mois à imputer
+
+Cliquer pour sélectionner un type de journal
+
+Cliquer pour sélectionner un type de pièce
+
+Saisir le No de pièce
+
+Saisir l’intitulé du lot
+
+Valider  les choix ci-dessus et traitement de la liste
+
+Mode de mise à jour
+Attention : si le mode est "différé", la comptabilisation se fera à l'aide du pr
+ogramme co110 (imputation des écritures externes)
+Imputation et extourne des ajustements co220 :
+
+* Note - Différence avec le programme co210 : sélection possible de la case "Ave
+c extourne"
+
+
+Pour la suite du déroulement, voir l'imputation des provisiion (section précéden
+te)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative des imputations et extournes des ajustements programmes « co220
+ » : 
+
+Le programme "co220" est utilisé pour gérer les opérations d'imputation et d'ext
+ourne des ajustements comptables dans le système ERP. Ce programme permet de con
+trôler et d'effectuer des ajustements sur les écritures comptables pour une péri
+ode donnée, avec la possibilité de générer des extournes si nécessaire. Voici un
+e explication détaillée de la composition et des fonctionnalités de ce programme
+.
+Sélection des Paramètres d'Imputation/Extourne
+Mois :
+Ce menu déroulant vous permet de sélectionner le mois pour lequel vous souhaitez
+ effectuer l'imputation ou l'extourne des ajustements. Il s'agit de la période c
+omptable sur laquelle l'ajustement sera appliqué.
+Avec Extourne :
+Cette case à cocher permet de décider si l'ajustement doit être extourné. Si ell
+e est cochée, une extourne (annulation de l'écriture précédente) sera générée po
+ur le mois sélectionné, ce qui est utile lors de la correction ou du retour sur 
+une imputation faite précédemment.
+Informations Complémentaires
+Date de Valeur :
+Champ permettant de spécifier la date de valeur comptable de l'ajustement. La da
+te de valeur est la date à laquelle l'ajustement prendra effet dans les comptes.
+Type de Journal :
+Sélectionnez le type de journal comptable auquel l'ajustement sera imputé. Le jo
+urnal détermine la nature de l'écriture (par exemple, journal de vente, journal 
+d'achat, etc.).
+Type de Pièce :
+Ce menu permet de spécifier le type de pièce comptable associée à l'ajustement (
+par exemple, facture, note de crédit, etc.).
+Numéro de Pièce :
+Permet de saisir le numéro spécifique de la pièce comptable à laquelle l'ajustem
+ent est lié. Cela facilite le suivi et l'identification des ajustements dans les
+ registres comptables.
+Intitulé du Lot :
+Champ pour entrer un intitulé ou une description du lot d'ajustements. Ce champ 
+est utile pour regrouper et identifier plusieurs ajustements sous une même dénom
+ination.
+
+Différences de change CG co260 :
+
+Pour comptabiliser les différences de change de la comptabilité générale, il fau
+t renseigner les champs ci-dessous :
+
+
+Sélection au niveau des comptes
+Soit tous les comptes, soit sélection de comptes spécifiques
+
+Cliquer pour choisir un type de journal /type de pièce
+Les types sont gérés par le programme "Tables simples" co900
+
+Cliquer pour choisir la date de pièce/date-valeur
+La date-valeur va déterminer quel taux va être appliqué
+
+Choix des taux de change à appliquer
+
+
+NB : si le mode de mise à jour est différé, il faudra lancer le programme  co110
+
+
+
+
+
+
+
+
+Note explicative de la différence de change C.G programme « co260 » : 
+
+Le programme "co260" est conçu pour gérer les différences de change en Comptabil
+ité Générale (CG). Il permet de comptabiliser les écarts de change qui survienne
+nt lors des transactions en devises étrangères en fonction des variations des ta
+ux de change. Voici une explication détaillée de la composition et des fonctionn
+alités de ce programme.
+Sélection au Niveau des Comptes
+Tous les Comptes C.G. :
+Cette option permet d'inclure tous les comptes de Comptabilité Générale dans l'é
+valuation des différences de change. Vous avez également la possibilité de sélec
+tionner des comptes spécifiques soit par ordre alphabétique, soit par ordre numé
+rique pour une gestion ciblée.
+Choix du Type de Journal et Type de Pièce
+Type de Journal et Type de Pièce :
+Type de Journal : Vous sélectionnez ici le journal comptable dans lequel les écr
+itures de différences de change seront enregistrées. Par exemple, "Journal opéra
+tion diverse" est utilisé pour enregistrer les ajustements divers en CG.
+Type de Pièce : Indiquez le type de document ou de transaction qui sera utilisé 
+pour enregistrer la différence de change (par exemple, "Opération diverse").
+Date de Pièce et Date de Valeur
+Date de Pièce et Date de Valeur :
+Date de Pièce : Spécifiez la date à laquelle la pièce comptable est générée.
+Date de Valeur : Indiquez la date à laquelle l'écriture prendra effet dans les c
+omptes. Cette date est cruciale pour l'évaluation correcte des taux de change et
+ leur application aux transactions correspondantes.
+Choix des Taux de Change à Appliquer
+Taux de Change à Appliquer :
+Taux du Jour : Utilise le taux de change en vigueur à la date de la transaction 
+ou à une date spécifiée.

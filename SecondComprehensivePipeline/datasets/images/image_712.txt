@@ -1,0 +1,308 @@
+CONTEXT FOR: image_712.png
+============================================================
+
+--- BEFORE ---
+pécifiques, en utilisant les options suivantes :
+Toutes : Affiche toutes les données sans distinction.
+Imputées : Affiche uniquement les provisions ou ajustements qui ont été imputés.
+Non imputées : Affiche uniquement les provisions ou ajustements qui n'ont pas en
+core été imputés.
+Type de Compte : Choisissez de générer le rapport pour les comptes de débit ou d
+e crédit.
+Un Compte par Page : Option permettant d'afficher un compte par page dans le rap
+port généré.
+Options de Sortie
+Imprimer vers fichier : Génère un fichier imprimable contenant les informations 
+sélectionnées, ce qui permet de conserver une trace physique ou numérique des pr
+ovisions et ajustements.
+Visualiser : Permet de voir à l'écran les données avant de les imprimer ou de le
+s enregistrer.
+
+
+En résumé, le programme "co201" est un outil flexible pour l'édition des provisi
+ons et ajustements dans un système ERP. Il permet de générer des rapports détail
+lés et personnalisés en fonction des besoins spécifiques de l'utilisateur, garan
+tissant ainsi une gestion rigoureuse et transparente des opérations comptables.
+
+Imputation des provisions co210
+
+Ce programme à pour but de générer des écritures comptables pour la période conc
+ernée. Si le mode de mise à jour comptable est « différé », ces écritures seront
+ imputées soit de manière directe, soit à l’aide du programme co110 (comptabilis
+ations externes). Le mode de comptabilisation apparaît en bas de l'écran en roug
+e (voir ci-dessous).
+
+Selon les paramètres choisis au niveau de la société (xstes), la comptabilisatio
+n de ces écritures se fera de manière DIRECTE ou INDIRECTE.
+
+
+Comptabilisation directe
+
+Lors de l'ouverture du programme co210, le message suivant apparaît pour indique
+r le mode de comptabilisation :
+
+
+
+Cela veut dire que les données saisies ci-dessous (co200),  une fois imputées pa
+r le programme co210, apparaîtront en comptabilité
+en tant qu'écritures (consultation de ces dernières avec le programme co300).
+
+
+
+Comptabilisation indirecte
+
+Si le mode est différé, une fois les données saisies (co200), et imputées (co210
+), il faudra encore lancer les comptabilisations externes (co110)
+pour que les écritures soient générées.
+
+
+
+
+Exemple des réponses à donner pour que le programme s’exécute :
+
+
+
+Cliquer pour sélectionner le mois à imputer
+
+Cliquer pour sélectionner un type de journal
+
+Cliquer pour sélectionner un type de pièce
+
+Saisir le No de pièce
+
+Saisir l’intitulé du lot
+
+Valider  les choix ci-dessus et traitement de la liste
+
+Mode de mise à jour
+Attention : si le mode est "différé", la comptabilisation se fera à l'aide du pr
+ogramme co110 (imputation des écritures externes)
+Imputation et extourne des ajustements co220 :
+
+* Note - Différence avec le programme co210 : sélection possible de la case "Ave
+c extourne"
+
+
+Pour la suite du déroulement, voir l'imputation des provisiion (section précéden
+te)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative des imputations et extournes des ajustements programmes « co220
+ » : 
+
+Le programme "co220" est utilisé pour gérer les opérations d'imputation et d'ext
+ourne des ajustements comptables dans le système ERP. Ce programme permet de con
+trôler et d'effectuer des ajustements sur les écritures comptables pour une péri
+ode donnée, avec la possibilité de générer des extournes si nécessaire. Voici un
+e explication détaillée de la composition et des fonctionnalités de ce programme
+.
+Sélection des Paramètres d'Imputation/Extourne
+Mois :
+Ce menu déroulant vous permet de sélectionner le mois pour lequel vous souhaitez
+ effectuer l'imputation ou l'extourne des ajustements. Il s'agit de la période c
+omptable sur laquelle l'ajustement sera appliqué.
+Avec Extourne :
+Cette case à cocher permet de décider si l'ajustement doit être extourné. Si ell
+e est cochée, une extourne (annulation de l'écriture précédente) sera générée po
+ur le mois sélectionné, ce qui est utile lors de la correction ou du retour sur 
+une imputation faite précédemment.
+Informations Complémentaires
+Date de Valeur :
+Champ permettant de spécifier la date de valeur comptable de l'ajustement. La da
+te de valeur est la date à laquelle l'ajustement prendra effet dans les comptes.
+Type de Journal :
+Sélectionnez le type de journal comptable auquel l'ajustement sera imputé. Le jo
+urnal détermine la nature de l'écriture (par exemple, journal de vente, journal 
+d'achat, etc.).
+Type de Pièce :
+Ce menu permet de spécifier le type de pièce comptable associée à l'ajustement (
+par exemple, facture, note de crédit, etc.).
+Numéro de Pièce :
+Permet de saisir le numéro spécifique de la pièce comptable à laquelle l'ajustem
+ent est lié. Cela facilite le suivi et l'identification des ajustements dans les
+ registres comptables.
+Intitulé du Lot :
+Champ pour entrer un intitulé ou une description du lot d'ajustements. Ce champ 
+est utile pour regrouper et identifier plusieurs ajustements sous une même dénom
+ination.
+
+Différences de change CG co260 :
+
+Pour comptabiliser les différences de change de la comptabilité générale, il fau
+t renseigner les champs ci-dessous :
+
+
+[IMAGE HERE: image_712.png]
+
+--- AFTER ---
+
+Sélection au niveau des comptes
+Soit tous les comptes, soit sélection de comptes spécifiques
+
+Cliquer pour choisir un type de journal /type de pièce
+Les types sont gérés par le programme "Tables simples" co900
+
+Cliquer pour choisir la date de pièce/date-valeur
+La date-valeur va déterminer quel taux va être appliqué
+
+Choix des taux de change à appliquer
+
+
+NB : si le mode de mise à jour est différé, il faudra lancer le programme  co110
+
+
+
+
+
+
+
+
+Note explicative de la différence de change C.G programme « co260 » : 
+
+Le programme "co260" est conçu pour gérer les différences de change en Comptabil
+ité Générale (CG). Il permet de comptabiliser les écarts de change qui survienne
+nt lors des transactions en devises étrangères en fonction des variations des ta
+ux de change. Voici une explication détaillée de la composition et des fonctionn
+alités de ce programme.
+Sélection au Niveau des Comptes
+Tous les Comptes C.G. :
+Cette option permet d'inclure tous les comptes de Comptabilité Générale dans l'é
+valuation des différences de change. Vous avez également la possibilité de sélec
+tionner des comptes spécifiques soit par ordre alphabétique, soit par ordre numé
+rique pour une gestion ciblée.
+Choix du Type de Journal et Type de Pièce
+Type de Journal et Type de Pièce :
+Type de Journal : Vous sélectionnez ici le journal comptable dans lequel les écr
+itures de différences de change seront enregistrées. Par exemple, "Journal opéra
+tion diverse" est utilisé pour enregistrer les ajustements divers en CG.
+Type de Pièce : Indiquez le type de document ou de transaction qui sera utilisé 
+pour enregistrer la différence de change (par exemple, "Opération diverse").
+Date de Pièce et Date de Valeur
+Date de Pièce et Date de Valeur :
+Date de Pièce : Spécifiez la date à laquelle la pièce comptable est générée.
+Date de Valeur : Indiquez la date à laquelle l'écriture prendra effet dans les c
+omptes. Cette date est cruciale pour l'évaluation correcte des taux de change et
+ leur application aux transactions correspondantes.
+Choix des Taux de Change à Appliquer
+Taux de Change à Appliquer :
+Taux du Jour : Utilise le taux de change en vigueur à la date de la transaction 
+ou à une date spécifiée.
+Taux Fixes : Applique un taux de change prédéfini, qui peut être utilisé pour de
+s transactions répétitives ou des contrats avec des taux fixes.
+Taux de Bouclement : Utilise le taux de change de clôture, souvent appliqué en f
+in de période comptable pour évaluer les positions en devises étrangères.
+
+Différences de change créditeurs co261 :
+
+Ce programme permet de comptabiliser les différences de change au niveau des cré
+diteurs (fournisseurs).
+
+Pour son utilisation, voir la section co260
+Différences de change débiteurs co262 :
+
+Ce programme permet de comptabiliser les différences de change au niveau des déb
+iteur (clients).
+
+Pour son utilisation, voir la section co260
+
+Gestion des lots co605 :
+Ce programme à pour but d’interroger selon différents critères la situation des 
+lots. Il permet également de fermer ou réouvrir des lots ainsi que modifier l’in
+titulé du lot.
+Voir explications et directives sur les lots dans la partie "Ecritures de compta
+bilité générale et analytique".
+
+Remarque : Pour pouvoir établir les clôtures partielles et le bouclement final, 
+les lots doivent être fermés avant de lancer les programmes co600 et co620.
+
+
+
+
+Cliquer pour sélectionner un lot..
+Par clic droit de la souris, certaines fonctionnalités seront proposées
+
+
+
+Contrôle équilibre cg399 :
+
+Le contrôle d'équilibre permet de s'assurer que pour une période donnée, le tota
+l des débits correspond au total des crédits.
+Si une différence apparaissait au niveau du bilan, cette liste permettra de savo
+ir d'ou vient la différence et de la résoudre.
+
+
+Sélection des périodes
+
+
+
+Démarrage du contrôle
+
+
+Message de confirmation
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative du contrôle d’équilibre programme « cg399 » : 
+
+Le programme "cg399" est un outil essentiel pour effectuer des contrôles d'équil
+ibre dans la Comptabilité Générale (CG). Il permet de vérifier que toutes les éc
+ritures comptables sont bien équilibrées sur une période donnée, garantissant ai
+nsi l'intégrité des comptes. Voici une explication détaillée de la composition e
+t des fonctionnalités de ce programme.
+1. Sélection des Périodes
+Période de/à :
+Cette section permet de définir la plage de dates sur laquelle le contrôle d'équ
+ilibre sera effectué. Vous sélectionnez la date de début et la date de fin de la
+ période comptable à vérifier. Cette fonctionnalité est cruciale pour s'assurer 
+que les balances sont justes pour une période spécifique, comme une clôture mens
+uelle, trimestrielle ou annuelle.
+2. Démarrage du Contrôle
+Lancer le Contrôle :
+Après avoir sélectionné la période, vous pouvez démarrer le processus de contrôl
+e en cliquant sur le bouton de validation (représenté par la coche verte). Le pr
+ogramme analysera toutes les écritures comptables pour la période spécifiée, vér
+ifiant que les débits et crédits sont équilibrés.
+3. Message de Confirmation
+Confirmation de la Fin du Contrôle :
+Une fois le contrôle terminé, une fenêtre de message s'affiche pour confirmer qu
+e le processus est achevé. Ce message indique que le programme a terminé de véri
+fier toutes les écritures pour la période sélectionnée. Si aucune différence cum
+ulée n'est détectée (différence cumulée CV = 0.00), cela signifie que les compte
+s sont équilibrés.
+
+
+
+
+
+Comptabilisations externes :

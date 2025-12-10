@@ -1,0 +1,308 @@
+CONTEXT FOR: image_836.png
+============================================================
+
+--- BEFORE ---
+
+Fenêtre des réponses de sélection possible :
+
+
+
+
+Historiques avec anciens soldes ca710 :
+
+
+Historique de l’exercice comptable avec report des exercices précédents :
+Le but de ce programme, est d’imprimer l’ensemble des lignes comptabilisées sur 
+chaque compte analytique pour l’exercice comptable concerné. (Exercice comptable
+ sélectionné). Pour les comptes analytiques « pluriannuel » une ligne de report 
+des exercices précédents sera imprimée.
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Saisir ou cliquer pour sélectionner les bornes
+ de dates pour les lignes à traiter dans l’édition
+
+
+Exportations Excel ca720 :
+
+Le but de ce programme est de générer un fichier des lignes comptabilisées pour 
+chaque compte et genre de frais analytiques sélectionnés. (Selon les bornes de d
+ates sélectionnées). Le fichier généré pourra être repris dans Excel comme « Rap
+port de tableau croisé dynamique ».
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Cliquer pour choisir le type de sélection
+
+
+
+Saisir ou cliquer pour sélectionner les bornes de genres de frais 
+à traiter dans l’exportation
+
+
+
+Saisir ou cliquer pour sélectionner les bornes de dates 
+pour les lignes à traiter dans l’exportation
+
+
+
+Saisir ou sélectionner le nom du fichier
+qui sera traité dans Excel
+
+
+Edition paramétrable lignes CA ca799 : 
+
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant a tous les modules :
+
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+
+
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+Gestion des paramètres des éditions paramétrables ca655 :
+
+Ce programme sert à paramétrer les listes qui seront générées à l'aide du ca650
+
+
+Paramétrage des listes pour le programme ca650 : 
+
+Ce programme offre la possibilité de paramétrer des listes, permettant d’extrair
+e la majeure partie des informations mémorisées dans la base de données «Comptab
+ilité Analytique».
+Il requiert un minimum de compétences techniques, étant donné qu’il travaille di
+rectement avec les noms de zone des fichiers définis dans la base de données.
+Pour pouvoir traiter ces données il y a lieu de procéder en plusieurs étapes :
+
+1 - Définir un schéma sur papier des données que l’on souhaite analyser (disposi
+tion, colonnes, totalisateurs, etc.).
+
+2 - Paramétrer la liste à l’aide du programme ca655, selon la description ci-des
+sous.
+
+3 - Exécuter l’extraction des données à l’aide du programme ca650, selon descrip
+tion ci-après.
+
+Le paramétrage d’une liste comprend différents types d’informations présentées d
+ans l’ordre des masques écrans :
+
+Type de ligne «  «  Données générales de la liste.
+
+
+
+
+A)Informations de base telles que :
+
+- CodeSaisir le nom abrégé de la liste - A/N.
+- LigneNe rien saisir.
+
+[IMAGE HERE: image_836.png]
+
+--- AFTER ---
+- ColonneNe rien saisir.
+- Type« » Ne rien saisir.
+- Nom de la liste (sélection)Saisir le nom de sélection de la liste - A/N.
+- Nom de la liste (édition)    Saisir le nom qui sera édité sur la liste - A/N.
+- Imprimante              Sélectionner l’imprimante désirée.
+- Format                               Sélectionner le format de papier désiré.
+- Un compte CA par page   Cocher, si l’on désire un saut de page après chaque co
+mpte.
+- Edition d’une ligne             Cocher, si l’on désire un interligne après cha
+que compte.
+- Ligne à zéro            Cocher, si l’on désire que les données non chargées so
+ient traitées.
+- Totaux uniquement      Cocher, si l’on désire obtenir seulement les totaux.
+
+Type de ligne « E«  Entêtes des colonnes de la liste.
+
+
+
+B)Informations sur les entêtes de colonnes :
+
+- Code de la liste    Nom abrégé de la liste - A/N.
+- LigneNe rien saisir.
+- ColonneNe rien saisir.
+- Type     « E » 
+- Entête 1Saisir les intitulés de colonnes - A/N, cadrés selon la longueur des
+ champs à éditer sur la 1ère  ligne
+- Entête 2Saisir les intitulés de colonnes - A/N, cadrés selon la longueur des
+ champs à éditer sur la 2ème ligne.
+- Entête 3Saisir les intitulés de colonnes - A/N, cadrés selon la longueur des
+ champs à éditer sur la 3ème ligne.
+
+
+Type de ligne « C«  champ sans valeur de totalisation : 
+
+
+
+
+C) Informations de type «Champ» : 
+
+- Code de la listeNom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter (incrément de 10
+ en 10 recommandé, permet l’insertion de colonnes).
+- Type« C » 
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur   Saisir le nombre de caractères que l’on désire imprimer.
+- Fichier       Saisir le nom du fichier tel que défini dans le dictionnaire PRO
+GRESS.
+Les fichiers suivants peuvent être traités:
+caba = Données de base analytique (ca100)
+cava = Données des valeurs  analytique (ca100 page complémentaire)
+- Indice    Saisir le numéro d’indice en relation avec le fichier des valeurs (c
+ava).
+- Zone obligatoire   Cocher, si ce champ doit toujours être traité.
+- report s/total compte Cocher, si un total doit être imprimé après chaque compt
+e.
+- SubstitutSaisir le texte désiré.
+- report s/total général Cocher, si un total doit être imprimé à la fin du trait
+ement.
+- SubstitutSaisir le texte désiré.
+
+Types de lignes «MB », « QB », « MT », « QT » champs avec valeurs annuelles de t
+otalisation et traitement de(s) genre(s) de frais (soldes année en cours).
+
+
+
+
+D)Informations de types «Montant Budget», « Quantité Budget », « Montant réel »,
+ « Quantité réelle » :
+
+- Code de la liste    Nom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter 
+(incrément de 10 en 10 recommandé).
+- Type« MT » ou « QT » ou « MB » ou « QB » .
+- Fichier Pour ce type de données, seul les informations provenant du fichier
+» caso « (Soldes genres de frais, ca142) peuvent être traitées.
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur   Saisir le nombre de caractères que l’on désire imprimer.
+- Période Saisir la période (01 à 12) relative aux valeurs des genres de frais
+ saisies ci-dessous.
+- Exercice précédent  Cocher, si l’on désire traiter les valeurs cumulées des ex
+ercices 
+  précédents pour les genres de frais saisis ci-dessous.
+- Totalisation générale Cocher, si un total doit être imprimé à la fin du traite
+ment.
+- Totalisation compte   Cocher, si un total doit être imprimé après  chaque comp
+te analytique.
+- Cumul annuel  Cocher, si l’on désire traiter les valeurs cumulées pour les 
+                      genres de frais saisis ci-dessous.
+- Genres de fraisSaisir le(s) numéro(s) 
+de(s) genre(s) de frais que l’on désire traiter dans cette colonne (min. 1 max. 
+30).
+
+
+Types de lignes «MC », « QC » champs avec valeurs de totalisation et traitement 
+de(s) genre(s) de frais (soldes cumulés).
+
+
+
+
+E)Informations de types «Montant Cumul», « Quantité Cumul »:
+
+- Code de la listeNom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter 
+(incrément de 10 en 10 recommandé).
+- Type« MC » ou « QC ».
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur   Saisir le nombre de caractères que l’on désire imprimer.
+- AnnuelCocher, si l’on désire traiter les valeurs de l’année en cours pour les 
+genres de frais saisis ci-dessous.
+- PluriannuelCocher, si l’on désire traiter les valeurs cumulées pour les genres
+ de 
+frais saisis ci-dessous.
+- Exercice précédent (cumul)   Cocher, si l’on désire traiter les valeurs cumulé
+es des exercices 
+ précédents pour les genres de frais saisis ci-dessous.
+- Exercice précédent (périodique)  Cocher, si l’on désire traiter les valeurs cu
+mulées des exercices 
+précédents pour les genres de frais saisis ci-dessous, selon la période 
+qui sera saisie dans les réponses du programme ca650.
+- Totalisation généraleCocher, si un total doit être imprimé à la fin du traitem
+ent.
+- Totalisation compteCocher, si un total doit être imprimé après  chaque compte 
+analytique.
+- Genres de fraisSaisir le(s) numéro(s) de(s) genre(s) de frais que l’on désire 
+traiter dans cette colonne (min. 1 max. 30).
+
+Type de ligne «CA » calcul avec valeurs de totalisation et traitement opérationn
+el des colonnes :
+
+
+
+
+F)Informations de types «Montant Cumul», « Quantité Cumul »:
+
+- Code de la listeNom abrégé de la liste - A/N.
+- LigneSaisir le numéro de ligne par ex. 10.
+- ColonneSaisir le numéro de colonne de l’information à traiter 
+ (incrément de 10 en 10 recommandé).
+- Type« CA » .
+- PositionSaisir la position à partir de laquelle l’impression doit s’effectuer.
+- Longueur  Saisir le nombre de caractères que l’on désire imprimer.
+- Pourcentage       Cocher, si l’on désire traiter les valeurs avec un résultat 
+en %.
+- Totalisation générale    Cocher, si un total doit être imprimé à la fin du tra
+itement.
+- Totalisation compte      Cocher, si un total doit être imprimé après  chaque c
+ompte analytique.

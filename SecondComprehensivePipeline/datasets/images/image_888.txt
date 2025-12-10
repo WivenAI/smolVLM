@@ -1,0 +1,308 @@
+CONTEXT FOR: image_888.png
+============================================================
+
+--- BEFORE ---
+sseurs
+
+§ Client-débiteur
+Information définissant que ce fournisseur est également référencé comme client 
+ dans l’entreprise. Cette relation sera examinée lors de la proposition de paiem
+ent automatique afin de mettre en évidence le solde dû par rapport au paiement à
+ effectuer. NB : le client doit être créé auparavant (programme db100)
+
+§ TVA
+Sélectionner le code TVA du fournisseur. Ce code sera proposé par défaut lors de
+ la saisie des factures fournisseurs
+
+§ No TVA
+Numéro d’adhérent  TVA du fournisseur
+
+§ Traitement des avis de paiement
+Cette option offre trois possibilités de traiter les avis de paiements (programm
+e cr545) :
+1 Pas d’avis de paiement quelque soit le nombre de factures réglées.
+2 Edition d’un avis de paiement systématique quelque soit le nombre de factures 
+réglées .
+3 Edition d’un avis de paiement si le nombre de factures réglées est supérieur à
+ 4, sinon les références factures seront transmises dans la partie communication
+ du fichier de paiement pour la banque
+
+§ Ne sera pas reporté
+Cette option permet de ne pas reporter ce fournisseur dans le futur exercice com
+ptable. Il restera néanmoins archivé avec toutes ces données dans les exercices 
+concernés
+
+§ Comptabilisation bloquée
+Cette option signalera par un avertissement que l’on ne peut plus comptabiliser 
+sur ce compte
+
+§ Est un compte de regroupement
+Cette option est liée au champ Regroupement décrit ci-dessus
+
+
+Remarques : 
+
+Les coordonnées bancaires seront enregistrées avec le programme cr105
+
+Pour les fournisseurs émettant des BVR, ceux-ci doivent être conservés afin de f
+aciliter la reprise des soldes à nouveau.
+
+Onglet Coordonnées bancaires :
+
+
+Cette partie renseigne sur les différentes relations bancaires du fournisseur - 
+ces dernières ont été saisies par l'intermédiaire du programme cr105 - Gestion d
+es coordonnées bancaires :
+
+
+
+
+
+Numéro de compte au format IBAN
+
+Définition du type de compte
+Banque ou Compte de Chèques Postaux (CCP)
+Onglet Historique :
+
+
+Il s'agit d'un aperçu des écritures comptables saisies sur ce fournisseur, ainsi
+ que des paiements effectués : 
+
+Note : il n'est possible de voir que les écritures de l'exercice comptable en co
+urs
+
+
+
+
+
+Montant de la facture
+
+Paiment effectué pour cette facture
+
+Onglet P.O :
+
+Cet onglet permet de visualiser toutes les factures ouvertes pour le fournisseur
+ sélectionné, et d'agir sur plusieurs paramètres :
+
+Note importante : le seul moyen pour changer une condition de paiement est de pa
+sser par cet onglet et un clic droit sur la facture :
+
+
+
+
+Cliquer sur "Correction du PO"
+Pour modifier la date-valeur, les conditions de paiement ou le compte bancaire
+
+
+Onglet Factures :
+
+
+Cette vue permet de voir toutes les factures et notes de crédit comptabilisées d
+epuis la création du fournisseur, ainsi que les paiements relatifs et le solde r
+estant :
+
+
+
+
+Onglet C.A. :
+
+
+Attention : pour que le recalcul des chiffres d'affaires fonctionne, un paramétr
+age est nécessaire au niveau du plan comptable (cg100) : cocher la case "Statist
+ique par mois"
+
+
+
+
+Cet onglet permet d'afficher les informations relatives au chiffre d’affaires, e
+scomptes octroyés, etc. :
+
+
+
+Onglet Ecritures effacés :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Edition des fournisseurs cr100e : 
+
+Utilisation des listes paramétrables :
+
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant aux fournisseurs :
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+[IMAGE HERE: image_888.png]
+
+--- AFTER ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Edition paramétrable des fournisseurs cr101 :
+
+
+Utilisation des listes paramétrables :
+
+Note : L'édition paramétrable est un programme standard dans MS2000, ci-dessous 
+un exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant aux fournisseurs :
+
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+
+
+
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+
+Gestion des coordonnées bancaires cr105 :
+
+! Note : il est impératif de saisir soit un IBAN (partie haute de l'écran), soit
+ un compte bancaire ou postal (partie basse de l'écran)
+
+
+
+
+Choix du type de sélection
+NB  : pour apporter des modifications, choisir "un fournisseur"
+
+Cliquer pour choisir un fournisseur
+Il faudra au préalable choisir "un fournisseur" dans le type de sélection (voir 
+ci-dessus)
+
+Panel de fonctions
+Cliquer sur ces boutons pour agir sur les coodonnées bancaires du fournisseur sé
+lctionné
+Contrôle des coordonnées bancaires cr110 :
+
+
+Ce programme permet de s'assurer qu'un compte bancaire ne soit pas enregistré pa
+r erreur dans deux fournisseurs distincts. Pour ce faire il va créer un fichier 
+que l'on pourra ouvrir avec Excel 
+afin de filtrer les comptes pour identifier un doublon :
+
+
+
+
+
+Choix de la société à contrôler
+
+Cliquer pour choisir l'emplacement
+et le nom du fichier qui sera généré
+
+Cliquer sur OK pour générer le fichier
+
+
+Procédure de contrôle :
+
+Ouvrir le fichier ".csv" avec excel, et filtrer le compte bancaire 
+
+
+
+
+
+
+
+
+
+
+Comptabilisations chez fournisseurs :
+
+Factures fournisseurs co101 :
+
+Champs :
+§ Pièce – Le numéro de pièce peut être : soit le numéro de facture ou note de cr
+édit, ou un numéro de pièce interne (par exemple, numéro séquentiel attribué par
+ un composteur).
+Il est souhaitable que ce numéro soit unique. Ce champ est obligatoire.
+§ Date – MS 2000 propose par défaut la date du jour, mais elle peut être modifié
+e. (En cas d’erreur de saisie sur un champ date : saisir ? Pour libérer le champ
+, et pouvoir renouveler la saisie).
+Ce champ est obligatoire, car la date d’échéance sera calculée à partir de cette
+ date.
+§ Valeur – MS 2000 propose par défaut la date de pièce, mais elle peut être modi
+fiée.
+Ce champ est obligatoire, voir ci-dessous les explications importantes de cette 
+donnée.
+
+La date de valeur comptable détermine le classement de l’écriture : son apparten

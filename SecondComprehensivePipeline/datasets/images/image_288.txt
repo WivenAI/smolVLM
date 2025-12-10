@@ -1,0 +1,308 @@
+CONTEXT FOR: image_288.png
+============================================================
+
+--- BEFORE ---
+Densité: Utilisé pour des articles vendus au volume, cela pourrait indiquer la d
+ensité de l'article pour le calcul du prix.
+Type/Qualité Béton: Sélectionner le type ou la qualité du béton, si l'article es
+t un produit en béton.
+A multiplier par la quantité de béton: Option pour calculer le prix en fonction 
+de la quantité de béton.
+Sulfite C.G. / Sulfite C.A.: Options pour spécifier si l'article contient des su
+lfites, ce qui pourrait affecter les conditions de vente.
+
+Cette interface est essentielle pour le personnel de vente qui doit saisir et gé
+rer des informations détaillées sur chaque article, y compris la tarification, l
+es conditions de vente, et les paramètres comptables, afin d'assurer une gestion
+ efficace des ventes et de la facturation au sein de l'ERP.
+Onglet « Achats » : 
+
+Note explicative de l’onglet « Achat » de la gestion des articles programme « ar
+100 » : 
+L'onglet "Achats" du programme "ar100" sert à gérer les informations d'achat des
+ articles dans un système ERP. Voici une explication des différents champs et fo
+nctionnalités de cet onglet :
+Champs d'Information de l'Article:
+Code: Numéro de référence de l'article.
+Désignation: Description ou nom de l'article pour l'identifier facilement lors d
+es transactions d'achat.
+Gestion des Prix et des Stocks:
+Unité d'achat: L'unité standard utilisée pour acheter l'article, telle que pièce
+, kilogramme, etc.
+Prix d'achat moyen: Le coût moyen d'achat de l'article, souvent calculé sur la b
+ase des achats antérieurs.
+Stock minimum / maximum: Les seuils de stock pour déclencher des actions d'achat
+, comme la réapprovisionnement automatique.
+Fournisseur principal: Le fournisseur privilégié pour cet article, utile pour le
+s achats directs ou les commandes récurrentes.
+Référence: Numéro de référence ou code produit attribué par le fournisseur princ
+ipal.
+Conditionnement: La quantité standard dans laquelle l'article est emballé par le
+ fournisseur.
+Quantité optimale: La quantité d'achat idéale pour optimiser les coûts et l'effi
+cacité du stockage.
+Informations sur les Transactions et les Fournisseurs:
+Premier / Dernier achat le: Dates du premier et du dernier achat réalisés pour c
+et article.
+Dernier prix d'achat: Le coût d'achat de la dernière transaction pour cet articl
+e.
+Dernier achat chez le Fourn. principal le: Date du dernier achat chez le fournis
+seur principal.
+Paramètres de Gestion des Achats:
+Délai général de réapprovisionnement: Le temps nécessaire pour recevoir l'articl
+e après avoir passé une commande.
+Stop Réapprovisionnement: Une case à cocher pour activer ou désactiver le réappr
+ovisionnement automatique de l'article.
+Comptabilité et Statistiques:
+Compte C.G. / Genre de frais: Numéros de comptes de comptabilité générale associ
+és à l'article pour le suivi des dépenses et des charges.
+Sulfite C.G. / C.A.: Cases à cocher pour indiquer si l'article contient des sulf
+ites, ce qui peut être pertinent pour le reporting comptable ou la gestion des s
+tocks.
+Onglet « Stock » :
+
+Note explicative de l’onglet « Stock » de la gestion des articles programme « ar
+100 » : 
+L'onglet "Achats" du programme "ar100" sert à gérer les informations d'achat des
+ articles dans un système ERP. Voici une explication des différents champs et fo
+nctionnalités de cet onglet :
+Champs d'Information de l'Article:
+Code: Numéro de référence de l'article.
+Désignation: Description ou nom de l'article pour l'identifier facilement lors d
+es transactions d'achat.
+Gestion des Prix et des Stocks:
+Unité d'achat: L'unité standard utilisée pour acheter l'article, telle que pièce
+, kilogramme, etc.
+Prix d'achat moyen: Le coût moyen d'achat de l'article, souvent calculé sur la b
+ase des achats antérieurs.
+Stock minimum / maximum: Les seuils de stock pour déclencher des actions d'achat
+, comme la réapprovisionnement automatique.
+Fournisseur principal: Le fournisseur privilégié pour cet article, utile pour le
+s achats directs ou les commandes récurrentes.
+Référence: Numéro de référence ou code produit attribué par le fournisseur princ
+ipal.
+Conditionnement: La quantité standard dans laquelle l'article est emballé par le
+ fournisseur.
+Quantité optimale: La quantité d'achat idéale pour optimiser les coûts et l'effi
+cacité du stockage.
+Informations sur les Transactions et les Fournisseurs:
+Premier / Dernier achat le: Dates du premier et du dernier achat réalisés pour c
+et article.
+Dernier prix d'achat: Le coût d'achat de la dernière transaction pour cet articl
+e.
+Dernier achat chez le Fourn. principal le: Date du dernier achat chez le fournis
+seur principal.
+Paramètres de Gestion des Achats:
+Délai général de réapprovisionnement: Le temps nécessaire pour recevoir l'articl
+e après avoir passé une commande.
+Stop Réapprovisionnement: Une case à cocher pour activer ou désactiver le réappr
+ovisionnement automatique de l'article.
+Comptabilité et Statistiques:
+Compte C.G. / Genre de frais: Numéros de comptes de comptabilité générale associ
+és à l'article pour le suivi des dépenses et des charges.
+Sulfite C.G. / C.A.: Cases à cocher pour indiquer si l'article contient des sulf
+ites, ce qui peut être pertinent pour le reporting comptable ou la gestion des s
+tocks.
+Onglet « Données tech. » :
+
+
+Note explicative de l’onglet « Données tech » de la gestion des articles program
+me « ar100 » : 
+
+L'onglet "Données tech." du programme "ar100" est spécialement conçu pour la sai
+sie et la gestion des informations techniques d'un article. Cet onglet permet de
+ centraliser des détails essentiels qui concernent les spécifications physiques 
+et d'autres attributs techniques des articles. Voici une description détaillée d
+es champs et fonctionnalités de cet onglet :
+Champs de Saisie des Données Techniques:
+Particularités: Un champ texte pour saisir des informations spéciales ou uniques
+ concernant l'article qui ne sont pas couvertes par les autres champs standards.
+Dimensions article: Trois champs séparés pour la hauteur, la largeur et la profo
+ndeur de l'article, permettant de décrire sa taille physique.
+Dimensions emballage: Similaire aux dimensions de l'article, ces trois champs dé
+crivent la taille de l'emballage du produit, ce qui est crucial pour la logistiq
+ue et la gestion des stocks.
+Poids article: Le poids de l'article, souvent nécessaire pour le calcul des frai
+s de transport, la gestion des stocks, et les considérations logistiques.
+Fonctionnalités Supplémentaires:
+Documents Associés: Un bouton ou un champ qui permet d'attacher ou de lier des d
+ocuments relatifs à l'article, tels que des fiches techniques, des certificats, 
+ou d'autres documents importants qui supportent les données entrées. Cette fonct
+ionnalité est particulièrement utile pour maintenir un accès facile à toute docu
+mentation nécessaire pour la conformité, la qualité, ou la maintenance.
+
+Cet onglet est essentiel pour les ingénieurs, les techniciens de produit, et les
+ gestionnaires de stock qui ont besoin d'un accès rapide et précis aux spécifica
+tions techniques des articles pour supporter la production, la vente, et la gest
+ion après-vente. Il sert à assurer que toutes les informations techniques nécess
+aires sont correctement enregistrées et facilement accessibles dans le système E
+RP.
+Haut du formulaire
+
+Onglet « Décompte prix » :
+
+
+Note explicative de l’onglet « Décompte prix » de la gestion des articles progra
+mme « ar100 » :
+
+L'onglet "Décompte prix" du programme "ar100" est conçu pour la gestion et le ca
+lcul détaillé des coûts associés à un article. Cette fonctionnalité est essentie
+lle pour une tarification précise et pour comprendre les divers composants du co
+ût d'un produit. Voici les différentes sections et champs de cet onglet :
+Champs de Coûts et de Tarification :
+Brut: Le prix brut de l'article avant l'application de toute réduction ou ajuste
+ment.
+
+[IMAGE HERE: image_288.png]
+
+--- AFTER ---
+Usin 1 et Usin 2: Des champs pour entrer des coûts additionnels liés à des proce
+ssus d'usinage spécifiques ou à d'autres formes de transformation.
+F.A. (Frais Annexes): Permet d'ajouter des coûts pour des frais accessoires liés
+ à la production ou à la fourniture de l'article.
+T./E. (Transport/Emballage): Coûts spécifiques pour le transport ou l'emballage 
+de l'article.
+PAN: Peut représenter un coût ou une provision pour des frais non spécifiés dire
+ctement.
+PVN:  Un autre niveau de tarification ou de provision pour des coûts non détaill
+és.
+PV Brut: Le prix de vente brut de l'article, avant l'application de taxes ou de 
+remises.
+Rect.: Un champ pour des ajustements rectificatifs sur le prix de l'article.
+Lap.: Un champ pour des ajustements ou des calculs finaux.
+Calcul des Coûts Détaillés :
+À droite, plusieurs champs marqués "En CHF" permettent d'entrer ou de calculer l
+e coût pour chaque composant en francs suisses, offrant une vue détaillée des co
+ntributions individuelles au coût total de l'article.
+Coefficient : Un champ pour appliquer un facteur multiplicatif aux coûts calculé
+s, ajustant le prix final en fonction de critères spécifiques de l'entreprise ou
+ du marché.
+
+Cet onglet est crucial pour les gestionnaires de produits et les contrôleurs fin
+anciers, car il permet une analyse fine des coûts et aide à établir des stratégi
+es de prix efficaces basées sur des données détaillées et précises. Il joue un r
+ôle fondamental dans la gestion des marges et la rentabilité des produits.
+Onglet « Descriptif » : 
+
+Note explicative de l’onglet « Décompte prix » de la gestion des articles progra
+mme « ar100 » :
+
+L'onglet "Descriptif" du programme "ar100" est destiné à fournir et à gérer des 
+descriptions détaillées et des informations complémentaires pour chaque article 
+listé dans le système ERP. Cet onglet est crucial pour enregistrer et consulter 
+des informations spécifiques qui ne sont pas couvertes par les autres onglets st
+andards tels que les onglets "Ventes", "Achats", ou "Stock". Voici une explicati
+on des différents éléments de cet onglet :
+Champs de Saisie et d'Affichage:
+Label: Ce champ permet de saisir ou d'afficher l'étiquette ou le titre de l'info
+rmation spécifique à enregistrer pour l'article. Il sert de guide pour comprendr
+e quel type d'information est stocké dans la ligne correspondante.
+Information: Ici, l'utilisateur peut saisir ou consulter des données détaillées 
+liées à l'étiquette fournie à gauche. Cela peut inclure des spécifications techn
+iques, des notes sur l'utilisation ou l'application de l'article, des informatio
+ns de conformité, etc.
+Valeur Date: Ce champ est destiné à enregistrer une date associée à l'informatio
+n saisie, ce qui peut être utile pour des informations qui sont sensibles au tem
+ps, comme la date de dernière certification, la date de révision du descriptif, 
+etc.
+Fonctionnalités de Gestion:
+Copie descriptif: Ce bouton permet de copier des descriptifs d'un article à un a
+utre, facilitant la duplication d'informations similaires entre différents artic
+les sans nécessiter une saisie manuelle répétée.
+Effacement descriptif: Un bouton qui offre la possibilité d'effacer rapidement l
+e descriptif actuellement sélectionné si nécessaire.
+
+En résumé, l'onglet "Descriptif" joue un rôle vital dans la gestion complète des
+ données des articles, en fournissant un espace dédié pour des informations déta
+illées qui soutiennent une variété de processus internes et externes, de la conf
+ormité réglementaire à l'optimisation des utilisations des produits.
+
+
+Edition des paramétrable article ar101 :
+
+
+Note explicative de l’Edition des paramétrable d’article programme « ar101 » : 
+
+Le programme "ar101" est un outil conçu pour la gestion et la génération de rapp
+orts ou de documents basés sur des listes prédéfinies ou personnalisées d'articl
+es. Le processus commence par la sélection d'une liste, qui est ensuite utilisée
+ pour éditer ou afficher des informations spécifiques. Voici une explication éta
+pe par étape des fonctionnalités et de la composition de ce programme :
+Sélection d'une Liste
+La première étape dans l'utilisation du programme "ar101" consiste à sélectionne
+r une liste spécifique sur laquelle baser le rapport ou le document. Cette sélec
+tion peut être faite à partir de plusieurs options prédéfinies, comme illustré d
+ans les captures d’écran :
+Nouvelle Liste... : Permet de créer une liste personnalisée.
+Contrôles des Prix Centrales Externe : Utilisée pour des rapports concernant les
+ prix contrôlés par des centrales externes.
+Contrôles des Prix Centrales Interne : Pour des rapports internes sur les contrô
+les de prix.
+Liste articles : Affiche une liste simple des articles.
+Tarifs + paramètres articles Balance (D0) : Utilisée pour des rapports spécifiqu
+es sur les tarifs et paramètres des articles.
+Interface du Programme
+Une fois la liste choisie, l'utilisateur peut utiliser les fonctionnalités suiva
+ntes pour manipuler et générer des rapports :
+Barre de Fonctionnalités :
+Visualisation requête : Permet de prévisualiser les données filtrées selon les c
+ritères définis sans générer un rapport complet.
+Titre document : Champ pour définir ou modifier le titre du document qui sera gé
+néré.
+Options de Format : Choix entre "Format Ligne" ou "Format Page" pour la présenta
+tion des données, et options pour le portrait ou paysage pour l'orientation du d
+ocument.
+Rupture de premier champ imprimé : Pour ajouter des ruptures de page basées sur 
+les changements dans le premier champ de données, utile pour organiser des docum
+ents volumineux.
+Sélections et Édition : Onglets pour affiner la sélection des données et personn
+aliser l'édition du rapport.
+
+
+Onglet « Edition » :
+
+
+Note explicative de l’onglet « Edition » des Edition paramétrable des articles p
+rogramme « ar101 » :
+L'onglet "Édition" du programme "ar101" est utilisé pour configurer et gérer la 
+manière dont les données sélectionnées à partir de listes spécifiques sont affic
+hées et imprimées dans les rapports ou documents. Voici une description détaillé
+e des options et fonctionnalités disponibles dans cet onglet pour faciliter la p
+ersonnalisation des sorties de données.
+Fonctionnalités de l'Onglet "Édition" :
+Options de Mise en Page et de Format :
+Format Ligne / Format Page : Ces options déterminent si le rapport doit être imp
+rimé en continu sur une seule ligne par page ou si chaque page doit afficher des
+ données sous forme de page complète. Le choix entre ces options affecte la dens
+ité et la lisibilité des informations imprimées.
+Portrait / Paysage : Permet de choisir l'orientation de la page. Le mode portrai
+t est plus adapté pour des rapports avec moins de colonnes, tandis que le paysag
+e permet d'inclure plus de détails horizontalement.
+Avec une rupture sur le premier champ imprimé : Cette fonction est utile pour le
+s rapports qui nécessitent une séparation claire entre les sections, par exemple
+, lorsqu'un nouveau groupe d'articles commence.
+Détails de la Configuration du Rapport :
+Ligne / Du fichier : Ces champs permettent de spécifier si toutes les données do
+ivent être incluses ou si une sélection spécifique doit être utilisée pour le ra
+pport. Le choix de ces options peut dépendre de l'objectif du rapport ou de la n
+écessité de filtrer certaines informations.
+Trié par : Permet de définir le critère de tri des données dans le rapport. Cela
+ peut être important pour organiser les informations de manière logique, par exe
+mple, par code d'article, nom, ou tout autre attribut pertinent.
+Gestion des Critères :
+Liste des critères : Affiche les critères actuels utilisés pour filtrer les donn
+ées. Dans l'exemple donné, le critère "Dont Inactif Égal 'Faux'" est utilisé pou
+r exclure les articles inactifs des rapports.
+Ajouter / Modifier / Supprimer : Ces boutons permettent de gérer les critères de
+ sélection. Ils sont essentiels pour ajuster les filtres et affiner les données 
+qui seront incluses dans le rapport final.
+Visualisation et Vérification :
+Vérifier condition : Un outil pour s'assurer que les critères définis sont logiq
+ues et fonctionnels avant de lancer la génération du rapport. Cela évite les err
+eurs de données et garantit que le rapport généré répond aux attentes.
+
+
+Mise à jour des prix d’articles ar104 : 
+
+
+Note explicative de la mise à jour des prix d’articles programme « ar104 : 

@@ -1,0 +1,308 @@
+CONTEXT FOR: image_786.png
+============================================================
+
+--- BEFORE ---
+
+
+Ms Comptabilité Analytique :
+
+Compte Analytique : 
+
+Gestion des comptes analytiques onglet « Compte » :
+
+Le but de ce programme, est de pouvoir créer les différents comptes analytiques 
+(centres de charges et de produits) qui seront gérer selon l’organisation de vot
+re comptabilité analytique. Différents genres de compte analytique peuvent être 
+définis.
+
+
+
+
+
+
+
+Gestion des comptes analytiques ca100 : 
+
+
+Le but de ce programme est de pouvoir créer les différents comptes analytiques (
+centres de charges et de produits) qui seront gérer selon l’organisation de votr
+e comptabilité analytique. Différents genres de compte analytique peuvent être d
+éfinis.
+
+Liens vers les différentes sections du programme ca100 :
+
+Onglet "Liste"
+Onglet "Compte"
+Onglet "Répartitions"
+Onglet "Historique"
+Onglet "Cumuls"  
+Onglet "Ecritures effacées"
+
+
+
+
+
+
+
+
+
+
+
+
+Onglet Liste :
+
+L'onglet "Liste" permet de visualiser l'ensemble des comptes analytiques :
+
+
+
+
+Cliquer sur la ligne pour sélectionner
+le compte à gérer
+
+
+
+Filtre des comptes
+Possibilité de filtrer les colonnes :
+Numéro, intitulé court, intitulé, intitulé (suite)
+
+
+Affichage du compte choisi
+
+
+Onglet Compte :
+Gestion des comptes analytiques onglet « Compte » :
+
+
+
+
+
+
+Champs :
+Numéro :La numérotation est de 10 chiffres au maximum cadrée à gauche. Une certa
+ine structure dans la numérotation doit être respectée, pour faciliter les reche
+rches.
+Ce numéro est unique, non modifiable, et peu être utilisé comme critère d’accès 
+et de sélection.
+Intitulé de recherche :Intitulé alpha-numérique de 15 caractères, utilisé comme 
+critère de recherche rapide d’un compte si l’on ne connaît pas le numéro. Il dev
+ra être composé de mots clés significatifs pour l’ensemble des utilisateurs.
+Cet intitulé doit être unique, il est modifiable, et peu être utilisé comme crit
+ère d’accès et de sélection.
+Intitulé, intitulé suite :Intitulé du compte qui sera édité sur tous les documen
+ts tel que : listes, balances, décomptes, historiques, etc.
+Type de compte :Différents types de compte sont possible, voir explications ci-d
+essous.
+·Compte de base : Compte analytique sur lequel les écritures seront comptabilisé
+es.
+·Récapitulations 1 à 6 :Comptes analytiques sur lequel seront récapitulés tous l
+es comptes de base en relation avec ces récapitulations. (pas de détail des écri
+tures pour ce type de compte, uniquement des soldes de genres de frais). Ils son
+t mis à jour automatiquement pour chaque écriture saisie ou générée, qui touche 
+le compte de base.
+·Récap. générales :Comptes analytiques sur lequel pourront être récapitulés au m
+oment de l’impression des décomptes, tous les comptes de base ayant le même genr
+e de compte analytique.
+
+Remarque : Tous les comptes de type récapitulation, doivent avoir le même genre 
+de compte analytique que les comptes de base sur lequel ils viendront se récapit
+uler.
+Exemple : Genre de compte « Véhicule » les comptes de récapitulations devront êt
+re de genre « Véhicule ».
+Genre de compte « Chantier » les comptes de récapitulations devront être de genr
+e « Chantier ».
+Genre de Compte CA :La possibilité de structurer les comptes analytiques selon d
+ifférents genres, peut être réalisée par l’attribution faite au niveau de ce cha
+mp.
+Les genres de compte CA sont gérés dans la gestion des tables CA (ca900).
+Adresse, Immeuble :Les possibilités d’établir une relation d’un compte analytiqu
+e avec :
+Soit une adresse créée avec (programme ad100), ou
+Soit  un immeuble, créé avec (programme in100), peuvent être réalisée.
+ClientLa possibilité d’établir une relation d’un compte analytique avec un compt
+e client créé avec (programme db100) peut être réalisée également.
+Responsable :La possibilité d’attribuer certains comptes analytiques à des respo
+nsables ou techniciens, peut être réalisée au niveau de ce champ.
+Les responsables ou techniciens sont gérés dans la gestion des tables CA (ca900)
+.
+Date de fermeture :Cette option offre la possibilité de ne plus traiter les comp
+tes dans certains programmes d’édition. Ceci permet par exemple de ne plus impri
+mer des prix de revient pour des comptes analytiques terminés.
+Code :Champ utilisé de façon spécifique chez certains utilisateurs de MS 2000.
+Compte de récapitulationVoir explications et exemples ci-dessous.
+Ne sera pas reporté :Cette option permet de ne pas reporter ce compte dans le fu
+tur exercice comptable. Il restera néanmoins archivé avec toutes ces données dan
+s les exercices concernés.
+Comptabilisation
+directe bloquée :Cette option signifie que la saisie directe d’écritures sur ce 
+compte n’est pas possible.
+Cocher cette option pour les comptes collectifs.
+Pluriannuel :Cette option signifie que les valeurs comptables du compte analytiq
+ue sont traitées en cumuls sur plusieurs exercices comptables. Ce qui permet d’o
+btenir par exemple pour des projets de genre « Chantier » des décomptes CA cumul
+és sur plusieurs années.
+Impression :Cette option signifie que le compte sera imprimer dans les programme
+s d’impression.
+
+Gestion des comptes récapitulations analytiques onglet « Compte » :
+
+Un compte analytique de type « Compte de base » peut se récapituler au maximum s
+ur 6 comptes différents, plus la récapitulation générale.
+Exemple : Un chantier est découpé en plusieurs tranches, nous souhaitons avoir u
+n prix de revient par tranche, un prix de revient pour l’ensemble du chantier, u
+n prix de revient par genre de chantier, une prix par secteur géographique, et u
+n prix de revient par responsable/technicien.
+L’organisation suivante est définie :
+
+[IMAGE HERE: image_786.png]
+
+--- AFTER ---
+·Les comptes de récapitulation 1 seront utilisés comme récapitulation « Chantier
+ ».
+·Les comptes de récapitulation 2 seront utilisés comme récapitulation « Genre de
+ chantier ».
+·Les comptes de récapitulation 3 seront utilisés comme récapitulation « Secteur 
+géographique».
+·Les comptes de récapitulation 4 seront utilisés comme récapitulation « Responsa
+ble/Technicien ».
+
+Il y a lieu de procéder de la manière suivante : 
+Créer d’abord tous les comptes de récapitulations par genre, avec leurs types de
+ compte respectif, en l’occurrence,
+1 pour les récapitulations « Chantier »,
+2 pour les récapitulations « Genre de chantier »,
+3 pour les récapitulations « Secteur géographique »,
+4 pour les récapitulations « Responsable/Technicien ».
+Créer ensuite les comptes analytiques de base en assignant les comptes de récapi
+tulations concernés.
+
+
+
+
+             Transfert des comptes analytiques multi-sociétés
+
+
+
+
+
+
+
+
+
+
+Onglet Répartitions :
+
+Gestion des comptes analytiques onglet « Répartitions »:
+
+Les informations traitées dans cet onglet, ont pour but d' assigner au compte an
+alytique des clés de répartitions qui serviront à calculer, puis générer des écr
+itures et mettre à jour automatiquement les comptes analytiques impliqués par ce
+s clés. Voir explications dans « Répartitions analytiques ».
+
+
+
+Onglet Historique :
+
+Les informations comptables d’un compte sont à disposition dans cette vue.
+
+
+
+Onglet Cumuls :
+
+Les informations traitées dans cet onglet, permettent de visualiser les soldes d
+es genres de frais par exercice ainsi que les valeurs cumulées des genres de fra
+is pour les comptes analytiques pluriannuels
+
+
+
+Onglets Ecritures effacés :
+
+Onglet – «E. effacées»
+
+Les informations des écritures effacées d’un compte sont à disposition dans cett
+e vue :
+
+
+
+
+
+
+Edition des comptes analytiques ca100e :
+
+Edition des comptes analytiques :
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard.
+
+
+Fenêtre de réponses possibles : 
+
+
+
+Cliquer pour sélectionner
+
+Edition paramétrable des comptes analytiques ca103 :
+
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+
+Onglet "Sélections"
+
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+
+Onglet "Edition"
+
+
+Cliquer pour changer le titre de la liste
+
+
+
+Choix de la disposition
+
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+
+Génération du fichier excel
+
+
+Gestion des genres de frais ca101 :
+
+Onglet "Liste" :
+
+Permet de visualiser tous le comptes de genres de frais 
+
+
+
+Filtre par Numéro/Intitulé abrégé
+
+
+Onglet Genre de frais :

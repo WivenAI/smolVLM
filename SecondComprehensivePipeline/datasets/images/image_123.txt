@@ -1,0 +1,308 @@
+CONTEXT FOR: image_123.png
+============================================================
+
+--- BEFORE ---
+Gestion des Utilisateurs ba103 : 
+Onglet « Base » : 
+
+Note explicative du programme « ba103 » onglet « Base » : 
+Guide Explicatif: Gestion des Utilisateurs dans l'ERP
+Objectif de l'Onglet:
+Cet onglet de gestion des utilisateurs dans l'ERP sert à configurer et maintenir
+ les informations de profil pour chaque utilisateur autorisé dans le système. Il
+ centralise la gestion des détails personnels, des rôles, et des permissions d'a
+ccès.
+Fonctionnalités Clés:
+Identité d'utilisateur: Chaque utilisateur est identifié par un code unique et s
+on nom complet, facilitant le repérage et la gestion.
+Groupe d'appartenance: Catégorise les utilisateurs en groupes selon leur fonctio
+n dans l'entreprise pour une gestion des accès simplifiée. Si la personne n’util
+ise plus le groupe il faut l’intégrer dans le groupe inactif.
+Informations personnelles: Contient des détails comme l'adresse e-mail et le num
+éro de téléphone direct, ce qui est essentiel pour la communication interne.
+Paramètres d'accès: Configure le type d'accès (comme WEB, MS, ou encore MS+WEB )
+, l'identifiant principal, et le mot de passe pour l'authentification de l'utili
+sateur.
+Rôles et droits: Définit les droits spécifiques de l'utilisateur, comme la visua
+lisation de fichiers PDF ou l'accès à des répertoires spécifiques de l'entrepris
+e.
+Administration et Sécurité:
+Gestion de sécurité: La possibilité d'activer l'authentification à deux facteurs
+ (2FA) pour renforcer la sécurité des comptes.
+Contrôle des droits: Donne ou révoque les autorisations pour des actions spécifi
+ques, comme la gestion de fichiers bancaires ou la modification de certaines don
+nées, assurant que les utilisateurs ne dépassent pas leur champ de compétences a
+utorisées.
+Intégration et Flexibilité:
+Intégration de programme: Permet de lier les utilisateurs à des programmes spéci
+fiques au sein de
+l'ERP, pour une expérience utilisateur personnalisée et un contrôle plus fin de 
+l'accès aux fonctionnalités.
+Flexibilité des paramètres: Les utilisateurs peuvent être configurés pour avoir 
+accès à plusieurs groupes ou sociétés, ce qui reflète la flexibilité de leurs rô
+les au sein de l'entreprise.
+Gestion Pratique:
+Mise à jour rapide: Les champs de saisie permettent une mise à jour facile des i
+nformations utilisateur, ainsi que l'ajout ou la suppression d'utilisateurs.
+Vue d'ensemble des permissions: L'onglet des droits offre une visualisation clai
+re des niveaux d'accès de chaque utilisateur, facilitant les audits de sécurité 
+et la conformité.
+En résumé, cet onglet est essentiel pour assurer que chaque utilisateur de l'ERP
+ dispose des outils et des droits nécessaires pour effectuer son travail efficac
+ement, tout en maintenant un environnement sécurisé et contrôlé.
+
+
+Onglet « droits »
+
+Note explicative l’onglet droits du programme « ba103 » : 
+Interface de Gestion des Droits - Onglet "Droits" du Programme de Gestion des Ut
+ilisateurs 
+Vue d'ensemble :
+Cet onglet est essentiel pour attribuer et gérer les niveaux de permission des d
+ifférents groupes d'utilisateurs au sein du système ERP. Chaque groupe peut se v
+oir attribuer des droits spécifiques, ce qui permet une gestion sécurisée et org
+anisée des accès aux fonctionnalités du système.
+Liste des Droits :
+La liste des droits comprend un ensemble de cases à cocher, chacune représentant
+ une action ou une permission spécifique que les administrateurs peuvent activer
+ ou désactiver pour le groupe sélectionné.
+Fonctionnalités des Droits :
+1-9 : Ces numéros semblent correspondre aux droits de base, comme effectuer, mod
+ifier ou transférer des écritures.
+10-19 : Ces droits pourraient être liés à des fonctions avancées telles que la v
+alidation d'adresses ou la modification unique de certaines dates dans le systèm
+e.
+20-26 : Attributions spécifiques, comme la direction, le visa de technicien, et 
+la modification des champs liés aux soumissions.
+27-50+ : Une gamme étendue de permissions, y compris la modification de document
+s comptables et la visualisation de mots de passe, illustrant la granularité du 
+contrôle d'accès disponible.
+Options de Gestion Rapide :
+Donner tous les droits / Enlever tous les droits : Offre aux administrateurs une
+ méthode rapide pour attribuer ou révoquer tous les droits listés, facilitant la
+ gestion des permissions pour les groupes avec des besoins d'accès similaires.
+Utilisation Pratique :
+Grâce à cet onglet, les administrateurs peuvent facilement personnaliser l'accès
+ et les capacités de chaque groupe, assurant que les utilisateurs disposent des 
+outils nécessaires pour leur rôle spécifique tout en maintenant la sécurité et l
+'intégrité du système.
+
+
+
+
+
+Onglet 2 « Droits » : 
+
+Note explicative l’onglet 2 du droit du programme « ba103 » :
+Guide Explicatif de l'Interface de Gestion des Droits des Utilisateurs 
+Onglet "Droits" – Détails et Configuration :
+Sélection de Groupe :
+Code groupe : "1cm" - Identifiant unique pour le groupe.
+Désignation : "Contremaîtres-saisie web" - Description du rôle ou des responsabi
+lités du groupe.
+Liste des Permissions :
+Permissions numérotées de "54" à "81", chaque numéro correspond à un droit spéci
+fique, permettant une gestion précise de l'accès aux fonctionnalités.
+Inclut des droits comme la visualisation des prix d'achat, la suppression de sin
+istres, et des modifications de statut dans divers modules du système ERP.
+Fonctionnalités Spécifiques :
+Des options comme "Modifier un sinistre validé" ou "Accès complet au CO108" mont
+rent la profondeur de personnalisation disponible pour chaque groupe.
+Droits comme "Planification RH - Accès RH" indiquent des permissions dédiées à d
+es modules RH spécifiques.
+Contrôles Rapides :
+Donner tous les droits : Pour attribuer rapidement l'ensemble des droits listés 
+au groupe.
+Enlever tous les droits : Pour révoquer rapidement tous les droits du groupe.
+Utilité Pratique :
+Cette interface permet aux administrateurs d'ajuster avec précision les niveaux 
+d'accès de chaque groupe, assurant que les utilisateurs ont les outils nécessair
+es à leur fonction tout en protégeant les données sensibles de l'entreprise.
+
+Cette interface illustre la manière dont un système ERP moderne peut offrir un c
+ontrôle granulaire des droits des utilisateurs, ce qui est crucial pour la sécur
+ité des informations et l'efficacité opérationnelle.
+
+
+Onglet « Partage lots » :
+
+Note explicative de l’onglet « partage lots » dans le programme « ba103 » :
+Guide Explicatif : Gestion des Utilisateurs dans l'ERP
+But de l’Onglet :
+Cette interface de gestion des utilisateurs dans l'ERP permet aux administrateur
+s de configurer les comptes des employés, en assignant les droits d'accès et en 
+regroupant les utilisateurs par fonction et par responsabilité.
+Description des Fonctionnalités :
+Identifiants Utilisateur : Chaque utilisateur est listé avec un identifiant uniq
+ue et un nom, ce qui permet une administration efficace des comptes.
+Groupes d’Utilisateurs : Les utilisateurs sont organisés par groupes, reflétant 
+leur rôle ou département au sein de l'entreprise.
+Détails Personnels : Des informations telles que le nom complet et le groupe son
+t affichées, et peuvent être éditées pour tenir les dossiers à jour.
+Paramètres de Sécurité : Des éléments de sécurité, tels que l'identifiant princi
+pal et le mot de passe, sont configurables ici pour assurer la protection des co
+mptes.
+Gestion des Droits :
+Allocation des Droits : Il est possible de définir des droits d'accès précis pou
+r chaque utilisateur, ce qui aide à protéger les données sensibles et à limiter 
+l'accès en fonction des besoins du poste.
+Utilisation Pratique :
+Ajout/Modification Rapides : Les boutons 'Modifier', 'Rétablir', 'Ajouter', 'Cop
+ier' et 'Annuler' offrent des fonctionnalités intuitives pour la gestion rapide 
+des utilisateurs.
+Filtres et Recherche : Les options de filtrage par groupe ou base facilitent la 
+recherche et l'organisation des utilisateurs.
+
+[IMAGE HERE: image_123.png]
+
+--- AFTER ---
+Cette interface est cruciale pour maintenir l'ordre et la sécurité dans l'utilis
+ation de l'ERP, en veillant à ce que chaque employé ait le niveau d'accès approp
+rié pour ses tâches tout en conservant une trace claire de qui a accès à quoi au
+ sein du système.
+
+
+
+
+
+Fenêtre de gestion des profils (Menus) utilisateurs « prof » :
+
+
+
+Note explicative de la fenêtre de gestion des profils (Menus) utilisateurs dans 
+programme « prof » : 
+Guide Explicatif : Gestion des Profils Utilisateurs
+Objectif de l’Onglet :
+L'interface dépeinte est destinée à la configuration et à la gestion des profils
+ des utilisateurs au sein d'un système ERP. Elle permet de déterminer avec préci
+sion quelles fonctions et données chaque utilisateur ou groupe d'utilisateurs pe
+ut accéder ou modifier.
+Composants Clés et Leur Utilité :
+Arborescence des Menus :
+Représente la structure hiérarchique des différentes sections et sous-sections d
+u système ERP, telles que la comptabilité, les salaires, etc., facilitant la nav
+igation et l'accès aux divers modules.
+Groupe et Désignation :
+Permet de sélectionner un groupe d'utilisateurs et d'afficher ou d'entrer une dé
+signation spécifique pour des fonctions précises, comme le "Plan comptable".
+Gestion des Droits aux Fonctions :
+Offre la capacité d'attribuer des droits spécifiques, tels que le droit de créer
+, de modifier, ou de supprimer des éléments dans le programme, assurant une gest
+ion des accès adaptée et sécurisée.
+Bouton de Création de Chapitre :
+Utilisé pour ajouter de nouvelles sections ou fonctions au profil d'un utilisate
+ur ou d'un groupe, augmentant leur champ d'action dans le système ERP.
+Informations de Programme :
+Application/Programme/Chapitre :
+Fournit des détails sur l'application liée, le nom du programme, et le chemin d'
+accès, ce qui permet une identification facile des différents éléments logiciels
+ à gérer.
+Droits d'Impression et Raccourcis :
+Les cases à cocher permettent d'activer l'impression pour les profils et de crée
+r des raccourcis pour un accès rapide aux fonctions fréquemment utilisées.
+Actions Disponibles :
+Modifier/Supprimer/Annuler :
+Ces options permettent aux administrateurs de systèmes d'apporter des modificati
+ons aux profils, de les supprimer ou d'annuler des changements récents.
+Utilisation Pratique :
+Enregistrement et Structuration :
+Les boutons 'Enregistrer le profil' et 'Annuler les dernières modifications' son
+t essentiels pour sauvegarder les changements effectués ou revenir en arrière si
+ nécessaire.
+Cette interface est fondamentale pour l'administration des droits des utilisateu
+rs dans l'ERP, garantissant que chaque fonction du système est accessible unique
+ment aux individus appropriés, et modifiable conformément aux politiques de gouv
+ernance informatique de l'entreprise.
+
+
+Fenêtre de gestion des applications externes de « aplext » :
+
+
+
+Note explicative de la fenêtre des gestions des applications externe avec le pro
+gramme « aplext » : 
+L'interface présentée appartient au module de gestion des applications externes 
+d'un système ERP. Voici une explication détaillée de ses composants principaux e
+t de leurs fonctions :
+Type d'Application : Cet onglet permet de filtrer les applications externes par 
+catégorie, facilitant la recherche d'une application spécifique.
+Liste des Applications :
+Num : Chaque application externe est numérotée pour un repérage facile.
+Type : Catégorie de l'application, qui peut indiquer son usage général ou le dép
+artement auquel elle appartient.
+Code : Un identifiant unique assigné à l'application pour référence rapide dans 
+le système.
+Désignation : Le nom complet de l'application, pour une identification claire.
+Path : Chemin d'accès au fichier exécutable de l'application sur le système ou l
+e réseau.
+Défaut : Indique si l'application est définie comme choix par défaut dans une ca
+tégorie donnée.
+Détails de l'Application :
+Numéro : Le numéro de l'application sélectionnée pour référence.
+Code : Identifiant unique, permettant d'éviter les confusions entre applications
+ similaires.
+Type d'Application : Permet de spécifier ou de changer la catégorie de l'applica
+tion.
+Désignation courte/longue : Noms descriptifs de l'application à utiliser selon l
+e contexte.
+Chemin : Adresse précise où le fichier exécutable de l'application est situé.
+Application par défaut : Une case à cocher qui définit l'application comme choix
+ par défaut.
+Commandes :
+Modifier : Permet de changer les informations de l'application sélectionnée.
+Rétablir : Annule les modifications non enregistrées et revient aux informations
+ précédentes.
+Ajouter : Utilisé pour intégrer une nouvelle application externe dans le système
+ ERP. En cliquant sur ce bouton, l'utilisateur peut entrer les détails de la nou
+velle application et l'ajouter à la liste existante pour une utilisation ultérie
+ure. • Copier : Permet de dupliquer rapidement les informations d'une applicatio
+n existante, utile pour créer des entrées similaires sans saisir à nouveau toute
+s les données. 
+• Effacer : Supprime l'application sélectionnée de la liste, ce qui est essentie
+l pour maintenir l'actualité et la pertinence du répertoire des applications. 
+• Annuler : Ignore les modifications en cours et ferme la fenêtre de dialogue, p
+ermettant à l'utilisateur de quitter sans enregistrer les changements.
+
+Ms Salaire : 
+
+
+Note explicative du fonctionnement du module « Ms Salaire » : 
+La schématisation présente l'architecture du module "Salaire" au sein d'un systè
+me ERP, illustrant comment différents programmes interagissent pour gérer et tra
+iter les données salariales.
+Les données commencent par la gestion des tables (sd900-sd903-sd925), où les tab
+les fondamentales pour les calculs salariaux sont maintenues.
+La gestion des constantes (sd901) régit les valeurs fixes requises pour les calc
+uls des salaires, telles que les taux d'imposition ou les cotisations sociales.
+La gestion des rubriques (sd120) concerne les différents types de revenus et de 
+déductions appliqués sur un bulletin de paie, comme le salaire de base, les heur
+es supplémentaires, ou les prélèvements légaux.
+La gestion des employés (sd100) enregistre et maintient les informations sur cha
+que employé, essentielles pour attribuer les salaires et les rubriques correspon
+dantes.
+La gestion des fixes (sd110) s'occupe des éléments de paie qui ne changent pas f
+réquemment pour un employé, comme le salaire mensuel de base.
+La gestion des variables (sd130) est là pour enregistrer les éléments de paie qu
+i peuvent varier chaque mois, tels que les commissions ou les primes.
+L'édition des bulletins de salaires (sd150) utilise toutes les données des point
+s précédents pour créer les bulletins de paie finaux pour chaque période de paie
+.
+Les programmes sd160 et sd161 s'intègrent dans le protocole de comptabilité géné
+rale/analytique (CG/CA), en assurant que les données salariales sont correctemen
+t imputées dans la comptabilité de l'entreprise.
+En parallèle, les données de travail (sd100/200) sont saisies et intégrées (rs22
+) pour refléter l'activité réelle des employés, qui peut influencer les variable
+s salariales.
+Enfin, les interrogations (sd180 et sd190) permettent de consulter les informati
+ons détaillées sur les rubriques par employé et vice-versa, fournissant un accès
+ immédiat pour les vérifications et audits.
+L'édition paramétrable (sd200) permet de personnaliser les rapports et les états
+ pour répondre aux besoins spécifiques de reporting de l'entreprise en matière d
+e salaire.
+Cette infrastructure module la complexité de la gestion salariale en flux de tra
+vail connectés, offrant une vue cohérente et intégrée de la gestion des salaires
+ au sein de l'ERP.
+
+
+Note explicative du fonctionnement du module « Ms Salaire » Suite 2 : 
+Ce diagramme détaille le traitement des données relatives aux rapports de travai

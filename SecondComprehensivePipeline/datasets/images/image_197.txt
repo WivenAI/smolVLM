@@ -1,0 +1,308 @@
+CONTEXT FOR: image_197.png
+============================================================
+
+--- BEFORE ---
+ Excel, offrant ainsi une fonctionnalité d'analyse et de manipulation des donnée
+s hors du système.
+Impression vers fichier : Cette option indique que le programme peut générer des
+ rapports qui peuvent être sauvegardés électroniquement, ce qui suggère une fonc
+tion de conservation des enregistrements comptables pour des audits ou des référ
+ences futures.
+Sélection des salariés et périodes : Le programme permet de filtrer les données 
+comptables selon des critères spécifiques tels que la période (mois, année), le 
+décompte (catégorie de salariés ou département spécifique), ainsi que des option
+s pour affiner la recherche par salarié, par numéro, ou par d'autres critères pe
+rsonnalisables.
+Options supplémentaires : Le programme semble offrir des options supplémentaires
+ telles que le tri par l'année précédente, la sélection par département ou succu
+rsale, et peut-être des filtres plus fins tels que le genre des rubriques ou le 
+type de paiement, ce qui indique une capacité à s'adapter à divers besoins de co
+mptabilité interne.
+En résumé, "sd161" est un module dans le système ERP qui aide à gérer, visualise
+r, exporter, et imprimer des données relatives aux protocoles comptables, en off
+rant une gamme de fonctionnalités pour personnaliser les rapports selon des crit
+ères définis par l'utilisateur. Il facilite également l'audit comptable en perme
+ttant la génération de documents détaillés sur la base de sélections spécifiques
+.
+
+Export CCB sd500 : 
+
+
+Note explicative de l’export CCB programme « sd500 » : 
+Le programme "sd500" est un outil conçu pour l'exportation des données CCB (Comp
+tes Courants Bancaires ). Voici une explication fonctionnelle de ses composantes
+ :
+Champ "Export CCB" : Il s'agit probablement de la zone où l'utilisateur spécifie
+ les critères ou le nom de l'exportation qu'il souhaite effectuer. Il pourrait s
+'agir d'un identifiant ou d'un titre qui aide à catégoriser le type d'exportatio
+n.
+Champ "Période" : Permet à l'utilisateur de sélectionner le mois pour lequel les
+ données doivent être exportées. Cela pourrait être utile pour générer des rappo
+rts mensuels ou pour des analyses périodiques.
+Champs "N° d'entreprise", "N° de filiale", "N° caisse AVS" : Ces champs semblent
+ permettre à l'utilisateur d'entrer des identifiants spécifiques liés à l'entrep
+rise, la filiale et la caisse de l'assurance vieillesse et survivants (AVS), ce 
+qui indique que le programme peut gérer plusieurs entités et caisses de sécurité
+ sociale, probablement pour la Suisse où l'AVS est un terme courant.
+Champ "Nombre de jours de travail du mois" : C'est un champ numérique où l'utili
+sateur peut entrer le nombre total de jours travaillés pendant le mois sélection
+né. Cela pourrait être utilisé pour calculer les paiements ou les charges social
+es basées sur les jours travaillés.
+Champ "Horaire journalier du mois" : Ici, l'utilisateur peut entrer le nombre d'
+heures travaillées par jour. Ce pourrait être un paramètre utilisé pour calculer
+ les heures supplémentaires ou pour des rapports sur la charge de travail.
+Bouton "Génération du fichier CCB" : Une fois tous les champs remplis, l'utilisa
+teur peut générer le fichier d'exportation en cliquant sur ce bouton. Le fichier
+ généré peut être utilisé pour l'importation dans d'autres systèmes, pour la com
+ptabilité ou pour l'analyse de données.
+Champ "Nom du fichier" : L'utilisateur peut spécifier le nom sous lequel le fich
+ier exporté sera enregistré, ce qui facilite l'organisation et la récupération u
+ltérieure des données.
+En résumé, "sd500" est un module fonctionnel qui semble être centré sur la gesti
+on et l'exportation des données financières et de travail lié aux coûts bancaire
+s ou aux comptes bancaires pour une période donnée, spécifique à chaque entrepri
+se ou filiale au sein d'un groupe plus large.
+
+
+
+Génération du fichier XML IS programme « isxml » :
+
+Note explicative de la génération du fichier XML IS programme « isxml » : 
+Le programme "isxml" semble être conçu pour la génération de fichiers XML pour l
+'impôt à la source. Voici une explication détaillée de ses composantes fonctionn
+elles :
+Titre de la fenêtre : "Génération du fichier XML pour Impôt à la source" indique
+ que cette interface est utilisée pour créer un fichier XML. Le format XML est s
+ouvent utilisé pour l'échange de données entre différents systèmes informatiques
+, et dans ce cas, il est spécifique à l'impôt à la source, probablement pour le 
+reporting fiscal ou la soumission électronique.
+Champ "Exercice » : Permet à l'utilisateur de sélectionner l'année fiscale pour 
+laquelle le rapport est généré.
+Champ "Période » : Donne la possibilité de choisir le mois spécifique pour leque
+l le fichier XML de l'impôt à la source doit être généré.
+Champ "Responsable » : Ici, l'utilisateur peut entrer le nom de la personne resp
+onsable de la génération du fichier XML.
+Champ "Email » : L'adresse e-mail de la personne responsable peut être saisie ic
+i, probablement pour l'envoi automatique ou la notification relative au fichier 
+généré.
+Champ "N° de téléphone » : Numéro de contact du responsable, permettant une comm
+unication facile en cas de besoin.
+Champ "Employé » : Ce champ pourrait être utilisé pour sélectionner un employé s
+pécifique pour lequel le fichier XML de l'impôt à la source doit être généré, s'
+il ne s'agit pas d'un rapport de groupe.
+Champ "Fichier XML » : L'utilisateur peut probablement spécifier le chemin d'acc
+ès et le nom du fichier XML qui sera généré ou sélectionner un fichier existant 
+pour mise à jour ou révision.
+Case à cocher "Test » : Si cochée, cela pourrait permettre à l'utilisateur d'exé
+cuter un test de génération de fichier XML sans affecter les données réelles ou 
+de produire un fichier pour validation avant la soumission finale.
+Bouton avec l'icône XML : Ce bouton est probablement utilisé pour démarrer le pr
+ocessus de génération du fichier XML après que toutes les informations nécessair
+es ont eu été saisies.
+Le programme "isxml" est donc un outil ERP pour la gestion fiscale, spécifiqueme
+nt lié à l'impôt à la source, permettant la création de fichiers XML pour la pér
+iode et l'année fiscales spécifiées, avec des détails sur le responsable et les 
+options de test pour assurer l'exactitude avant la soumission ou l'analyse ultér
+ieure.
+
+Traitement Annuels :
+Décompte analytique salariés sd170 : 
+
+
+Note explicative des décomptes analytique salariés programme « sd170 » : 
+Le programme "sd170" dans le système ERP est spécifiquement conçu pour la gestio
+n des décomptes analytiques salariés. Bien que le document ne fournisse pas une 
+description détaillée du programme, basé sur le contexte général et les captures
+ d'écran fournies, je peux expliquer comment ce type de programme est généraleme
+nt structuré et utilisé dans un système ERP.
+Description Fonctionnelle du Programme "sd170"
+Objectif: Le programme "sd170" sert à générer des décomptes analytiques pour les
+ salaires des employés. Il permet une analyse détaillée des différents composant
+s de la paie et la répartition des coûts par divers critères tels que les départ
+ements, les projets, ou d'autres unités analytiques.
+Fonctionnalités Clés:
+Sélection des Employés:
+Permet de choisir entre tous les employés ou de faire une sélection ciblée, soit
+ alphabétique soit numérique, pour analyser les données salariales.
+Sélection des Comptes et Rubriques:
+Offre la possibilité de sélectionner des comptes analytiques spécifiques et des 
+rubriques de paie pour une analyse approfondie.
+Filtrage des Données:
+Fournit des options pour filtrer les données selon différents critères tels que 
+les types de salaires, les succursales ou les départements.
+Options d'Impression et d'Exportation:
+Permet aux utilisateurs de visualiser, imprimer ou exporter les données pour une
+ utilisation externe ou pour des audits.
+Personnalisation des Rapports:
+Les utilisateurs peuvent personnaliser les rapports en fonction des besoins spéc
+ifiques de l'entreprise, en choisissant les données à afficher et le format de p
+résentation.
+Utilisation Typique:
+Dans une utilisation quotidienne, un gestionnaire de paie pourrait utiliser "sd1
+70" pour:
+Évaluer les coûts salariaux d'un département ou d'un projet.
+Faire des comparaisons et analyses pour des périodes données.
+Préparer des rapports détaillés pour la direction, montrant la répartition des c
+oûts salariaux.
+Le programme "sd170" est un outil précieux pour les entreprises qui nécessitent 
+une analyse détaillée des coûts salariaux et une répartition précise des charges
+ liées aux salaires. Il soutient les décisions stratégiques et aide à l'optimisa
+tion des ressources financières liées à la gestion salariale .
+Décomptes annuels CAF, IJM, LAA, LAAC et L sd800 : 
+
+Note explicative des décomptes annuels CAF, IJM, LAA, LAAC et L programme « sd80
+0 » :
+
+[IMAGE HERE: image_197.png]
+
+--- AFTER ---
+Le programme "sd800" sert principalement à la gestion et à l'impression des déco
+mptes annuels pour plusieurs catégories, telles que CAF, IJM, LAA, LAAC et L. Il
+ permet à l'utilisateur de configurer et de produire des documents de synthèse f
+inancière pour une période annuelle donnée, souvent pour des besoins de reportin
+g ou de conformité réglementaire. Ce programme est probablement doté de fonction
+nalités pour traiter et présenter des données de manière structurée, en tenant c
+ompte de divers critères et classifications requis par l'entreprise ou par la lo
+i.
+L'interface utilisateur semble proposer des champs pour la saisie ou la sélectio
+n de fichiers et de dossiers destinataires, ainsi que des options pour la créati
+on de fichiers log. Un fichier log est généralement utilisé pour enregistrer les
+ événements associés au processus de décompte, fournissant un historique détaill
+é des actions effectuées, ce qui est crucial pour la traçabilité et les audits.
+La possibilité d'exporter ces données dans un fichier Excel suggère également qu
+e le programme "sd800" peut faciliter l'analyse et la manipulation ultérieures d
+es données hors de l'ERP, utilisant des outils de tableur pour un examen plus ap
+profondi ou pour des présentations personnalisées. En somme, "sd800" est un outi
+l robuste qui soutient la gestion financière et le reporting annuel dans le cadr
+e de l'ERP MS.
+Haut du formulaire
+
+
+Comptes salaires personnels avec total ent sd810 : 
+
+Note explicative des comptes salaires personnels avec total entreprise programme
+ « sd810 » : 
+Le programme "sd810" dans le système ERP MS est conçu pour gérer les comptes sal
+aires personnels avec un total pour l'entreprise. Voici comment il est structuré
+ :
+Titre de la Fenêtre :
+Comptes salaires personnels avec total entreprise : Ce titre suggère que le prog
+ramme se focalise sur le calcul et l'affichage des informations salariales à un 
+niveau individuel ainsi qu'à un niveau agrégé pour toute l'entreprise.
+Options Visuelles et de Sélection :
+Une case à cocher "Visualiser" indique probablement que l'utilisateur peut prévi
+sualiser les données avant de procéder à leur impression ou leur exportation.
+Un menu déroulant pour l'exercice permet à l'utilisateur de sélectionner l'année
+ pour laquelle les données doivent être affichées ou traitées.
+Une case à cocher "Total entreprise uniquement" suggère qu'il est possible de fi
+ltrer les résultats pour afficher soit les informations pour l'ensemble de l'ent
+reprise, soit, en absence de sélection, pour les données individuelles.
+Fonctionnalité :
+Le bouton pour "Visualiser" ou imprimer indique que les données peuvent être con
+sultées directement à l'écran ou imprimées pour une révision hors ligne ou une p
+résentation.
+Ce programme semble offrir une interface simplifiée, concentrée sur la sélection
+ et l'affichage des données salariales pour une période donnée, ce qui est essen
+tiel pour le reporting financier et la comptabilité de la masse salariale. Il do
+it également intégrer des fonctionnalités pour l'extraction et l'analyse des don
+nées, permettant une gestion efficace des informations liées aux salaires dans l
+'entreprise.
+
+
+
+
+Attestations de salaires AVS sd820 :
+
+
+Note explicative de l’attestation de salaire AVS programme « sd820 » : 
+Le programme "sd820" est destiné à la gestion des attestations de salaire pour l
+'AVS (Assurance Vieillesse et Survivants), qui est un élément du système de sécu
+rité sociale. Le programme permet aux utilisateurs de produire deux types de doc
+uments :
+Attestation de salaire AVS (sd820e01): Ce document est probablement un formulair
+e officiel qui indique le montant du salaire sur lequel les cotisations AVS ont 
+été calculées. Il est normalement utilisé pour démontrer le revenu d'un employé 
+à l'AVS ou pour des besoins de vérification interne.
+Personnes et salaires non soumis AVS (sd820e02): Cette option suggère que le pro
+gramme peut également identifier et rapporter les cas où des salaires ou des per
+sonnes ne sont pas soumis aux contributions AVS, ce qui pourrait être dû à diver
+ses exceptions légales ou à des situations contractuelles particulières.
+Chacune des options du programme offre une fonctionnalité qui permet de visualis
+er les données avant l'impression ou l'exportation, et il semble y avoir des cha
+mps pour le chemin d'accès aux fichiers XML et aux dossiers de destination, ains
+i qu'un champ pour le nom des fichiers PDF générés. Cela suggère que le programm
+e "sd820" intègre des fonctionnalités pour l'exportation des données et leur sau
+vegarde sous divers formats, facilitant ainsi l'archivage et le partage des info
+rmations de salaire. La génération d'un fichier log est aussi une fonctionnalité
+ typique, indiquant que toutes les actions effectuées via le programme peuvent ê
+tre enregistrées pour une traçabilité et une révision ultérieure.
+
+Génération des certificats de salaire sd840 :
+
+Note explicative de la génération des certificats de salaires programme « sd840 
+» :
+
+Le programme "sd840" est conçu pour la génération de certificats de salaire. Voi
+ci les éléments clés et leur fonctionnalité :
+Zone de Titre :
+"Certificats de salaire" indique que le programme est utilisé pour créer des doc
+uments officiels relatifs au salaire des employés.
+Champs de Saisie et Options :
+Canton(s) : Ce champ permet probablement de filtrer les certificats de salaire e
+n fonction des cantons, ce qui peut être nécessaire pour les organisations opéra
+nt dans plusieurs régions avec différentes législations fiscales ou de sécurité 
+sociale.
+Fichier XML : Un champ pour spécifier le chemin d'accès à un fichier XML, ce qui
+ pourrait être utilisé pour importer ou exporter des données structurées telles 
+que des informations salariales.
+Dossier de destination des certificats : Indique où les certificats générés sero
+nt sauvegardés, permettant à l'utilisateur de définir un répertoire spécifique p
+our l'organisation des documents.
+Nom du fichier PDF contenant les certificats : Cela permet à l'utilisateur de no
+mmer le fichier PDF qui regroupera tous les certificats générés, facilitant la g
+estion et la distribution des documents.
+Fonctionnalités Supplémentaires :
+Génération d'un fichier log : Une case à cocher qui, lorsqu'elle est activée, in
+dique que le programme enregistrera les opérations dans un fichier log pour la t
+raçabilité et l'audit.
+En résumé, le programme "sd840" est essentiel pour les ressources humaines et le
+s départements de comptabilité pour produire des certificats de salaire nécessai
+res aux employés pour diverses raisons, y compris la déclaration des revenus et 
+la vérification du revenu pour des prêts ou des hypothèques. La présence de cham
+ps pour les fichiers XML et PDF indique une intégration avec des systèmes de ges
+tion de documents numériques et des processus de travail sans papier.
+
+Attestation impôt à la source sd850 : 
+
+Note explicative de l’attestation impôt à la source programme « sd850 » :
+Le programme "sd850" est destiné à la gestion des attestations pour l'impôt à la
+ source. Voici les éléments clés et leur fonctionnalité :
+Attestation quittance impôt à la source :
+Ce champ suggère que le programme est utilisé pour générer des documents qui ser
+vent de quittance pour l'impôt prélevé à la source sur les salaires des employés
+.
+Options de Sélection :
+"Tous les salariés" ou des sélections "alphabétique" ou "numérique" indiquent qu
+e l'utilisateur peut choisir d'imprimer des attestations pour tous les employés 
+ou filtrer la liste selon l'ordre alphabétique ou par numéro d'identification.
+Le menu déroulant "Canton" permet probablement de spécifier le canton pour leque
+l les attestations sont générées, ce qui est important en Suisse où l'impôt à la
+ source peut varier selon le canton.
+"Exercice" permet de choisir l'année fiscale pour laquelle les attestations sont
+ nécessaires.
+Décomptes :
+L'option "Décompte(s)" avec une liste de choix comme "VD Adm + Tech", "VS SH Exp
+l", etc., pourrait permettre de sélectionner des groupes d'employés ou des types
+ de salaires spécifiques pour lesquels les attestations d'impôt à la source doiv
+ent être générées.
+Fonctionnalités de Sortie :
+"Imprimer vers fichier" et "Visualiser" donnent à l'utilisateur la flexibilité d
+e visualiser les attestations avant de les imprimer ou de les enregistrer dans u
+n fichier, ce qui est une étape pratique pour l'examen ou l'archivage.
+En somme, le programme "sd850" est un outil important dans la gestion des obliga
+tions fiscales de l'entreprise vis-à-vis de ses employés, fournissant une docume
+ntation nécessaire pour la déclaration de l'impôt à la source. Il supporte la co
+nformité réglementaire et facilite le processus de communication avec les autori
+tés fiscales.
+
+

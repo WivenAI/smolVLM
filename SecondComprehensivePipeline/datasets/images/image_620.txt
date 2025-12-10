@@ -1,0 +1,308 @@
+CONTEXT FOR: image_620.png
+============================================================
+
+--- BEFORE ---
+r au lieu d'une impression physique.
+Visualiser : Option pour afficher la sortie à l'écran pour une revue avant impre
+ssion ou sauvegarde.
+Options de Sélection des Comptes
+Tous les comptes : Inclut tous les comptes dans l'édition.
+Sélection alphabétique : Permet de sélectionner les comptes par ordre alphabétiq
+ue des intitulés.
+Sélection numérique : Permet de sélectionner les comptes par ordre numérique des
+ numéros de comptes.
+Filtres et Types de Comptes
+Type de compte : Menu déroulant pour sélectionner le type de compte à inclure da
+ns l'édition (Actif, Passif, Produit, Charge, etc.).
+Monnaie : Menu déroulant pour choisir la devise des comptes à inclure dans l'édi
+tion.
+
+
+
+Edition paramétrable du plan comptable cg101 :
+
+Note : L'édition paramétrable est un programme standard dans l’erp, ci-dessous u
+n exemple d'utilisation en comptabilité analytique,
+les même principes s'appliquant au plan comptable :
+Cette fonction permet de créer des listes standards selon les besoins de chaque 
+utilisateur :
+Onglet "Sélections"
+En plus d'offrir un choix de formats, il permet de définir des filtres pour affi
+cher les comptes désirés :
+
+
+Onglet "Edition"
+
+Cliquer pour changer le titre de la liste
+
+
+Choix de la disposition
+
+
+Champs de filtrage par condition
+Exemple : si je veux voir tous les comptes dont le nom de domaine = "B"
+
+1 - Cliquer sur , puis sélectionner les critères comme ci-dessous :
+
+
+2 - Cliquer sur  pour s'assurer que les critères sont valables
+3 - Cliquer sur 
+
+Note : Pour le champ "ET/OU", pour la première condition il faut toujours que ce
+ champ soit vide
+
+Onglet "Edition"
+
+Cet onglet permet d'ajouter les champs à imprimer, par sélection du champ (clic 
+- ou Ctrl+clic pour sélection multiple) :
+
+
+
+Puis ajout dans la colonne de droite avec le bouton 
+
+
+
+
+
+
+Génération du fichier excel
+
+
+Gestion des budgets cg110 :
+
+
+Sélection du type de compte (Actif-Passif etc..)
+
+
+
+Sélection de l'exercice comptable
+
+
+
+Choix de montants fixes ou coefficients
+
+
+
+Saisie du total du budget annuel
+
+Suivant le choix effectué ci-dessus (note 3), l'utilisateur pourra saisir des mo
+ntants fixes pour chaque mois ou choisir
+de laisser le programme calculer les mensualités, en choisissant des coefficient
+s si nécessaire
+
+
+
+
+Note explicative de la gestion des budgets programme « cg110 » : 
+Le programme "cg110" est utilisé pour la gestion des budgets dans le système ERP
+. Il permet aux utilisateurs de définir et de gérer les budgets pour différents 
+comptes. Voici une explication détaillée de la composition et des fonctionnalité
+s de ce programme.
+
+1. Sélection du Type de Compte
+Menu déroulant permettant de sélectionner le type de compte (Actif, Passif, etc.
+). Cela filtre les comptes affichés dans la liste principale selon leur type.
+2. Sélection de l'Exercice Comptable
+Boutons radio pour sélectionner l'exercice comptable, par exemple, 2016 ou 2017.
+ Cela détermine l'année pour laquelle les budgets sont définis.
+3. Choix de Montants Fixes ou Coefficients
+Options de saisie permettant de choisir entre l'entrée de montants annuels fixes
+ et coefficients ou l'entrée de montants mensuels :
+Saisie montant annuel et coefficients : Permet de saisir un montant total annuel
+ et de répartir ce montant en utilisant des coefficients pour chaque mois.
+Saisie montants mensuels : Permet de saisir des montants spécifiques pour chaque
+ mois de l'année.
+4. Liste des Comptes
+La liste principale affiche les comptes disponibles avec les informations suivan
+tes :
+Compte C.G. : Numéro du compte de gestion.
+Intitulé court : Nom abrégé du compte.
+Monnaie : Devise du compte.
+Intitulé : Nom complet du compte.
+5. Détails du Compte Sélectionné
+La partie droite de la fenêtre affiche les détails du compte sélectionné et perm
+et de saisir les informations budgétaires :
+Numéro : Numéro du compte sélectionné.
+Intitulé de recherche : Libellé du compte pour faciliter la recherche.
+Montant budget total : Champ pour saisir le montant total du budget annuel.
+Pondération mensuelle : Champs pour entrer les coefficients ou les montants pour
+ chaque mois (Janvier à décembre).
+Lettrages des écritures de C.G.  cg410 :
+
+
+
+
+
+Sélection du compte
+
+Le compte est sélectionné en cliquant sur la ligne 
+
+Affichage des écritures à lettrer
+
+Sélection par clic (ou CTRL+Clic pour séctionner plusieurs lignes)
+
+Soldes des écritures lettrées
+
+Lorsque le solde est à zéro, cliquer sur le bouton OK pour lettrer ces écritures
+
+
+
+
+
+
+
+
+
+[IMAGE HERE: image_620.png]
+
+--- AFTER ---
+
+
+Note explicative du lettrage des écritures de C.G programme « cg410 » : 
+
+Le programme "cg410" est destiné au lettrage des écritures de Comptabilité Génér
+ale (C.G.). Il permet de regrouper et d'associer des écritures comptables pour f
+aciliter la réconciliation et la vérification des comptes. Voici une explication
+ détaillée de la composition et des fonctionnalités de ce programme.
+
+Sélection du Compte
+
+Tableau des Comptes : La partie supérieure de la fenêtre affiche une liste de co
+mptes disponibles avec les colonnes suivantes :
+Numéro : Numéro unique attribué à chaque compte.
+Intitulé court : Nom abrégé du compte.
+Monnaie : Devise utilisée pour les transactions de ce compte.
+Type : Type de compte (Actif, Passif, etc.).
+Intitulé : Nom complet du compte.
+Intitulé (suite) : Informations supplémentaires sur le compte.
+Compte C.A. : Référence au compte de Centre d'Analyse (C.A.) si applicable.
+Genre de frais : Type de dépenses associées au compte, le cas échéant.
+Filtrage par Type de Compte : Menu déroulant permettant de filtrer les comptes a
+ffichés selon leur type (Tous, Actif, Passif, etc.).
+
+Affichage des Écritures à Lettrer
+
+Tableau des Écritures : La partie inférieure de la fenêtre affiche les écritures
+ à lettrer pour le compte sélectionné, avec les colonnes suivantes :
+N° Écriture : Numéro unique attribué à chaque écriture comptable.
+N° Suite : Indique le numéro de suite si l'écriture fait partie d'une série de t
+ransactions.
+Lot : Numéro de lot auquel appartient l'écriture, utilisé pour regrouper plusieu
+rs écritures.
+Désignation : Description ou code désignant le type de lot ou de transaction.
+Date Valeur : Date de la valeur comptable de l'écriture.
+N° de Pièce : Numéro de la pièce justificative associée à l'écriture.
+Date Pièce : Date de la pièce justificative.
+Libellé de l'Écriture : Description détaillée de l'écriture.
+Mt en Monnaie : Montant de l'écriture dans la devise du compte.
+Mt en Contre-Valeur : Montant de l'écriture en contre-valeur dans une autre devi
+se, si applicable.
+Solde : Solde du compte après enregistrement de l'écriture.
+
+Soldes des Écritures Lettrées
+
+Balance : Champ affichant le solde des écritures lettrées pour le compte sélecti
+onné. Ce solde est mis à jour en temps réel en fonction des écritures sélectionn
+ées pour lettrage.
+
+
+
+
+Tables simples cg900 :
+
+
+
+Choix du groupe à modifier
+
+
+
+Contenu du groupe
+Possibilité d'utiliser le panel des fonctions (Modifier/Ajouter/Copier/Effacer) 
+pour paramétrer les éléments dur groupe choisi (dans l'exemple, groupe "cad" – C
+hiffre d’affaire débiteurs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative des tables simples pour la comptabilité générale programme « cg
+900 » : 
+
+Le programme "cg900" est conçu pour gérer les tables simples dans le système ERP
+. Il permet aux utilisateurs de créer, modifier et gérer divers groupes de donné
+es nécessaires pour les opérations comptables et financières. Voici une explicat
+ion détaillée de la composition et des fonctionnalités de ce programme.
+1. Choix du Groupe à Modifier
+Tableau des Types de Groupes : La partie gauche de la fenêtre affiche une liste 
+des types de groupes disponibles avec les colonnes suivantes :
+Type : Code unique attribué à chaque type de groupe.
+Désignation : Description du type de groupe (par exemple, Groupes chiffres d'aff
+aires débit, Groupes chiffres d'affaires fournisseur, Groupes de consolidation).
+2. Contenu du Groupe
+Tableau des Éléments du Groupe : La partie droite de la fenêtre affiche le conte
+nu du groupe sélectionné, avec les colonnes suivantes :
+No : Numéro de l'élément dans le groupe.
+Code : Code unique attribué à chaque élément.
+Désignation : Description ou libellé de l'élément.
+Désignation 2 : Informations supplémentaires sur l'élément, si applicable.
+Détails de l'Élément Sélectionné
+Langue : Menu déroulant pour sélectionner la langue de l'élément.
+Numéro : Numéro unique attribué à l'élément.
+Code : Code de l'élément, souvent un identifiant alphanumérique.
+Désignation (1) : Description principale de l'élément.
+Désignation (2) : Description secondaire ou informations complémentaires.
+Divers : Champ pour toute information additionnelle pertinente.
+Texte Swissdec : Champ spécifique pour les informations requises par Swissdec, s
+i applicable.
+
+Tables de correspondance plan comptable cg 910 :
+
+
+Note explicative des tables simples pour la comptabilité générale programme « cg
+900 » : 
+
+Le programme "cg910" est conçu pour gérer les tables de correspondance des plans
+ comptables. Il permet de mapper les anciens comptes à de nouveaux comptes lors 
+des changements d'exercice ou de structure comptable. Voici une explication déta
+illée de la composition et des fonctionnalités de ce programme.
+Tableau de Correspondance
+Ancien Plan Comptable
+Ancienne Société : Code de l'ancienne société.
+Ancien Exercice : Année de l'ancien exercice comptable.
+Ancien N° C.G. : Numéro de compte général de l'ancien plan comptable.
+Désignation : Description de l'ancien compte.
+Nouveau Plan Comptable
+Nouvelle Société : Code de la nouvelle société.
+Nouvel Exercice : Année du nouvel exercice comptable.
+Nouveau N° C.G. : Numéro de compte général du nouveau plan comptable.
+Désignation : Description du nouveau compte.
+Détails de Correspondance des Comptes
+Ancienne Société : Champ indiquant le code de l'ancienne société.
+Ancien Exercice : Champ indiquant l'année de l'ancien exercice comptable.
+Compte C.G. : Champ affichant le numéro de compte général de l'ancien plan.
+Intitulé Court : Nom abrégé du compte ancien.
+Intitulé : Nom complet du compte ancien.
+Intitulé (suite) : Informations supplémentaires sur l'ancien compte.
+Genre de Frais : Type de frais associé à l'ancien compte.
+Désignation : Description du compte ancien.
+Nouvelle Société : Champ indiquant le code de la nouvelle société.
+Nouvel Exercice : Champ indiquant l'année du nouvel exercice comptable.
+Compte C.G. : Champ affichant le numéro de compte général du nouveau plan.
+Intitulé Court : Nom abrégé du compte nouveau.
+Intitulé : Nom complet du compte nouveau.
+Intitulé (suite) : Informations supplémentaires sur le nouveau compte.
+Genre de Frais : Type de frais associé au nouveau compte.
+Désignation : Description du compte nouveau.
+
+En résumé, le programme "cg910" offre une interface complète pour gérer les corr
+espondances entre anciens et nouveaux plans comptables. Il permet une transition

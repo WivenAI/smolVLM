@@ -1,0 +1,308 @@
+CONTEXT FOR: image_731.png
+============================================================
+
+--- BEFORE ---
+Exemple de comptabilisation différée
+
+
+
+Exemple de comptabilisation directe
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative de l’onglet MAJ du programme « xstes » pour l'ensemble des opér
+ations liées à la comptabilisation externe, ou "différée" : 
+Le programme "xstes" dans l'ERP est dédié à la gestion des sociétés et permet de
+ configurer divers paramètres comptables pour chaque entité juridique gérée dans
+ le système. L'onglet "MAJ" (Mise à Jour) de ce programme joue un rôle crucial d
+ans la configuration des méthodes de comptabilisation, notamment la comptabilisa
+tion différée ou directe. Ce chapitre se concentre sur la manière dont ces param
+ètres sont définis et appliqués.
+Paramètres de Comptabilisation
+Comptabilisation Différée :
+MAJ co100 à co104 on line : Ce paramètre active la mise à jour en ligne (différé
+e) pour les programmes de comptabilité générale, tels que "co100" à "co104". En 
+sélectionnant cette option, les écritures ne sont pas immédiatement intégrées da
+ns les comptes, mais sont d'abord stockées et peuvent être validées ultérieureme
+nt.
+MAJ co210 on line : De manière similaire, ce paramètre gère la mise à jour diffé
+rée pour les provisions, ce qui permet de contrôler les écritures avant qu'elles
+ n'affectent les comptes finaux.
+MAJ co220 on line : Ce paramètre concerne les ajustements, qui peuvent être réal
+isés de manière différée pour permettre des vérifications supplémentaires avant 
+la comptabilisation finale.
+Comptabilisation Directe :
+MAJ situations on line (db812) : Cette option permet une mise à jour immédiate d
+es situations comptables en ligne, intégrant directement les données dans les co
+mptes sans besoin de validation ultérieure.
+MAJ paiements fournisseurs on line (cr600) : Ce paramètre assure que les paiemen
+ts fournisseurs sont directement comptabilisés, garantissant une rapidité dans l
+a mise à jour des comptes fournisseurs.
+MAJ salaires on line (sa160) : Ce paramètre permet de comptabiliser directement 
+les salaires, ce qui est essentiel pour maintenir des comptes de paie précis et 
+à jour.
+Utilisation Pratique
+Configuration de la Comptabilisation Différée
+Lorsque vous avez besoin de vérifier les écritures comptables avant de les intég
+rer définitivement dans les comptes, sélectionnez les options de "MAJ on line" p
+our les programmes pertinents. Cela vous donne un contrôle supplémentaire sur le
+ processus comptable, permettant une validation manuelle avant l'intégration.
+Configuration de la Comptabilisation Directe
+Pour les processus qui nécessitent une mise à jour immédiate des comptes, tels q
+ue les paiements ou les salaires, configurez les paramètres pour une mise à jour
+ directe. Cela garantit que les écritures sont immédiatement prises en compte, c
+e qui est crucial pour les opérations nécessitant une précision et une rapidité 
+accrues.
+
+
+
+Imputation des écritures externes co110 :
+Important : Tous les programmes de saisie et de mise à jour comptable doivent êt
+re inactifs avant de lancer ce programme.
+Ce programme à pour but de comptabiliser des écritures comptables générées par l
+es applications externes.
+Ces écritures peuvent être consultées avant  la mise à jour par l’intermédiaire 
+du programme co120 (voir description ci-dessous).
+
+Exemple des réponses à donner pour que le programme s’exécute :
+
+
+Cliquer pour sélectionner l’application externe à traiter
+
+Cocher pour fermer le lot en fin de traitement
+
+Cliquer pour afficher et sélectionner le ou les lots à traiter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Note explicative des imputations des écritures externes programme « co110 » : 
+
+Le programme "co110" est utilisé pour l'imputation des écritures externes dans l
+e système de comptabilité. Il permet de traiter les données provenant d'applicat
+ions externes et de les intégrer dans la comptabilité générale de manière effica
+ce et sécurisée. Voici une explication détaillée de la composition et des foncti
+onnalités de ce programme.
+Fonctionnalités Principales
+Sélection de l'Application Externe à Traiter :
+Application à traiter : Cette liste déroulante permet de sélectionner l'applicat
+ion externe dont les écritures doivent être imputées. Les applications externes 
+peuvent être des systèmes ou des modules externes qui génèrent des lots d'écritu
+res à intégrer dans la comptabilité générale. La sélection correcte de l'applica
+tion est essentielle pour garantir que les bonnes données sont traitées.
+Fermeture du Lot en Fin de Traitement :
+Coche pour fermer le lot : En cochant cette option, le système ferme automatique
+ment le lot une fois que toutes les écritures ont été imputées. Cette fonctionna
+lité est importante pour sécuriser les données, empêchant toute modification ult
+érieure du lot une fois qu'il a été traité et intégré dans les comptes.
+Sélection des Lots à Traiter :
+Lot(s) : Cette section permet de sélectionner un ou plusieurs lots d'écritures p
+rovenant de l'application externe à traiter. En cliquant sur cette option, vous 
+pouvez afficher tous les lots disponibles pour l'application sélectionnée et cho
+isir ceux qui doivent être intégrés dans la comptabilité. La sélection multiple 
+permet de traiter plusieurs lots en une seule opération, ce qui améliore l'effic
+acité du processus.
+
+
+
+Consultation/modification des écritures externes co120 :
+
+
+Onglet "écritures"
+Onglet "détails"
+
+
+Onglet "écritures"
+
+
+
+Cliquer pour sélectionner un lot d’écritures
+
+
+
+Cliquer pour afficher les informations désirées avec les fonctions disponibles p
+ar clic droit
+
+
+
+[IMAGE HERE: image_731.png]
+
+--- AFTER ---
+Onglet "détails" :
+
+
+
+
+
+Clic droit permet de modifier les comptes CG/CA
+
+
+Vue de la fonction à disposition par clic droit :
+
+
+
+Modification des dates comptables d'un lot co124 :
+
+
+Ce programme à pour but de pouvoir consulter et éventuellement modifier les date
+s comptables saisies dans le programme externe qui à généré ces lots d’écritures
+, avant de lancer la mise à jour comptable.
+
+
+
+
+Clic sur le bouton "modification des dates"
+
+
+
+Entrer les dates correctes  puis valider avec OK
+
+
+Effacement des écritures externes en erreur co130 :
+
+
+Ce programme à pour but de supprimer une ou des écritures qui n’auraient pas été
+ comptabilisée(s) automatiquement par le programme co110.
+Ces écritures devront être saisies manuellement avec le programme adéquat.
+
+
+
+
+
+
+
+
+Effacement des écritures externes co140 : 
+
+Déblocage de la comptabilisation co999 :
+
+
+Ce programme à pour but de supprimer le déblocage d’un enregistrement de contrôl
+e positionné par le programme co110.
+Attention aux conséquences, il est préférable d’appeler Médiasoft avant d’exécut
+er ce programme
+
+
+
+
+
+
+
+
+
+Calcul d’intérêts : 
+
+Gestion des taux d’intérêts co285 : 
+
+Calcul des intérêts co280 : 
+
+
+
+Flux financiers : 
+Tables des tables pilotes fl100 :
+
+Tables pilotes fl500 : 
+
+
+
+Flux financiers fl510 : 
+
+
+
+Groupe de flux financiers fl901 : 
+
+
+
+
+
+Listes :
+Mouvements cg125 :
+
+
+Liste des mouvements :
+
+Le but de ce programme est d’imprimer le solde des mouvements mensuels pour chac
+un des comptes comptables.
+
+
+
+
+Sélectionner la tranche de dates désirées
+
+
+
+Cocher pour imprimer également les comptes ayant des mouvements  à zéro
+
+
+Balances cg200 :
+
+
+Edition de la Balance des soldes 
+
+
+
+Cliquer pour sélectionner l’option désirée.
+
+Pour les soldes reportés, la date d’arrêté n’est pas saisie
+
+Saisir  ou  sélectionner la date d’arrêté de la balance.
+
+Calcul des soldes à cette date
+
+Cocher pour imprimer également les comptes ayant des soldes à zéro
+
+
+Cumuls Débits/Crédits cg210 :
+
+
+Edition des Cumuls débit/crédit par type de compte :
+
+
+Fenêtre des réponses de sélection possible :
+
+
+
+Saisir les bornes pour les mois désirés pour le calcul des cumuls
+
+
+Extraits de comptes cg230 :
+
+
+
+Extraits de compte semestriel :
+Le but de ce programme, est d’analyser l’évolution de la situation des soldes co
+mptables sur une période donnée.
+
+Sélection d’un type d’impression
+Les différents types d’impression suivants sont à disposition dans le programme 
+standard
+
+
