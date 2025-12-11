@@ -93,47 +93,6 @@ class EpochEvaluationCallback(TrainerCallback):
             return total_loss / num_batches
         return None
 
-    def _normalize_text(self, text: str) -> str:
-        """Normalize text for comparison (lowercase, no punctuation, no whitespace)."""
-        import re
-        text = text.lower()
-        text = re.sub(r'[^\w\s]', '', text)
-        text = re.sub(r'\s+', '', text)
-        return text
-
-    def _levenshtein_distance(self, s1: str, s2: str) -> int:
-        """Compute Levenshtein distance between two strings."""
-        if len(s1) < len(s2):
-            return self._levenshtein_distance(s2, s1)
-        if len(s2) == 0:
-            return len(s1)
-
-        previous_row = range(len(s2) + 1)
-        for i, c1 in enumerate(s1):
-            current_row = [i + 1]
-            for j, c2 in enumerate(s2):
-                insertions = previous_row[j + 1] + 1
-                deletions = current_row[j] + 1
-                substitutions = previous_row[j] + (c1 != c2)
-                current_row.append(min(insertions, deletions, substitutions))
-            previous_row = current_row
-
-        return previous_row[-1]
-
-    def _compute_similarity(self, pred: str, label: str) -> float:
-        """Compute normalized similarity (0-1) using Levenshtein distance."""
-        pred_norm = self._normalize_text(pred)
-        label_norm = self._normalize_text(label)
-
-        if not pred_norm and not label_norm:
-            return 1.0
-        if not pred_norm or not label_norm:
-            return 0.0
-
-        distance = self._levenshtein_distance(pred_norm, label_norm)
-        max_len = max(len(pred_norm), len(label_norm))
-        return 1.0 - (distance / max_len)
-
     def _detect_dataset_type(self) -> str:
         """Detect dataset type from strategy name."""
         strategy_lower = self.strategy_name.lower()
@@ -148,24 +107,25 @@ class EpochEvaluationCallback(TrainerCallback):
         elif 'dpo' in strategy_lower:
             return 'dpo'
         else:
-            return 'benchmark'  # Default for benchmarks
+            return 'benchmark'
 
     def _compute_dataset_accuracy(self, model, dataset, dataset_name="dataset"):
-        """Compute accuracy on a dataset using appropriate metric based on dataset type.
+        """Compute accuracy on a dataset using the same metrics as the evaluators.
 
-        - QCM: Compare first letter (A, B, C, D)
-        - DocVQA/OCR/ChartQA: Use fuzzy matching with Levenshtein similarity
-        - DPO: Use fuzzy matching
+        Uses the appropriate evaluator's calculate_accuracy method based on dataset type.
         """
         if dataset is None or self.processor is None:
             return None, []
 
         dataset_type = self._detect_dataset_type()
         model.eval()
-        correct = 0
-        total = 0
-        total_similarity = 0.0
         results = []
+
+        # Import evaluators to reuse their accuracy calculation logic
+        from evaluators.evaluator_qcm import QCMEvaluator
+        from evaluators.evaluator_docvqa import DocVQAEvaluator
+        from evaluators.evaluator_ocr import OCRBenchEvaluator
+        from evaluators.evaluator_chartqa import ChartQAEvaluator
 
         # Create a simple dataloader
         from torch.utils.data import DataLoader
@@ -174,16 +134,13 @@ class EpochEvaluationCallback(TrainerCallback):
         with torch.no_grad():
             for batch_idx, batch in enumerate(dataloader):
                 try:
-                    # Move batch to model device
                     device = next(model.parameters()).device
                     inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
 
-                    # Get the labels (ground truth)
                     labels = inputs.get('labels', None)
                     if labels is None:
                         continue
 
-                    # Generate predictions
                     input_ids = inputs['input_ids']
                     attention_mask = inputs.get('attention_mask', None)
                     pixel_values = inputs.get('pixel_values', None)
@@ -204,42 +161,19 @@ class EpochEvaluationCallback(TrainerCallback):
                         pad_token_id=self.processor.tokenizer.pad_token_id
                     )
 
-                    # Decode prediction and label
                     pred_tokens = outputs[0][input_ids.shape[1]:]
                     pred_text = self.processor.decode(pred_tokens, skip_special_tokens=True).strip()
 
-                    # Get actual label text (non -100 tokens)
                     label_tokens = labels[0][labels[0] != -100]
                     label_text = self.processor.decode(label_tokens, skip_special_tokens=True).strip()
 
-                    # Use appropriate metric based on dataset type
-                    if dataset_type == 'qcm':
-                        # QCM: Compare first letter
-                        pred_letter = pred_text.upper()[0] if pred_text else ""
-                        label_letter = label_text.upper()[0] if label_text else ""
-                        is_correct = pred_letter == label_letter
-                        similarity = 1.0 if is_correct else 0.0
-                    else:
-                        # DocVQA/OCR/ChartQA/DPO: Use fuzzy matching
-                        similarity = self._compute_similarity(pred_text, label_text)
-                        # Consider correct if similarity > 0.8 or exact normalized match
-                        pred_norm = self._normalize_text(pred_text)
-                        label_norm = self._normalize_text(label_text)
-                        is_correct = (similarity > 0.8 or
-                                     pred_norm == label_norm or
-                                     label_norm in pred_norm or
-                                     pred_norm in label_norm)
-
-                    if is_correct:
-                        correct += 1
-                    total += 1
-                    total_similarity += similarity
-
+                    # Format result for evaluator's calculate_accuracy method
                     results.append({
-                        "prediction": pred_text,
-                        "label": label_text,
-                        "is_correct": is_correct,
-                        "similarity": similarity
+                        "response": pred_text,
+                        "ground_truth": label_text,
+                        "predicted_letter": pred_text.upper()[0] if pred_text else "",
+                        "correct_answer": label_text.upper()[0] if label_text else "",
+                        "is_correct": False  # Will be calculated by evaluator
                     })
 
                 except Exception as e:
@@ -248,13 +182,32 @@ class EpochEvaluationCallback(TrainerCallback):
 
         model.train()
 
-        if total > 0:
-            accuracy = (correct / total) * 100
-            avg_similarity = (total_similarity / total) * 100
-            # Log both metrics
-            logger.info(f"  [{dataset_name}] Accuracy: {accuracy:.2f}%, Avg Similarity: {avg_similarity:.2f}%")
-            return accuracy, results
-        return None, results
+        if not results:
+            return None, results
+
+        # Use the appropriate evaluator's calculate_accuracy method
+        if dataset_type == 'qcm':
+            # For QCM, set is_correct based on letter match
+            for r in results:
+                r['is_correct'] = r['predicted_letter'] == r['correct_answer']
+            evaluator = QCMEvaluator()
+            accuracy = evaluator.calculate_accuracy(results)
+        elif dataset_type == 'docvqa':
+            evaluator = DocVQAEvaluator()
+            accuracy = evaluator.calculate_accuracy(results)
+        elif dataset_type == 'ocr':
+            evaluator = OCRBenchEvaluator()
+            accuracy = evaluator.calculate_accuracy(results)
+        elif dataset_type == 'chartqa':
+            evaluator = ChartQAEvaluator()
+            accuracy = evaluator.calculate_accuracy(results)
+        else:
+            # Default: use DocVQA-style matching (contains check)
+            evaluator = DocVQAEvaluator()
+            accuracy = evaluator.calculate_accuracy(results)
+
+        logger.info(f"  [{dataset_name}] Accuracy ({dataset_type}): {accuracy:.2f}%")
+        return accuracy, results
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
         """Run full evaluation at end of each epoch on both train and test sets"""
