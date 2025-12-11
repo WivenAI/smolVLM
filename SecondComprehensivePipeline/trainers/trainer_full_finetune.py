@@ -44,8 +44,9 @@ from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
 from datasets import Dataset, load_dataset
 import gc
 
-# Import the evaluation callback from trainer_sft to reuse it
+# Import the evaluation callbacks to reuse them
 from trainers.trainer_sft import EpochEvaluationCallback
+from trainers.trainer_dpo import EpochEvaluationCallback as DPOEpochEvaluationCallback
 
 try:
     import wandb
@@ -919,6 +920,16 @@ class FullFineTuneDPOTrainer:
             max_grad_norm=1.0,
         )
 
+        # Create DPO evaluation callback
+        eval_callback = DPOEpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
+        )
+
         trainer = TRLDPOTrainer(
             model=self.model,
             ref_model=None,  # Use implicit reference model
@@ -926,6 +937,7 @@ class FullFineTuneDPOTrainer:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=self.processor,
+            callbacks=[eval_callback],
         )
 
         trainer.train()
