@@ -131,11 +131,10 @@ class QCMDataset(torch.utils.data.Dataset):
         else:
             image = Image.new('RGB', (224, 224), color='white')
 
-        # Format prompt
-        qcm_data = item.get('qcm', item)
-        question = qcm_data['question']
-        options = qcm_data['options']
-        correct_answer = qcm_data['correct_answer']
+        # Format prompt - item is already the QCM data
+        question = item['question']
+        options = item['options']
+        correct_answer = item['correct_answer']
 
         options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
         prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
@@ -346,8 +345,8 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         else:
             answer = "Unknown"
 
-        # Format using chat template
-        messages = [
+        # Format using chat template with proper prompt masking
+        user_message = [
             {
                 "role": "user",
                 "content": [
@@ -355,15 +354,28 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     {"type": "image"},
                     {"type": "text", "text": question}
                 ]
-            },
+            }
+        ]
+
+        full_messages = user_message + [
             {
                 "role": "assistant",
                 "content": [{"type": "text", "text": answer}]
             }
         ]
-        full_text = self.processor.apply_chat_template(messages, add_generation_prompt=False)
 
-        inputs = self.processor(
+        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True, tokenize=False)
+        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False, tokenize=False)
+
+        prompt_inputs = self.processor(
+            text=prompt_text,
+            images=image,
+            return_tensors="pt",
+            padding=True,
+            size={"longest_edge": 1024}
+        )
+
+        full_inputs = self.processor(
             text=full_text,
             images=image,
             return_tensors="pt",
@@ -371,16 +383,15 @@ class BenchmarkDataset(torch.utils.data.Dataset):
             size={"longest_edge": 1024}
         )
 
-        for key in inputs:
-            inputs[key] = inputs[key].squeeze(0)
+        # Mask prompt tokens so we only compute loss on the answer
+        prompt_length = prompt_inputs["input_ids"].shape[1]
+        labels = full_inputs["input_ids"].clone()
+        labels[:, :prompt_length] = -100
 
-        image_token_id = self.processor.tokenizer.additional_special_tokens_ids[
-            self.processor.tokenizer.additional_special_tokens.index("<image>")
-        ]
-
-        inputs["labels"] = inputs["input_ids"].clone()
-        inputs["labels"][inputs["labels"] == self.processor.tokenizer.pad_token_id] = -100
-        inputs["labels"][inputs["labels"] == image_token_id] = -100
+        inputs = {}
+        for key in full_inputs:
+            inputs[key] = full_inputs[key].squeeze(0)
+        inputs["labels"] = labels.squeeze(0)
 
         return inputs
 
