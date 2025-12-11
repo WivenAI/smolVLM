@@ -44,6 +44,9 @@ from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
 from datasets import Dataset, load_dataset
 import gc
 
+# Import the evaluation callback from trainer_sft to reuse it
+from trainers.trainer_sft import EpochEvaluationCallback
+
 try:
     import wandb
     WANDB_AVAILABLE = True
@@ -521,12 +524,23 @@ class FullFineTuneTrainer:
 
         training_args = self._get_training_args(output_dir, epochs, use_wandb)
 
+        # Create evaluation callback to run proper evaluation at each epoch
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -586,12 +600,23 @@ class FullFineTuneTrainer:
 
         training_args = self._get_training_args(output_dir, epochs, use_wandb)
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -643,12 +668,23 @@ class FullFineTuneTrainer:
 
         training_args = self._get_training_args(output_dir, epochs, use_wandb)
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
@@ -694,12 +730,23 @@ class FullFineTuneTrainer:
 
         training_args = self._get_training_args(output_dir, epochs, use_wandb)
 
+        # Create evaluation callback
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name or f"full_ft_{benchmark_name}",
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
+        )
+
         trainer = Trainer(
             model=self.model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             data_collator=VisionLanguageDataCollator(),
+            callbacks=[eval_callback],
         )
 
         trainer.train()
