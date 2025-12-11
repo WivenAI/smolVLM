@@ -172,6 +172,7 @@ class Pipeline:
         from trainers.trainer_sft import train_sft
         from trainers.trainer_dpo import train_dpo
         from trainers.trainer_orpo import train_orpo
+        from trainers.trainer_full_finetune import train_full_finetune
 
         for strategy in strategies:
             name = strategy["name"]
@@ -353,6 +354,26 @@ class Pipeline:
                         "image_dir": strategy["image_dir"]
                     }
                     train_sft(self.config, qcm_strategy, str(model_output_dir), base_model=str(dpo_output))
+                # Full fine-tuning strategies (no LoRA, trains all parameters)
+                elif strategy_type in ("full_ft_qcm", "full_ft_benchmark", "full_ft_dpo_sft", "full_ft_qcm_combined"):
+                    train_full_finetune(self.config, strategy, str(model_output_dir))
+                elif strategy_type == "full_ft_qcm_then_dpo":
+                    # Full fine-tune QCM first, then DPO
+                    qcm_strategy = {
+                        "type": "full_ft_qcm",
+                        "dataset": strategy["qcm_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    qcm_output = model_output_dir / "qcm_stage"
+                    train_full_finetune(self.config, qcm_strategy, str(qcm_output))
+
+                    # Then DPO on top
+                    dpo_strategy = {
+                        "type": "dpo",
+                        "dataset": strategy["dpo_dataset"],
+                        "image_dir": strategy["image_dir"]
+                    }
+                    train_dpo(self.config, dpo_strategy, str(model_output_dir), base_model=str(qcm_output))
                 else:
                     print(f"  Unknown strategy type: {strategy_type}")
                     continue

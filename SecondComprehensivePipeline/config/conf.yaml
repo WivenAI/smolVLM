@@ -14,6 +14,7 @@ training:
   gradient_accumulation_steps: 8
   learning_rate: 0.00001
   dpo_learning_rate: 0.0000005  # 5e-7, DPO typically needs lower LR than SFT
+  full_finetune_learning_rate: 0.000005  # 5e-6, lower LR for full fine-tuning
 
   # Which training strategies to run
   strategies:
@@ -229,6 +230,75 @@ training:
       qcm_datasets:
         - "datasets/qcm/qcm_dataset_gemini.json"
         - "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # ============================================================
+    # FULL FINE-TUNING STRATEGIES
+    # ============================================================
+    # Full fine-tuning trains ALL model parameters (no LoRA/QLoRA).
+    # Recommended for smaller models (256M, 500M) for best results.
+    # WARNING: Requires more GPU memory than LoRA:
+    #   - SmolVLM-256M: ~4-6 GB VRAM
+    #   - SmolVLM-500M: ~8-12 GB VRAM
+    #   - SmolVLM-2B: ~24-32 GB VRAM (consider LoRA instead)
+    # ============================================================
+
+    # Full fine-tuning on QCM datasets
+    - name: "full_ft_qcm_gemini"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_qcm"
+      dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_qcm_nova"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_qcm"
+      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_qcm_combined"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_qcm_combined"
+      datasets:
+        - "datasets/qcm/qcm_dataset_gemini.json"
+        - "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # Full fine-tuning on benchmark datasets
+    - name: "full_ft_docvqa"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_benchmark"
+      benchmark: "docvqa"
+
+    - name: "full_ft_ocrbench"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_benchmark"
+      benchmark: "ocrbench"
+
+    - name: "full_ft_chartqa"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_benchmark"
+      benchmark: "chartqa"
+
+    # Full fine-tuning on DPO dataset (SFT using chosen responses)
+    - name: "full_ft_sft_dpo_gemini"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_dpo_sft"
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_sft_dpo_nova"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_dpo_sft"
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # Multi-stage: Full fine-tune QCM, then DPO
+    - name: "full_ft_qcm_then_dpo_gemini"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_qcm_then_dpo"
+      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
 # Evaluation settings
