@@ -40,7 +40,9 @@ from transformers import (
     Trainer,
     TrainerCallback
 )
-from datasets import load_dataset
+from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
+from datasets import Dataset, load_dataset
+import gc
 
 try:
     import wandb
@@ -701,6 +703,189 @@ class FullFineTuneTrainer:
         return output_dir
 
 
+class FullFineTuneDPOTrainer:
+    """
+    Full fine-tuning DPO trainer for SmolVLM.
+
+    Unlike LoRA DPO which freezes most parameters and only trains adapter weights,
+    full fine-tuning DPO trains ALL model parameters during preference optimization.
+    """
+
+    def __init__(self, config: Dict[str, Any]):
+        self.config = config
+        self.model = None
+        self.ref_model = None
+        self.processor = None
+        self.hf_cache_dir = _hf_cache
+
+    def load_model(self, base_model: str = None):
+        """Load model for full fine-tuning DPO (no quantization, no LoRA)."""
+        if base_model is None:
+            base_model = self.config.get("model", {}).get("base_model", "HuggingFaceTB/SmolVLM-500M-Instruct")
+
+        logger.info(f"Loading model for FULL fine-tuning DPO: {base_model}")
+
+        self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
+
+        # Load model WITHOUT quantization for full fine-tuning
+        self.model = AutoModelForImageTextToText.from_pretrained(
+            base_model,
+            trust_remote_code=True,
+            torch_dtype=torch.bfloat16,
+            device_map="auto",
+            low_cpu_mem_usage=True
+        )
+
+        # Enable gradient checkpointing for memory efficiency
+        if hasattr(self.model, 'gradient_checkpointing_enable'):
+            self.model.gradient_checkpointing_enable()
+
+        # Count trainable parameters
+        total_params = sum(p.numel() for p in self.model.parameters())
+        trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+
+        logger.info(f"Full fine-tuning DPO - ALL parameters trainable:")
+        logger.info(f"  Total parameters: {total_params:,}")
+        logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
+
+    def prepare_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
+        """Prepare DPO dataset from JSON file with actual image loading for VLM DPO"""
+        logger.info(f"Preparing DPO dataset from: {dataset_path}")
+
+        with open(dataset_path, 'r', encoding='utf-8') as f:
+            raw_data = json.load(f)
+
+        image_dir = Path(image_dir)
+
+        dpo_data = []
+        skipped = 0
+        for item in raw_data:
+            image_name = item.get('image_name', '')
+            image = None
+
+            if image_name:
+                image_path = image_dir / image_name
+                if image_path.exists():
+                    try:
+                        image = Image.open(image_path).convert('RGB')
+                        image.thumbnail((384, 384))
+                    except Exception as e:
+                        logger.warning(f"Failed to load image {image_path}: {e}")
+                        skipped += 1
+                        continue
+                else:
+                    skipped += 1
+                    continue
+            else:
+                image = Image.new('RGB', (384, 384), color='black')
+
+            prompt = item.get('prompt', '')
+            chosen = item.get('chosen', '')
+            rejected = item.get('rejected', '')
+
+            if prompt and chosen and rejected and image:
+                prompt_with_image = f"<image>{prompt}"
+                dpo_data.append({
+                    'prompt': prompt_with_image,
+                    'chosen': chosen,
+                    'rejected': rejected,
+                    'images': [image]
+                })
+
+        if max_samples is not None and len(dpo_data) > max_samples:
+            logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
+            dpo_data = dpo_data[:max_samples]
+
+        if skipped > 0:
+            logger.warning(f"Skipped {skipped} samples due to missing/invalid images")
+
+        logger.info(f"Prepared {len(dpo_data)} DPO samples with images")
+        return Dataset.from_list(dpo_data)
+
+    def train(self, dataset_path: str, image_dir: str, output_dir: str,
+              use_wandb: bool = True, max_samples: int = None,
+              strategy_name: str = "full_ft_dpo") -> str:
+        """Train using DPO with full fine-tuning."""
+        if self.model is None:
+            self.load_model()
+
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
+
+        logger.info(f"Full fine-tuning DPO on: {dataset_path}")
+
+        full_dataset = self.prepare_dpo_dataset(dataset_path, image_dir, max_samples=max_samples)
+
+        dataset_split = full_dataset.train_test_split(test_size=0.1, seed=42)
+        train_dataset = dataset_split['train']
+        eval_dataset = dataset_split['test']
+
+        logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
+
+        num_epochs = int(self.config.get("training", {}).get("epochs", 3))
+        # Use lower learning rate for full fine-tuning DPO
+        learning_rate = float(self.config.get("training", {}).get("full_finetune_dpo_learning_rate",
+                              self.config.get("training", {}).get("dpo_learning_rate", 1e-7)))
+        gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 16))
+
+        training_args = DPOConfig(
+            output_dir=output_dir,
+            num_train_epochs=num_epochs,
+            per_device_train_batch_size=1,
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=gradient_accumulation_steps,
+            learning_rate=learning_rate,
+            lr_scheduler_type="cosine",
+            warmup_ratio=0.1,
+            weight_decay=0.01,
+            logging_steps=10,
+            eval_strategy="steps",
+            eval_steps=100,
+            save_strategy="epoch",
+            save_total_limit=2,
+            bf16=torch.cuda.is_available(),
+            dataloader_pin_memory=False,
+            remove_unused_columns=False,
+            report_to="wandb" if use_wandb else "none",
+            beta=0.1,
+            loss_type="sigmoid",
+            max_length=512,
+            max_prompt_length=256,
+            gradient_checkpointing=True,
+            # Use standard optimizer for full fine-tuning
+            optim="adamw_torch",
+            max_grad_norm=1.0,
+        )
+
+        trainer = TRLDPOTrainer(
+            model=self.model,
+            ref_model=None,  # Use implicit reference model
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            processing_class=self.processor,
+        )
+
+        trainer.train()
+
+        trainer.save_model(output_dir)
+        self.processor.save_pretrained(output_dir)
+
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        logger.info(f"Full fine-tuned DPO model saved to: {output_dir}")
+        return output_dir
+
+
 def train_full_finetune(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
                         base_model: str = None) -> str:
     """
@@ -777,6 +962,24 @@ def train_full_finetune(config: Dict[str, Any], strategy: Dict[str, Any], output
             use_wandb=config.get("pipeline", {}).get("use_wandb", True),
             max_samples=config.get("training", {}).get("train_samples"),
             base_model=base_model,
+            strategy_name=strategy_name
+        )
+
+    # Full fine-tuning DPO (preference optimization, not SFT)
+    if strategy["type"] == "full_ft_dpo":
+        dpo_trainer = FullFineTuneDPOTrainer(config)
+        dpo_trainer.load_model(base_model)
+
+        base_path = Path(__file__).parent.parent
+        dataset_path = base_path / strategy["dataset"]
+        image_dir = base_path / strategy["image_dir"]
+
+        return dpo_trainer.train(
+            dataset_path=str(dataset_path),
+            image_dir=str(image_dir),
+            output_dir=output_dir,
+            use_wandb=config.get("pipeline", {}).get("use_wandb", True),
+            max_samples=config.get("training", {}).get("train_samples"),
             strategy_name=strategy_name
         )
 

@@ -15,6 +15,7 @@ training:
   learning_rate: 0.00001
   dpo_learning_rate: 0.0000005  # 5e-7, DPO typically needs lower LR than SFT
   full_finetune_learning_rate: 0.000005  # 5e-6, lower LR for full fine-tuning
+  full_finetune_dpo_learning_rate: 0.0000001  # 1e-7, very low LR for full fine-tuning DPO
 
   # Which training strategies to run
   strategies:
@@ -293,12 +294,17 @@ training:
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Multi-stage: Full fine-tune QCM, then DPO
-    - name: "full_ft_qcm_then_dpo_gemini"
+    # Full fine-tuning DPO (preference optimization with all parameters)
+    - name: "full_ft_dpo_gemini"
       enabled: false  # Disabled: requires more GPU memory
-      type: "full_ft_qcm_then_dpo"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      type: "full_ft_dpo"
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_dpo_nova"
+      enabled: false  # Disabled: requires more GPU memory
+      type: "full_ft_dpo"
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
 # Evaluation settings
