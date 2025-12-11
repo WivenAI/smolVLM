@@ -41,28 +41,36 @@ logger = logging.getLogger(__name__)
 
 
 class EpochEvaluationCallback(TrainerCallback):
-    """Callback to run full evaluation at the end of each epoch"""
+    """Callback to run full evaluation at the end of each epoch.
 
-    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor=None, full_dataset=None):
+    Evaluates on both train and test sets separately to detect memorization vs overfitting:
+    - High train accuracy + low test accuracy = overfitting
+    - High train accuracy + high test accuracy = good generalization
+    - Low train accuracy = underfitting
+    """
+
+    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str,
+                 processor=None, train_dataset=None, eval_dataset=None):
         self.config = config
         self.output_dir = Path(output_dir)
         self.strategy_name = strategy_name
         self.processor = processor
-        self.full_dataset = full_dataset
+        self.train_dataset = train_dataset
+        self.eval_dataset = eval_dataset
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
 
-    def _compute_full_dataset_loss(self, model, state):
-        """Compute loss on the full dataset"""
-        if self.full_dataset is None:
+    def _compute_dataset_loss(self, model, dataset, dataset_name="dataset"):
+        """Compute loss on a given dataset"""
+        if dataset is None:
             return None
 
         model.eval()
         total_loss = 0.0
         num_batches = 0
 
-        # Create a simple dataloader for the full dataset
+        # Create a simple dataloader for the dataset
         from torch.utils.data import DataLoader
-        dataloader = DataLoader(self.full_dataset, batch_size=1, shuffle=False)
+        dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
         with torch.no_grad():
             for batch in dataloader:
@@ -76,7 +84,7 @@ class EpochEvaluationCallback(TrainerCallback):
                         total_loss += outputs.loss.item()
                         num_batches += 1
                 except Exception as e:
-                    logger.warning(f"Error computing loss for batch: {e}")
+                    logger.warning(f"Error computing loss for batch in {dataset_name}: {e}")
                     continue
 
         model.train()
@@ -85,20 +93,125 @@ class EpochEvaluationCallback(TrainerCallback):
             return total_loss / num_batches
         return None
 
+    def _compute_dataset_accuracy(self, model, dataset, dataset_name="dataset"):
+        """Compute accuracy on a dataset by generating predictions and comparing to labels.
+
+        This is useful for QCM datasets where we can compare the predicted letter to the correct answer.
+        """
+        if dataset is None or self.processor is None:
+            return None, []
+
+        model.eval()
+        correct = 0
+        total = 0
+        results = []
+
+        # Create a simple dataloader
+        from torch.utils.data import DataLoader
+        dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
+
+        with torch.no_grad():
+            for batch_idx, batch in enumerate(dataloader):
+                try:
+                    # Move batch to model device
+                    device = next(model.parameters()).device
+                    inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch.items()}
+
+                    # Get the labels (ground truth)
+                    labels = inputs.get('labels', None)
+                    if labels is None:
+                        continue
+
+                    # Generate predictions
+                    input_ids = inputs['input_ids']
+                    attention_mask = inputs.get('attention_mask', None)
+                    pixel_values = inputs.get('pixel_values', None)
+
+                    gen_inputs = {'input_ids': input_ids}
+                    if attention_mask is not None:
+                        gen_inputs['attention_mask'] = attention_mask
+                    if pixel_values is not None:
+                        gen_inputs['pixel_values'] = pixel_values
+
+                    outputs = model.generate(
+                        **gen_inputs,
+                        max_new_tokens=10,
+                        do_sample=False,
+                        pad_token_id=self.processor.tokenizer.pad_token_id
+                    )
+
+                    # Decode prediction and label
+                    pred_tokens = outputs[0][input_ids.shape[1]:]
+                    pred_text = self.processor.decode(pred_tokens, skip_special_tokens=True).strip().upper()
+
+                    # Get actual label text (non -100 tokens)
+                    label_tokens = labels[0][labels[0] != -100]
+                    label_text = self.processor.decode(label_tokens, skip_special_tokens=True).strip().upper()
+
+                    # For QCM, compare first letter
+                    pred_letter = pred_text[0] if pred_text else ""
+                    label_letter = label_text[0] if label_text else ""
+
+                    is_correct = pred_letter == label_letter
+                    if is_correct:
+                        correct += 1
+                    total += 1
+
+                    results.append({
+                        "prediction": pred_text,
+                        "label": label_text,
+                        "is_correct": is_correct
+                    })
+
+                except Exception as e:
+                    logger.warning(f"Error computing accuracy for batch {batch_idx} in {dataset_name}: {e}")
+                    continue
+
+        model.train()
+
+        if total > 0:
+            accuracy = (correct / total) * 100
+            return accuracy, results
+        return None, results
+
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
-        """Run full evaluation at end of each epoch"""
+        """Run full evaluation at end of each epoch on both train and test sets"""
         epoch = int(state.epoch)
-        logger.info(f"[{self.strategy_name}] Running evaluation at epoch {epoch}...")
+        logger.info(f"[{self.strategy_name}] Running train/test evaluation at epoch {epoch}...")
 
         # Save model temporarily for evaluation
         temp_model_dir = self.output_dir / f"epoch_{epoch}_eval"
         temp_model_dir.mkdir(parents=True, exist_ok=True)
 
         try:
-            # Compute loss on full dataset first (before saving model)
-            full_dataset_loss = self._compute_full_dataset_loss(model, state)
-            if full_dataset_loss is not None:
-                logger.info(f"[{self.strategy_name}] Epoch {epoch} full dataset loss: {full_dataset_loss:.4f}")
+            # Compute loss on train and test sets separately
+            train_loss = self._compute_dataset_loss(model, self.train_dataset, "train")
+            test_loss = self._compute_dataset_loss(model, self.eval_dataset, "test")
+
+            # Compute accuracy on train and test sets
+            train_accuracy, train_results = self._compute_dataset_accuracy(model, self.train_dataset, "train")
+            test_accuracy, test_results = self._compute_dataset_accuracy(model, self.eval_dataset, "test")
+
+            # Log results
+            logger.info(f"[{self.strategy_name}] Epoch {epoch} Train/Test Metrics:")
+            if train_loss is not None:
+                logger.info(f"  Train Loss: {train_loss:.4f}")
+            if test_loss is not None:
+                logger.info(f"  Test Loss: {test_loss:.4f}")
+            if train_accuracy is not None:
+                logger.info(f"  Train Accuracy: {train_accuracy:.2f}%")
+            if test_accuracy is not None:
+                logger.info(f"  Test Accuracy: {test_accuracy:.2f}%")
+
+            # Check for memorization/overfitting
+            if train_accuracy is not None and test_accuracy is not None:
+                gap = train_accuracy - test_accuracy
+                if gap > 10:
+                    logger.warning(f"  ⚠️ Large train-test gap ({gap:.2f}%): possible OVERFITTING")
+                elif train_accuracy > 90 and test_accuracy > 80:
+                    logger.info(f"  ✓ Good generalization (train: {train_accuracy:.1f}%, test: {test_accuracy:.1f}%)")
+                elif train_accuracy < 50:
+                    logger.warning(f"  ⚠️ Low train accuracy ({train_accuracy:.1f}%): possible UNDERFITTING")
 
             # Save the current model state
             model.save_pretrained(str(temp_model_dir))
@@ -108,7 +221,7 @@ class EpochEvaluationCallback(TrainerCallback):
             # Import evaluator here to avoid circular imports
             from evaluators import EvaluatorAll
 
-            # Run evaluation
+            # Run evaluation on standard benchmarks
             evaluator = EvaluatorAll(self.config, str(self.cache_dir))
             results = evaluator.evaluate_all(
                 model_path=str(temp_model_dir),
@@ -119,9 +232,21 @@ class EpochEvaluationCallback(TrainerCallback):
             if WANDB_AVAILABLE and wandb.run is not None:
                 metrics = {}
 
-                # Log full dataset loss
-                if full_dataset_loss is not None:
-                    metrics["eval/full_dataset_loss"] = full_dataset_loss
+                # Log train/test losses
+                if train_loss is not None:
+                    metrics["eval/train_loss"] = train_loss
+                if test_loss is not None:
+                    metrics["eval/test_loss"] = test_loss
+
+                # Log train/test accuracies
+                if train_accuracy is not None:
+                    metrics["eval/train_accuracy"] = train_accuracy
+                if test_accuracy is not None:
+                    metrics["eval/test_accuracy"] = test_accuracy
+
+                # Log train-test gap (for memorization detection)
+                if train_accuracy is not None and test_accuracy is not None:
+                    metrics["eval/train_test_gap"] = train_accuracy - test_accuracy
 
                 # Log benchmark accuracies
                 for bench_name, bench_data in results.get("benchmarks", {}).items():
@@ -148,13 +273,15 @@ class EpochEvaluationCallback(TrainerCallback):
                 logger.info(f"[{self.strategy_name}] Epoch {epoch} eval metrics logged to WandB")
 
             # Log summary
-            logger.info(f"[{self.strategy_name}] Epoch {epoch} evaluation complete:")
+            logger.info(f"[{self.strategy_name}] Epoch {epoch} benchmark evaluation complete:")
             for key, value in results.get("summary", {}).items():
                 if "accuracy" in key:
                     logger.info(f"  {key}: {value:.2f}%")
 
         except Exception as e:
             logger.error(f"[{self.strategy_name}] Evaluation failed at epoch {epoch}: {e}")
+            import traceback
+            traceback.print_exc()
 
         finally:
             # Clean up temp model (optional - keep for debugging)
@@ -624,13 +751,14 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
             processor=self.processor,
-            full_dataset=full_dataset
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = Trainer(
@@ -730,13 +858,14 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
             processor=self.processor,
-            full_dataset=full_dataset
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = Trainer(
@@ -828,13 +957,14 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
             processor=self.processor,
-            full_dataset=full_dataset
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = Trainer(
@@ -934,13 +1064,14 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
             processor=self.processor,
-            full_dataset=full_dataset
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = Trainer(
@@ -1025,13 +1156,14 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name or f"sft_{benchmark_name}",
             processor=self.processor,
-            full_dataset=full_dataset
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = Trainer(

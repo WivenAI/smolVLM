@@ -41,24 +41,128 @@ logger = logging.getLogger(__name__)
 
 
 class EpochEvaluationCallback(TrainerCallback):
-    """Callback to run full evaluation at the end of each epoch"""
+    """Callback to run full evaluation at the end of each epoch.
 
-    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor):
+    Evaluates on both train and test sets separately to detect memorization vs overfitting:
+    - High train accuracy + low test accuracy = overfitting
+    - High train accuracy + high test accuracy = good generalization
+    - Low train accuracy = underfitting
+    """
+
+    def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor,
+                 train_dataset=None, eval_dataset=None):
         self.config = config
         self.output_dir = Path(output_dir)
         self.strategy_name = strategy_name
         self.processor = processor
+        self.train_dataset = train_dataset
+        self.eval_dataset = eval_dataset
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
 
+    def _compute_dpo_metrics(self, model, dataset, dataset_name="dataset"):
+        """Compute DPO-specific metrics: preference accuracy (chosen > rejected)"""
+        if dataset is None or self.processor is None:
+            return None, None
+
+        model.eval()
+        correct_preferences = 0
+        total = 0
+        total_margin = 0.0
+
+        with torch.no_grad():
+            for idx in range(len(dataset)):
+                try:
+                    item = dataset[idx]
+
+                    # Get prompt, chosen, rejected
+                    prompt = item.get('prompt', '')
+                    chosen = item.get('chosen', '')
+                    rejected = item.get('rejected', '')
+                    images = item.get('images', None)
+
+                    if not prompt or not chosen or not rejected:
+                        continue
+
+                    device = next(model.parameters()).device
+
+                    # Compute log probs for chosen
+                    chosen_text = f"{prompt}{chosen}"
+                    chosen_inputs = self.processor(
+                        text=chosen_text,
+                        images=images[0] if images else None,
+                        return_tensors="pt",
+                        padding=True
+                    )
+                    chosen_inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v
+                                    for k, v in chosen_inputs.items()}
+                    chosen_inputs['labels'] = chosen_inputs['input_ids'].clone()
+                    chosen_outputs = model(**chosen_inputs)
+                    chosen_loss = chosen_outputs.loss.item()
+
+                    # Compute log probs for rejected
+                    rejected_text = f"{prompt}{rejected}"
+                    rejected_inputs = self.processor(
+                        text=rejected_text,
+                        images=images[0] if images else None,
+                        return_tensors="pt",
+                        padding=True
+                    )
+                    rejected_inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v
+                                      for k, v in rejected_inputs.items()}
+                    rejected_inputs['labels'] = rejected_inputs['input_ids'].clone()
+                    rejected_outputs = model(**rejected_inputs)
+                    rejected_loss = rejected_outputs.loss.item()
+
+                    # Lower loss = higher probability = preferred
+                    if chosen_loss < rejected_loss:
+                        correct_preferences += 1
+
+                    margin = rejected_loss - chosen_loss
+                    total_margin += margin
+                    total += 1
+
+                except Exception as e:
+                    logger.warning(f"Error computing DPO metrics for sample {idx} in {dataset_name}: {e}")
+                    continue
+
+        model.train()
+
+        if total > 0:
+            accuracy = (correct_preferences / total) * 100
+            avg_margin = total_margin / total
+            return accuracy, avg_margin
+        return None, None
+
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
-        """Run full evaluation at end of each epoch"""
+        """Run full evaluation at end of each epoch on both train and test sets"""
         epoch = int(state.epoch)
-        logger.info(f"[{self.strategy_name}] Running evaluation at epoch {epoch}...")
+        logger.info(f"[{self.strategy_name}] Running train/test evaluation at epoch {epoch}...")
 
         temp_model_dir = self.output_dir / f"epoch_{epoch}_eval"
         temp_model_dir.mkdir(parents=True, exist_ok=True)
 
         try:
+            # Compute DPO preference accuracy on train and test sets
+            train_pref_acc, train_margin = self._compute_dpo_metrics(model, self.train_dataset, "train")
+            test_pref_acc, test_margin = self._compute_dpo_metrics(model, self.eval_dataset, "test")
+
+            # Log results
+            logger.info(f"[{self.strategy_name}] Epoch {epoch} Train/Test DPO Metrics:")
+            if train_pref_acc is not None:
+                logger.info(f"  Train Preference Accuracy: {train_pref_acc:.2f}% (margin: {train_margin:.4f})")
+            if test_pref_acc is not None:
+                logger.info(f"  Test Preference Accuracy: {test_pref_acc:.2f}% (margin: {test_margin:.4f})")
+
+            # Check for memorization/overfitting
+            if train_pref_acc is not None and test_pref_acc is not None:
+                gap = train_pref_acc - test_pref_acc
+                if gap > 10:
+                    logger.warning(f"  ⚠️ Large train-test gap ({gap:.2f}%): possible OVERFITTING")
+                elif train_pref_acc > 90 and test_pref_acc > 80:
+                    logger.info(f"  ✓ Good generalization (train: {train_pref_acc:.1f}%, test: {test_pref_acc:.1f}%)")
+                elif train_pref_acc < 60:
+                    logger.warning(f"  ⚠️ Low train preference accuracy ({train_pref_acc:.1f}%): DPO not learning preferences")
+
             model.save_pretrained(str(temp_model_dir))
             if self.processor is not None:
                 self.processor.save_pretrained(str(temp_model_dir))
@@ -72,6 +176,19 @@ class EpochEvaluationCallback(TrainerCallback):
 
             if WANDB_AVAILABLE and wandb.run is not None:
                 metrics = {}
+
+                # Log train/test DPO metrics
+                if train_pref_acc is not None:
+                    metrics["eval/train_preference_acc"] = train_pref_acc
+                    metrics["eval/train_margin"] = train_margin
+                if test_pref_acc is not None:
+                    metrics["eval/test_preference_acc"] = test_pref_acc
+                    metrics["eval/test_margin"] = test_margin
+
+                # Log train-test gap (for memorization detection)
+                if train_pref_acc is not None and test_pref_acc is not None:
+                    metrics["eval/train_test_gap"] = train_pref_acc - test_pref_acc
+
                 for bench_name, bench_data in results.get("benchmarks", {}).items():
                     if "accuracy" in bench_data:
                         metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
@@ -96,6 +213,8 @@ class EpochEvaluationCallback(TrainerCallback):
 
         except Exception as e:
             logger.error(f"[{self.strategy_name}] Evaluation failed at epoch {epoch}: {e}")
+            import traceback
+            traceback.print_exc()
 
         return control
 
@@ -389,12 +508,14 @@ class DPOTrainerWrapper:
             dataset_num_proc=2,
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
-            processor=self.processor
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = TRLDPOTrainer(
@@ -487,12 +608,14 @@ class DPOTrainerWrapper:
             dataset_num_proc=2,
         )
 
-        # Create evaluation callback
+        # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
             strategy_name=strategy_name,
-            processor=self.processor
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
         )
 
         trainer = TRLDPOTrainer(
