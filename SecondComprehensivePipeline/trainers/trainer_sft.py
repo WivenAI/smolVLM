@@ -93,17 +93,78 @@ class EpochEvaluationCallback(TrainerCallback):
             return total_loss / num_batches
         return None
 
-    def _compute_dataset_accuracy(self, model, dataset, dataset_name="dataset"):
-        """Compute accuracy on a dataset by generating predictions and comparing to labels.
+    def _normalize_text(self, text: str) -> str:
+        """Normalize text for comparison (lowercase, no punctuation, no whitespace)."""
+        import re
+        text = text.lower()
+        text = re.sub(r'[^\w\s]', '', text)
+        text = re.sub(r'\s+', '', text)
+        return text
 
-        This is useful for QCM datasets where we can compare the predicted letter to the correct answer.
+    def _levenshtein_distance(self, s1: str, s2: str) -> int:
+        """Compute Levenshtein distance between two strings."""
+        if len(s1) < len(s2):
+            return self._levenshtein_distance(s2, s1)
+        if len(s2) == 0:
+            return len(s1)
+
+        previous_row = range(len(s2) + 1)
+        for i, c1 in enumerate(s1):
+            current_row = [i + 1]
+            for j, c2 in enumerate(s2):
+                insertions = previous_row[j + 1] + 1
+                deletions = current_row[j] + 1
+                substitutions = previous_row[j] + (c1 != c2)
+                current_row.append(min(insertions, deletions, substitutions))
+            previous_row = current_row
+
+        return previous_row[-1]
+
+    def _compute_similarity(self, pred: str, label: str) -> float:
+        """Compute normalized similarity (0-1) using Levenshtein distance."""
+        pred_norm = self._normalize_text(pred)
+        label_norm = self._normalize_text(label)
+
+        if not pred_norm and not label_norm:
+            return 1.0
+        if not pred_norm or not label_norm:
+            return 0.0
+
+        distance = self._levenshtein_distance(pred_norm, label_norm)
+        max_len = max(len(pred_norm), len(label_norm))
+        return 1.0 - (distance / max_len)
+
+    def _detect_dataset_type(self) -> str:
+        """Detect dataset type from strategy name."""
+        strategy_lower = self.strategy_name.lower()
+        if 'qcm' in strategy_lower:
+            return 'qcm'
+        elif 'docvqa' in strategy_lower:
+            return 'docvqa'
+        elif 'ocr' in strategy_lower:
+            return 'ocr'
+        elif 'chart' in strategy_lower:
+            return 'chartqa'
+        elif 'dpo' in strategy_lower:
+            return 'dpo'
+        else:
+            return 'benchmark'  # Default for benchmarks
+
+    def _compute_dataset_accuracy(self, model, dataset, dataset_name="dataset"):
+        """Compute accuracy on a dataset using appropriate metric based on dataset type.
+
+        - QCM: Compare first letter (A, B, C, D)
+        - DocVQA/OCR/ChartQA: Use fuzzy matching with Levenshtein similarity
+        - DPO: Use fuzzy matching
         """
         if dataset is None or self.processor is None:
             return None, []
 
+        dataset_type = self._detect_dataset_type()
         model.eval()
         correct = 0
         total = 0
+        total_similarity = 0.0
         results = []
 
         # Create a simple dataloader
@@ -133,34 +194,52 @@ class EpochEvaluationCallback(TrainerCallback):
                     if pixel_values is not None:
                         gen_inputs['pixel_values'] = pixel_values
 
+                    # Generate more tokens for non-QCM datasets
+                    max_tokens = 10 if dataset_type == 'qcm' else 50
+
                     outputs = model.generate(
                         **gen_inputs,
-                        max_new_tokens=10,
+                        max_new_tokens=max_tokens,
                         do_sample=False,
                         pad_token_id=self.processor.tokenizer.pad_token_id
                     )
 
                     # Decode prediction and label
                     pred_tokens = outputs[0][input_ids.shape[1]:]
-                    pred_text = self.processor.decode(pred_tokens, skip_special_tokens=True).strip().upper()
+                    pred_text = self.processor.decode(pred_tokens, skip_special_tokens=True).strip()
 
                     # Get actual label text (non -100 tokens)
                     label_tokens = labels[0][labels[0] != -100]
-                    label_text = self.processor.decode(label_tokens, skip_special_tokens=True).strip().upper()
+                    label_text = self.processor.decode(label_tokens, skip_special_tokens=True).strip()
 
-                    # For QCM, compare first letter
-                    pred_letter = pred_text[0] if pred_text else ""
-                    label_letter = label_text[0] if label_text else ""
+                    # Use appropriate metric based on dataset type
+                    if dataset_type == 'qcm':
+                        # QCM: Compare first letter
+                        pred_letter = pred_text.upper()[0] if pred_text else ""
+                        label_letter = label_text.upper()[0] if label_text else ""
+                        is_correct = pred_letter == label_letter
+                        similarity = 1.0 if is_correct else 0.0
+                    else:
+                        # DocVQA/OCR/ChartQA/DPO: Use fuzzy matching
+                        similarity = self._compute_similarity(pred_text, label_text)
+                        # Consider correct if similarity > 0.8 or exact normalized match
+                        pred_norm = self._normalize_text(pred_text)
+                        label_norm = self._normalize_text(label_text)
+                        is_correct = (similarity > 0.8 or
+                                     pred_norm == label_norm or
+                                     label_norm in pred_norm or
+                                     pred_norm in label_norm)
 
-                    is_correct = pred_letter == label_letter
                     if is_correct:
                         correct += 1
                     total += 1
+                    total_similarity += similarity
 
                     results.append({
                         "prediction": pred_text,
                         "label": label_text,
-                        "is_correct": is_correct
+                        "is_correct": is_correct,
+                        "similarity": similarity
                     })
 
                 except Exception as e:
@@ -171,6 +250,9 @@ class EpochEvaluationCallback(TrainerCallback):
 
         if total > 0:
             accuracy = (correct / total) * 100
+            avg_similarity = (total_similarity / total) * 100
+            # Log both metrics
+            logger.info(f"  [{dataset_name}] Accuracy: {accuracy:.2f}%, Avg Similarity: {avg_similarity:.2f}%")
             return accuracy, results
         return None, results
 
