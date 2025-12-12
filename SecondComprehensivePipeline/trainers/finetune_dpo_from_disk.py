@@ -258,8 +258,7 @@ def main():
         print(f"GPU memory: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
 
     # DPO Training config (OPTIMIZED)
-    import multiprocessing
-    num_workers = min(2, multiprocessing.cpu_count())  # Max 2 workers to avoid overhead
+    num_workers = 0  # Disable multiprocessing to avoid broken pipe errors
 
     training_args = DPOConfig(
         output_dir=args.output_dir,

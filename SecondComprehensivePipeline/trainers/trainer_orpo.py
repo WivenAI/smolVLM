@@ -535,13 +535,13 @@ class ORPOTrainerWrapper:
             save_total_limit=2,
             bf16=torch.cuda.is_available(),
             dataloader_pin_memory=True,
-            dataloader_num_workers=2,
+            dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=2,
+            dataset_num_proc=1,
             gradient_checkpointing=True,
             optim="adamw_8bit",
         )
@@ -648,14 +648,14 @@ class ORPOTrainerWrapper:
             save_total_limit=2,
             bf16=torch.cuda.is_available(),
             dataloader_pin_memory=True,
-            dataloader_num_workers=2,
+            dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             # ORPO-specific parameters
             beta=0.1,  # Odds ratio strength (controls preference learning)
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=2,
+            dataset_num_proc=1,
             # Memory optimizations
             gradient_checkpointing=True,
             optim="adamw_8bit",  # 8-bit optimizer for memory savings

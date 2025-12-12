@@ -498,14 +498,14 @@ class DPOTrainerWrapper:
             save_total_limit=2,
             bf16=torch.cuda.is_available(),
             dataloader_pin_memory=True,
-            dataloader_num_workers=2,
+            dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             loss_type="sigmoid",
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=2,
+            dataset_num_proc=1,
         )
 
         # Create evaluation callback with separate train/test datasets
@@ -598,14 +598,14 @@ class DPOTrainerWrapper:
             save_total_limit=2,
             bf16=torch.cuda.is_available(),
             dataloader_pin_memory=True,
-            dataloader_num_workers=2,
+            dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             loss_type="sigmoid",
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=2,
+            dataset_num_proc=1,
         )
 
         # Create evaluation callback with separate train/test datasets
