@@ -171,7 +171,6 @@ class Pipeline:
 
         from trainers.trainer_sft import train_sft
         from trainers.trainer_dpo import train_dpo
-        from trainers.trainer_orpo import train_orpo
         from trainers.trainer_full_finetune import train_full_finetune
 
         for strategy in strategies:
@@ -203,55 +202,6 @@ class Pipeline:
                         max_samples=self.config.get("training", {}).get("train_samples"),
                         strategy_name=name
                     )
-                elif strategy_type == "orpo":
-                    train_orpo(self.config, strategy, str(model_output_dir))
-                elif strategy_type == "orpo_benchmark":
-                    # ORPO training on benchmark dataset
-                    from trainers.trainer_orpo import ORPOTrainerWrapper
-                    trainer = ORPOTrainerWrapper(self.config)
-                    trainer.load_model()
-                    benchmark_name = strategy.get("benchmark")
-                    trainer.train_benchmark(
-                        benchmark_name=benchmark_name,
-                        output_dir=str(model_output_dir),
-                        use_wandb=self.config.get("pipeline", {}).get("use_wandb", True),
-                        max_samples=self.config.get("training", {}).get("train_samples"),
-                        strategy_name=name
-                    )
-                elif strategy_type == "qcm_then_orpo":
-                    # First train with QCM, then ORPO on preference data
-                    qcm_strategy = {
-                        "type": "sft_qcm",
-                        "dataset": strategy["qcm_dataset"],
-                        "image_dir": strategy["image_dir"]
-                    }
-                    qcm_output = model_output_dir / "qcm_stage"
-                    train_sft(self.config, qcm_strategy, str(qcm_output))
-
-                    # Then ORPO on preference data
-                    orpo_strategy = {
-                        "type": "orpo",
-                        "dataset": strategy["orpo_dataset"],
-                        "image_dir": strategy["image_dir"]
-                    }
-                    train_orpo(self.config, orpo_strategy, str(model_output_dir), base_model=str(qcm_output))
-                elif strategy_type == "orpo_then_qcm":
-                    # First train with ORPO, then QCM
-                    orpo_strategy = {
-                        "type": "orpo",
-                        "dataset": strategy["orpo_dataset"],
-                        "image_dir": strategy["image_dir"]
-                    }
-                    orpo_output = model_output_dir / "orpo_stage"
-                    train_orpo(self.config, orpo_strategy, str(orpo_output))
-
-                    # Then QCM on top
-                    qcm_strategy = {
-                        "type": "sft_qcm",
-                        "dataset": strategy["qcm_dataset"],
-                        "image_dir": strategy["image_dir"]
-                    }
-                    train_sft(self.config, qcm_strategy, str(model_output_dir), base_model=str(orpo_output))
                 elif strategy_type == "sft_qcm_dpo":
                     # First train with QCM
                     qcm_strategy = {

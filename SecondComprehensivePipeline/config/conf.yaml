@@ -54,22 +54,6 @@ training:
       type: "dpo_benchmark"
       benchmark: "chartqa"
 
-    # ORPO on benchmarks - DISABLED: TRL ORPOTrainer doesn't officially support VLMs
-    - name: "orpo_docvqa"
-      enabled: false
-      type: "orpo_benchmark"
-      benchmark: "docvqa"
-
-    - name: "orpo_ocrbench"
-      enabled: false
-      type: "orpo_benchmark"
-      benchmark: "ocrbench"
-
-    - name: "orpo_chartqa"
-      enabled: false
-      type: "orpo_benchmark"
-      benchmark: "chartqa"
-
     - name: "erp_qcm_gemini"
       enabled: true
       type: "sft_qcm"
@@ -120,49 +104,6 @@ training:
       enabled: true
       type: "dpo_then_qcm"
       dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # ORPO - DISABLED: TRL ORPOTrainer doesn't officially support VLMs
-    - name: "erp_orpo_gemini"
-      enabled: false
-      type: "orpo"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_orpo_nova"
-      enabled: false
-      type: "orpo"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Combined: QCM first, then ORPO - DISABLED: ORPO doesn't support VLMs
-    - name: "erp_qcm_orpo_gemini"
-      enabled: false
-      type: "qcm_then_orpo"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      orpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_qcm_orpo_nova"
-      enabled: false
-      type: "qcm_then_orpo"
-      qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      orpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Combined: ORPO first, then QCM - DISABLED: ORPO doesn't support VLMs
-    - name: "erp_orpo_qcm_gemini"
-      enabled: false
-      type: "orpo_then_qcm"
-      orpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_orpo_qcm_nova"
-      enabled: false
-      type: "orpo_then_qcm"
-      orpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
