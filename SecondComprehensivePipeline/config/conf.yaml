@@ -324,6 +324,6 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: "SmolVLM-Anti-Hallucination"
+  wandb_project: "SecondComprehensivePipeline"
   debug_mode: false  # If true, use only 10 samples
   num_workers: 1
