@@ -360,6 +360,18 @@ evaluation:
       max_samples: 30000
       lang: "en"  # Language for BERTScore
 
+    rouge_gemini:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+      max_samples: 30000
+
+    rouge_nova:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+      max_samples: 30000
+
 # Paths
 paths:
   output_dir: "modelweights"

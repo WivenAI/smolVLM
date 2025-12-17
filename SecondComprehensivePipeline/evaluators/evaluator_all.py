@@ -15,6 +15,7 @@ from .evaluator_qcm import QCMEvaluator
 from .evaluator_qcm_claudette import QCMClaudetteEvaluator
 from .evaluator_logprob import LogProbEvaluator
 from .evaluator_bertscore import BertScoreEvaluator
+from .evaluator_rouge import RougeEvaluator
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,7 @@ class EvaluatorAll:
         self.qcm_claudette_evaluator = QCMClaudetteEvaluator(cache_dir)
         self.logprob_evaluator = LogProbEvaluator(cache_dir)
         self.bertscore_evaluator = BertScoreEvaluator(cache_dir)
+        self.rouge_evaluator = RougeEvaluator(cache_dir)
 
     def evaluate_all(self, model_path: str = None, model_name: str = "model") -> Dict[str, Any]:
         """
@@ -240,6 +242,41 @@ class EvaluatorAll:
             except Exception as e:
                 logger.error(f"Error evaluating BERTScore: {e}")
                 all_results["erp_evaluation"]["bertscore"] = {"error": str(e)}
+
+        # ROUGE evaluations for DPO datasets (Gemini and Nova)
+        for rouge_name in ["rouge_gemini", "rouge_nova"]:
+            rouge_config = erp_config.get(rouge_name, {})
+            if rouge_config.get("enabled", False):
+                logger.info(f"Evaluating with ROUGE ({rouge_name})...")
+                try:
+                    if model_path:
+                        self.rouge_evaluator.load_model(model_path)
+                    else:
+                        self.rouge_evaluator.load_base_model()
+
+                    base_path = Path(__file__).parent.parent
+                    dataset_path = base_path / rouge_config["dataset"]
+                    image_dir = base_path / rouge_config["image_dir"]
+
+                    result = self.rouge_evaluator.evaluate(
+                        dataset_path=str(dataset_path),
+                        image_dir=str(image_dir),
+                        max_samples=rouge_config.get("max_samples")
+                    )
+                    all_results["erp_evaluation"][rouge_name] = {
+                        "accuracy": result["accuracy"],
+                        "total_samples": result["total_samples"],
+                        "rouge1": result["rouge1"],
+                        "rouge2": result["rouge2"],
+                        "rougeL": result["rougeL"]
+                    }
+                    logger.info(f"{rouge_name} ROUGE-L: {result['rougeL']:.4f}")
+                except Exception as e:
+                    logger.error(f"Error evaluating {rouge_name}: {e}")
+                    all_results["erp_evaluation"][rouge_name] = {"error": str(e)}
+                finally:
+                    # Clean up GPU memory after evaluation
+                    self.rouge_evaluator._cleanup_model()
 
         # Calculate summary
         benchmark_accs = [v["accuracy"] for v in all_results["benchmarks"].values() if "accuracy" in v]

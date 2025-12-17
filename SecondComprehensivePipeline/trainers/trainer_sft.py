@@ -41,13 +41,18 @@ logger = logging.getLogger(__name__)
 
 
 class EpochEvaluationCallback(TrainerCallback):
-    """Callback to run full evaluation at the end of each epoch.
+    """Callback to run full evaluation at the end of each epoch and at specific steps.
 
     Evaluates on both train and test sets separately to detect memorization vs overfitting:
     - High train accuracy + low test accuracy = overfitting
     - High train accuracy + high test accuracy = good generalization
     - Low train accuracy = underfitting
+
+    Also runs evaluation at steps 0, 5, 10, 50 to detect early training issues.
     """
+
+    # Steps at which to run early evaluation (to detect model breaking)
+    EARLY_EVAL_STEPS = [0, 5, 10, 50]
 
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str,
                  processor=None, train_dataset=None, eval_dataset=None):
@@ -58,6 +63,34 @@ class EpochEvaluationCallback(TrainerCallback):
         self.train_dataset = train_dataset
         self.eval_dataset = eval_dataset
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
+        self._initial_eval_done = False
+        self._evaluated_steps = set()  # Track which steps we've evaluated
+
+    def on_train_begin(self, args, state, control, model=None, **kwargs):
+        """Run baseline evaluation at step 0 before any training."""
+        if self._initial_eval_done:
+            return control
+
+        self._initial_eval_done = True
+        self._evaluated_steps.add(0)
+        logger.info(f"[{self.strategy_name}] Running BASELINE evaluation at step 0 (before training)...")
+
+        # Reuse on_epoch_end logic with epoch=0
+        self._run_evaluation(args, state, control, model, epoch=0, is_step_eval=True)
+
+        return control
+
+    def on_step_end(self, args, state, control, model=None, **kwargs):
+        """Run evaluation at specific early steps to detect model breaking."""
+        current_step = state.global_step
+
+        # Check if this step should trigger evaluation
+        if current_step in self.EARLY_EVAL_STEPS and current_step not in self._evaluated_steps:
+            self._evaluated_steps.add(current_step)
+            logger.info(f"[{self.strategy_name}] Running EARLY evaluation at step {current_step}...")
+            self._run_evaluation(args, state, control, model, epoch=current_step, is_step_eval=True)
+
+        return control
 
     def _compute_dataset_loss(self, model, dataset, dataset_name="dataset"):
         """Compute loss on a given dataset"""
@@ -213,22 +246,37 @@ class EpochEvaluationCallback(TrainerCallback):
         """Run full evaluation at end of each epoch on both train and test sets"""
         epoch = int(state.epoch)
         logger.info(f"[{self.strategy_name}] Running train/test evaluation at epoch {epoch}...")
+        self._run_evaluation(args, state, control, model, epoch=epoch, is_step_eval=False)
+        return control
 
-        # Save model temporarily for evaluation
-        temp_model_dir = self.output_dir / f"epoch_{epoch}_eval"
+    def _run_evaluation(self, args, state, control, model, epoch: int, is_step_eval: bool = False):
+        """
+        Shared evaluation logic for both step-based and epoch-based evaluation.
+
+        Args:
+            epoch: For step eval, this is the step number. For epoch eval, this is the epoch number.
+            is_step_eval: If True, only evaluate test set (faster). If False, evaluate both train and test.
+        """
+        eval_type = "step" if is_step_eval else "epoch"
+        temp_model_dir = self.output_dir / f"{eval_type}_{epoch}_eval"
         temp_model_dir.mkdir(parents=True, exist_ok=True)
 
         try:
-            # Compute loss on train and test sets separately
-            train_loss = self._compute_dataset_loss(model, self.train_dataset, "train")
-            test_loss = self._compute_dataset_loss(model, self.eval_dataset, "test")
+            # For step eval, only compute test metrics (faster)
+            # For epoch eval, compute both train and test metrics
+            train_loss = None
+            train_accuracy = None
+            train_results = []
 
-            # Compute accuracy on train and test sets
-            train_accuracy, train_results = self._compute_dataset_accuracy(model, self.train_dataset, "train")
+            if not is_step_eval:
+                train_loss = self._compute_dataset_loss(model, self.train_dataset, "train")
+                train_accuracy, train_results = self._compute_dataset_accuracy(model, self.train_dataset, "train")
+
+            test_loss = self._compute_dataset_loss(model, self.eval_dataset, "test")
             test_accuracy, test_results = self._compute_dataset_accuracy(model, self.eval_dataset, "test")
 
             # Log results
-            logger.info(f"[{self.strategy_name}] Epoch {epoch} Train/Test Metrics:")
+            logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} Metrics:")
             if train_loss is not None:
                 logger.info(f"  Train Loss: {train_loss:.4f}")
             if test_loss is not None:
@@ -238,8 +286,8 @@ class EpochEvaluationCallback(TrainerCallback):
             if test_accuracy is not None:
                 logger.info(f"  Test Accuracy: {test_accuracy:.2f}%")
 
-            # Check for memorization/overfitting
-            if train_accuracy is not None and test_accuracy is not None:
+            # Check for memorization/overfitting (only for epoch eval)
+            if not is_step_eval and train_accuracy is not None and test_accuracy is not None:
                 gap = train_accuracy - test_accuracy
                 if gap > 10:
                     logger.warning(f"  ⚠️ Large train-test gap ({gap:.2f}%): possible OVERFITTING")
@@ -260,7 +308,7 @@ class EpochEvaluationCallback(TrainerCallback):
             evaluator = EvaluatorAll(self.config, str(self.cache_dir))
             results = evaluator.evaluate_all(
                 model_path=str(temp_model_dir),
-                model_name=f"{self.strategy_name}_epoch{epoch}"
+                model_name=f"{self.strategy_name}_{eval_type}{epoch}"
             )
 
             # Log to WandB
@@ -296,35 +344,53 @@ class EpochEvaluationCallback(TrainerCallback):
                     metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
                 if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
                     metrics["eval/qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
+
+                # Log DPO logprob metrics
                 if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
                     metrics["eval/dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
+                    if "margin_mean" in erp["dpo_logprobs"]:
+                        metrics["eval/dpo_logprob_margin"] = erp["dpo_logprobs"]["margin_mean"]
+
+                # Log ROUGE metrics for gemini and nova DPO
+                if "rouge_gemini" in erp and "accuracy" in erp["rouge_gemini"]:
+                    metrics["eval/rouge_gemini_acc"] = erp["rouge_gemini"]["accuracy"]
+                    metrics["eval/rouge_gemini_rouge1"] = erp["rouge_gemini"].get("rouge1", 0)
+                    metrics["eval/rouge_gemini_rouge2"] = erp["rouge_gemini"].get("rouge2", 0)
+                    metrics["eval/rouge_gemini_rougeL"] = erp["rouge_gemini"].get("rougeL", 0)
+                if "rouge_nova" in erp and "accuracy" in erp["rouge_nova"]:
+                    metrics["eval/rouge_nova_acc"] = erp["rouge_nova"]["accuracy"]
+                    metrics["eval/rouge_nova_rouge1"] = erp["rouge_nova"].get("rouge1", 0)
+                    metrics["eval/rouge_nova_rouge2"] = erp["rouge_nova"].get("rouge2", 0)
+                    metrics["eval/rouge_nova_rougeL"] = erp["rouge_nova"].get("rougeL", 0)
+
+                # Log BERTScore metrics
+                if "bertscore" in erp and "f1" in erp["bertscore"]:
+                    metrics["eval/bertscore_f1"] = erp["bertscore"]["f1"]
+                    metrics["eval/bertscore_precision"] = erp["bertscore"].get("precision", 0)
+                    metrics["eval/bertscore_recall"] = erp["bertscore"].get("recall", 0)
 
                 # Log average
                 if results.get("summary", {}).get("avg_benchmark_accuracy"):
                     metrics["eval/avg_benchmark_acc"] = results["summary"]["avg_benchmark_accuracy"]
 
+                # Log epoch/step number explicitly
+                metrics[eval_type] = epoch
+                metrics["global_step"] = state.global_step
+
                 # Log all metrics at current step
                 wandb.log(metrics, step=state.global_step)
-                logger.info(f"[{self.strategy_name}] Epoch {epoch} eval metrics logged to WandB")
+                logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged to WandB")
 
             # Log summary
-            logger.info(f"[{self.strategy_name}] Epoch {epoch} benchmark evaluation complete:")
+            logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} benchmark evaluation complete:")
             for key, value in results.get("summary", {}).items():
                 if "accuracy" in key:
                     logger.info(f"  {key}: {value:.2f}%")
 
         except Exception as e:
-            logger.error(f"[{self.strategy_name}] Evaluation failed at epoch {epoch}: {e}")
+            logger.error(f"[{self.strategy_name}] Evaluation failed at {eval_type} {epoch}: {e}")
             import traceback
             traceback.print_exc()
-
-        finally:
-            # Clean up temp model (optional - keep for debugging)
-            # import shutil
-            # shutil.rmtree(temp_model_dir, ignore_errors=True)
-            pass
-
-        return control
 
 
 @dataclass
