@@ -8,7 +8,7 @@ model:
 
 # Training configurations to run
 training:
-  epochs: 5
+  epochs: 30
   train_samples: 1000
   batch_size: 1
   gradient_accumulation_steps: 1
@@ -324,6 +324,6 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: "SmallVLM-NoHallucinations"
+  wandb_project: "SmolVLM-Anti-Hallucination"
   debug_mode: false  # If true, use only 10 samples
   num_workers: 1
