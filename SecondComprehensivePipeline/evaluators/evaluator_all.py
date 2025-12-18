@@ -114,8 +114,8 @@ class EvaluatorAll:
         # ERP-specific evaluations
         erp_config = eval_config.get("erp_evaluation", {})
 
-        # QCM evaluations (Gemini and Nova)
-        for qcm_name in ["qcm_gemini", "qcm_nova"]:
+        # QCM evaluations (Gemini, Nova, and Procedure)
+        for qcm_name in ["qcm_gemini", "qcm_nova", "qcm_procedure1", "qcm_procedure2"]:
             qcm_config = erp_config.get(qcm_name, {})
             if qcm_config.get("enabled", False):
                 logger.info(f"Evaluating on ERP {qcm_name}...")
@@ -284,7 +284,7 @@ class EvaluatorAll:
             all_results["summary"]["avg_benchmark_accuracy"] = sum(benchmark_accs) / len(benchmark_accs)
 
         # Add QCM accuracies to summary
-        for qcm_name in ["qcm_gemini", "qcm_nova", "qcm_claudette"]:
+        for qcm_name in ["qcm_gemini", "qcm_nova", "qcm_claudette", "qcm_procedure1", "qcm_procedure2"]:
             if qcm_name in all_results["erp_evaluation"] and "accuracy" in all_results["erp_evaluation"][qcm_name]:
                 all_results["summary"][f"erp_{qcm_name}_accuracy"] = all_results["erp_evaluation"][qcm_name]["accuracy"]
 

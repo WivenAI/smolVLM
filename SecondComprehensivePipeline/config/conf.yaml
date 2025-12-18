@@ -74,6 +74,27 @@ training:
         - "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
+    # Procedure QCM training (new datasets)
+    - name: "erp_qcm_procedure1"
+      enabled: true
+      type: "sft_qcm"
+      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
+      image_dir: "datasets/procedureimages"
+
+    - name: "erp_qcm_procedure2"
+      enabled: true
+      type: "sft_qcm"
+      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
+      image_dir: "datasets/procedureimages"
+
+    - name: "erp_qcm_procedure_combined"
+      enabled: true
+      type: "sft_qcm_combined"
+      datasets:
+        - "datasets/qcm/qcm_procedure1_claude_code.json"
+        - "datasets/qcm/qcm_procedure2_geminicli.json"
+      image_dir: "datasets/procedureimages"
+
     - name: "erp_dpo_gemini"
       enabled: true
       type: "dpo"
@@ -286,6 +307,18 @@ evaluation:
     qcm_claudette:
       enabled: true
       dataset: "datasets/qcm/qcm_claudette.json"
+      max_samples: 30000
+
+    qcm_procedure1:
+      enabled: true
+      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
+      image_dir: "datasets/procedureimages"
+      max_samples: 30000
+
+    qcm_procedure2:
+      enabled: true
+      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
+      image_dir: "datasets/procedureimages"
       max_samples: 30000
 
     dpo_logprobs:

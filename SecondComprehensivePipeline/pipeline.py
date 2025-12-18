@@ -469,6 +469,12 @@ class Pipeline:
             if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
                 row["qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
 
+            # QCM Procedure
+            if "qcm_procedure1" in erp and "accuracy" in erp["qcm_procedure1"]:
+                row["qcm_procedure1_acc"] = erp["qcm_procedure1"]["accuracy"]
+            if "qcm_procedure2" in erp and "accuracy" in erp["qcm_procedure2"]:
+                row["qcm_procedure2_acc"] = erp["qcm_procedure2"]["accuracy"]
+
             # DPO LogProb
             if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
                 row["dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]

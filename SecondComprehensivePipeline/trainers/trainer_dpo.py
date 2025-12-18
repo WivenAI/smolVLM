@@ -52,7 +52,7 @@ class EpochEvaluationCallback(TrainerCallback):
     """
 
     # Steps at which to run early evaluation (to detect model breaking)
-    EARLY_EVAL_STEPS = [0, 5, 10, 50]
+    EARLY_EVAL_STEPS = [0, 1, 5, 10, 20, 50, 100]
 
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor,
                  train_dataset=None, eval_dataset=None):
@@ -235,6 +235,10 @@ class EpochEvaluationCallback(TrainerCallback):
                     metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
                 if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
                     metrics["eval/qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
+                if "qcm_procedure1" in erp and "accuracy" in erp["qcm_procedure1"]:
+                    metrics["eval/qcm_procedure1_acc"] = erp["qcm_procedure1"]["accuracy"]
+                if "qcm_procedure2" in erp and "accuracy" in erp["qcm_procedure2"]:
+                    metrics["eval/qcm_procedure2_acc"] = erp["qcm_procedure2"]["accuracy"]
 
                 # Log DPO logprob metrics
                 if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
