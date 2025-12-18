@@ -54,6 +54,9 @@ class EpochEvaluationCallback(TrainerCallback):
     # Steps at which to run early evaluation (to detect model breaking)
     EARLY_EVAL_STEPS = [0, 1, 5, 10, 20, 50, 100]
 
+    # Epochs at which to run evaluation (skip 11-19, 21-29)
+    EVAL_EPOCHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30]
+
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor,
                  train_dataset=None, eval_dataset=None):
         self.config = config
@@ -152,8 +155,11 @@ class EpochEvaluationCallback(TrainerCallback):
         return control
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
-        """Run full evaluation at end of each epoch on both train and test sets"""
+        """Run full evaluation at end of specific epochs on both train and test sets"""
         epoch = int(state.epoch)
+        if epoch not in self.EVAL_EPOCHS:
+            logger.info(f"[{self.strategy_name}] Skipping evaluation at epoch {epoch} (not in EVAL_EPOCHS)")
+            return control
         logger.info(f"[{self.strategy_name}] Running train/test evaluation at epoch {epoch}...")
         self._run_evaluation(args, state, control, model, epoch=epoch, is_step_eval=False)
         return control
