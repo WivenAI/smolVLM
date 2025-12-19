@@ -701,8 +701,8 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         else:
             answer = "Unknown"
 
-        # Format using chat template
-        messages = [
+        # Format using chat template - separate prompt and full text for proper masking
+        user_message = [
             {
                 "role": "user",
                 "content": [
@@ -710,16 +710,30 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     {"type": "image"},
                     {"type": "text", "text": question}
                 ]
-            },
+            }
+        ]
+
+        full_messages = user_message + [
             {
                 "role": "assistant",
                 "content": [{"type": "text", "text": answer}]
             }
         ]
-        full_text = self.processor.apply_chat_template(messages, add_generation_prompt=False)
 
-        # Process inputs
-        inputs = self.processor(
+        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True, tokenize=False)
+        full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False, tokenize=False)
+
+        # Process prompt separately to get its length
+        prompt_inputs = self.processor(
+            text=prompt_text,
+            images=image,
+            return_tensors="pt",
+            padding=True,
+            size={"longest_edge": 1024}
+        )
+
+        # Process full text
+        full_inputs = self.processor(
             text=full_text,
             images=image,
             return_tensors="pt",
@@ -727,23 +741,15 @@ class BenchmarkDataset(torch.utils.data.Dataset):
             size={"longest_edge": 1024}
         )
 
-        # Flatten tensors
-        for key in inputs:
-            inputs[key] = inputs[key].squeeze(0)
+        # Mask prompt tokens - only train on the answer
+        prompt_length = prompt_inputs["input_ids"].shape[1]
+        labels = full_inputs["input_ids"].clone()
+        labels[:, :prompt_length] = -100
 
-        # Get image token ID
-        image_token_id = self.processor.tokenizer.additional_special_tokens_ids[
-            self.processor.tokenizer.additional_special_tokens.index("<image>")
-        ]
-
-        # Clone input_ids for labels
-        inputs["labels"] = inputs["input_ids"].clone()
-
-        # Mask padding tokens
-        inputs["labels"][inputs["labels"] == self.processor.tokenizer.pad_token_id] = -100
-
-        # Mask image tokens
-        inputs["labels"][inputs["labels"] == image_token_id] = -100
+        inputs = {}
+        for key in full_inputs:
+            inputs[key] = full_inputs[key].squeeze(0)
+        inputs["labels"] = labels.squeeze(0)
 
         return inputs
 
