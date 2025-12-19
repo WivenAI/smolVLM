@@ -202,6 +202,22 @@ class Pipeline:
                         max_samples=self.config.get("training", {}).get("train_samples"),
                         strategy_name=name
                     )
+                elif strategy_type == "dpo_qcm":
+                    # DPO training on QCM dataset (correct answer as chosen, random wrong as rejected)
+                    from trainers.trainer_dpo import DPOTrainerWrapper
+                    trainer = DPOTrainerWrapper(self.config)
+                    trainer.load_model()
+                    base_path = self.base_path
+                    dataset_path = base_path / strategy["dataset"]
+                    image_dir = base_path / strategy["image_dir"]
+                    trainer.train_qcm(
+                        dataset_path=str(dataset_path),
+                        image_dir=str(image_dir),
+                        output_dir=str(model_output_dir),
+                        use_wandb=self.config.get("pipeline", {}).get("use_wandb", True),
+                        max_samples=self.config.get("training", {}).get("train_samples"),
+                        strategy_name=name
+                    )
                 elif strategy_type == "sft_qcm_chosen_rej":
                     # First train with QCM
                     qcm_strategy = {

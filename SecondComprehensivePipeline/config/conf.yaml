@@ -95,6 +95,31 @@ training:
         - "datasets/qcm/qcm_procedure2_geminicli.json"
       image_dir: "datasets/procedureimages"
 
+    # DPO on QCM datasets (correct answer as chosen, random wrong as rejected)
+    - name: "dpo_qcm_gemini"
+      enabled: true
+      type: "dpo_qcm"
+      dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "dpo_qcm_nova"
+      enabled: true
+      type: "dpo_qcm"
+      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    - name: "dpo_qcm_procedure1"
+      enabled: true
+      type: "dpo_qcm"
+      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
+      image_dir: "datasets/procedureimages"
+
+    - name: "dpo_qcm_procedure2"
+      enabled: true
+      type: "dpo_qcm"
+      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
+      image_dir: "datasets/procedureimages"
+
     - name: "erp_dpo_gemini"
       enabled: true
       type: "dpo"

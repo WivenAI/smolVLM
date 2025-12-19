@@ -402,6 +402,85 @@ class DPOTrainerWrapper:
         logger.info(f"Prepared {len(dpo_data)} DPO samples with images")
         return Dataset.from_list(dpo_data)
 
+    def prepare_qcm_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
+        """Prepare DPO dataset from QCM by using correct answer as chosen and random wrong answer as rejected"""
+        logger.info(f"Preparing DPO dataset from QCM: {dataset_path}")
+
+        with open(dataset_path, 'r', encoding='utf-8') as f:
+            raw_data = json.load(f)
+
+        image_dir = Path(image_dir)
+
+        dpo_data = []
+        skipped_missing_image = 0
+        skipped_load_error = 0
+
+        for item in raw_data:
+            # Get image
+            image_name = item.get('image_name', '')
+            image = None
+
+            if image_name:
+                image_path = image_dir / image_name
+                if image_path.exists():
+                    try:
+                        image = Image.open(image_path).convert('RGB')
+                        image.thumbnail((384, 384))
+                    except Exception as e:
+                        logger.warning(f"Failed to load image {image_path}: {e}")
+                        skipped_load_error += 1
+                        continue
+                else:
+                    skipped_missing_image += 1
+                    continue
+            else:
+                # Create placeholder for samples without images
+                image = Image.new('RGB', (384, 384), color='white')
+
+            # Get QCM data
+            qcm_data = item.get('qcm', item)
+            question = qcm_data.get('question', '')
+            options = qcm_data.get('options', {})
+            correct_answer = qcm_data.get('correct_answer', '')
+
+            if not question or not options or not correct_answer:
+                continue
+
+            # Format the question with options
+            options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
+            prompt = f"<image>{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
+
+            # Chosen = correct answer letter
+            chosen = correct_answer
+
+            # Rejected = random wrong answer letter
+            wrong_options = [key for key in options.keys() if key != correct_answer]
+            if wrong_options:
+                rejected = random.choice(wrong_options)
+            else:
+                rejected = "X"  # Fallback
+
+            dpo_data.append({
+                'prompt': prompt,
+                'chosen': chosen,
+                'rejected': rejected,
+                'images': [image]
+            })
+
+        # Apply sample limit if specified
+        if max_samples is not None and len(dpo_data) > max_samples:
+            logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
+            dpo_data = dpo_data[:max_samples]
+
+        # Log summary of skipped samples
+        total_skipped = skipped_missing_image + skipped_load_error
+        if total_skipped > 0:
+            logger.warning(f"Skipped {total_skipped} samples: {skipped_missing_image} missing images, "
+                          f"{skipped_load_error} load errors")
+
+        logger.info(f"Prepared {len(dpo_data)} DPO samples from QCM")
+        return Dataset.from_list(dpo_data)
+
     def prepare_benchmark_dpo_dataset(self, benchmark_name: str, max_samples: int = None) -> Dataset:
         """Prepare DPO dataset from benchmark by using correct answer as chosen and random wrong answer as rejected"""
         logger.info(f"Preparing DPO dataset from benchmark: {benchmark_name}")
@@ -545,6 +624,105 @@ class DPOTrainerWrapper:
         # Get training config values
         num_epochs = int(self.config.get("training", {}).get("epochs", 3))
         # Use DPO-specific learning rate if available, otherwise fall back to general LR
+        learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
+                              self.config.get("training", {}).get("learning_rate", 5e-7)))
+        gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
+
+        # DPO config
+        training_args = DPOConfig(
+            output_dir=output_dir,
+            num_train_epochs=num_epochs,
+            per_device_train_batch_size=1,
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=gradient_accumulation_steps,
+            learning_rate=learning_rate,
+            lr_scheduler_type="cosine",
+            warmup_steps=50,
+            weight_decay=0.01,
+            logging_steps=10,
+            eval_strategy="steps",
+            eval_steps=100,
+            save_strategy="epoch",
+            save_total_limit=2,
+            bf16=torch.cuda.is_available(),
+            dataloader_pin_memory=True,
+            dataloader_num_workers=0,
+            remove_unused_columns=False,
+            report_to="wandb" if use_wandb else "none",
+            beta=0.1,
+            loss_type="sigmoid",
+            max_length=512,
+            max_prompt_length=256,
+            dataset_num_proc=1,
+        )
+
+        # Create evaluation callback with separate train/test datasets
+        eval_callback = EpochEvaluationCallback(
+            config=self.config,
+            output_dir=output_dir,
+            strategy_name=strategy_name,
+            processor=self.processor,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset
+        )
+
+        trainer = TRLDPOTrainer(
+            model=self.model,
+            ref_model=None,
+            args=training_args,
+            train_dataset=train_dataset,
+            eval_dataset=eval_dataset,
+            processing_class=self.processor,
+            callbacks=[eval_callback],
+        )
+
+        trainer.train()
+
+        # Save model
+        trainer.save_model(output_dir)
+        self.processor.save_pretrained(output_dir)
+
+        # Finish WandB run
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.finish()
+
+        # Cleanup
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        logger.info(f"Model saved to: {output_dir}")
+        return output_dir
+
+    def train_qcm(self, dataset_path: str, image_dir: str, output_dir: str,
+                  use_wandb: bool = True, max_samples: int = None,
+                  strategy_name: str = "dpo_qcm") -> str:
+        """Train using DPO on QCM dataset (correct answer as chosen, random wrong as rejected)"""
+        if self.model is None:
+            self.load_model()
+
+        # Initialize WandB run for this strategy
+        if use_wandb and WANDB_AVAILABLE:
+            wandb.init(
+                project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
+                name=strategy_name,
+                reinit=True
+            )
+
+        logger.info(f"Training with DPO on QCM: {dataset_path}")
+
+        # Prepare dataset
+        full_dataset = self.prepare_qcm_dpo_dataset(dataset_path, image_dir, max_samples=max_samples)
+
+        # Split dataset
+        dataset_split = full_dataset.train_test_split(test_size=0.1, seed=42)
+        train_dataset = dataset_split['train']
+        eval_dataset = dataset_split['test']
+
+        logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
+
+        # Get training config values
+        num_epochs = int(self.config.get("training", {}).get("epochs", 3))
         learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
                               self.config.get("training", {}).get("learning_rate", 5e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
