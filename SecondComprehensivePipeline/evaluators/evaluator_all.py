@@ -40,13 +40,14 @@ class EvaluatorAll:
         self.bertscore_evaluator = BertScoreEvaluator(cache_dir)
         self.rouge_evaluator = RougeEvaluator(cache_dir)
 
-    def evaluate_all(self, model_path: str = None, model_name: str = "model") -> Dict[str, Any]:
+    def evaluate_all(self, model_path: str = None, model_name: str = "model", skip_bertscore: bool = True) -> Dict[str, Any]:
         """
         Run all enabled evaluations on the model
 
         Args:
             model_path: Path to model (None for base model)
             model_name: Name for this model in results
+            skip_bertscore: If True, skip BERTScore evaluation (run it separately at the end)
 
         Returns:
             Dictionary with all evaluation results
@@ -211,9 +212,9 @@ class EvaluatorAll:
                 # Clean up GPU memory after evaluation
                 self.logprob_evaluator._cleanup_model()
 
-        # BERTScore evaluation
+        # BERTScore evaluation (skip by default, run separately at the end)
         bertscore_config = erp_config.get("bertscore", {})
-        if bertscore_config.get("enabled", False):
+        if bertscore_config.get("enabled", False) and not skip_bertscore:
             logger.info("Evaluating with BERTScore...")
             try:
                 if model_path:
@@ -242,6 +243,8 @@ class EvaluatorAll:
             except Exception as e:
                 logger.error(f"Error evaluating BERTScore: {e}")
                 all_results["erp_evaluation"]["bertscore"] = {"error": str(e)}
+        elif bertscore_config.get("enabled", False) and skip_bertscore:
+            logger.info("Skipping BERTScore (will run at the end of pipeline)")
 
         # ROUGE evaluations for DPO datasets (Gemini and Nova)
         for rouge_name in ["rouge_gemini", "rouge_nova"]:
@@ -293,6 +296,70 @@ class EvaluatorAll:
 
         logger.info(f"All evaluations completed in {elapsed}")
         return all_results
+
+    def evaluate_bertscore_only(self, model_path: str = None, model_name: str = "model") -> Dict[str, Any]:
+        """
+        Run only BERTScore evaluation on a model (for running at the end of pipeline)
+
+        Args:
+            model_path: Path to model (None for base model)
+            model_name: Name for this model in results
+
+        Returns:
+            Dictionary with BERTScore results
+        """
+        logger.info(f"Running BERTScore evaluation for: {model_name}")
+        start_time = datetime.now()
+
+        eval_config = self.config.get("evaluation", {})
+        erp_config = eval_config.get("erp_evaluation", {})
+        bertscore_config = erp_config.get("bertscore", {})
+
+        if not bertscore_config.get("enabled", False):
+            logger.info("BERTScore is disabled in config, skipping")
+            return {"model_name": model_name, "bertscore": {"skipped": True}}
+
+        result_data = {
+            "model_name": model_name,
+            "model_path": str(model_path) if model_path else "base_model",
+        }
+
+        try:
+            if model_path:
+                self.bertscore_evaluator.load_model(model_path)
+            else:
+                self.bertscore_evaluator.load_base_model()
+
+            base_path = Path(__file__).parent.parent
+            dataset_path = base_path / bertscore_config["dataset"]
+            image_dir = base_path / bertscore_config["image_dir"]
+
+            result = self.bertscore_evaluator.evaluate(
+                dataset_path=str(dataset_path),
+                image_dir=str(image_dir),
+                max_samples=bertscore_config.get("max_samples"),
+                lang=bertscore_config.get("lang", "en")
+            )
+            result_data["bertscore"] = {
+                "accuracy": result["accuracy"],
+                "total_samples": result["total_samples"],
+                "f1": result["f1"],
+                "precision": result["precision"],
+                "recall": result["recall"]
+            }
+            logger.info(f"BERTScore F1 for {model_name}: {result['f1']:.4f}")
+        except Exception as e:
+            logger.error(f"Error evaluating BERTScore for {model_name}: {e}")
+            result_data["bertscore"] = {"error": str(e)}
+        finally:
+            # Clean up GPU memory after evaluation
+            self.bertscore_evaluator._cleanup_model()
+
+        elapsed = datetime.now() - start_time
+        result_data["evaluation_time"] = str(elapsed)
+        logger.info(f"BERTScore evaluation for {model_name} completed in {elapsed}")
+
+        return result_data
 
     def save_results(self, results: Dict[str, Any], output_dir: str):
         """Save evaluation results to file"""

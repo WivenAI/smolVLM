@@ -144,7 +144,11 @@ class Pipeline:
             # Load existing results from result files
             self._load_existing_results()
 
-        # Phase 3: Comparison
+        # Phase 3: BERTScore evaluation (runs once at the end for all models)
+        if not compare_only:
+            self._run_bertscore_phase(enabled_strategies)
+
+        # Phase 4: Comparison
         self._generate_comparison()
 
         # Summary
@@ -400,6 +404,76 @@ class Pipeline:
                     raise
                 print(f"  ERROR: {e}")
 
+    def _run_bertscore_phase(self, strategies: List[Dict]):
+        """Run BERTScore evaluation for all models at the end"""
+        # Check if BERTScore is enabled
+        bertscore_config = self.config.get("evaluation", {}).get("erp_evaluation", {}).get("bertscore", {})
+        if not bertscore_config.get("enabled", False):
+            print("\n[BERTScore] Disabled in config, skipping")
+            return
+
+        print("\n" + "=" * 80)
+        print("PHASE 3: BERTSCORE EVALUATION")
+        print("=" * 80)
+        print("Running BERTScore on all models (this may take a while)...")
+
+        from evaluators import EvaluatorAll
+
+        evaluator = EvaluatorAll(self.config, str(self.cache_dir))
+        bertscore_results = {}
+
+        for strategy in strategies:
+            name = strategy["name"]
+            strategy_type = strategy["type"]
+
+            print(f"\n[{name}] Running BERTScore...")
+
+            if strategy_type == "none":
+                model_path = None
+            else:
+                model_path = self.output_dir / name
+                # Skip if model doesn't exist
+                if not model_path.exists():
+                    print(f"  Skipping {name} - model not found at {model_path}")
+                    continue
+
+            try:
+                result = evaluator.evaluate_bertscore_only(
+                    model_path=str(model_path) if model_path else None,
+                    model_name=name
+                )
+
+                bertscore_results[name] = result
+
+                # Update the main results with BERTScore data
+                if name in self.all_results:
+                    if "erp_evaluation" not in self.all_results[name]:
+                        self.all_results[name]["erp_evaluation"] = {}
+                    if "bertscore" in result:
+                        self.all_results[name]["erp_evaluation"]["bertscore"] = result["bertscore"]
+
+                # Print summary
+                if "bertscore" in result and "f1" in result["bertscore"]:
+                    print(f"  BERTScore F1: {result['bertscore']['f1']:.4f}")
+
+                # Update the saved result file
+                result_file = self.results_dir / f"{name}_{self.timestamp}.json"
+                if result_file.exists() and name in self.all_results:
+                    with open(result_file, 'w') as f:
+                        json.dump(self.all_results[name], f, indent=2)
+
+            except Exception as e:
+                logger.error(f"BERTScore failed for {name}: {e}")
+                if not self.config.get("pipeline", {}).get("continue_on_error", True):
+                    raise
+                print(f"  ERROR: {e}")
+
+        # Save combined BERTScore results
+        bertscore_file = self.results_dir / f"bertscore_all_{self.timestamp}.json"
+        with open(bertscore_file, 'w') as f:
+            json.dump(bertscore_results, f, indent=2)
+        print(f"\nBERTScore results saved to: {bertscore_file}")
+
     def _load_existing_results(self):
         """Load existing evaluation results from result files"""
         print("\n" + "=" * 80)
@@ -451,7 +525,7 @@ class Pipeline:
     def _generate_comparison(self):
         """Generate comparison report"""
         print("\n" + "=" * 80)
-        print("PHASE 3: COMPARISON")
+        print("PHASE 4: COMPARISON")
         print("=" * 80)
 
         if not self.all_results:
@@ -494,6 +568,10 @@ class Pipeline:
             # DPO LogProb
             if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
                 row["dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
+
+            # BERTScore (F1 as accuracy)
+            if "bertscore" in erp and "f1" in erp["bertscore"]:
+                row["bertscore_f1"] = erp["bertscore"]["f1"] * 100  # Convert to percentage
 
             # Calculate average
             accuracies = [v for k, v in row.items() if k.endswith("_acc")]
