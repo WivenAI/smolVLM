@@ -66,7 +66,22 @@ class EpochEvaluationCallback(TrainerCallback):
         self.train_dataset = train_dataset
         self.eval_dataset = eval_dataset
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
+        self._initial_eval_done = False
         self._evaluated_steps = set()  # Track which steps we've evaluated
+
+    def on_train_begin(self, args, state, control, model=None, **kwargs):
+        """Run baseline evaluation at step 0 before any training."""
+        if self._initial_eval_done:
+            return control
+
+        self._initial_eval_done = True
+        self._evaluated_steps.add(0)
+        logger.info(f"[{self.strategy_name}] Running BASELINE evaluation at step 0 (before training)...")
+
+        # Reuse _run_evaluation logic with epoch=0
+        self._run_evaluation(args, state, control, model, epoch=0, is_step_eval=True)
+
+        return control
 
     def _compute_dpo_metrics(self, model, dataset, dataset_name="dataset"):
         """Compute DPO-specific metrics: preference accuracy (chosen > rejected)"""
