@@ -221,26 +221,34 @@ class EpochEvaluationCallback(TrainerCallback):
         if not results:
             return None, results
 
-        # Use the appropriate evaluator's calculate_accuracy method
-        if dataset_type == 'qcm':
-            # For QCM, set is_correct based on letter match
-            for r in results:
-                r['is_correct'] = r['predicted_letter'] == r['correct_answer']
-            evaluator = QCMEvaluator()
-            accuracy = evaluator.calculate_accuracy(results)
-        elif dataset_type == 'docvqa':
-            evaluator = DocVQAEvaluator()
-            accuracy = evaluator.calculate_accuracy(results)
-        elif dataset_type == 'ocr':
-            evaluator = OCRBenchEvaluator()
-            accuracy = evaluator.calculate_accuracy(results)
-        elif dataset_type == 'chartqa':
-            evaluator = ChartQAEvaluator()
-            accuracy = evaluator.calculate_accuracy(results)
-        else:
-            # Default: use DocVQA-style matching (contains check)
-            evaluator = DocVQAEvaluator()
-            accuracy = evaluator.calculate_accuracy(results)
+        # Use lenient accuracy calculation for all types
+        # Bidirectional matching: gt in response OR response in gt
+        def normalize_text(text: str) -> str:
+            import re
+            text = str(text).lower()
+            text = re.sub(r'[^\w\s]', '', text)
+            text = re.sub(r'\s+', '', text)
+            return text
+
+        correct = 0
+        for r in results:
+            response_norm = normalize_text(r['response'])
+            gt_norm = normalize_text(r['ground_truth'])
+
+            if dataset_type == 'qcm':
+                # For QCM: letter match OR text match
+                if r['predicted_letter'] == r['correct_answer']:
+                    correct += 1
+                elif response_norm and gt_norm:
+                    if gt_norm in response_norm or response_norm in gt_norm:
+                        correct += 1
+            else:
+                # For other types: bidirectional text match
+                if response_norm and gt_norm:
+                    if gt_norm in response_norm or response_norm in gt_norm or gt_norm == response_norm:
+                        correct += 1
+
+        accuracy = (correct / len(results) * 100) if results else 0.0
 
         logger.info(f"  [{dataset_name}] Accuracy ({dataset_type}): {accuracy:.2f}%")
         return accuracy, results

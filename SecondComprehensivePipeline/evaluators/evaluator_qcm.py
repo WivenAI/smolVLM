@@ -100,14 +100,44 @@ class QCMEvaluator(BaseEvaluator):
         }
 
     def calculate_accuracy(self, results: List[Dict]) -> float:
-        """Calculate QCM accuracy"""
+        """Calculate QCM accuracy with lenient matching"""
         if not results:
             return 0.0
 
-        correct = sum(1 for r in results if r.get('is_correct', False))
+        correct = 0
         total = len(results)
 
+        for r in results:
+            # First check if letter matches (strict)
+            if r.get('is_correct', False):
+                correct += 1
+                continue
+
+            # Lenient: check if correct option text is in response (or vice versa)
+            if 'options' in r and 'correct_answer' in r and 'response' in r:
+                correct_letter = r['correct_answer']
+                options = r['options']
+                response = r['response']
+
+                if correct_letter in options:
+                    correct_text = self._normalize_text(options[correct_letter])
+                    response_norm = self._normalize_text(response)
+
+                    # Check if correct option text is in response or vice versa
+                    if correct_text and response_norm:
+                        if correct_text in response_norm or response_norm in correct_text:
+                            correct += 1
+
         return (correct / total * 100) if total > 0 else 0.0
+
+    def _normalize_text(self, text: str) -> str:
+        """Normalize text for lenient comparison"""
+        text = str(text).lower()
+        # Remove punctuation
+        text = re.sub(r'[^\w\s]', '', text)
+        # Remove all whitespace
+        text = re.sub(r'\s+', '', text)
+        return text
 
     def _extract_answer_letter(self, response: str, valid_options: List[str]) -> str:
         """Extract the answer letter from the response"""

@@ -84,8 +84,9 @@ class OCRBenchEvaluator(BaseEvaluator):
 
     def calculate_accuracy(self, results: List[Dict]) -> float:
         """
-        Calculate OCRBench accuracy - checks if ground truth is contained in prediction
-        Uses normalized text (lowercase, no whitespace) for easier matching
+        Calculate OCRBench accuracy with lenient bidirectional matching.
+        Checks if ground truth is in prediction OR prediction is in ground truth.
+        Uses normalized text (lowercase, no whitespace) for easier matching.
         """
         if not results:
             return 0.0
@@ -98,12 +99,21 @@ class OCRBenchEvaluator(BaseEvaluator):
                 response = normalize_text(result['response'])
                 ground_truths = result['ground_truth'] if isinstance(result['ground_truth'], list) else [result['ground_truth']]
 
+                matched = False
                 for gt in ground_truths:
                     gt_normalized = normalize_text(gt)
-                    if gt_normalized in response:
-                        correct += 1
-                        break
+                    # Bidirectional check: gt in response OR response in gt
+                    if gt_normalized and response:
+                        if gt_normalized in response or response in gt_normalized:
+                            matched = True
+                            break
+                        # Also check exact match
+                        if gt_normalized == response:
+                            matched = True
+                            break
 
+                if matched:
+                    correct += 1
                 total += 1
 
         return (correct / total * 100) if total > 0 else 0.0

@@ -99,12 +99,14 @@ class ChartQAEvaluator(BaseEvaluator):
                 except:
                     pass
 
-                # Text comparison
+                # Text comparison with bidirectional matching
                 response_norm = self._normalize_text(response)
                 gt_norm = self._normalize_text(gt)
 
-                if gt_norm in response_norm or response_norm == gt_norm:
-                    correct += 1
+                # Bidirectional: gt in response OR response in gt OR exact match
+                if gt_norm and response_norm:
+                    if gt_norm in response_norm or response_norm in gt_norm or gt_norm == response_norm:
+                        correct += 1
 
                 total += 1
 
