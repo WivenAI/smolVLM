@@ -631,10 +631,10 @@ class FullFineTuneTrainer:
         logger.info(f"Full fine-tuned model saved to: {output_dir}")
         return output_dir
 
-    def train_dpo_sft(self, dataset_path: str, image_dir: str, output_dir: str,
+    def train_chosen_rej_sft(self, dataset_path: str, image_dir: str, output_dir: str,
                       epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                      base_model: str = None, strategy_name: str = "full_ft_dpo_sft") -> str:
-        """Train on DPO dataset using SFT with full fine-tuning."""
+                      base_model: str = None, strategy_name: str = "full_ft_chosen_rej_sft") -> str:
+        """Train on chosen/rejected dataset using SFT with full fine-tuning."""
         if self.model is None:
             self.load_model(base_model)
 
@@ -645,7 +645,7 @@ class FullFineTuneTrainer:
                 reinit=True
             )
 
-        logger.info(f"Full fine-tuning SFT on DPO dataset: {dataset_path}")
+        logger.info(f"Full fine-tuning SFT on chosen/rejected dataset: {dataset_path}")
 
         full_dataset = DPOSFTDataset(dataset_path, image_dir, self.processor)
 
@@ -1019,12 +1019,12 @@ def train_full_finetune(config: Dict[str, Any], strategy: Dict[str, Any], output
             strategy_name=strategy_name
         )
 
-    if strategy["type"] == "full_ft_dpo_sft":
+    if strategy["type"] == "full_ft_chosen_rej_sft":
         base_path = Path(__file__).parent.parent
         dataset_path = base_path / strategy["dataset"]
         image_dir = base_path / strategy["image_dir"]
 
-        return trainer.train_dpo_sft(
+        return trainer.train_chosen_rej_sft(
             dataset_path=str(dataset_path),
             image_dir=str(image_dir),
             output_dir=output_dir,

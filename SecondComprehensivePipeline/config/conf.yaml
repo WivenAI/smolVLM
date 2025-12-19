@@ -128,66 +128,66 @@ training:
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # SFT on DPO datasets (using chosen responses only - no preference learning)
-    - name: "erp_sft_dpo_gemini"
+    # SFT on chosen/rejected datasets (using chosen responses only - no preference learning)
+    - name: "erp_sft_chosen_rej_gemini"
       enabled: true
-      type: "sft_dpo"
+      type: "sft_chosen_rej"
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
-    - name: "erp_sft_dpo_nova"
+    - name: "erp_sft_chosen_rej_nova"
       enabled: true
-      type: "sft_dpo"
+      type: "sft_chosen_rej"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Combined: QCM then SFT on DPO dataset
-    - name: "erp_qcm_sft_dpo_gemini"
+    # Combined: QCM then SFT on chosen/rejected dataset
+    - name: "erp_qcm_sft_chosen_rej_gemini"
       enabled: true
-      type: "sft_qcm_dpo"
+      type: "sft_qcm_chosen_rej"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      chosen_rej_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
-    - name: "erp_qcm_sft_dpo_nova"
+    - name: "erp_qcm_sft_chosen_rej_nova"
       enabled: true
-      type: "sft_qcm_dpo"
+      type: "sft_qcm_chosen_rej"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      chosen_rej_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Reverse order: SFT-DPO first, then QCM (to compare training order)
-    - name: "erp_sft_dpo_qcm_gemini"
+    # Reverse order: SFT on chosen/rejected first, then QCM (to compare training order)
+    - name: "erp_sft_chosen_rej_qcm_gemini"
       enabled: true
-      type: "sft_dpo_qcm"
-      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      type: "sft_chosen_rej_qcm"
+      chosen_rej_dataset: "datasets/dpo/dpo_dataset_gemini.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
 
-    - name: "erp_sft_dpo_qcm_nova"
+    - name: "erp_sft_chosen_rej_qcm_nova"
       enabled: true
-      type: "sft_dpo_qcm"
-      dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      type: "sft_chosen_rej_qcm"
+      chosen_rej_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Combined datasets: QCM (both) then SFT-DPO (both)
-    - name: "erp_qcm_sft_dpo_combined"
+    # Combined datasets: QCM (both) then SFT on chosen/rejected (both)
+    - name: "erp_qcm_sft_chosen_rej_combined"
       enabled: true
-      type: "sft_qcm_dpo_combined"
+      type: "sft_qcm_chosen_rej_combined"
       qcm_datasets:
         - "datasets/qcm/qcm_dataset_gemini.json"
         - "datasets/qcm/qcm_dataset_nova_pro.json"
-      dpo_datasets:
+      chosen_rej_datasets:
         - "datasets/dpo/dpo_dataset_gemini.json"
         - "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Combined datasets: SFT-DPO (both) then QCM (both)
-    - name: "erp_sft_dpo_qcm_combined"
+    # Combined datasets: SFT on chosen/rejected (both) then QCM (both)
+    - name: "erp_sft_chosen_rej_qcm_combined"
       enabled: true
-      type: "sft_dpo_qcm_combined"
-      dpo_datasets:
+      type: "sft_chosen_rej_qcm_combined"
+      chosen_rej_datasets:
         - "datasets/dpo/dpo_dataset_gemini.json"
         - "datasets/dpo/dpo_dataset_nova_pro.json"
       qcm_datasets:
@@ -243,16 +243,16 @@ training:
       type: "full_ft_benchmark"
       benchmark: "chartqa"
 
-    # Full fine-tuning on DPO dataset (SFT using chosen responses)
-    - name: "full_ft_sft_dpo_gemini"
+    # Full fine-tuning on chosen/rejected dataset (SFT using chosen responses)
+    - name: "full_ft_sft_chosen_rej_gemini"
       enabled: false  # Disabled: requires more GPU memory
-      type: "full_ft_dpo_sft"
+      type: "full_ft_chosen_rej_sft"
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
-    - name: "full_ft_sft_dpo_nova"
+    - name: "full_ft_sft_chosen_rej_nova"
       enabled: false  # Disabled: requires more GPU memory
-      type: "full_ft_dpo_sft"
+      type: "full_ft_chosen_rej_sft"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 

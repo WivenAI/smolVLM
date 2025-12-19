@@ -1001,10 +1001,10 @@ class SFTTrainer:
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
-    def train_dpo_sft(self, dataset_path: str, image_dir: str, output_dir: str,
+    def train_chosen_rej_sft(self, dataset_path: str, image_dir: str, output_dir: str,
                       epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                      base_model: str = None, strategy_name: str = "dpo_sft") -> str:
-        """Train on DPO dataset using SFT (chosen responses only)"""
+                      base_model: str = None, strategy_name: str = "chosen_rej_sft") -> str:
+        """Train on chosen/rejected dataset using SFT (chosen responses only)"""
         if self.model is None:
             self.load_model(base_model)
 
@@ -1016,7 +1016,7 @@ class SFTTrainer:
                 reinit=True
             )
 
-        logger.info(f"Training SFT on DPO dataset: {dataset_path}")
+        logger.info(f"Training SFT on chosen/rejected dataset: {dataset_path}")
 
         # Create dataset
         full_dataset = DPOSFTDataset(dataset_path, image_dir, self.processor)
@@ -1100,10 +1100,10 @@ class SFTTrainer:
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
 
-    def train_dpo_sft_combined(self, dataset_paths: list, image_dir: str, output_dir: str,
+    def train_chosen_rej_sft_combined(self, dataset_paths: list, image_dir: str, output_dir: str,
                                epochs: int = 3, use_wandb: bool = True, max_samples: int = None,
-                               base_model: str = None, strategy_name: str = "dpo_sft_combined") -> str:
-        """Train on combined DPO datasets using SFT (chosen responses only)"""
+                               base_model: str = None, strategy_name: str = "chosen_rej_sft_combined") -> str:
+        """Train on combined chosen/rejected datasets using SFT (chosen responses only)"""
         if self.model is None:
             self.load_model(base_model)
 
@@ -1115,7 +1115,7 @@ class SFTTrainer:
                 reinit=True
             )
 
-        logger.info(f"Training SFT on combined DPO datasets: {dataset_paths}")
+        logger.info(f"Training SFT on combined chosen/rejected datasets: {dataset_paths}")
 
         # Load all datasets and concatenate
         datasets = []
@@ -1363,12 +1363,12 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             strategy_name=strategy_name
         )
 
-    if strategy["type"] == "sft_dpo":
+    if strategy["type"] == "sft_chosen_rej":
         base_path = Path(__file__).parent.parent
         dataset_path = base_path / strategy["dataset"]
         image_dir = base_path / strategy["image_dir"]
 
-        return trainer.train_dpo_sft(
+        return trainer.train_chosen_rej_sft(
             dataset_path=str(dataset_path),
             image_dir=str(image_dir),
             output_dir=output_dir,
@@ -1379,12 +1379,12 @@ def train_sft(config: Dict[str, Any], strategy: Dict[str, Any], output_dir: str,
             strategy_name=strategy_name
         )
 
-    if strategy["type"] == "sft_dpo_combined":
+    if strategy["type"] == "sft_chosen_rej_combined":
         base_path = Path(__file__).parent.parent
         dataset_paths = [str(base_path / d) for d in strategy["datasets"]]
         image_dir = base_path / strategy["image_dir"]
 
-        return trainer.train_dpo_sft_combined(
+        return trainer.train_chosen_rej_sft_combined(
             dataset_paths=dataset_paths,
             image_dir=str(image_dir),
             output_dir=output_dir,
