@@ -3,16 +3,14 @@ BERTScore Evaluator for DPO Dataset
 Evaluates model responses against ground truth using BERTScore metrics
 """
 
-import json
-import random
 from typing import Dict, Any, List
-from pathlib import Path
 from tqdm import tqdm
 import logging
+import gc
 import torch
-from PIL import Image
 
 from .base_evaluator import BaseEvaluator
+from .dpo_utils import load_dpo_dataset, DPODatasetIterator, ensure_model_loaded
 
 logger = logging.getLogger(__name__)
 
@@ -50,81 +48,39 @@ class BertScoreEvaluator(BaseEvaluator):
             use_fixed_subset: If True, use a fixed random subset for consistent evaluation
             subset_seed: Seed for reproducible subset selection (default: 42)
         """
-        if model_path:
-            self.load_model(model_path)
-        elif self.model is None:
-            self.load_base_model()
-
+        ensure_model_loaded(self, model_path)
         logger.info("Evaluating with BERTScore...")
 
-        # Load dataset
-        with open(dataset_path, 'r', encoding='utf-8') as f:
-            dataset = json.load(f)
-
-        # Select subset using fixed seed for reproducibility
-        if max_samples and max_samples < len(dataset):
-            if use_fixed_subset:
-                # Use fixed seed for consistent subset across all evaluations
-                rng = random.Random(subset_seed)
-                indices = list(range(len(dataset)))
-                rng.shuffle(indices)
-                selected_indices = sorted(indices[:max_samples])
-                dataset = [dataset[i] for i in selected_indices]
-                logger.info(f"Using fixed subset of {len(dataset)} samples (seed={subset_seed})")
-            else:
-                dataset = dataset[:max_samples]
-
+        # Load dataset using shared utility
+        dataset = load_dpo_dataset(dataset_path, max_samples, use_fixed_subset, subset_seed)
         logger.info(f"Loaded {len(dataset)} DPO examples")
 
         results = []
         all_predictions = []
         all_references = []
 
-        image_dir = Path(image_dir)
-        skipped_missing_image = 0
-        skipped_error = 0
+        # Iterate using shared iterator
+        iterator = DPODatasetIterator(dataset, image_dir, "BERTScore")
 
-        for item in tqdm(dataset, desc="BERTScore"):
-            try:
-                # Load image
-                image_path = image_dir / item['image_name']
-                if not image_path.exists():
-                    logger.debug(f"Image not found: {image_path}")
-                    skipped_missing_image += 1
-                    continue
+        for item, image in tqdm(iterator, desc="BERTScore", total=len(dataset)):
+            prompt = item['prompt']
+            reference = item['chosen']
 
-                image = Image.open(image_path).convert('RGB')
+            # Generate prediction
+            prediction = self.generate_response(image, prompt)
 
-                # Resize large images
-                max_size = 1024
-                if image.size[0] > max_size or image.size[1] > max_size:
-                    image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+            all_predictions.append(prediction)
+            all_references.append(reference)
 
-                prompt = item['prompt']
-                reference = item['chosen']
+            results.append({
+                "image_name": item['image_name'],
+                "prompt": prompt,
+                "prediction": prediction,
+                "reference": reference
+            })
 
-                # Generate prediction
-                prediction = self.generate_response(image, prompt)
-
-                all_predictions.append(prediction)
-                all_references.append(reference)
-
-                results.append({
-                    "image_name": item['image_name'],
-                    "prompt": prompt,
-                    "prediction": prediction,
-                    "reference": reference
-                })
-
-            except Exception as e:
-                logger.warning(f"Error processing example: {e}")
-                skipped_error += 1
-                continue
-
-        # Log skipped samples summary
-        total_skipped = skipped_missing_image + skipped_error
-        if total_skipped > 0:
-            logger.warning(f"BERTScore: Skipped {total_skipped} samples ({skipped_missing_image} missing images, {skipped_error} errors)")
+        # Log skip summary
+        iterator.log_skip_summary()
 
         if not all_predictions:
             return {
@@ -145,7 +101,6 @@ class BertScoreEvaluator(BaseEvaluator):
         if self.processor is not None:
             del self.processor
             self.processor = None
-        import gc
         gc.collect()
         torch.cuda.empty_cache()
 

@@ -18,6 +18,12 @@ from .qcm_accuracy import (
     normalize_text,
 )
 from .answer_evaluator import AnswerExtractor, extract_answer
+from .dpo_utils import (
+    load_dpo_dataset,
+    load_and_resize_image,
+    DPODatasetIterator,
+    ensure_model_loaded,
+)
 
 __all__ = [
     "BaseEvaluator",
@@ -37,4 +43,9 @@ __all__ = [
     "normalize_text",
     "AnswerExtractor",
     "extract_answer",
+    # Shared DPO dataset utilities
+    "load_dpo_dataset",
+    "load_and_resize_image",
+    "DPODatasetIterator",
+    "ensure_model_loaded",
 ]
