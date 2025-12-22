@@ -40,7 +40,8 @@ class EvaluatorAll:
         self.bertscore_evaluator = BertScoreEvaluator(cache_dir)
         self.rouge_evaluator = RougeEvaluator(cache_dir)
 
-    def evaluate_all(self, model_path: str = None, model_name: str = "model", skip_bertscore: bool = True) -> Dict[str, Any]:
+    def evaluate_all(self, model_path: str = None, model_name: str = "model", skip_bertscore: bool = True,
+                     skip_datasets: Optional[Dict[str, Dict]] = None) -> Dict[str, Any]:
         """
         Run all enabled evaluations on the model
 
@@ -48,10 +49,14 @@ class EvaluatorAll:
             model_path: Path to model (None for base model)
             model_name: Name for this model in results
             skip_bertscore: If True, skip BERTScore evaluation (run it separately at the end)
+            skip_datasets: Dict of dataset names to pre-computed results to skip re-evaluation.
+                          e.g., {"qcm_gemini": {"accuracy": 85.2, "accuracy_train": 90.0, ...}}
+                          Used when trainer has already computed accuracy on the training dataset.
 
         Returns:
             Dictionary with all evaluation results
         """
+        skip_datasets = skip_datasets or {}
         logger.info(f"Running all evaluations for: {model_name}")
         start_time = datetime.now()
 
@@ -90,6 +95,13 @@ class EvaluatorAll:
             name = benchmark["name"]
             max_samples = benchmark.get("max_samples", 1000)
 
+            # Check if we have pre-computed results from training
+            if name in skip_datasets:
+                logger.info(f"Using pre-computed results for {name} (skipping re-evaluation)")
+                all_results["benchmarks"][name] = skip_datasets[name]
+                logger.info(f"{name}: {skip_datasets[name].get('accuracy', 'N/A')}% (pre-computed)")
+                continue
+
             if name in self.evaluators:
                 logger.info(f"Evaluating on {name}...")
                 try:
@@ -119,6 +131,13 @@ class EvaluatorAll:
         for qcm_name in ["qcm_gemini", "qcm_nova", "qcm_procedure1", "qcm_procedure2"]:
             qcm_config = erp_config.get(qcm_name, {})
             if qcm_config.get("enabled", False):
+                # Check if we have pre-computed results from training
+                if qcm_name in skip_datasets:
+                    logger.info(f"Using pre-computed results for {qcm_name} (skipping re-evaluation)")
+                    all_results["erp_evaluation"][qcm_name] = skip_datasets[qcm_name]
+                    logger.info(f"ERP {qcm_name}: {skip_datasets[qcm_name].get('accuracy', 'N/A')}% (pre-computed)")
+                    continue
+
                 logger.info(f"Evaluating on ERP {qcm_name}...")
                 try:
                     if model_path:
@@ -152,33 +171,39 @@ class EvaluatorAll:
         # QCM Claudette evaluation (black images)
         qcm_claudette_config = erp_config.get("qcm_claudette", {})
         if qcm_claudette_config.get("enabled", False):
-            logger.info("Evaluating on QCM Claudette (black images)...")
-            try:
-                if model_path:
-                    self.qcm_claudette_evaluator.load_model(model_path)
-                else:
-                    self.qcm_claudette_evaluator.load_base_model()
+            # Check if we have pre-computed results from training
+            if "qcm_claudette" in skip_datasets:
+                logger.info("Using pre-computed results for qcm_claudette (skipping re-evaluation)")
+                all_results["erp_evaluation"]["qcm_claudette"] = skip_datasets["qcm_claudette"]
+                logger.info(f"QCM Claudette: {skip_datasets['qcm_claudette'].get('accuracy', 'N/A')}% (pre-computed)")
+            else:
+                logger.info("Evaluating on QCM Claudette (black images)...")
+                try:
+                    if model_path:
+                        self.qcm_claudette_evaluator.load_model(model_path)
+                    else:
+                        self.qcm_claudette_evaluator.load_base_model()
 
-                # Resolve paths relative to SecondComprehensivePipeline folder
-                base_path = Path(__file__).parent.parent
-                dataset_path = base_path / qcm_claudette_config["dataset"]
+                    # Resolve paths relative to SecondComprehensivePipeline folder
+                    base_path = Path(__file__).parent.parent
+                    dataset_path = base_path / qcm_claudette_config["dataset"]
 
-                result = self.qcm_claudette_evaluator.evaluate(
-                    dataset_path=str(dataset_path),
-                    max_samples=qcm_claudette_config.get("max_samples")
-                )
-                all_results["erp_evaluation"]["qcm_claudette"] = {
-                    "accuracy": result["accuracy"],
-                    "total_samples": result["total_samples"],
-                    "correct": result["correct"]
-                }
-                logger.info(f"QCM Claudette: {result['accuracy']:.2f}%")
-            except Exception as e:
-                logger.error(f"Error evaluating QCM Claudette: {e}")
-                all_results["erp_evaluation"]["qcm_claudette"] = {"error": str(e)}
-            finally:
-                # Clean up GPU memory after evaluation
-                self.qcm_claudette_evaluator._cleanup_model()
+                    result = self.qcm_claudette_evaluator.evaluate(
+                        dataset_path=str(dataset_path),
+                        max_samples=qcm_claudette_config.get("max_samples")
+                    )
+                    all_results["erp_evaluation"]["qcm_claudette"] = {
+                        "accuracy": result["accuracy"],
+                        "total_samples": result["total_samples"],
+                        "correct": result["correct"]
+                    }
+                    logger.info(f"QCM Claudette: {result['accuracy']:.2f}%")
+                except Exception as e:
+                    logger.error(f"Error evaluating QCM Claudette: {e}")
+                    all_results["erp_evaluation"]["qcm_claudette"] = {"error": str(e)}
+                finally:
+                    # Clean up GPU memory after evaluation
+                    self.qcm_claudette_evaluator._cleanup_model()
 
         # DPO LogProb evaluation
         logprob_config = erp_config.get("dpo_logprobs", {})

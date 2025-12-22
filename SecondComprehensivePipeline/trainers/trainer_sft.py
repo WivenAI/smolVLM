@@ -58,13 +58,15 @@ class EpochEvaluationCallback(TrainerCallback):
     EVAL_EPOCHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30]
 
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str,
-                 processor=None, train_dataset=None, eval_dataset=None):
+                 processor=None, train_dataset=None, eval_dataset=None,
+                 training_dataset_name: str = None):
         self.config = config
         self.output_dir = Path(output_dir)
         self.strategy_name = strategy_name
         self.processor = processor
         self.train_dataset = train_dataset
         self.eval_dataset = eval_dataset
+        self.training_dataset_name = training_dataset_name  # e.g., "qcm_gemini", "qcm_nova"
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
         self._initial_eval_done = False
         self._evaluated_steps = set()  # Track which steps we've evaluated
@@ -299,11 +301,34 @@ class EpochEvaluationCallback(TrainerCallback):
             # Import evaluator here to avoid circular imports
             from evaluators import EvaluatorAll
 
+            # Build skip_datasets dict with pre-computed results to avoid re-evaluation
+            skip_datasets = {}
+            if self.training_dataset_name and not is_step_eval:
+                # We have train/test/full accuracy from the training dataset
+                # Calculate full accuracy from train + test results
+                train_size = len(train_results) if train_results else 0
+                test_size = len(test_results) if test_results else 0
+                total_size = train_size + test_size
+                full_accuracy = None
+                if total_size > 0 and train_accuracy is not None and test_accuracy is not None:
+                    full_accuracy = (train_accuracy * train_size + test_accuracy * test_size) / total_size
+
+                skip_datasets[self.training_dataset_name] = {
+                    "accuracy": full_accuracy if full_accuracy is not None else test_accuracy,
+                    "accuracy_train": train_accuracy,
+                    "accuracy_test": test_accuracy,
+                    "total_samples": total_size,
+                    "correct": sum(1 for r in (train_results + test_results) if r.get('is_correct', False)),
+                    "pre_computed": True
+                }
+                logger.info(f"Passing pre-computed results for {self.training_dataset_name} to EvaluatorAll")
+
             # Run evaluation on standard benchmarks
             evaluator = EvaluatorAll(self.config, str(self.cache_dir))
             results = evaluator.evaluate_all(
                 model_path=str(temp_model_dir),
-                model_name=f"{self.strategy_name}_{eval_type}{epoch}"
+                model_name=f"{self.strategy_name}_{eval_type}{epoch}",
+                skip_datasets=skip_datasets
             )
 
             # Log to WandB with clear train/test/full labels
@@ -870,6 +895,9 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Extract training dataset name from path (e.g., "qcm_gemini" from "datasets/erp/qcm_gemini.json")
+        training_dataset_name = Path(dataset_path).stem
+
         # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -877,7 +905,8 @@ class SFTTrainer:
             strategy_name=strategy_name,
             processor=self.processor,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset
+            eval_dataset=eval_dataset,
+            training_dataset_name=training_dataset_name
         )
 
         trainer = Trainer(
@@ -977,6 +1006,10 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # For combined training, we can't skip individual dataset evaluations
+        # because train/test split was done on the combined dataset
+        training_dataset_name = None
+
         # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -984,7 +1017,8 @@ class SFTTrainer:
             strategy_name=strategy_name,
             processor=self.processor,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset
+            eval_dataset=eval_dataset,
+            training_dataset_name=training_dataset_name
         )
 
         trainer = Trainer(
@@ -1076,6 +1110,9 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Extract training dataset name from path
+        training_dataset_name = Path(dataset_path).stem
+
         # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -1083,7 +1120,8 @@ class SFTTrainer:
             strategy_name=strategy_name,
             processor=self.processor,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset
+            eval_dataset=eval_dataset,
+            training_dataset_name=training_dataset_name
         )
 
         trainer = Trainer(
@@ -1183,6 +1221,9 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # For combined training, we can't skip individual dataset evaluations
+        training_dataset_name = None
+
         # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -1190,7 +1231,8 @@ class SFTTrainer:
             strategy_name=strategy_name,
             processor=self.processor,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset
+            eval_dataset=eval_dataset,
+            training_dataset_name=training_dataset_name
         )
 
         trainer = Trainer(
@@ -1275,6 +1317,9 @@ class SFTTrainer:
             optim="adamw_8bit",
         )
 
+        # Use benchmark name to skip duplicate evaluation (e.g., "docvqa", "ocrbench", "chartqa")
+        training_dataset_name = benchmark_name
+
         # Create evaluation callback with separate train/test datasets
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -1282,7 +1327,8 @@ class SFTTrainer:
             strategy_name=strategy_name or f"sft_{benchmark_name}",
             processor=self.processor,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset
+            eval_dataset=eval_dataset,
+            training_dataset_name=training_dataset_name
         )
 
         trainer = Trainer(
