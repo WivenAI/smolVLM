@@ -138,25 +138,128 @@ class QCMEvaluator(BaseEvaluator):
         # Remove all whitespace
         text = re.sub(r'\s+', '', text)
         return text
-
+        
     def _extract_answer_letter(self, response: str, valid_options: List[str]) -> str:
         """Extract the answer letter from the response"""
         response = response.strip().upper()
-
-        # Check if response starts with a valid option letter
-        for opt in valid_options:
-            if response.startswith(opt.upper()):
-                return opt.upper()
-
-        # Look for pattern like "A)" or "A:" or "A -" or just "A"
-        for opt in valid_options:
-            pattern = rf'\b{opt.upper()}\b'
-            if re.search(pattern, response):
-                return opt.upper()
-
-        # If no match found, return the first character that is a valid option
-        for c in response:
-            if response and c in [o.upper() for o in valid_options]:
-                return c
-
+        valid_upper = [o.upper() for o in valid_options]
+        
+        # Sort by length descending so "AA" is matched before "A" in regex alternation
+        options_pattern = '|'.join(sorted(valid_upper, key=len, reverse=True))
+        
+        # Look for common answer patterns (ordered by specificity)
+        patterns = [
+            # === ENGLISH PATTERNS ===
+            
+            # Final/definitive answers (highest priority for chain-of-thought)
+            rf'FINAL\s+ANSWER\s+IS\s+({options_pattern})',
+            rf'FINAL\s+ANSWER[:\s]+({options_pattern})',
+            rf'FINAL\s+CHOICE\s+IS\s+({options_pattern})',
+            rf'(?:THE\s+)?(?:CORRECT|RIGHT|BEST)\s+(?:ANSWER|OPTION|CHOICE)\s+IS\s+({options_pattern})',
+            rf'(?:THE\s+)?CORRECT\s+ANSWER\s+IS\s+({options_pattern})',
+            rf'CORRECT[:\s]+({options_pattern})',
+            rf'CORRECT\s+(?:OPTION|CHOICE|ANSWER)[:\s]+({options_pattern})',
+            
+            # Standard answer patterns
+            rf'(?:THE\s+)?ANSWER\s+IS\s+({options_pattern})',
+            rf'(?:THE\s+)?RESPONSE\s+IS\s+({options_pattern})',
+            rf'(?:THE\s+)?ANSWER[:\s]+({options_pattern})',
+            rf'(?:THE\s+)?RESPONSE[:\s]+({options_pattern})',
+            rf'ANSWER\s*=\s*({options_pattern})',
+            
+            # Personal choice patterns
+            rf'MY\s+(?:ANSWER|CHOICE|RESPONSE)\s+IS\s+({options_pattern})',
+            rf'I\s+(?:WOULD\s+)?(?:CHOOSE|SELECT|PICK)\s+({options_pattern})',
+            rf'I\s+(?:BELIEVE|THINK)\s+(?:IT\'?S?|THE\s+ANSWER\s+IS)\s+({options_pattern})',
+            rf'(?:I\'?LL?\s+)?GO(?:ING)?\s+WITH\s+({options_pattern})',
+            
+            # Modal patterns
+            rf'SHOULD\s+BE\s+({options_pattern})',
+            rf'WOULD\s+BE\s+({options_pattern})',
+            rf'MUST\s+BE\s+({options_pattern})',
+            rf'IT\'?S?\s+({options_pattern})',
+            
+            # Reverse patterns ("A is correct")
+            rf'({options_pattern})\s+IS\s+(?:THE\s+)?(?:CORRECT|RIGHT|BEST|ANSWER)',
+            
+            # Conclusion indicators
+            rf'(?:THEREFORE|THUS|HENCE|SO)[,:\s]+({options_pattern})',
+            
+            # Labeled patterns
+            rf'IS\s+({options_pattern})',
+            rf'OPTION\s+({options_pattern})',
+            rf'CHOICE\s+({options_pattern})',
+            rf'SELECT\s+({options_pattern})',
+            rf'CHOOSE\s+({options_pattern})',
+            
+            # === FRENCH PATTERNS ===
+            
+            # Final/definitive answers
+            rf'R[ÉE]PONSE\s+FINALE\s+EST\s+({options_pattern})',      # "réponse finale est A"
+            rf'R[ÉE]PONSE\s+FINALE[:\s]+({options_pattern})',         # "réponse finale: A"
+            rf'CHOIX\s+FINAL\s+EST\s+({options_pattern})',            # "choix final est A"
+            rf'CHOIX\s+FINAL[:\s]+({options_pattern})',               # "choix final: A"
+            rf'(?:LA\s+)?(?:BONNE|CORRECTE)\s+R[ÉE]PONSE\s+EST\s+({options_pattern})',  # "la bonne réponse est A"
+            rf'(?:LA\s+)?R[ÉE]PONSE\s+(?:CORRECTE|BONNE)\s+EST\s+({options_pattern})',  # "la réponse correcte est A"
+            rf'CORRECT[:\s]+({options_pattern})',
+            
+            # Standard answer patterns
+            rf'(?:LA\s+)?R[ÉE]PONSE\s+EST\s+({options_pattern})',     # "la réponse est A" / "réponse est A"
+            rf'(?:LA\s+)?R[ÉE]PONSE[:\s]+({options_pattern})',        # "réponse: A" / "réponse A"
+            rf'R[ÉE]PONSE\s*=\s*({options_pattern})',                 # "réponse = A"
+            
+            # Personal choice patterns
+            rf'MA\s+R[ÉE]PONSE\s+EST\s+({options_pattern})',          # "ma réponse est A"
+            rf'MON\s+CHOIX\s+EST\s+({options_pattern})',              # "mon choix est A"
+            rf'JE\s+(?:CHOISIS|S[ÉE]LECTIONNE)\s+({options_pattern})', # "je choisis A" / "je sélectionne A"
+            rf'J\'?OPTERAIS?\s+POUR\s+({options_pattern})',           # "j'opterais pour A" / "j'opte pour A"
+            rf'JE\s+(?:PENSE|CROIS)\s+QUE\s+C\'?EST\s+({options_pattern})',  # "je pense que c'est A"
+            rf'JE\s+(?:PENSE|CROIS)\s+QUE\s+LA\s+R[ÉE]PONSE\s+EST\s+({options_pattern})',  # "je pense que la réponse est A"
+            rf'JE\s+(?:DIRAIS?|PENCHERAIS?)\s+POUR\s+({options_pattern})',  # "je dirais A" / "je pencherais pour A"
+            
+            # Modal patterns
+            rf'(?:CE\s+)?DEVRAIT\s+[ÊE]TRE\s+({options_pattern})',    # "ce devrait être A" / "devrait être A"
+            rf'(?:CE\s+)?SERAIT\s+({options_pattern})',               # "ce serait A"
+            rf'(?:CE\s+)?DOIT\s+[ÊE]TRE\s+({options_pattern})',       # "ce doit être A"
+            rf'C\'?EST\s+({options_pattern})',                        # "c'est A"
+            rf'IL\s+S\'?AGIT\s+DE\s+({options_pattern})',             # "il s'agit de A"
+            
+            # Reverse patterns ("A est correct")
+            rf'({options_pattern})\s+EST\s+(?:LA\s+)?(?:BONNE|CORRECTE)\s+R[ÉE]PONSE',  # "A est la bonne réponse"
+            rf'({options_pattern})\s+EST\s+(?:CORRECT|JUSTE|BON)',    # "A est correct"
+            
+            # Conclusion indicators
+            rf'(?:DONC|AINSI|PAR\s+CONS[ÉE]QUENT|EN\s+CONCLUSION)[,:\s]+({options_pattern})',  # "donc, A"
+            rf'(?:FINALEMENT|POUR\s+CONCLURE)[,:\s]+({options_pattern})',  # "finalement, A"
+            
+            # Labeled patterns
+            rf'EST\s+({options_pattern})',                            # "est A"
+            rf'OPTION\s+({options_pattern})',                         # "option A"
+            rf'CHOIX\s+({options_pattern})',                          # "choix A"
+            rf'S[ÉE]LECTIONNER\s+({options_pattern})',               # "sélectionner A"
+            rf'CHOISIR\s+({options_pattern})',                        # "choisir A"
+            
+            # === FORMATTING PATTERNS (language-agnostic) ===
+            
+            rf'\*\*({options_pattern})\*\*',                          # **A** or **AA**
+            rf'\*({options_pattern})\*',                              # *A* or *AA*
+            rf'`({options_pattern})`',                                # `A` or `AA`
+            rf'\(({options_pattern})\)',                              # (A) or (AA)
+            rf'({options_pattern})\)',                                # A) or AA)
+            rf'({options_pattern}):',                                 # A: or AA:
+            rf'({options_pattern})\s*-',                              # A - or AA-
+            
+            # Bullet point patterns
+            rf'^[\-\*\•]\s*({options_pattern})',                      # "- A" / "* A" / "• A"
+            rf'[\-\*\•]\s*({options_pattern})',                       # same but not at start
+            
+            # Generic match (lowest priority)
+            rf'({options_pattern})',
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, response, re.MULTILINE)
+            if match:
+                return match.group(1)
+        
         return ""
