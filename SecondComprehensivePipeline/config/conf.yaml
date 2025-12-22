@@ -401,6 +401,6 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: "SecondComprehensivePipeline"
+  wandb_project: "ThirdComprehensivePipeline"
   debug_mode: false  # If true, use only 10 samples
   num_workers: 1
