@@ -1,0 +1,164 @@
+# DPO-Only Pipeline Configuration
+# This config runs only DPO strategies for testing
+
+# Model settings
+model:
+  base_model: "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
+  cache_dir: "../tmpcache"
+  image_size: 512  # SmolVLM2-256M uses image_size=512, patch_size=16
+
+# Training configurations to run
+training:
+  epochs: 30
+  train_samples: 1000
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 0.00001
+  dpo_learning_rate: 0.0000005  # 5e-7, DPO typically needs lower LR than SFT
+
+  # Which training strategies to run - DPO ONLY
+  strategies:
+    - name: "baseline"
+      enabled: true
+      type: "none"  # No training, just evaluate base model
+
+    # DPO on benchmarks
+    - name: "dpo_docvqa"
+      enabled: true
+      type: "dpo_benchmark"
+      benchmark: "docvqa"
+
+    - name: "dpo_ocrbench"
+      enabled: true
+      type: "dpo_benchmark"
+      benchmark: "ocrbench"
+
+    - name: "dpo_chartqa"
+      enabled: true
+      type: "dpo_benchmark"
+      benchmark: "chartqa"
+
+    # DPO on QCM datasets
+    - name: "dpo_qcm_gemini"
+      enabled: true
+      type: "dpo_qcm"
+      dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "dpo_qcm_nova"
+      enabled: true
+      type: "dpo_qcm"
+      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # ERP DPO datasets
+    - name: "erp_dpo_gemini"
+      enabled: true
+      type: "dpo"
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "erp_dpo_nova"
+      enabled: true
+      type: "dpo"
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+# Evaluation settings (minimal for testing)
+evaluation:
+  benchmarks:
+    - name: "ocrbench"
+      enabled: true
+      dataset: "echo840/OCRBench"
+      split: "test"
+      max_samples: 30000
+
+    - name: "docvqa"
+      enabled: true
+      dataset: "nielsr/docvqa_1200_examples"
+      split: "train"
+      max_samples: 30000
+
+    - name: "chartqa"
+      enabled: true
+      dataset: "HuggingFaceM4/ChartQA"
+      split: "test"
+      max_samples: 30000
+
+  erp_evaluation:
+    qcm_gemini:
+      enabled: true
+      dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      image_dir: "datasets/images"
+      max_samples: 30000
+
+    qcm_nova:
+      enabled: true
+      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+      max_samples: 30000
+
+    qcm_claudette:
+      enabled: true
+      dataset: "datasets/qcm/qcm_claudette.json"
+      max_samples: 30000
+
+    qcm_procedure1:
+      enabled: false
+      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
+      image_dir: "datasets/procedureimages"
+      max_samples: 30000
+
+    qcm_procedure2:
+      enabled: false
+      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
+      image_dir: "datasets/procedureimages"
+      max_samples: 30000
+
+    logprob_gemini:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    logprob_nova:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    bertscore_gemini:
+      enabled: false
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+      lang: "en"
+
+    bertscore_nova:
+      enabled: false
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+      lang: "en"
+
+    rouge_gemini:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    rouge_nova:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+# Paths
+paths:
+  output_dir: "modelweights"
+  cache_dir: "datasets/cache"
+  results_dir: "results"
+  logs_dir: "logs"
+
+# Pipeline options
+pipeline:
+  continue_on_error: true
+  use_wandb: true
+  wandb_project: "ThirdComprehensivePipeline"
+  debug_mode: true  # Debug mode ON
+  debug_size: 2
+  num_workers: 1

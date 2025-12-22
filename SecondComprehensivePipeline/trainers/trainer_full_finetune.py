@@ -431,7 +431,7 @@ class FullFineTuneTrainer:
         self.model = AutoModelForImageTextToText.from_pretrained(
             base_model,
             trust_remote_code=True,
-            torch_dtype=torch.bfloat16,
+            dtype=torch.bfloat16,
             device_map="auto",
             low_cpu_mem_usage=True
         )
@@ -792,7 +792,7 @@ class FullFineTuneDPOTrainer:
         self.model = AutoModelForImageTextToText.from_pretrained(
             base_model,
             trust_remote_code=True,
-            torch_dtype=torch.bfloat16,
+            dtype=torch.bfloat16,
             device_map="auto",
             low_cpu_mem_usage=True
         )
