@@ -618,6 +618,7 @@ class DPOTrainerWrapper:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -718,6 +719,7 @@ class DPOTrainerWrapper:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -817,6 +819,7 @@ class DPOTrainerWrapper:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 

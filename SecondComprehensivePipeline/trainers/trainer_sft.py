@@ -845,6 +845,7 @@ class SFTTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -948,6 +949,7 @@ class SFTTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -1060,6 +1062,7 @@ class SFTTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -1163,6 +1166,7 @@ class SFTTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -1274,6 +1278,7 @@ class SFTTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name or f"sft_{benchmark_name}",
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 

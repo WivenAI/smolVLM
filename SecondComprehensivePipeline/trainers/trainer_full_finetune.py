@@ -496,6 +496,7 @@ class FullFineTuneTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -565,6 +566,7 @@ class FullFineTuneTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -640,6 +642,7 @@ class FullFineTuneTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -708,6 +711,7 @@ class FullFineTuneTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name or f"full_ft_{benchmark_name}",
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
@@ -870,6 +874,7 @@ class FullFineTuneDPOTrainer:
             wandb.init(
                 project=self.config.get("pipeline", {}).get("wandb_project", "SmallVLM-NoHallucinations"),
                 name=strategy_name,
+                config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
 
