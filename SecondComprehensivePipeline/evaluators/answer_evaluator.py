@@ -153,10 +153,12 @@ class AnswerExtractor:
             r'(?:ce\s+)?doit\s+[êe]tre\s+({opt})',
             r'c\'?est\s+({opt})',
             r'il\s+s\'?agit\s+de\s+({opt})',
+            r'[êe]tre\s+({opt})',
 
             # Reverse patterns
             r'({opt})\s+est\s+(?:la\s+)?(?:bonne|correcte)\s+r[ée]ponse',
             r'({opt})\s+est\s+(?:correct|juste|bon)',
+            r'({opt})\s+est\b',
 
             # Conclusion indicators
             r'(?:donc|ainsi|par\s+cons[ée]quent|en\s+conclusion)[,:\s]+({opt})',
