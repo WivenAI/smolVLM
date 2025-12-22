@@ -37,6 +37,9 @@ except ImportError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Import shared image utilities
+from trainers.image_utils import prepare_image_with_fallback
+
 
 class EpochEvaluationCallback(TrainerCallback):
     """Callback to run full evaluation at the end of each epoch and at specific steps.
@@ -506,11 +509,12 @@ class QCMDataset(torch.utils.data.Dataset):
         if image_name:
             image_path = self.image_dir / image_name
             if image_path.exists():
-                image = Image.open(image_path).convert('RGB')
+                image = Image.open(image_path)
+                image = prepare_image_with_fallback(image, str(image_path))
             else:
-                image = Image.new('RGB', (224, 224), color='white')
+                image = Image.new('RGB', (512, 512), color='white')
         else:
-            image = Image.new('RGB', (224, 224), color='white')
+            image = Image.new('RGB', (512, 512), color='white')
 
         # Format prompt
         qcm_data = item.get('qcm', item)
@@ -597,9 +601,8 @@ class DPOSFTDataset(torch.utils.data.Dataset):
         if image_name:
             image_path = self.image_dir / image_name
             if image_path.exists():
-                image = Image.open(image_path).convert('RGB')
-                # Resize to exact dimensions for SmolVLM2 (image_size=512, patch_size=16)
-                image = image.resize((512, 512), Image.Resampling.LANCZOS)
+                image = Image.open(image_path)
+                image = prepare_image_with_fallback(image, str(image_path))
             else:
                 image = Image.new('RGB', (512, 512), color='white')
         else:
@@ -697,12 +700,8 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         else:
             raise ValueError("No image field found in dataset")
 
-        # Convert to RGB
-        if image.mode != 'RGB':
-            image = image.convert('RGB')
-
-        # Resize to exact dimensions for SmolVLM2 (image_size=512, patch_size=16)
-        image = image.resize((512, 512), Image.Resampling.LANCZOS)
+        # Use fallback chain: let processor handle if ≤1920px, else resize
+        image = prepare_image_with_fallback(image, f"benchmark_{self.benchmark_name}_{idx}")
 
         # Extract question
         if 'query' in item:

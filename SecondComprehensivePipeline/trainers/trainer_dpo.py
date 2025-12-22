@@ -36,6 +36,9 @@ except ImportError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Import shared image utilities
+from trainers.image_utils import prepare_image_with_fallback
+
 
 class EpochEvaluationCallback(TrainerCallback):
     """Callback to run full evaluation at the end of each epoch and at specific steps.
@@ -357,7 +360,6 @@ class DPOTrainerWrapper:
             raw_data = json.load(f)
 
         image_dir = Path(image_dir)
-        image_size = self.config.get("model", {}).get("image_size", 512)
 
         # Convert to DPO format with images column (required for VLM DPO)
         dpo_data = []
@@ -372,9 +374,9 @@ class DPOTrainerWrapper:
                 image_path = image_dir / image_name
                 if image_path.exists():
                     try:
-                        image = Image.open(image_path).convert('RGB')
-                        # Resize to exact dimensions from config
-                        image = image.resize((image_size, image_size))
+                        image = Image.open(image_path)
+                        # Use fallback chain: no resize → 1920 → 1024 → 512
+                        image = prepare_image_with_fallback(image, str(image_path))
                     except Exception as e:
                         logger.warning(f"Failed to load image {image_path}: {e}")
                         skipped_load_error += 1
@@ -387,7 +389,7 @@ class DPOTrainerWrapper:
                 logger.debug(f"No image_name in item, using placeholder")
                 skipped_no_image_name += 1
                 # Create black placeholder for text-only samples
-                image = Image.new('RGB', (image_size, image_size), color='black')
+                image = Image.new('RGB', (512, 512), color='black')
 
             prompt = item.get('prompt', '')
             chosen = item.get('chosen', '')
@@ -425,7 +427,6 @@ class DPOTrainerWrapper:
             raw_data = json.load(f)
 
         image_dir = Path(image_dir)
-        image_size = self.config.get("model", {}).get("image_size", 512)
 
         dpo_data = []
         skipped_missing_image = 0
@@ -440,9 +441,9 @@ class DPOTrainerWrapper:
                 image_path = image_dir / image_name
                 if image_path.exists():
                     try:
-                        image = Image.open(image_path).convert('RGB')
-                        # Resize to exact dimensions from config
-                        image = image.resize((image_size, image_size))
+                        image = Image.open(image_path)
+                        # Use fallback chain: no resize → 1920 → 1024 → 512
+                        image = prepare_image_with_fallback(image, str(image_path))
                     except Exception as e:
                         logger.warning(f"Failed to load image {image_path}: {e}")
                         skipped_load_error += 1
@@ -452,7 +453,7 @@ class DPOTrainerWrapper:
                     continue
             else:
                 # Create placeholder for samples without images
-                image = Image.new('RGB', (image_size, image_size), color='white')
+                image = Image.new('RGB', (512, 512), color='white')
 
             # Get QCM data
             qcm_data = item.get('qcm', item)
@@ -549,11 +550,8 @@ class DPOTrainerWrapper:
                 skipped_no_image += 1
                 continue
 
-            # Convert to RGB and resize from config
-            image_size = self.config.get("model", {}).get("image_size", 512)
-            if image.mode != 'RGB':
-                image = image.convert('RGB')
-            image = image.resize((image_size, image_size))
+            # Use fallback chain: no resize → 1920 → 1024 → 512
+            image = prepare_image_with_fallback(image, f"benchmark_{benchmark_name}_{idx}")
 
             # Extract question
             if 'query' in item:
