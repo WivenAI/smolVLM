@@ -402,5 +402,6 @@ pipeline:
   continue_on_error: true
   use_wandb: true
   wandb_project: "ThirdComprehensivePipeline"
-  debug_mode: false  # If true, use only 10 samples
+  debug_mode: false  # If true, use only debug_size samples
+  debug_size: 1      # Number of samples to use in debug mode
   num_workers: 1

@@ -100,16 +100,17 @@ class Pipeline:
     def _apply_debug_mode(self):
         """Apply debug mode settings"""
         if self.config.get("pipeline", {}).get("debug_mode", False):
-            logger.info("DEBUG MODE - Using 10 samples for everything")
-            self.config["training"]["train_samples"] = 10
+            debug_size = self.config.get("pipeline", {}).get("debug_size", 1)
+            logger.info(f"DEBUG MODE - Using {debug_size} samples for everything")
+            self.config["training"]["train_samples"] = debug_size
             self.config["training"]["epochs"] = 1
             self.config["pipeline"]["use_wandb"] = False  # Disable wandb in debug mode
             for bench in self.config.get("evaluation", {}).get("benchmarks", []):
-                bench["max_samples"] = 10
+                bench["max_samples"] = debug_size
             # Apply to ERP evaluations too
             for erp_eval in self.config.get("evaluation", {}).get("erp_evaluation", {}).values():
                 if isinstance(erp_eval, dict) and "max_samples" in erp_eval:
-                    erp_eval["max_samples"] = 10
+                    erp_eval["max_samples"] = debug_size
 
     def run(self, eval_only: bool = False, compare_only: bool = False) -> Dict[str, Any]:
         """Run the full pipeline"""

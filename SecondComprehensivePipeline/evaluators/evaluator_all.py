@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 # This ensures we always evaluate on the same samples for fair comparison
 EVAL_SUBSET_SIZE = 300  # For LogProb and ROUGE evaluations
 BERTSCORE_SUBSET_SIZE = 50  # Smaller subset for BERTScore (slower evaluation)
-DEBUG_SUBSET_SIZE = 10  # Subset size for debug mode
+DEBUG_SUBSET_SIZE = 1  # Default subset size for debug mode (overridden by config)
 EVAL_SUBSET_SEED = 42
 
 
@@ -90,12 +90,13 @@ class EvaluatorAll:
         logger.info(f"Running all evaluations for: {model_name}")
         start_time = datetime.now()
 
-        # Check if debug mode is enabled (use 10 samples for logprob/rouge/bertscore)
+        # Check if debug mode is enabled (use debug_size samples for logprob/rouge/bertscore)
         debug_mode = self.config.get("pipeline", {}).get("debug_mode", False)
-        eval_subset_size = DEBUG_SUBSET_SIZE if debug_mode else EVAL_SUBSET_SIZE
-        bertscore_subset_size = DEBUG_SUBSET_SIZE if debug_mode else BERTSCORE_SUBSET_SIZE
+        debug_size = self.config.get("pipeline", {}).get("debug_size", DEBUG_SUBSET_SIZE)
+        eval_subset_size = debug_size if debug_mode else EVAL_SUBSET_SIZE
+        bertscore_subset_size = debug_size if debug_mode else BERTSCORE_SUBSET_SIZE
         if debug_mode:
-            logger.info(f"DEBUG MODE - Using {DEBUG_SUBSET_SIZE} samples for logprob/rouge/bertscore evaluations")
+            logger.info(f"DEBUG MODE - Using {debug_size} samples for logprob/rouge/bertscore evaluations")
 
         # Check if model path exists (if specified)
         if model_path:
@@ -395,11 +396,12 @@ class EvaluatorAll:
         logger.info(f"Running BERTScore evaluation for: {model_name}")
         start_time = datetime.now()
 
-        # Check if debug mode is enabled (use 10 samples for bertscore)
+        # Check if debug mode is enabled (use debug_size samples for bertscore)
         debug_mode = self.config.get("pipeline", {}).get("debug_mode", False)
-        bertscore_subset_size = DEBUG_SUBSET_SIZE if debug_mode else BERTSCORE_SUBSET_SIZE
+        debug_size = self.config.get("pipeline", {}).get("debug_size", DEBUG_SUBSET_SIZE)
+        bertscore_subset_size = debug_size if debug_mode else BERTSCORE_SUBSET_SIZE
         if debug_mode:
-            logger.info(f"DEBUG MODE - Using {DEBUG_SUBSET_SIZE} samples for bertscore evaluation")
+            logger.info(f"DEBUG MODE - Using {debug_size} samples for bertscore evaluation")
 
         eval_config = self.config.get("evaluation", {})
         erp_config = eval_config.get("erp_evaluation", {})
