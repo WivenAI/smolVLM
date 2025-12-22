@@ -146,16 +146,16 @@ class Pipeline:
             # Load existing results from result files
             self._load_existing_results()
 
-        # Phase 3: BERTScore evaluation (runs once at the end for all models)
-        if not compare_only:
-            self._run_bertscore_phase(enabled_strategies)
-
-        # Phase 4: Sample Outputs
+        # Phase 3: Sample Outputs
         if not compare_only:
             self._save_sample_outputs(enabled_strategies)
 
-        # Phase 5: Comparison
+        # Phase 4: Comparison
         self._generate_comparison()
+
+        # Phase 5: BERTScore evaluation (runs last as it's slow)
+        if not compare_only:
+            self._run_bertscore_phase(enabled_strategies)
 
         # Summary
         elapsed = datetime.now() - start_time
@@ -419,7 +419,7 @@ class Pipeline:
             return
 
         print("\n" + "=" * 80)
-        print("PHASE 3: BERTSCORE EVALUATION")
+        print("PHASE 5: BERTSCORE EVALUATION")
         print("=" * 80)
         print("Running BERTScore on all models (this may take a while)...")
 
@@ -483,7 +483,7 @@ class Pipeline:
     def _save_sample_outputs(self, strategies: List[Dict], num_samples: int = 10):
         """Save random sample outputs from each model on each dataset"""
         print("\n" + "=" * 80)
-        print("PHASE 4: SAMPLE OUTPUTS")
+        print("PHASE 3: SAMPLE OUTPUTS")
         print("=" * 80)
         print(f"Saving {num_samples} random samples per model/dataset...")
 
