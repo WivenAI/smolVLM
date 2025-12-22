@@ -66,7 +66,7 @@ class AnswerExtractor:
                 return result
 
         logger.warning(f"Failed to extract answer from response (len={len(response)}): '{response[:200]}{'...' if len(response) > 200 else ''}'")
-        logger.warning(f"  Valid options: {valid_options}, Response chars: {set(response.upper()) & set('ABCDEFGHIJ')}")
+        logger.warning(f"  Valid options: {valid_options}, Found in response: {set(response.upper()) & set(valid_options)}")
         return ""
 
     def _extract_with_regex(self, response: str, valid_options: List[str]) -> str:
