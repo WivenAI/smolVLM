@@ -112,6 +112,12 @@ class Pipeline:
             for erp_eval in self.config.get("evaluation", {}).get("erp_evaluation", {}).values():
                 if isinstance(erp_eval, dict) and "max_samples" in erp_eval:
                     erp_eval["max_samples"] = debug_size
+            # Use separate folders for debug mode
+            self.output_dir = self.base_path / "modelweights_debug"
+            self.results_dir = self.base_path / "results_debug"
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+            self.results_dir.mkdir(parents=True, exist_ok=True)
+            logger.info(f"DEBUG MODE - Using folders: {self.output_dir}, {self.results_dir}")
 
     def run(self, eval_only: bool = False, compare_only: bool = False) -> Dict[str, Any]:
         """Run the full pipeline"""
