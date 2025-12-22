@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 # This ensures we always evaluate on the same samples for fair comparison
 EVAL_SUBSET_SIZE = 300  # For LogProb and ROUGE evaluations
 BERTSCORE_SUBSET_SIZE = 50  # Smaller subset for BERTScore (slower evaluation)
+DEBUG_SUBSET_SIZE = 10  # Subset size for debug mode
 EVAL_SUBSET_SEED = 42
 
 
@@ -88,6 +89,13 @@ class EvaluatorAll:
         skip_datasets = skip_datasets or {}
         logger.info(f"Running all evaluations for: {model_name}")
         start_time = datetime.now()
+
+        # Check if debug mode is enabled (use 10 samples for logprob/rouge/bertscore)
+        debug_mode = self.config.get("pipeline", {}).get("debug_mode", False)
+        eval_subset_size = DEBUG_SUBSET_SIZE if debug_mode else EVAL_SUBSET_SIZE
+        bertscore_subset_size = DEBUG_SUBSET_SIZE if debug_mode else BERTSCORE_SUBSET_SIZE
+        if debug_mode:
+            logger.info(f"DEBUG MODE - Using {DEBUG_SUBSET_SIZE} samples for logprob/rouge/bertscore evaluations")
 
         # Check if model path exists (if specified)
         if model_path:
@@ -235,11 +243,11 @@ class EvaluatorAll:
                     self.qcm_claudette_evaluator._cleanup_model()
 
         # LogProb evaluations for Gemini and Nova datasets (separate)
-        # Uses fixed 300-sample subset for consistent comparison across runs
+        # Uses fixed 300-sample subset for consistent comparison across runs (10 in debug mode)
         for logprob_name in ["logprob_gemini", "logprob_nova"]:
             logprob_config = erp_config.get(logprob_name, {})
             if logprob_config.get("enabled", False):
-                logger.info(f"Evaluating LogProb/Perplexity ({logprob_name}) with {EVAL_SUBSET_SIZE} samples...")
+                logger.info(f"Evaluating LogProb/Perplexity ({logprob_name}) with {eval_subset_size} samples...")
                 try:
                     if model_path:
                         self.logprob_evaluator.load_model(model_path)
@@ -254,7 +262,7 @@ class EvaluatorAll:
                     result = self.logprob_evaluator.evaluate(
                         dataset_path=str(dataset_path),
                         image_dir=str(image_dir),
-                        max_samples=EVAL_SUBSET_SIZE,
+                        max_samples=eval_subset_size,
                         use_fixed_subset=True,
                         subset_seed=EVAL_SUBSET_SEED
                     )
@@ -276,11 +284,11 @@ class EvaluatorAll:
                     self.logprob_evaluator._cleanup_model()
 
         # BERTScore evaluations for Gemini and Nova datasets (separate)
-        # Uses fixed 50-sample subset for consistent comparison (BERTScore is slow)
+        # Uses fixed 50-sample subset for consistent comparison (BERTScore is slow, 10 in debug mode)
         for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
             bertscore_config = erp_config.get(bertscore_name, {})
             if bertscore_config.get("enabled", False) and not skip_bertscore:
-                logger.info(f"Evaluating with BERTScore ({bertscore_name}) with {BERTSCORE_SUBSET_SIZE} samples...")
+                logger.info(f"Evaluating with BERTScore ({bertscore_name}) with {bertscore_subset_size} samples...")
                 try:
                     if model_path:
                         self.bertscore_evaluator.load_model(model_path)
@@ -295,7 +303,7 @@ class EvaluatorAll:
                     result = self.bertscore_evaluator.evaluate(
                         dataset_path=str(dataset_path),
                         image_dir=str(image_dir),
-                        max_samples=BERTSCORE_SUBSET_SIZE,
+                        max_samples=bertscore_subset_size,
                         lang=bertscore_config.get("lang", "en"),
                         use_fixed_subset=True,
                         subset_seed=EVAL_SUBSET_SEED
@@ -318,11 +326,11 @@ class EvaluatorAll:
                 logger.info(f"Skipping {bertscore_name} (will run at the end of pipeline)")
 
         # ROUGE evaluations for DPO datasets (Gemini and Nova)
-        # Uses fixed 300-sample subset for consistent comparison across runs
+        # Uses fixed 300-sample subset for consistent comparison across runs (10 in debug mode)
         for rouge_name in ["rouge_gemini", "rouge_nova"]:
             rouge_config = erp_config.get(rouge_name, {})
             if rouge_config.get("enabled", False):
-                logger.info(f"Evaluating with ROUGE ({rouge_name}) with {EVAL_SUBSET_SIZE} samples...")
+                logger.info(f"Evaluating with ROUGE ({rouge_name}) with {eval_subset_size} samples...")
                 try:
                     if model_path:
                         self.rouge_evaluator.load_model(model_path)
@@ -337,7 +345,7 @@ class EvaluatorAll:
                     result = self.rouge_evaluator.evaluate(
                         dataset_path=str(dataset_path),
                         image_dir=str(image_dir),
-                        max_samples=EVAL_SUBSET_SIZE,
+                        max_samples=eval_subset_size,
                         use_fixed_subset=True,
                         subset_seed=EVAL_SUBSET_SEED
                     )
@@ -387,6 +395,12 @@ class EvaluatorAll:
         logger.info(f"Running BERTScore evaluation for: {model_name}")
         start_time = datetime.now()
 
+        # Check if debug mode is enabled (use 10 samples for bertscore)
+        debug_mode = self.config.get("pipeline", {}).get("debug_mode", False)
+        bertscore_subset_size = DEBUG_SUBSET_SIZE if debug_mode else BERTSCORE_SUBSET_SIZE
+        if debug_mode:
+            logger.info(f"DEBUG MODE - Using {DEBUG_SUBSET_SIZE} samples for bertscore evaluation")
+
         eval_config = self.config.get("evaluation", {})
         erp_config = eval_config.get("erp_evaluation", {})
 
@@ -404,7 +418,7 @@ class EvaluatorAll:
                 result_data[bertscore_name] = {"skipped": True}
                 continue
 
-            logger.info(f"Evaluating {bertscore_name} with {BERTSCORE_SUBSET_SIZE} samples...")
+            logger.info(f"Evaluating {bertscore_name} with {bertscore_subset_size} samples...")
             try:
                 if model_path:
                     self.bertscore_evaluator.load_model(model_path)
@@ -418,7 +432,7 @@ class EvaluatorAll:
                 result = self.bertscore_evaluator.evaluate(
                     dataset_path=str(dataset_path),
                     image_dir=str(image_dir),
-                    max_samples=BERTSCORE_SUBSET_SIZE,
+                    max_samples=bertscore_subset_size,
                     lang=bertscore_config.get("lang", "en"),
                     use_fixed_subset=True,
                     subset_seed=EVAL_SUBSET_SEED
