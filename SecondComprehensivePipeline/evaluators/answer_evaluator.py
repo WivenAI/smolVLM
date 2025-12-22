@@ -65,7 +65,8 @@ class AnswerExtractor:
                 logger.debug(f"EleutherAI extracted: {result}")
                 return result
 
-        logger.warning(f"Failed to extract answer from: {response[:100]}...")
+        logger.warning(f"Failed to extract answer from response (len={len(response)}): '{response[:200]}{'...' if len(response) > 200 else ''}'")
+        logger.warning(f"  Valid options: {valid_options}, Response chars: {set(response.upper()) & set('ABCDEFGHIJ')}")
         return ""
 
     def _extract_with_regex(self, response: str, valid_options: List[str]) -> str:
