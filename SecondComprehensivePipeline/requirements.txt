@@ -17,3 +17,4 @@ pandas>=2.0.0
 lm-eval>=0.4.0
 torchvision>=0.15.0
 num2words>=0.5.10
+hf_xet>=1.0.0
