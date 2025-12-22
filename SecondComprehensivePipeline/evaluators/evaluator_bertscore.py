@@ -4,6 +4,7 @@ Evaluates model responses against ground truth using BERTScore metrics
 """
 
 import json
+import random
 from typing import Dict, Any, List
 from pathlib import Path
 from tqdm import tqdm
@@ -36,8 +37,19 @@ class BertScoreEvaluator(BaseEvaluator):
 
     def evaluate(self, dataset_path: str = None, image_dir: str = None,
                  model_path: str = None, max_samples: int = None,
-                 lang: str = "en") -> Dict[str, Any]:
-        """Evaluate using BERTScore on DPO dataset"""
+                 lang: str = "en", use_fixed_subset: bool = False,
+                 subset_seed: int = 42) -> Dict[str, Any]:
+        """Evaluate using BERTScore on DPO dataset
+
+        Args:
+            dataset_path: Path to the DPO dataset JSON file
+            image_dir: Directory containing images
+            model_path: Path to model weights (optional)
+            max_samples: Maximum number of samples to evaluate
+            lang: Language for BERTScore (default: "en")
+            use_fixed_subset: If True, use a fixed random subset for consistent evaluation
+            subset_seed: Seed for reproducible subset selection (default: 42)
+        """
         if model_path:
             self.load_model(model_path)
         elif self.model is None:
@@ -49,8 +61,18 @@ class BertScoreEvaluator(BaseEvaluator):
         with open(dataset_path, 'r', encoding='utf-8') as f:
             dataset = json.load(f)
 
-        if max_samples:
-            dataset = dataset[:max_samples]
+        # Select subset using fixed seed for reproducibility
+        if max_samples and max_samples < len(dataset):
+            if use_fixed_subset:
+                # Use fixed seed for consistent subset across all evaluations
+                rng = random.Random(subset_seed)
+                indices = list(range(len(dataset)))
+                rng.shuffle(indices)
+                selected_indices = sorted(indices[:max_samples])
+                dataset = [dataset[i] for i in selected_indices]
+                logger.info(f"Using fixed subset of {len(dataset)} samples (seed={subset_seed})")
+            else:
+                dataset = dataset[:max_samples]
 
         logger.info(f"Loaded {len(dataset)} DPO examples")
 

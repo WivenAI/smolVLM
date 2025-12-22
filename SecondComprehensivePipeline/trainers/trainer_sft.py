@@ -402,11 +402,12 @@ class EpochEvaluationCallback(TrainerCallback):
                     metrics["eval/rouge_nova_rouge2"] = erp["rouge_nova"].get("rouge2", 0)
                     metrics["eval/rouge_nova_rougeL"] = erp["rouge_nova"].get("rougeL", 0)
 
-                # Log BERTScore metrics
-                if "bertscore" in erp and "f1" in erp["bertscore"]:
-                    metrics["eval/bertscore_f1"] = erp["bertscore"]["f1"]
-                    metrics["eval/bertscore_precision"] = erp["bertscore"].get("precision", 0)
-                    metrics["eval/bertscore_recall"] = erp["bertscore"].get("recall", 0)
+                # Log BERTScore metrics for Gemini and Nova
+                for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
+                    if bertscore_name in erp and "f1" in erp[bertscore_name]:
+                        metrics[f"eval/{bertscore_name}_f1"] = erp[bertscore_name]["f1"]
+                        metrics[f"eval/{bertscore_name}_precision"] = erp[bertscore_name].get("precision", 0)
+                        metrics[f"eval/{bertscore_name}_recall"] = erp[bertscore_name].get("recall", 0)
 
                 # Log average
                 if results.get("summary", {}).get("avg_benchmark_accuracy"):

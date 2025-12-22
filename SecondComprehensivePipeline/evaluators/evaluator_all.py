@@ -21,8 +21,9 @@ from .evaluator_rouge import RougeEvaluator
 logger = logging.getLogger(__name__)
 
 # Fixed subset size and seed for consistent evaluation across runs
-# This ensures we always evaluate on the same 300 samples for fair comparison
-EVAL_SUBSET_SIZE = 300
+# This ensures we always evaluate on the same samples for fair comparison
+EVAL_SUBSET_SIZE = 300  # For LogProb and ROUGE evaluations
+BERTSCORE_SUBSET_SIZE = 50  # Smaller subset for BERTScore (slower evaluation)
 EVAL_SUBSET_SEED = 42
 
 
@@ -274,39 +275,47 @@ class EvaluatorAll:
                     # Clean up GPU memory after evaluation
                     self.logprob_evaluator._cleanup_model()
 
-        # BERTScore evaluation (skip by default, run separately at the end)
-        bertscore_config = erp_config.get("bertscore", {})
-        if bertscore_config.get("enabled", False) and not skip_bertscore:
-            logger.info("Evaluating with BERTScore...")
-            try:
-                if model_path:
-                    self.bertscore_evaluator.load_model(model_path)
-                else:
-                    self.bertscore_evaluator.load_base_model()
+        # BERTScore evaluations for Gemini and Nova datasets (separate)
+        # Uses fixed 50-sample subset for consistent comparison (BERTScore is slow)
+        for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
+            bertscore_config = erp_config.get(bertscore_name, {})
+            if bertscore_config.get("enabled", False) and not skip_bertscore:
+                logger.info(f"Evaluating with BERTScore ({bertscore_name}) with {BERTSCORE_SUBSET_SIZE} samples...")
+                try:
+                    if model_path:
+                        self.bertscore_evaluator.load_model(model_path)
+                    else:
+                        self.bertscore_evaluator.load_base_model()
 
-                base_path = Path(__file__).parent.parent
-                dataset_path = base_path / bertscore_config["dataset"]
-                image_dir = base_path / bertscore_config["image_dir"]
+                    base_path = Path(__file__).parent.parent
+                    dataset_path = base_path / bertscore_config["dataset"]
+                    image_dir = base_path / bertscore_config["image_dir"]
 
-                result = self.bertscore_evaluator.evaluate(
-                    dataset_path=str(dataset_path),
-                    image_dir=str(image_dir),
-                    max_samples=bertscore_config.get("max_samples"),
-                    lang=bertscore_config.get("lang", "en")
-                )
-                all_results["erp_evaluation"]["bertscore"] = {
-                    "accuracy": result["accuracy"],
-                    "total_samples": result["total_samples"],
-                    "f1": result["f1"],
-                    "precision": result["precision"],
-                    "recall": result["recall"]
-                }
-                logger.info(f"BERTScore F1: {result['f1']:.4f}")
-            except Exception as e:
-                logger.error(f"Error evaluating BERTScore: {e}")
-                all_results["erp_evaluation"]["bertscore"] = {"error": str(e)}
-        elif bertscore_config.get("enabled", False) and skip_bertscore:
-            logger.info("Skipping BERTScore (will run at the end of pipeline)")
+                    # Use fixed subset for consistent evaluation
+                    result = self.bertscore_evaluator.evaluate(
+                        dataset_path=str(dataset_path),
+                        image_dir=str(image_dir),
+                        max_samples=BERTSCORE_SUBSET_SIZE,
+                        lang=bertscore_config.get("lang", "en"),
+                        use_fixed_subset=True,
+                        subset_seed=EVAL_SUBSET_SEED
+                    )
+                    all_results["erp_evaluation"][bertscore_name] = {
+                        "accuracy": result["accuracy"],
+                        "total_samples": result["total_samples"],
+                        "f1": result["f1"],
+                        "precision": result["precision"],
+                        "recall": result["recall"]
+                    }
+                    logger.info(f"{bertscore_name} F1: {result['f1']:.4f}")
+                except Exception as e:
+                    logger.error(f"Error evaluating {bertscore_name}: {e}")
+                    all_results["erp_evaluation"][bertscore_name] = {"error": str(e)}
+                finally:
+                    # Clean up GPU memory after evaluation
+                    self.bertscore_evaluator._cleanup_model()
+            elif bertscore_config.get("enabled", False) and skip_bertscore:
+                logger.info(f"Skipping {bertscore_name} (will run at the end of pipeline)")
 
         # ROUGE evaluations for DPO datasets (Gemini and Nova)
         # Uses fixed 300-sample subset for consistent comparison across runs
@@ -366,60 +375,68 @@ class EvaluatorAll:
     def evaluate_bertscore_only(self, model_path: str = None, model_name: str = "model") -> Dict[str, Any]:
         """
         Run only BERTScore evaluation on a model (for running at the end of pipeline)
+        Evaluates both Gemini and Nova datasets separately with fixed 50-sample subsets.
 
         Args:
             model_path: Path to model (None for base model)
             model_name: Name for this model in results
 
         Returns:
-            Dictionary with BERTScore results
+            Dictionary with BERTScore results for both datasets
         """
         logger.info(f"Running BERTScore evaluation for: {model_name}")
         start_time = datetime.now()
 
         eval_config = self.config.get("evaluation", {})
         erp_config = eval_config.get("erp_evaluation", {})
-        bertscore_config = erp_config.get("bertscore", {})
-
-        if not bertscore_config.get("enabled", False):
-            logger.info("BERTScore is disabled in config, skipping")
-            return {"model_name": model_name, "bertscore": {"skipped": True}}
 
         result_data = {
             "model_name": model_name,
             "model_path": str(model_path) if model_path else "base_model",
         }
 
-        try:
-            if model_path:
-                self.bertscore_evaluator.load_model(model_path)
-            else:
-                self.bertscore_evaluator.load_base_model()
+        # Evaluate both Gemini and Nova datasets
+        for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
+            bertscore_config = erp_config.get(bertscore_name, {})
 
-            base_path = Path(__file__).parent.parent
-            dataset_path = base_path / bertscore_config["dataset"]
-            image_dir = base_path / bertscore_config["image_dir"]
+            if not bertscore_config.get("enabled", False):
+                logger.info(f"{bertscore_name} is disabled in config, skipping")
+                result_data[bertscore_name] = {"skipped": True}
+                continue
 
-            result = self.bertscore_evaluator.evaluate(
-                dataset_path=str(dataset_path),
-                image_dir=str(image_dir),
-                max_samples=bertscore_config.get("max_samples"),
-                lang=bertscore_config.get("lang", "en")
-            )
-            result_data["bertscore"] = {
-                "accuracy": result["accuracy"],
-                "total_samples": result["total_samples"],
-                "f1": result["f1"],
-                "precision": result["precision"],
-                "recall": result["recall"]
-            }
-            logger.info(f"BERTScore F1 for {model_name}: {result['f1']:.4f}")
-        except Exception as e:
-            logger.error(f"Error evaluating BERTScore for {model_name}: {e}")
-            result_data["bertscore"] = {"error": str(e)}
-        finally:
-            # Clean up GPU memory after evaluation
-            self.bertscore_evaluator._cleanup_model()
+            logger.info(f"Evaluating {bertscore_name} with {BERTSCORE_SUBSET_SIZE} samples...")
+            try:
+                if model_path:
+                    self.bertscore_evaluator.load_model(model_path)
+                else:
+                    self.bertscore_evaluator.load_base_model()
+
+                base_path = Path(__file__).parent.parent
+                dataset_path = base_path / bertscore_config["dataset"]
+                image_dir = base_path / bertscore_config["image_dir"]
+
+                result = self.bertscore_evaluator.evaluate(
+                    dataset_path=str(dataset_path),
+                    image_dir=str(image_dir),
+                    max_samples=BERTSCORE_SUBSET_SIZE,
+                    lang=bertscore_config.get("lang", "en"),
+                    use_fixed_subset=True,
+                    subset_seed=EVAL_SUBSET_SEED
+                )
+                result_data[bertscore_name] = {
+                    "accuracy": result["accuracy"],
+                    "total_samples": result["total_samples"],
+                    "f1": result["f1"],
+                    "precision": result["precision"],
+                    "recall": result["recall"]
+                }
+                logger.info(f"{bertscore_name} F1: {result['f1']:.4f}")
+            except Exception as e:
+                logger.error(f"Error evaluating {bertscore_name}: {e}")
+                result_data[bertscore_name] = {"error": str(e)}
+            finally:
+                # Clean up GPU memory after evaluation
+                self.bertscore_evaluator._cleanup_model()
 
         elapsed = datetime.now() - start_time
         result_data["evaluation_time"] = str(elapsed)
