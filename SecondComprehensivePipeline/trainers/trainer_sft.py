@@ -598,14 +598,12 @@ class DPOSFTDataset(torch.utils.data.Dataset):
             image_path = self.image_dir / image_name
             if image_path.exists():
                 image = Image.open(image_path).convert('RGB')
-                # Resize large images
-                max_size = 1024
-                if image.size[0] > max_size or image.size[1] > max_size:
-                    image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+                # Resize to exact dimensions for SmolVLM2 (image_size=512, patch_size=16)
+                image = image.resize((512, 512), Image.Resampling.LANCZOS)
             else:
-                image = Image.new('RGB', (224, 224), color='white')
+                image = Image.new('RGB', (512, 512), color='white')
         else:
-            image = Image.new('RGB', (224, 224), color='white')
+            image = Image.new('RGB', (512, 512), color='white')
 
         prompt = item['prompt']
         chosen_response = item['chosen']  # Use the good response for SFT
@@ -703,10 +701,8 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         if image.mode != 'RGB':
             image = image.convert('RGB')
 
-        # Resize large images
-        max_size = 1024
-        if image.size[0] > max_size or image.size[1] > max_size:
-            image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+        # Resize to exact dimensions for SmolVLM2 (image_size=512, patch_size=16)
+        image = image.resize((512, 512), Image.Resampling.LANCZOS)
 
         # Extract question
         if 'query' in item:

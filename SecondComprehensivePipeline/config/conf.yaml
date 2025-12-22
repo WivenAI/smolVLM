@@ -5,6 +5,7 @@
 model:
   base_model: "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
   cache_dir: "../tmpcache"
+  image_size: 512  # SmolVLM2-256M uses image_size=512, patch_size=16
 
 # Training configurations to run
 training:

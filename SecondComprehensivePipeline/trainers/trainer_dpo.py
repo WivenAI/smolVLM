@@ -357,6 +357,7 @@ class DPOTrainerWrapper:
             raw_data = json.load(f)
 
         image_dir = Path(image_dir)
+        image_size = self.config.get("model", {}).get("image_size", 512)
 
         # Convert to DPO format with images column (required for VLM DPO)
         dpo_data = []
@@ -372,8 +373,8 @@ class DPOTrainerWrapper:
                 if image_path.exists():
                     try:
                         image = Image.open(image_path).convert('RGB')
-                        # Resize to prevent OOM (SmolVLM uses 384x384)
-                        image.thumbnail((384, 384))
+                        # Resize to exact dimensions from config
+                        image = image.resize((image_size, image_size))
                     except Exception as e:
                         logger.warning(f"Failed to load image {image_path}: {e}")
                         skipped_load_error += 1
@@ -386,7 +387,7 @@ class DPOTrainerWrapper:
                 logger.debug(f"No image_name in item, using placeholder")
                 skipped_no_image_name += 1
                 # Create black placeholder for text-only samples
-                image = Image.new('RGB', (384, 384), color='black')
+                image = Image.new('RGB', (image_size, image_size), color='black')
 
             prompt = item.get('prompt', '')
             chosen = item.get('chosen', '')
@@ -424,6 +425,7 @@ class DPOTrainerWrapper:
             raw_data = json.load(f)
 
         image_dir = Path(image_dir)
+        image_size = self.config.get("model", {}).get("image_size", 512)
 
         dpo_data = []
         skipped_missing_image = 0
@@ -439,7 +441,8 @@ class DPOTrainerWrapper:
                 if image_path.exists():
                     try:
                         image = Image.open(image_path).convert('RGB')
-                        image.thumbnail((384, 384))
+                        # Resize to exact dimensions from config
+                        image = image.resize((image_size, image_size))
                     except Exception as e:
                         logger.warning(f"Failed to load image {image_path}: {e}")
                         skipped_load_error += 1
@@ -449,7 +452,7 @@ class DPOTrainerWrapper:
                     continue
             else:
                 # Create placeholder for samples without images
-                image = Image.new('RGB', (384, 384), color='white')
+                image = Image.new('RGB', (image_size, image_size), color='white')
 
             # Get QCM data
             qcm_data = item.get('qcm', item)
@@ -546,10 +549,11 @@ class DPOTrainerWrapper:
                 skipped_no_image += 1
                 continue
 
-            # Convert to RGB and resize
+            # Convert to RGB and resize from config
+            image_size = self.config.get("model", {}).get("image_size", 512)
             if image.mode != 'RGB':
                 image = image.convert('RGB')
-            image.thumbnail((384, 384))
+            image = image.resize((image_size, image_size))
 
             # Extract question
             if 'query' in item:
