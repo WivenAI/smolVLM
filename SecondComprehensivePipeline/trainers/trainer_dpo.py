@@ -313,10 +313,11 @@ class DPOTrainerWrapper:
         """Load model with LoRA for DPO training"""
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
+        cache_dir = self.config.get("model", {}).get("cache_dir", None)
 
         logger.info(f"Loading model: {base_model}")
 
-        self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
+        self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True, cache_dir=cache_dir)
 
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
@@ -330,7 +331,8 @@ class DPOTrainerWrapper:
             trust_remote_code=True,
             quantization_config=bnb_config,
             device_map="auto",
-            low_cpu_mem_usage=True
+            low_cpu_mem_usage=True,
+            cache_dir=cache_dir
         )
 
         self.model = prepare_model_for_kbit_training(self.model)

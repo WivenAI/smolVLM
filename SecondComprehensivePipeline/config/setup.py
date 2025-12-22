@@ -15,7 +15,7 @@ import os
 from pathlib import Path
 
 # Base model used throughout the pipeline
-BASE_MODEL = "HuggingFaceTB/SmolVLM-500M-Instruct"
+BASE_MODEL = "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
 
 # HuggingFace cache directory (relative to project root)
 _PROJECT_ROOT = Path(__file__).parent.parent
