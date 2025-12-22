@@ -6,6 +6,7 @@ from typing import Dict, Any, List, Optional
 from pathlib import Path
 import logging
 import json
+import random
 from datetime import datetime
 
 from .evaluator_ocr import OCRBenchEvaluator
@@ -18,6 +19,33 @@ from .evaluator_bertscore import BertScoreEvaluator
 from .evaluator_rouge import RougeEvaluator
 
 logger = logging.getLogger(__name__)
+
+# Fixed subset size and seed for consistent evaluation across runs
+# This ensures we always evaluate on the same 300 samples for fair comparison
+EVAL_SUBSET_SIZE = 300
+EVAL_SUBSET_SEED = 42
+
+
+def get_fixed_subset_indices(dataset_size: int, subset_size: int = EVAL_SUBSET_SIZE, seed: int = EVAL_SUBSET_SEED) -> List[int]:
+    """
+    Get a fixed subset of indices for consistent evaluation.
+    Uses a fixed seed to ensure the same samples are selected across all evaluations.
+
+    Args:
+        dataset_size: Total size of the dataset
+        subset_size: Number of samples to select (default: 300)
+        seed: Random seed for reproducibility (default: 42)
+
+    Returns:
+        List of indices to use for evaluation
+    """
+    if dataset_size <= subset_size:
+        return list(range(dataset_size))
+
+    rng = random.Random(seed)
+    indices = list(range(dataset_size))
+    rng.shuffle(indices)
+    return sorted(indices[:subset_size])
 
 
 class EvaluatorAll:
@@ -205,37 +233,46 @@ class EvaluatorAll:
                     # Clean up GPU memory after evaluation
                     self.qcm_claudette_evaluator._cleanup_model()
 
-        # DPO LogProb evaluation
-        logprob_config = erp_config.get("dpo_logprobs", {})
-        if logprob_config.get("enabled", False):
-            logger.info("Evaluating DPO log probabilities...")
-            try:
-                if model_path:
-                    self.logprob_evaluator.load_model(model_path)
-                else:
-                    self.logprob_evaluator.load_base_model()
+        # LogProb evaluations for Gemini and Nova datasets (separate)
+        # Uses fixed 300-sample subset for consistent comparison across runs
+        for logprob_name in ["logprob_gemini", "logprob_nova"]:
+            logprob_config = erp_config.get(logprob_name, {})
+            if logprob_config.get("enabled", False):
+                logger.info(f"Evaluating LogProb/Perplexity ({logprob_name}) with {EVAL_SUBSET_SIZE} samples...")
+                try:
+                    if model_path:
+                        self.logprob_evaluator.load_model(model_path)
+                    else:
+                        self.logprob_evaluator.load_base_model()
 
-                base_path = Path(__file__).parent.parent
-                dataset_path = base_path / logprob_config["dataset"]
-                image_dir = base_path / logprob_config["image_dir"]
+                    base_path = Path(__file__).parent.parent
+                    dataset_path = base_path / logprob_config["dataset"]
+                    image_dir = base_path / logprob_config["image_dir"]
 
-                result = self.logprob_evaluator.evaluate(
-                    dataset_path=str(dataset_path),
-                    image_dir=str(image_dir),
-                    max_samples=logprob_config.get("max_samples")
-                )
-                all_results["erp_evaluation"]["dpo_logprobs"] = {
-                    "accuracy": result["accuracy"],
-                    "total_samples": result["total_samples"],
-                    "margin_mean": result["margin_mean"]
-                }
-                logger.info(f"DPO LogProb accuracy: {result['accuracy']:.2f}%")
-            except Exception as e:
-                logger.error(f"Error evaluating DPO LogProbs: {e}")
-                all_results["erp_evaluation"]["dpo_logprobs"] = {"error": str(e)}
-            finally:
-                # Clean up GPU memory after evaluation
-                self.logprob_evaluator._cleanup_model()
+                    # Use fixed subset for consistent evaluation
+                    result = self.logprob_evaluator.evaluate(
+                        dataset_path=str(dataset_path),
+                        image_dir=str(image_dir),
+                        max_samples=EVAL_SUBSET_SIZE,
+                        use_fixed_subset=True,
+                        subset_seed=EVAL_SUBSET_SEED
+                    )
+                    all_results["erp_evaluation"][logprob_name] = {
+                        "accuracy": result["accuracy"],
+                        "total_samples": result["total_samples"],
+                        "margin_mean": result["margin_mean"],
+                        "chosen_avg_logprob": result.get("chosen_avg_logprob", 0.0),
+                        "rejected_avg_logprob": result.get("rejected_avg_logprob", 0.0),
+                        "chosen_perplexity": result.get("chosen_perplexity", 0.0),
+                        "rejected_perplexity": result.get("rejected_perplexity", 0.0)
+                    }
+                    logger.info(f"{logprob_name} accuracy: {result['accuracy']:.2f}%, margin: {result['margin_mean']:.4f}")
+                except Exception as e:
+                    logger.error(f"Error evaluating {logprob_name}: {e}")
+                    all_results["erp_evaluation"][logprob_name] = {"error": str(e)}
+                finally:
+                    # Clean up GPU memory after evaluation
+                    self.logprob_evaluator._cleanup_model()
 
         # BERTScore evaluation (skip by default, run separately at the end)
         bertscore_config = erp_config.get("bertscore", {})
@@ -272,10 +309,11 @@ class EvaluatorAll:
             logger.info("Skipping BERTScore (will run at the end of pipeline)")
 
         # ROUGE evaluations for DPO datasets (Gemini and Nova)
+        # Uses fixed 300-sample subset for consistent comparison across runs
         for rouge_name in ["rouge_gemini", "rouge_nova"]:
             rouge_config = erp_config.get(rouge_name, {})
             if rouge_config.get("enabled", False):
-                logger.info(f"Evaluating with ROUGE ({rouge_name})...")
+                logger.info(f"Evaluating with ROUGE ({rouge_name}) with {EVAL_SUBSET_SIZE} samples...")
                 try:
                     if model_path:
                         self.rouge_evaluator.load_model(model_path)
@@ -286,10 +324,13 @@ class EvaluatorAll:
                     dataset_path = base_path / rouge_config["dataset"]
                     image_dir = base_path / rouge_config["image_dir"]
 
+                    # Use fixed subset for consistent evaluation
                     result = self.rouge_evaluator.evaluate(
                         dataset_path=str(dataset_path),
                         image_dir=str(image_dir),
-                        max_samples=rouge_config.get("max_samples")
+                        max_samples=EVAL_SUBSET_SIZE,
+                        use_fixed_subset=True,
+                        subset_seed=EVAL_SUBSET_SEED
                     )
                     all_results["erp_evaluation"][rouge_name] = {
                         "accuracy": result["accuracy"],

@@ -4,6 +4,7 @@ Evaluates model preference alignment by comparing log probabilities of chosen vs
 """
 
 import json
+import random
 from typing import Dict, Any, List
 from pathlib import Path
 from tqdm import tqdm
@@ -102,8 +103,18 @@ class LogProbEvaluator(BaseEvaluator):
         }
 
     def evaluate(self, dataset_path: str = None, image_dir: str = None,
-                 model_path: str = None, max_samples: int = None) -> Dict[str, Any]:
-        """Evaluate log probabilities for chosen vs rejected responses"""
+                 model_path: str = None, max_samples: int = None,
+                 use_fixed_subset: bool = False, subset_seed: int = 42) -> Dict[str, Any]:
+        """Evaluate log probabilities for chosen vs rejected responses
+
+        Args:
+            dataset_path: Path to the DPO dataset JSON file
+            image_dir: Directory containing images
+            model_path: Path to model weights (optional)
+            max_samples: Maximum number of samples to evaluate
+            use_fixed_subset: If True, use a fixed random subset for consistent evaluation
+            subset_seed: Seed for reproducible subset selection (default: 42)
+        """
         if model_path:
             self.load_model(model_path)
         elif self.model is None:
@@ -115,14 +126,26 @@ class LogProbEvaluator(BaseEvaluator):
         with open(dataset_path, 'r', encoding='utf-8') as f:
             dataset = json.load(f)
 
-        if max_samples:
-            dataset = dataset[:max_samples]
+        # Select subset using fixed seed for reproducibility
+        if max_samples and max_samples < len(dataset):
+            if use_fixed_subset:
+                # Use fixed seed for consistent subset across all evaluations
+                rng = random.Random(subset_seed)
+                indices = list(range(len(dataset)))
+                rng.shuffle(indices)
+                selected_indices = sorted(indices[:max_samples])
+                dataset = [dataset[i] for i in selected_indices]
+                logger.info(f"Using fixed subset of {len(dataset)} samples (seed={subset_seed})")
+            else:
+                dataset = dataset[:max_samples]
 
         logger.info(f"Loaded {len(dataset)} DPO examples")
 
         results = []
         chosen_logprobs = []
         rejected_logprobs = []
+        chosen_perplexities = []
+        rejected_perplexities = []
         margins = []
         preferences_correct = 0
 
@@ -160,6 +183,8 @@ class LogProbEvaluator(BaseEvaluator):
 
                 chosen_logprobs.append(chosen_metrics['avg_logprob'])
                 rejected_logprobs.append(rejected_metrics['avg_logprob'])
+                chosen_perplexities.append(chosen_metrics['perplexity'])
+                rejected_perplexities.append(rejected_metrics['perplexity'])
                 margins.append(margin)
 
                 if is_correct:
@@ -169,6 +194,8 @@ class LogProbEvaluator(BaseEvaluator):
                     "image_name": item['image_name'],
                     "chosen_logprob": chosen_metrics['avg_logprob'],
                     "rejected_logprob": rejected_metrics['avg_logprob'],
+                    "chosen_perplexity": chosen_metrics['perplexity'],
+                    "rejected_perplexity": rejected_metrics['perplexity'],
                     "margin": margin,
                     "preference_correct": is_correct
                 })
@@ -187,6 +214,10 @@ class LogProbEvaluator(BaseEvaluator):
         num_examples = len(results)
         accuracy = (preferences_correct / num_examples * 100) if num_examples > 0 else 0.0
 
+        # Filter out infinite perplexities for mean calculation
+        valid_chosen_ppl = [p for p in chosen_perplexities if p != float('inf')]
+        valid_rejected_ppl = [p for p in rejected_perplexities if p != float('inf')]
+
         return {
             "benchmark": "dpo_logprob",
             "accuracy": accuracy,
@@ -194,6 +225,8 @@ class LogProbEvaluator(BaseEvaluator):
             "preferences_correct": preferences_correct,
             "chosen_avg_logprob": sum(chosen_logprobs) / len(chosen_logprobs) if chosen_logprobs else 0.0,
             "rejected_avg_logprob": sum(rejected_logprobs) / len(rejected_logprobs) if rejected_logprobs else 0.0,
+            "chosen_perplexity": sum(valid_chosen_ppl) / len(valid_chosen_ppl) if valid_chosen_ppl else 0.0,
+            "rejected_perplexity": sum(valid_rejected_ppl) / len(valid_rejected_ppl) if valid_rejected_ppl else 0.0,
             "margin_mean": sum(margins) / len(margins) if margins else 0.0,
             "results": results
         }

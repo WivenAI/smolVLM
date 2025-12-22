@@ -382,11 +382,13 @@ class EpochEvaluationCallback(TrainerCallback):
                 if "qcm_procedure2" in erp and "accuracy" in erp["qcm_procedure2"]:
                     metrics["eval/qcm_procedure2_acc"] = erp["qcm_procedure2"]["accuracy"]
 
-                # Log DPO logprob metrics
-                if "dpo_logprobs" in erp and "accuracy" in erp["dpo_logprobs"]:
-                    metrics["eval/dpo_logprob_acc"] = erp["dpo_logprobs"]["accuracy"]
-                    if "margin_mean" in erp["dpo_logprobs"]:
-                        metrics["eval/dpo_logprob_margin"] = erp["dpo_logprobs"]["margin_mean"]
+                # Log LogProb/Perplexity metrics for Gemini and Nova
+                for logprob_name in ["logprob_gemini", "logprob_nova"]:
+                    if logprob_name in erp and "accuracy" in erp[logprob_name]:
+                        metrics[f"eval/{logprob_name}_acc"] = erp[logprob_name]["accuracy"]
+                        metrics[f"eval/{logprob_name}_margin"] = erp[logprob_name].get("margin_mean", 0)
+                        metrics[f"eval/{logprob_name}_chosen_ppl"] = erp[logprob_name].get("chosen_perplexity", 0)
+                        metrics[f"eval/{logprob_name}_rejected_ppl"] = erp[logprob_name].get("rejected_perplexity", 0)
 
                 # Log ROUGE metrics for gemini and nova DPO
                 if "rouge_gemini" in erp and "accuracy" in erp["rouge_gemini"]:

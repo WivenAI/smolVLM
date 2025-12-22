@@ -346,11 +346,19 @@ evaluation:
       image_dir: "datasets/procedureimages"
       max_samples: 30000
 
-    dpo_logprobs:
+    # LogProb/Perplexity evaluations (separate for Gemini and Nova)
+    # Uses fixed 300-sample subset with seed=42 for consistent comparison
+    logprob_gemini:
       enabled: true
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
-      max_samples: 30000
+      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
+
+    logprob_nova:
+      enabled: true
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
 
     bertscore:
       enabled: true  # Disabled: too slow on CPU, use LogProb instead
@@ -359,17 +367,19 @@ evaluation:
       max_samples: 30000
       lang: "en"  # Language for BERTScore
 
+    # ROUGE evaluations (separate for Gemini and Nova)
+    # Uses fixed 300-sample subset with seed=42 for consistent comparison
     rouge_gemini:
       enabled: true
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
-      max_samples: 30000
+      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
 
     rouge_nova:
       enabled: true
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
-      max_samples: 30000
+      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
 
 # Paths
 paths:
