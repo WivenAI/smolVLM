@@ -156,6 +156,82 @@ class DPODatasetIterator:
             )
 
 
+class BenchmarkDatasetIterator:
+    """
+    Iterator for benchmark datasets (ChartQA, DocVQA, OCRBench) that handles
+    image loading and skip counting.
+
+    Unlike DPODatasetIterator which loads images from a directory,
+    this iterator uses the evaluator's load_image method to handle
+    cached dataset images.
+
+    Usage:
+        iterator = BenchmarkDatasetIterator(dataset, evaluator.load_image, "ChartQA")
+        for item, image in iterator:
+            # Process item and image
+
+        # Get total skipped count
+        iterator.log_skip_summary()
+    """
+
+    def __init__(
+        self,
+        dataset: List[Dict],
+        load_image_fn,
+        evaluator_name: str = "Benchmark"
+    ):
+        """
+        Initialize the iterator.
+
+        Args:
+            dataset: List of dataset items with 'image_path' key
+            load_image_fn: Function to load image from path (e.g., evaluator.load_image)
+            evaluator_name: Name for logging (e.g., "ChartQA", "DocVQA")
+        """
+        self.dataset = dataset
+        self.load_image_fn = load_image_fn
+        self.evaluator_name = evaluator_name
+        self.skipped_no_path = 0
+        self.skipped_load_failed = 0
+
+    def __iter__(self) -> Iterator[Tuple[Dict, Image.Image]]:
+        """Iterate over dataset, yielding (item, image) tuples."""
+        for item in self.dataset:
+            image_path = item.get('image_path')
+            if not image_path:
+                self.skipped_no_path += 1
+                continue
+
+            image = self.load_image_fn(image_path)
+            if image is None:
+                self.skipped_load_failed += 1
+                continue
+
+            yield item, image
+
+    def get_skip_counts(self) -> Tuple[int, int]:
+        """
+        Get the counts of skipped samples.
+
+        Returns:
+            Tuple of (skipped_no_path, skipped_load_failed)
+        """
+        return self.skipped_no_path, self.skipped_load_failed
+
+    def get_total_skipped(self) -> int:
+        """Get total number of skipped samples."""
+        return self.skipped_no_path + self.skipped_load_failed
+
+    def log_skip_summary(self) -> None:
+        """Log a summary of skipped samples if any were skipped."""
+        total_skipped = self.get_total_skipped()
+        if total_skipped > 0:
+            logger.warning(
+                f"{self.evaluator_name}: Skipped {total_skipped} samples "
+                f"({self.skipped_no_path} no path, {self.skipped_load_failed} load failed)"
+            )
+
+
 def ensure_model_loaded(evaluator, model_path: Optional[str] = None) -> None:
     """
     Ensure the evaluator has a model loaded.

@@ -22,6 +22,7 @@ from .dpo_utils import (
     load_dpo_dataset,
     load_and_resize_image,
     DPODatasetIterator,
+    BenchmarkDatasetIterator,
     ensure_model_loaded,
 )
 
@@ -43,9 +44,10 @@ __all__ = [
     "normalize_text",
     "AnswerExtractor",
     "extract_answer",
-    # Shared DPO dataset utilities
+    # Shared dataset utilities
     "load_dpo_dataset",
     "load_and_resize_image",
     "DPODatasetIterator",
+    "BenchmarkDatasetIterator",
     "ensure_model_loaded",
 ]

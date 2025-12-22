@@ -12,12 +12,9 @@ import gc
 import torch
 from PIL import Image
 
-# Set HuggingFace cache before imports
-_hf_cache = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../tmpcache"))
-os.makedirs(_hf_cache, exist_ok=True)
-os.environ["HF_HOME"] = _hf_cache
-os.environ["HF_HUB_CACHE"] = os.path.join(_hf_cache, "hub")
-os.environ["HF_DATASETS_CACHE"] = os.path.join(_hf_cache, "datasets")
+# Set HuggingFace cache before imports (must be before transformers/peft)
+from config.setup import setup_hf_cache, BASE_MODEL
+setup_hf_cache()
 
 from transformers import (
     AutoProcessor,
@@ -315,7 +312,7 @@ class DPOTrainerWrapper:
     def load_model(self, base_model: str = None):
         """Load model with LoRA for DPO training"""
         if base_model is None:
-            base_model = self.config.get("model", {}).get("base_model", "HuggingFaceTB/SmolVLM-500M-Instruct")
+            base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
 
         logger.info(f"Loading model: {base_model}")
 

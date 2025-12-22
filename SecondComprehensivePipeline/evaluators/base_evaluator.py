@@ -1,8 +1,6 @@
 """
 Base Evaluator - Shared functionality for all evaluators
 """
-import os
-import sys
 import gc
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -14,11 +12,9 @@ from PIL import Image
 from datasets import load_dataset
 from tqdm import tqdm
 
-# Set HuggingFace cache before imports
-_hf_cache = os.path.abspath(os.path.join(os.path.dirname(__file__), "../hf_cache"))
-os.makedirs(_hf_cache, exist_ok=True)
-os.environ["HF_HOME"] = _hf_cache
-os.environ["HF_HUB_CACHE"] = os.path.join(_hf_cache, "hub")
+# Set HuggingFace cache before imports (must be before transformers/peft)
+from config.setup import setup_hf_cache, get_hf_cache_dir, BASE_MODEL
+setup_hf_cache()
 
 from transformers import AutoProcessor, AutoModelForImageTextToText
 from peft import PeftModel
@@ -36,7 +32,7 @@ class BaseEvaluator(ABC):
         self.processor = None
         self.cache_dir = Path(cache_dir) if cache_dir else Path(__file__).parent.parent / "datasets" / "cache"
         self.cache_dir.mkdir(parents=True, exist_ok=True)
-        self.hf_cache_dir = _hf_cache
+        self.hf_cache_dir = get_hf_cache_dir()
 
     def _cleanup_model(self):
         """Free GPU memory from previous model"""
@@ -60,7 +56,7 @@ class BaseEvaluator(ABC):
 
         if is_adapter:
             logger.info("Detected LoRA adapter, loading base model first...")
-            base_model = "HuggingFaceTB/SmolVLM-500M-Instruct"
+            base_model = BASE_MODEL
 
             self.processor = AutoProcessor.from_pretrained(
                 model_path,
@@ -95,8 +91,10 @@ class BaseEvaluator(ABC):
 
         self.model.eval()
 
-    def load_base_model(self, base_model: str = "HuggingFaceTB/SmolVLM-500M-Instruct"):
+    def load_base_model(self, base_model: str = None):
         """Load the base model without fine-tuning"""
+        if base_model is None:
+            base_model = BASE_MODEL
         self._cleanup_model()  # Free memory from previous model
         logger.info(f"Loading base model: {base_model}")
 

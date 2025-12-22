@@ -2,12 +2,14 @@
 ChartQA Evaluator - Evaluates chart understanding and question answering
 """
 
+import re
 from typing import Dict, Any, List
 from tqdm import tqdm
 import logging
-import re
 
 from .base_evaluator import BaseEvaluator
+from .qcm_accuracy import normalize_text
+from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded
 
 logger = logging.getLogger(__name__)
 
@@ -21,28 +23,15 @@ class ChartQAEvaluator(BaseEvaluator):
 
     def evaluate(self, model_path: str = None, max_samples: int = None) -> Dict[str, Any]:
         """Evaluate on ChartQA dataset"""
-        if model_path:
-            self.load_model(model_path)
-        elif self.model is None:
-            self.load_base_model()
+        ensure_model_loaded(self, model_path)
 
         logger.info("Evaluating on ChartQA...")
         dataset = self.load_cached_dataset(self.dataset_name, "test", max_samples)
 
         results = []
-        skipped_no_path = 0
-        skipped_load_failed = 0
-        for item in tqdm(dataset, desc="ChartQA"):
-            image_path = item.get('image_path')
-            if not image_path:
-                skipped_no_path += 1
-                continue
+        iterator = BenchmarkDatasetIterator(dataset, self.load_image, "ChartQA")
 
-            image = self.load_image(image_path)
-            if image is None:
-                skipped_load_failed += 1
-                continue
-
+        for item, image in tqdm(iterator, desc="ChartQA", total=len(dataset)):
             question = item.get('question', item.get('query', ''))
             answer = item.get('answer', item.get('label', ''))
 
@@ -55,18 +44,14 @@ class ChartQAEvaluator(BaseEvaluator):
                 "dataset": "chartqa"
             })
 
-        # Log skipped samples summary
-        total_skipped = skipped_no_path + skipped_load_failed
-        if total_skipped > 0:
-            logger.warning(f"ChartQA: Skipped {total_skipped} samples ({skipped_no_path} no path, {skipped_load_failed} load failed)")
-
+        iterator.log_skip_summary()
         accuracy = self.calculate_accuracy(results)
 
         return {
             "benchmark": "chartqa",
             "accuracy": accuracy,
             "total_samples": len(results),
-            "skipped_samples": total_skipped,
+            "skipped_samples": iterator.get_total_skipped(),
             "results": results
         }
 
@@ -100,8 +85,8 @@ class ChartQAEvaluator(BaseEvaluator):
                     pass
 
                 # Text comparison with bidirectional matching
-                response_norm = self._normalize_text(response)
-                gt_norm = self._normalize_text(gt)
+                response_norm = normalize_text(response)
+                gt_norm = normalize_text(gt)
 
                 # Bidirectional: gt in response OR response in gt OR exact match
                 if gt_norm and response_norm:
@@ -111,19 +96,6 @@ class ChartQAEvaluator(BaseEvaluator):
                 total += 1
 
         return (correct / total * 100) if total > 0 else 0.0
-
-    def _normalize_text(self, text: str) -> str:
-        """
-        Normalize text for comparison:
-        - Convert to lowercase
-        - Remove punctuation
-        - Remove all whitespace (spaces, tabs, newlines)
-        """
-        text = text.lower()
-        text = re.sub(r'[^\w\s]', '', text)
-        # Remove all whitespace
-        text = re.sub(r'\s+', '', text)
-        return text
 
     def _extract_number(self, text: str) -> float:
         """Extract first number from text"""

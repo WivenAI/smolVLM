@@ -2,26 +2,15 @@
 OCRBench Evaluator - Evaluates OCR capabilities
 """
 
-import re
 from typing import Dict, Any, List
 from tqdm import tqdm
 import logging
 
 from .base_evaluator import BaseEvaluator
+from .qcm_accuracy import normalize_text
+from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded
 
 logger = logging.getLogger(__name__)
-
-
-def normalize_text(text: str) -> str:
-    """
-    Normalize text for comparison:
-    - Convert to lowercase
-    - Remove spaces, tabs, newlines
-    """
-    text = str(text).lower()
-    # Remove all whitespace (spaces, tabs, newlines)
-    text = re.sub(r'\s+', '', text)
-    return text
 
 
 class OCRBenchEvaluator(BaseEvaluator):
@@ -33,28 +22,15 @@ class OCRBenchEvaluator(BaseEvaluator):
 
     def evaluate(self, model_path: str = None, max_samples: int = None) -> Dict[str, Any]:
         """Evaluate on OCRBench dataset"""
-        if model_path:
-            self.load_model(model_path)
-        elif self.model is None:
-            self.load_base_model()
+        ensure_model_loaded(self, model_path)
 
         logger.info("Evaluating on OCRBench...")
         dataset = self.load_cached_dataset(self.dataset_name, "test", max_samples)
 
         results = []
-        skipped_no_path = 0
-        skipped_load_failed = 0
-        for item in tqdm(dataset, desc="OCRBench"):
-            image_path = item.get('image_path')
-            if not image_path:
-                skipped_no_path += 1
-                continue
+        iterator = BenchmarkDatasetIterator(dataset, self.load_image, "OCRBench")
 
-            image = self.load_image(image_path)
-            if image is None:
-                skipped_load_failed += 1
-                continue
-
+        for item, image in tqdm(iterator, desc="OCRBench", total=len(dataset)):
             question = item['question']
             ground_truth = item.get('answer', '')
             response = self.generate_response(image, question)
@@ -67,18 +43,14 @@ class OCRBenchEvaluator(BaseEvaluator):
                 "dataset": item.get('dataset', 'ocrbench')
             })
 
-        # Log skipped samples summary
-        total_skipped = skipped_no_path + skipped_load_failed
-        if total_skipped > 0:
-            logger.warning(f"OCRBench: Skipped {total_skipped} samples ({skipped_no_path} no path, {skipped_load_failed} load failed)")
-
+        iterator.log_skip_summary()
         accuracy = self.calculate_accuracy(results)
 
         return {
             "benchmark": "ocrbench",
             "accuracy": accuracy,
             "total_samples": len(results),
-            "skipped_samples": total_skipped,
+            "skipped_samples": iterator.get_total_skipped(),
             "results": results
         }
 
