@@ -164,6 +164,13 @@ class AnswerExtractor:
             r'(?:donc|ainsi|par\s+cons[ée]quent|en\s+conclusion)[,:\s]+({opt})',
             r'(?:finalement|pour\s+conclure)[,:\s]+({opt})',
 
+            # Confidence adverbs
+            r'(?:d[ée]finitivement|certainement|[ée]videmment|clairement|assur[ée]ment)[,:\s]+({opt})',
+            r'(?:s[ûu]rement|forc[ée]ment|naturellement|absolument|sans\s+doute)[,:\s]+({opt})',
+
+            # Causal patterns (X because/since)
+            r'({opt})[,]?\s+(?:parce\s+que|puisque|car|[ée]tant\s+donn[ée]\s+que)',
+
             # Labeled patterns
             r'est\s+({opt})',
             r'choix\s+({opt})',
