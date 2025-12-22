@@ -143,6 +143,12 @@ class QCMClaudetteEvaluator(BaseEvaluator):
             "results": results
         }
 
-    # Note: calculate_accuracy, _normalize_text, and _extract_answer_letter
-    # are now provided by the shared qcm_accuracy module for consistency
-    # across all evaluators and trainers.
+    def calculate_accuracy(self, results: List[Dict]) -> float:
+        """
+        Calculate QCM accuracy using the shared qcm_accuracy module.
+        This implements the abstract method from BaseEvaluator.
+        """
+        if not results:
+            return 0.0
+        metrics = calculate_qcm_accuracy(results, split="full")
+        return metrics["accuracy"]

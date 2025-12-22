@@ -14,7 +14,7 @@ from PIL import Image
 from dataclasses import dataclass
 
 # Set HuggingFace cache before imports (must be before transformers/peft)
-from config.setup import setup_hf_cache, BASE_MODEL
+from config.setup import setup_hf_cache, get_hf_cache_dir, BASE_MODEL
 setup_hf_cache()
 
 from transformers import (
@@ -793,7 +793,7 @@ class SFTTrainer:
         self.config = config
         self.model = None
         self.processor = None
-        self.hf_cache_dir = _hf_cache
+        self.hf_cache_dir = get_hf_cache_dir()
 
     def load_model(self, base_model: str = None):
         """Load model with LoRA for fine-tuning"""
