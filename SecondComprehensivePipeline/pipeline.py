@@ -22,6 +22,7 @@ from typing import Dict, Any, List
 import json
 import logging
 import yaml
+import random
 import pandas as pd
 
 # Add parent directory to path for imports
@@ -149,7 +150,11 @@ class Pipeline:
         if not compare_only:
             self._run_bertscore_phase(enabled_strategies)
 
-        # Phase 4: Comparison
+        # Phase 4: Sample Outputs
+        if not compare_only:
+            self._save_sample_outputs(enabled_strategies)
+
+        # Phase 5: Comparison
         self._generate_comparison()
 
         # Summary
@@ -474,6 +479,137 @@ class Pipeline:
         with open(bertscore_file, 'w') as f:
             json.dump(bertscore_results, f, indent=2)
         print(f"\nBERTScore results saved to: {bertscore_file}")
+
+    def _save_sample_outputs(self, strategies: List[Dict], num_samples: int = 10):
+        """Save random sample outputs from each model on each dataset"""
+        print("\n" + "=" * 80)
+        print("PHASE 4: SAMPLE OUTPUTS")
+        print("=" * 80)
+        print(f"Saving {num_samples} random samples per model/dataset...")
+
+        # Create samples directory
+        samples_dir = self.results_dir / "samples" / self.timestamp
+        samples_dir.mkdir(parents=True, exist_ok=True)
+
+        # Get QCM datasets from config
+        erp_eval = self.config.get("evaluation", {}).get("erp_evaluation", {})
+        qcm_datasets = []
+
+        for name, cfg in erp_eval.items():
+            if name.startswith("qcm_") and isinstance(cfg, dict) and cfg.get("enabled", True):
+                dataset_path = cfg.get("dataset")
+                image_dir = cfg.get("image_dir", "datasets/images")
+                if dataset_path:
+                    qcm_datasets.append({
+                        "name": name,
+                        "dataset": dataset_path,
+                        "image_dir": image_dir
+                    })
+
+        if not qcm_datasets:
+            print("No QCM datasets found in config")
+            return
+
+        from evaluators.base_evaluator import BaseEvaluator
+        from PIL import Image
+
+        for strategy in strategies:
+            model_name = strategy["name"]
+            strategy_type = strategy["type"]
+
+            print(f"\n[{model_name}] Generating sample outputs...")
+
+            # Get model path
+            if strategy_type == "none":
+                model_path = None
+            else:
+                model_path = self.output_dir / model_name
+                if not model_path.exists():
+                    print(f"  Skipping - model not found at {model_path}")
+                    continue
+
+            try:
+                # Load model once for this strategy
+                evaluator = BaseEvaluator(self.config, str(self.cache_dir))
+                evaluator.load_model(str(model_path) if model_path else None)
+
+                for qcm_cfg in qcm_datasets:
+                    dataset_name = qcm_cfg["name"]
+                    dataset_path = self.base_path / qcm_cfg["dataset"]
+                    image_dir = self.base_path / qcm_cfg["image_dir"]
+
+                    if not dataset_path.exists():
+                        print(f"  Skipping {dataset_name} - dataset not found")
+                        continue
+
+                    # Load dataset
+                    with open(dataset_path, 'r') as f:
+                        data = json.load(f)
+
+                    # Sample random items
+                    sample_size = min(num_samples, len(data))
+                    random.seed(42)  # Fixed seed for reproducibility
+                    samples = random.sample(data, sample_size)
+
+                    sample_results = []
+                    for i, item in enumerate(samples):
+                        question = item.get("question", "")
+                        options = item.get("options", {})
+                        correct_answer = item.get("correct_answer", "")
+                        image_path = item.get("image_path", "")
+
+                        # Format question with options
+                        options_text = "\n".join([f"{k}) {v}" for k, v in sorted(options.items())])
+                        prompt = f"{question}\n\n{options_text}\n\nAnswer with the letter only."
+
+                        # Load image if available
+                        image = None
+                        full_image_path = None
+                        if image_path:
+                            full_image_path = image_dir / image_path
+                            if full_image_path.exists():
+                                try:
+                                    image = Image.open(full_image_path).convert("RGB")
+                                except Exception:
+                                    pass
+
+                        # Get model response
+                        try:
+                            response = evaluator.generate(prompt, image)
+                        except Exception as e:
+                            response = f"[ERROR: {e}]"
+
+                        sample_results.append({
+                            "index": i + 1,
+                            "question": question,
+                            "options": options,
+                            "correct_answer": correct_answer,
+                            "model_response": response,
+                            "image_path": str(image_path) if image_path else None
+                        })
+
+                    # Save samples for this model/dataset combination
+                    output_file = samples_dir / f"{model_name}_{dataset_name}.json"
+                    with open(output_file, 'w', encoding='utf-8') as f:
+                        json.dump({
+                            "model": model_name,
+                            "dataset": dataset_name,
+                            "num_samples": len(sample_results),
+                            "samples": sample_results
+                        }, f, indent=2, ensure_ascii=False)
+
+                    print(f"  Saved {len(sample_results)} samples for {dataset_name}")
+
+                # Clean up model
+                del evaluator
+
+            except Exception as e:
+                logger.error(f"Sample generation failed for {model_name}: {e}")
+                if not self.config.get("pipeline", {}).get("continue_on_error", True):
+                    raise
+                print(f"  ERROR: {e}")
+
+        print(f"\nSample outputs saved to: {samples_dir}")
 
     def _load_existing_results(self):
         """Load existing evaluation results from result files"""
