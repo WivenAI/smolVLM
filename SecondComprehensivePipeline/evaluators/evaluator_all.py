@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 # This ensures we always evaluate on the same samples for fair comparison
 EVAL_SUBSET_SIZE = 300  # For LogProb and ROUGE evaluations
 BERTSCORE_SUBSET_SIZE = 50  # Smaller subset for BERTScore (slower evaluation)
-DEBUG_SUBSET_SIZE = 1  # Default subset size for debug mode (overridden by config)
+DEBUG_SUBSET_SIZE = 2  # Default subset size for debug mode (overridden by config)
 EVAL_SUBSET_SEED = 42
 
 
