@@ -147,6 +147,14 @@ class AnswerExtractor:
             r'je\s+(?:pense|crois)\s+que\s+la\s+r[ée]ponse\s+est\s+({opt})',
             r'je\s+(?:dirais?|pencherais?)\s+pour\s+({opt})',
 
+            # Opinion patterns
+            r'[àa]\s+mon\s+avis[,:\s]+({opt})',
+            r'selon\s+moi[,:\s]+({opt})',
+            r'd\'?apr[èe]s\s+moi[,:\s]+({opt})',
+            r'je\s+dirais\s+que[,:\s]+({opt})',
+            r'il\s+me\s+semble\s+que[,:\s]+({opt})',
+            r'(?:moi\s+)?perso[,:\s]+({opt})',
+
             # Modal patterns
             r'(?:ce\s+)?devrait\s+[êe]tre\s+({opt})',
             r'(?:ce\s+)?serait\s+({opt})',
@@ -162,7 +170,10 @@ class AnswerExtractor:
 
             # Conclusion indicators
             r'(?:donc|ainsi|par\s+cons[ée]quent|en\s+conclusion)[,:\s]+({opt})',
-            r'(?:finalement|pour\s+conclure)[,:\s]+({opt})',
+            r'(?:finalement|pour\s+conclure|en\s+r[ée]sum[ée])[,:\s]+({opt})',
+            r'(?:en\s+fin\s+de\s+compte|tout\s+bien\s+consid[ée]r[ée])[,:\s]+({opt})',
+            r'(?:pour\s+r[ée]sumer|en\s+d[ée]finitive|au\s+final)[,:\s]+({opt})',
+            r'(?:bref|voil[àa])[,:\s]+({opt})',
 
             # Confidence adverbs
             r'(?:d[ée]finitivement|certainement|[ée]videmment|clairement|assur[ée]ment)[,:\s]+({opt})',
