@@ -94,11 +94,16 @@ class RougeEvaluator(BaseEvaluator):
         # Log skip summary
         iterator.log_skip_summary()
 
+        # Get skipped counts from iterator
+        skipped_missing, skipped_errors = iterator.get_skip_counts()
+        skipped_samples = skipped_missing + skipped_errors
+
         if not results:
             return {
                 "benchmark": "rouge",
                 "accuracy": 0.0,
                 "total_samples": 0,
+                "skipped_samples": skipped_samples,
                 "rouge1": 0.0,
                 "rouge2": 0.0,
                 "rougeL": 0.0,
@@ -117,6 +122,7 @@ class RougeEvaluator(BaseEvaluator):
             "benchmark": "rouge",
             "accuracy": accuracy,
             "total_samples": len(results),
+            "skipped_samples": skipped_samples,
             "rouge1": rouge1_mean,
             "rouge2": rouge2_mean,
             "rougeL": rougeL_mean,

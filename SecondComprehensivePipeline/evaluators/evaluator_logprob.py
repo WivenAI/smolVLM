@@ -175,10 +175,14 @@ class LogProbEvaluator(BaseEvaluator):
         valid_chosen_ppl = [p for p in chosen_perplexities if p != float('inf')]
         valid_rejected_ppl = [p for p in rejected_perplexities if p != float('inf')]
 
+        # Get skipped counts from iterator
+        skipped_missing, skipped_errors = iterator.get_skip_counts()
+
         return {
             "benchmark": "dpo_logprob",
             "accuracy": accuracy,
             "total_samples": num_examples,
+            "skipped_samples": skipped_missing + skipped_errors,
             "preferences_correct": preferences_correct,
             "chosen_avg_logprob": sum(chosen_logprobs) / len(chosen_logprobs) if chosen_logprobs else 0.0,
             "rejected_avg_logprob": sum(rejected_logprobs) / len(rejected_logprobs) if rejected_logprobs else 0.0,

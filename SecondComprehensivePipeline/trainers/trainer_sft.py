@@ -362,10 +362,12 @@ class EpochEvaluationCallback(TrainerCallback):
                 # Log split info for clarity
                 metrics["eval/split_type"] = 0 if is_step_eval else 1  # 0=step_eval(test only), 1=full_eval(train+test)
 
-                # Log benchmark accuracies
+                # Log benchmark accuracies and skipped samples
                 for bench_name, bench_data in results.get("benchmarks", {}).items():
                     if "accuracy" in bench_data:
                         metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+                    if "skipped_samples" in bench_data:
+                        metrics[f"eval/{bench_name}_skipped"] = bench_data["skipped_samples"]
 
                 # Log ERP evaluation metrics
                 erp = results.get("erp_evaluation", {})
@@ -387,18 +389,18 @@ class EpochEvaluationCallback(TrainerCallback):
                         metrics[f"eval/{logprob_name}_margin"] = erp[logprob_name].get("margin_mean", 0)
                         metrics[f"eval/{logprob_name}_chosen_ppl"] = erp[logprob_name].get("chosen_perplexity", 0)
                         metrics[f"eval/{logprob_name}_rejected_ppl"] = erp[logprob_name].get("rejected_perplexity", 0)
+                        if "skipped_samples" in erp[logprob_name]:
+                            metrics[f"eval/{logprob_name}_skipped"] = erp[logprob_name]["skipped_samples"]
 
                 # Log ROUGE metrics for gemini and nova DPO
-                if "rouge_gemini" in erp and "accuracy" in erp["rouge_gemini"]:
-                    metrics["eval/rouge_gemini_acc"] = erp["rouge_gemini"]["accuracy"]
-                    metrics["eval/rouge_gemini_rouge1"] = erp["rouge_gemini"].get("rouge1", 0)
-                    metrics["eval/rouge_gemini_rouge2"] = erp["rouge_gemini"].get("rouge2", 0)
-                    metrics["eval/rouge_gemini_rougeL"] = erp["rouge_gemini"].get("rougeL", 0)
-                if "rouge_nova" in erp and "accuracy" in erp["rouge_nova"]:
-                    metrics["eval/rouge_nova_acc"] = erp["rouge_nova"]["accuracy"]
-                    metrics["eval/rouge_nova_rouge1"] = erp["rouge_nova"].get("rouge1", 0)
-                    metrics["eval/rouge_nova_rouge2"] = erp["rouge_nova"].get("rouge2", 0)
-                    metrics["eval/rouge_nova_rougeL"] = erp["rouge_nova"].get("rougeL", 0)
+                for rouge_name in ["rouge_gemini", "rouge_nova"]:
+                    if rouge_name in erp and "accuracy" in erp[rouge_name]:
+                        metrics[f"eval/{rouge_name}_acc"] = erp[rouge_name]["accuracy"]
+                        metrics[f"eval/{rouge_name}_rouge1"] = erp[rouge_name].get("rouge1", 0)
+                        metrics[f"eval/{rouge_name}_rouge2"] = erp[rouge_name].get("rouge2", 0)
+                        metrics[f"eval/{rouge_name}_rougeL"] = erp[rouge_name].get("rougeL", 0)
+                        if "skipped_samples" in erp[rouge_name]:
+                            metrics[f"eval/{rouge_name}_skipped"] = erp[rouge_name]["skipped_samples"]
 
                 # Log BERTScore metrics for Gemini and Nova
                 for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
@@ -406,6 +408,8 @@ class EpochEvaluationCallback(TrainerCallback):
                         metrics[f"eval/{bertscore_name}_f1"] = erp[bertscore_name]["f1"]
                         metrics[f"eval/{bertscore_name}_precision"] = erp[bertscore_name].get("precision", 0)
                         metrics[f"eval/{bertscore_name}_recall"] = erp[bertscore_name].get("recall", 0)
+                        if "skipped_samples" in erp[bertscore_name]:
+                            metrics[f"eval/{bertscore_name}_skipped"] = erp[bertscore_name]["skipped_samples"]
 
                 # Log average
                 if results.get("summary", {}).get("avg_benchmark_accuracy"):
