@@ -18,23 +18,15 @@ class TestAnswerExtractorInit:
 
     def test_default_initialization(self):
         extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
         assert extractor.use_eleutherai is False
-        assert extractor.use_xfinder is False
-        assert extractor.use_hf_fallback is False
 
     def test_lazy_loading_not_triggered(self):
         extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
         assert extractor._eleutherai_filter is None
-        assert extractor._xfinder_pipeline is None
-        assert extractor._hf_pipeline is None
 
 
 class TestRegexEnglishPatterns:
@@ -43,9 +35,7 @@ class TestRegexEnglishPatterns:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     @pytest.fixture
@@ -218,9 +208,7 @@ class TestRegexFrenchPatterns:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     @pytest.fixture
@@ -362,9 +350,7 @@ class TestEleutherAIPatterns:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=True,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=True
         )
 
     @pytest.fixture
@@ -457,9 +443,7 @@ class TestDetectFrench:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     def test_french_text_with_est(self, extractor):
@@ -492,9 +476,7 @@ class TestMultiCharOptions:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     @pytest.fixture
@@ -524,9 +506,7 @@ class TestEdgeCases:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     @pytest.fixture
@@ -596,9 +576,7 @@ class TestMainExtractMethod:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     @pytest.fixture
@@ -656,9 +634,7 @@ class TestRealWorldResponses:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     @pytest.fixture
@@ -707,126 +683,6 @@ Cette conclusion est basée sur plusieurs facteurs importants qui ont été ment
         assert extractor.extract(response, options) == "A"
 
 
-class TestXFinderExtractor:
-    """Tests for xFinder model-based extraction"""
-
-    @pytest.fixture
-    def options(self):
-        return ["A", "B", "C", "D"]
-
-    def test_xfinder_prompt_english(self):
-        """Test xFinder prompt generation for English"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-        prompt = extractor._build_xfinder_prompt(
-            question="What is the capital of France?",
-            response="I think the answer is B, Paris",
-            valid_options=["A", "B", "C", "D"]
-        )
-        assert "Question:" in prompt
-        assert "Model response:" in prompt
-        assert "Valid options: A, B, C, D" in prompt
-        assert "Extract only the chosen answer letter" in prompt
-
-    def test_xfinder_prompt_french(self):
-        """Test xFinder prompt generation for French"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-        prompt = extractor._build_xfinder_prompt(
-            question="Quelle est la capitale de la France?",
-            response="Je pense que la réponse est B",
-            valid_options=["A", "B", "C", "D"]
-        )
-        assert "Question:" in prompt
-        assert "Réponse du modèle:" in prompt
-        assert "Options valides: A, B, C, D" in prompt
-        assert "Extrais uniquement la lettre" in prompt
-
-    @pytest.mark.skipif(
-        True,  # Skip by default - requires GPU and model download
-        reason="Requires xFinder model download and GPU"
-    )
-    def test_xfinder_extraction_integration(self, options):
-        """Integration test for xFinder extraction (skipped by default)"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=True,
-            use_hf_fallback=False
-        )
-        result = extractor._extract_with_xfinder(
-            response="After analysis, I believe the answer is B",
-            valid_options=options,
-            question="What is 2+2?"
-        )
-        assert result in options or result == ""
-
-
-class TestHuggingFaceExtractor:
-    """Tests for HuggingFace LLM fallback extraction"""
-
-    @pytest.fixture
-    def options(self):
-        return ["A", "B", "C", "D"]
-
-    def test_hf_prompt_english(self):
-        """Test HF prompt generation for English"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-        prompt = extractor._build_hf_extraction_prompt(
-            question="What is the capital of France?",
-            response="The answer is B",
-            valid_options=["A", "B", "C", "D"]
-        )
-        assert "Question:" in prompt
-        assert "The model responded:" in prompt
-        assert "Which option was chosen?" in prompt
-        assert "Reply only with the letter" in prompt
-
-    def test_hf_prompt_french(self):
-        """Test HF prompt generation for French"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-        prompt = extractor._build_hf_extraction_prompt(
-            question="Quelle est la capitale de la France?",
-            response="La réponse est B",
-            valid_options=["A", "B", "C", "D"]
-        )
-        assert "Question:" in prompt
-        assert "Le modèle a répondu:" in prompt
-        assert "Quelle option a été choisie?" in prompt
-        assert "Réponds uniquement avec la lettre" in prompt
-
-    @pytest.mark.skipif(
-        True,  # Skip by default - requires model download
-        reason="Requires HuggingFace model download"
-    )
-    def test_hf_extraction_integration(self, options):
-        """Integration test for HF extraction (skipped by default)"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=True
-        )
-        result = extractor._extract_with_hf(
-            response="The answer is clearly B",
-            valid_options=options,
-            question="What is 2+2?"
-        )
-        assert result in options or result == ""
-
-
 class TestFallbackChain:
     """Tests for the fallback extraction chain"""
 
@@ -837,9 +693,7 @@ class TestFallbackChain:
     def test_regex_only_fallback(self, options):
         """Test that regex-only extraction works without other methods"""
         extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
         result = extractor.extract("The answer is B", options)
         assert result == "B"
@@ -847,9 +701,7 @@ class TestFallbackChain:
     def test_eleutherai_fallback(self, options):
         """Test EleutherAI fallback when regex fails"""
         extractor = AnswerExtractor(
-            use_eleutherai=True,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=True
         )
         # This should match via EleutherAI patterns
         result = extractor.extract("(A)", options)
@@ -858,9 +710,7 @@ class TestFallbackChain:
     def test_extract_chain_returns_first_match(self, options):
         """Test that extract returns first successful match"""
         extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
         # Clear pattern should return immediately
         result = extractor.extract("Final answer is C", options)
@@ -869,11 +719,9 @@ class TestFallbackChain:
     def test_extract_with_question_parameter(self, options):
         """Test that question parameter is passed through"""
         extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
-        # Question is used by xFinder/HF but shouldn't affect regex
+        # Question parameter kept for API compatibility
         result = extractor.extract(
             "The answer is D",
             options,
@@ -882,109 +730,26 @@ class TestFallbackChain:
         assert result == "D"
 
 
-class TestPromptBuilding:
-    """Tests for prompt building methods"""
-
-    def test_xfinder_prompt_contains_all_elements(self):
-        """Test xFinder prompt has all required elements"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-        prompt = extractor._build_xfinder_prompt(
-            question="Test question?",
-            response="Test response",
-            valid_options=["A", "B", "C"]
-        )
-
-        # Check structure
-        assert "<|im_start|>system" in prompt
-        assert "<|im_end|>" in prompt
-        assert "<|im_start|>user" in prompt
-        assert "<|im_start|>assistant" in prompt
-
-        # Check content
-        assert "Test question?" in prompt
-        assert "Test response" in prompt
-        assert "A, B, C" in prompt
-
-    def test_hf_prompt_contains_all_elements(self):
-        """Test HF prompt has all required elements"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-        prompt = extractor._build_hf_extraction_prompt(
-            question="Test question?",
-            response="Test response",
-            valid_options=["X", "Y", "Z"]
-        )
-
-        # Check structure
-        assert "<|im_start|>system" in prompt
-        assert "<|im_end|>" in prompt
-        assert "<|im_start|>user" in prompt
-        assert "<|im_start|>assistant" in prompt
-
-        # Check content
-        assert "Test question?" in prompt
-        assert "Test response" in prompt
-        assert "X, Y, Z" in prompt
-
-    def test_prompt_language_detection_threshold(self):
-        """Test that language detection properly switches prompt language"""
-        extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
-        )
-
-        # English question
-        en_prompt = extractor._build_xfinder_prompt(
-            question="What is the answer to this question?",
-            response="B",
-            valid_options=["A", "B"]
-        )
-        assert "Extract only" in en_prompt
-
-        # French question (with enough indicators)
-        fr_prompt = extractor._build_xfinder_prompt(
-            question="Quelle est la réponse pour cette question dans ce cas?",
-            response="B",
-            valid_options=["A", "B"]
-        )
-        assert "Extrais uniquement" in fr_prompt
-
-
 class TestLazyLoading:
-    """Tests for lazy loading of models"""
+    """Tests for lazy loading"""
 
-    def test_models_not_loaded_on_init(self):
-        """Test that models are not loaded during initialization"""
+    def test_eleutherai_not_loaded_on_init(self):
+        """Test that EleutherAI filter is not loaded during initialization"""
         extractor = AnswerExtractor(
-            use_eleutherai=True,
-            use_xfinder=True,
-            use_hf_fallback=True
+            use_eleutherai=True
         )
         # Internal state should be None
         assert extractor._eleutherai_filter is None
-        assert extractor._xfinder_pipeline is None
-        assert extractor._hf_pipeline is None
 
-    def test_regex_extraction_doesnt_load_models(self):
-        """Test that regex extraction doesn't trigger model loading"""
+    def test_regex_extraction_doesnt_load_eleutherai(self):
+        """Test that regex extraction doesn't trigger EleutherAI loading"""
         extractor = AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
         extractor._extract_with_regex("The answer is A", ["A", "B", "C", "D"])
 
-        # Models should still be None
-        assert extractor._xfinder_pipeline is None
-        assert extractor._hf_pipeline is None
+        # EleutherAI filter should still be None
+        assert extractor._eleutherai_filter is None
 
 
 class TestMultiCharOptionsAdvanced:
@@ -993,9 +758,7 @@ class TestMultiCharOptionsAdvanced:
     @pytest.fixture
     def extractor(self):
         return AnswerExtractor(
-            use_eleutherai=False,
-            use_xfinder=False,
-            use_hf_fallback=False
+            use_eleutherai=False
         )
 
     def test_three_char_options(self, extractor):
