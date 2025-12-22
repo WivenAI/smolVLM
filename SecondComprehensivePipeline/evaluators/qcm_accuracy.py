@@ -104,11 +104,13 @@ def calculate_qcm_accuracy(
             "accuracy": 0.0,
             "correct": 0,
             "total": 0,
+            "extraction_failures": 0,
             "split": split
         }
 
     correct = 0
     total = len(results)
+    extraction_failures = 0
 
     for r in results:
         # Get the response and ground truth
@@ -124,6 +126,10 @@ def calculate_qcm_accuracy(
             valid_options = list(options.keys()) if options else ['A', 'B', 'C', 'D']
             predicted_letter = extract_answer_letter(response, valid_options)
             r['predicted_letter'] = predicted_letter  # Store for later use
+
+        # Track extraction failures
+        if not predicted_letter:
+            extraction_failures += 1
 
         # Get correct letter
         correct_letter = ground_truth.upper()[0] if ground_truth else ''
@@ -166,6 +172,7 @@ def calculate_qcm_accuracy(
         "accuracy": accuracy,
         "correct": correct,
         "total": total,
+        "extraction_failures": extraction_failures,
         "split": split
     }
 
@@ -178,13 +185,17 @@ def calculate_qcm_accuracy(
                     f"{wandb_prefix}/{split}_accuracy": accuracy,
                     f"{wandb_prefix}/{split}_correct": correct,
                     f"{wandb_prefix}/{split}_total": total,
+                    f"{wandb_prefix}/{split}_extraction_failures": extraction_failures,
                 }
                 wandb.log(wandb_metrics)
                 logger.info(f"Logged {split} accuracy to wandb: {accuracy:.2f}%")
         except ImportError:
             pass
 
-    logger.info(f"[{split.upper()}] Accuracy: {accuracy:.2f}% ({correct}/{total})")
+    log_msg = f"[{split.upper()}] Accuracy: {accuracy:.2f}% ({correct}/{total})"
+    if extraction_failures > 0:
+        log_msg += f" [extraction_failures: {extraction_failures}]"
+    logger.info(log_msg)
 
     return metrics
 
@@ -248,6 +259,9 @@ def calculate_accuracy_train_test(
                     f"{wandb_prefix}/test_accuracy": test_metrics["accuracy"],
                     f"{wandb_prefix}/full_accuracy": full_metrics["accuracy"],
                     f"{wandb_prefix}/train_test_gap": train_test_gap,
+                    f"{wandb_prefix}/train_extraction_failures": train_metrics["extraction_failures"],
+                    f"{wandb_prefix}/test_extraction_failures": test_metrics["extraction_failures"],
+                    f"{wandb_prefix}/full_extraction_failures": full_metrics["extraction_failures"],
                 }
                 if global_step is not None:
                     wandb.log(wandb_metrics, step=global_step)
