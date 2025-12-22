@@ -11,6 +11,13 @@ from .evaluator_logprob import LogProbEvaluator
 from .evaluator_bertscore import BertScoreEvaluator
 from .evaluator_rouge import RougeEvaluator
 from .evaluator_all import EvaluatorAll, evaluate_model
+from .qcm_accuracy import (
+    extract_answer_letter,
+    calculate_qcm_accuracy,
+    calculate_accuracy_train_test,
+    normalize_text,
+)
+from .answer_evaluator import AnswerExtractor, extract_answer
 
 __all__ = [
     "BaseEvaluator",
@@ -23,4 +30,11 @@ __all__ = [
     "RougeEvaluator",
     "EvaluatorAll",
     "evaluate_model",
+    # Shared QCM accuracy utilities
+    "extract_answer_letter",
+    "calculate_qcm_accuracy",
+    "calculate_accuracy_train_test",
+    "normalize_text",
+    "AnswerExtractor",
+    "extract_answer",
 ]

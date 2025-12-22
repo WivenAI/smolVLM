@@ -146,9 +146,10 @@ class EpochEvaluationCallback(TrainerCallback):
             return 'benchmark'
 
     def _compute_dataset_accuracy(self, model, dataset, dataset_name="dataset"):
-        """Compute accuracy on a dataset using the same metrics as the evaluators.
+        """Compute accuracy on a dataset using the shared QCM accuracy module.
 
-        Uses the appropriate evaluator's calculate_accuracy method based on dataset type.
+        Uses the shared calculate_qcm_accuracy function for consistency across
+        all evaluators and trainers.
         """
         if dataset is None or self.processor is None:
             return None, []
@@ -157,11 +158,8 @@ class EpochEvaluationCallback(TrainerCallback):
         model.eval()
         results = []
 
-        # Import evaluators to reuse their accuracy calculation logic
-        from evaluators.evaluator_qcm import QCMEvaluator
-        from evaluators.evaluator_docvqa import DocVQAEvaluator
-        from evaluators.evaluator_ocr import OCRBenchEvaluator
-        from evaluators.evaluator_chartqa import ChartQAEvaluator
+        # Import shared accuracy module
+        from evaluators.qcm_accuracy import calculate_qcm_accuracy, extract_answer_letter, normalize_text
 
         # Create a simple dataloader
         from torch.utils.data import DataLoader
@@ -203,13 +201,19 @@ class EpochEvaluationCallback(TrainerCallback):
                     label_tokens = labels[0][labels[0] != -100]
                     label_text = self.processor.decode(label_tokens, skip_special_tokens=True).strip()
 
-                    # Format result for evaluator's calculate_accuracy method
+                    # Use shared answer extraction for QCM
+                    if dataset_type == 'qcm':
+                        predicted_letter = extract_answer_letter(pred_text, ['A', 'B', 'C', 'D'])
+                    else:
+                        predicted_letter = pred_text.upper()[0] if pred_text else ""
+
+                    # Format result for shared calculate_qcm_accuracy
                     results.append({
                         "response": pred_text,
                         "ground_truth": label_text,
-                        "predicted_letter": pred_text.upper()[0] if pred_text else "",
+                        "predicted_letter": predicted_letter,
                         "correct_answer": label_text.upper()[0] if label_text else "",
-                        "is_correct": False  # Will be calculated by evaluator
+                        "is_correct": False  # Will be calculated by shared module
                     })
 
                 except Exception as e:
@@ -221,36 +225,13 @@ class EpochEvaluationCallback(TrainerCallback):
         if not results:
             return None, results
 
-        # Use lenient accuracy calculation for all types
-        # Bidirectional matching: gt in response OR response in gt
-        def normalize_text(text: str) -> str:
-            import re
-            text = str(text).lower()
-            text = re.sub(r'[^\w\s]', '', text)
-            text = re.sub(r'\s+', '', text)
-            return text
+        # Use shared accuracy calculation
+        # Map dataset_name to split for proper wandb labeling
+        split = "train" if "train" in dataset_name.lower() else "test"
+        metrics = calculate_qcm_accuracy(results, split=split)
+        accuracy = metrics["accuracy"]
 
-        correct = 0
-        for r in results:
-            response_norm = normalize_text(r['response'])
-            gt_norm = normalize_text(r['ground_truth'])
-
-            if dataset_type == 'qcm':
-                # For QCM: letter match OR text match
-                if r['predicted_letter'] == r['correct_answer']:
-                    correct += 1
-                elif response_norm and gt_norm:
-                    if gt_norm in response_norm or response_norm in gt_norm:
-                        correct += 1
-            else:
-                # For other types: bidirectional text match
-                if response_norm and gt_norm:
-                    if gt_norm in response_norm or response_norm in gt_norm or gt_norm == response_norm:
-                        correct += 1
-
-        accuracy = (correct / len(results) * 100) if results else 0.0
-
-        logger.info(f"  [{dataset_name}] Accuracy ({dataset_type}): {accuracy:.2f}%")
+        logger.info(f"  [{dataset_name}] Accuracy ({dataset_type}, {split}): {accuracy:.2f}%")
         return accuracy, results
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
@@ -325,25 +306,38 @@ class EpochEvaluationCallback(TrainerCallback):
                 model_name=f"{self.strategy_name}_{eval_type}{epoch}"
             )
 
-            # Log to WandB
+            # Log to WandB with clear train/test/full labels
             if WANDB_AVAILABLE and wandb.run is not None:
                 metrics = {}
 
-                # Log train/test losses
+                # Log train/test losses with clear labels
                 if train_loss is not None:
-                    metrics["eval/train_loss"] = train_loss
+                    metrics["eval/loss_train"] = train_loss
                 if test_loss is not None:
-                    metrics["eval/test_loss"] = test_loss
+                    metrics["eval/loss_test"] = test_loss
 
-                # Log train/test accuracies
+                # Log train/test/full accuracies with clear labels
                 if train_accuracy is not None:
-                    metrics["eval/train_accuracy"] = train_accuracy
+                    metrics["eval/accuracy_train"] = train_accuracy
                 if test_accuracy is not None:
-                    metrics["eval/test_accuracy"] = test_accuracy
+                    metrics["eval/accuracy_test"] = test_accuracy
+
+                # Calculate and log full (combined) accuracy
+                if train_accuracy is not None and test_accuracy is not None:
+                    # Weight by dataset sizes
+                    train_size = len(train_results) if train_results else 0
+                    test_size = len(test_results) if test_results else 0
+                    total_size = train_size + test_size
+                    if total_size > 0:
+                        full_accuracy = (train_accuracy * train_size + test_accuracy * test_size) / total_size
+                        metrics["eval/accuracy_full"] = full_accuracy
 
                 # Log train-test gap (for memorization detection)
                 if train_accuracy is not None and test_accuracy is not None:
                     metrics["eval/train_test_gap"] = train_accuracy - test_accuracy
+
+                # Log split info for clarity
+                metrics["eval/split_type"] = 0 if is_step_eval else 1  # 0=step_eval(test only), 1=full_eval(train+test)
 
                 # Log benchmark accuracies
                 for bench_name, bench_data in results.get("benchmarks", {}).items():

@@ -3,6 +3,9 @@ QCM Claudette Evaluator - Evaluates ERP multiple choice questions without images
 
 SmolVLM can "function as a pure language model without visual inputs" so we use text-only
 mode for Claudette evaluation to test the model's knowledge without image context.
+
+Uses the shared qcm_accuracy module for consistent accuracy calculation
+across all evaluators and trainers.
 """
 
 from typing import Dict, Any, List
@@ -10,11 +13,11 @@ from pathlib import Path
 from tqdm import tqdm
 import logging
 import json
-import re
 import torch
 from PIL import Image
 
 from .base_evaluator import BaseEvaluator
+from .qcm_accuracy import extract_answer_letter, calculate_qcm_accuracy, normalize_text
 
 logger = logging.getLogger(__name__)
 
@@ -115,8 +118,8 @@ class QCMClaudetteEvaluator(BaseEvaluator):
             # Use text-only generation (no image)
             response = self.generate_response_text_only(prompt)
 
-            # Extract predicted answer (letter)
-            predicted_letter = self._extract_answer_letter(response, list(options.keys()))
+            # Extract predicted answer using shared extractor
+            predicted_letter = extract_answer_letter(response, list(options.keys()))
 
             results.append({
                 "question": question,
@@ -128,7 +131,9 @@ class QCMClaudetteEvaluator(BaseEvaluator):
                 "dataset": "qcm_claudette"
             })
 
-        accuracy = self.calculate_accuracy(results)
+        # Use shared accuracy calculation
+        metrics = calculate_qcm_accuracy(results, split="full")
+        accuracy = metrics["accuracy"]
 
         return {
             "benchmark": "qcm_claudette",
@@ -138,92 +143,6 @@ class QCMClaudetteEvaluator(BaseEvaluator):
             "results": results
         }
 
-    def calculate_accuracy(self, results: List[Dict]) -> float:
-        """Calculate QCM accuracy with lenient matching"""
-        if not results:
-            return 0.0
-
-        correct = 0
-        total = len(results)
-
-        for r in results:
-            # First check if letter matches (strict)
-            if r.get('is_correct', False):
-                correct += 1
-                continue
-
-            # Lenient: check if correct option text is in response (or vice versa)
-            if 'options' in r and 'correct_answer' in r and 'response' in r:
-                correct_letter = r['correct_answer']
-                options = r['options']
-                response = r['response']
-
-                if correct_letter in options:
-                    correct_text = self._normalize_text(options[correct_letter])
-                    response_norm = self._normalize_text(response)
-
-                    # Check if correct option text is in response or vice versa
-                    if correct_text and response_norm:
-                        if correct_text in response_norm or response_norm in correct_text:
-                            correct += 1
-
-        return (correct / total * 100) if total > 0 else 0.0
-
-    def _normalize_text(self, text: str) -> str:
-        """Normalize text for lenient comparison"""
-        text = str(text).lower()
-        # Remove punctuation
-        text = re.sub(r'[^\w\s]', '', text)
-        # Remove all whitespace
-        text = re.sub(r'\s+', '', text)
-        return text
-
-    def _extract_answer_letter(self, response: str, valid_options: List[str]) -> str:
-        """Extract the answer letter from the response
-
-        Priority:
-        1. Check if response starts with a valid option letter
-        2. Look for patterns like "A)", "A:", "A -", "A."
-        3. Look for word boundary patterns like "Answer: A" or "answer is A"
-        4. FALLBACK: Find the first A/B/C/D character that appears anywhere in the response
-        """
-        response_upper = response.strip().upper()
-        valid_upper = [o.upper() for o in valid_options]
-
-        # 1. Check if response starts with a valid option letter
-        for opt in valid_options:
-            if response_upper.startswith(opt.upper()):
-                return opt.upper()
-
-        # 2. Look for pattern like "A)" or "A:" or "A -" or "A." at word boundary
-        for opt in valid_options:
-            pattern = rf'\b{opt.upper()}[\)\:\-\.\s]'
-            if re.search(pattern, response_upper):
-                return opt.upper()
-
-        # 3. Look for "answer is X" or "answer: X" patterns
-        answer_patterns = [
-            r'answer\s*(?:is|:)\s*([A-D])',
-            r'correct\s*(?:answer|option)\s*(?:is|:)\s*([A-D])',
-            r'([A-D])\s*is\s*(?:the\s*)?correct',
-        ]
-        for pattern in answer_patterns:
-            match = re.search(pattern, response_upper)
-            if match:
-                letter = match.group(1)
-                if letter in valid_upper:
-                    return letter
-
-        # 4. Look for isolated letter with word boundary
-        for opt in valid_options:
-            pattern = rf'\b{opt.upper()}\b'
-            if re.search(pattern, response_upper):
-                return opt.upper()
-
-        # 5. FALLBACK: Find the FIRST A, B, C, or D character that appears in the response
-        for char in response_upper:
-            if char in valid_upper:
-                return char
-
-        # No match found
-        return ""
+    # Note: calculate_accuracy, _normalize_text, and _extract_answer_letter
+    # are now provided by the shared qcm_accuracy module for consistency
+    # across all evaluators and trainers.
