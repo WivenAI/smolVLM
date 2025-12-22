@@ -3,7 +3,7 @@
 
 # Model settings
 model:
-  base_model: "HuggingFaceTB/SmolVLM-500M-Instruct"
+  base_model: "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
   cache_dir: "../tmpcache"
 
 # Training configurations to run
