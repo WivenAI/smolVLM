@@ -154,8 +154,9 @@ class QCMEvaluator(BaseEvaluator):
             if re.search(pattern, response):
                 return opt.upper()
 
-        # If no match found, return the first character if it's a valid option
-        if response and response[0] in [o.upper() for o in valid_options]:
-            return response[0]
+        # If no match found, return the first character that is a valid option
+        for c in response:
+            if response and c in [o.upper() for o in valid_options]:
+                return c
 
         return ""
