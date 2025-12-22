@@ -115,9 +115,13 @@ class Pipeline:
             # Use separate folders for debug mode
             self.output_dir = self.base_path / "modelweights_debug"
             self.results_dir = self.base_path / "results_debug"
+            self.cache_dir = self.base_path / "tmpcache_debug"
             self.output_dir.mkdir(parents=True, exist_ok=True)
             self.results_dir.mkdir(parents=True, exist_ok=True)
-            logger.info(f"DEBUG MODE - Using folders: {self.output_dir}, {self.results_dir}")
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+            # Update config cache_dir for debug mode
+            self.config["model"]["cache_dir"] = str(self.cache_dir)
+            logger.info(f"DEBUG MODE - Using folders: {self.output_dir}, {self.results_dir}, {self.cache_dir}")
 
     def run(self, eval_only: bool = False, compare_only: bool = False) -> Dict[str, Any]:
         """Run the full pipeline"""
