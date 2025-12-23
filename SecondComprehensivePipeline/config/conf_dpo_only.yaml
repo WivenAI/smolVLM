@@ -158,7 +158,7 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: "FourthComprehensivePipeline"
+  wandb_project: "FifthComprehensivePipeline"
   debug_mode: false  # Debug mode OFF
   debug_size: 2
   num_workers: 1
