@@ -320,7 +320,13 @@ class DPOTrainerWrapper:
 
         logger.info(f"Loading model: {base_model}")
 
-        self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True, cache_dir=cache_dir)
+        # Load processor with do_image_splitting=False as per TRL VLM example
+        self.processor = AutoProcessor.from_pretrained(
+            base_model,
+            trust_remote_code=True,
+            cache_dir=cache_dir,
+            do_image_splitting=False  # Required for VLM DPO training
+        )
 
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
@@ -396,12 +402,29 @@ class DPOTrainerWrapper:
             rejected = item.get('rejected', '')
 
             if prompt and chosen and rejected and image:
-                # Add <image> token to prompt for VLM - required for image-text alignment
-                prompt_with_image = f"<image>{prompt}"
+                # Use chat template format for TRL VLM DPO
                 dpo_data.append({
-                    'prompt': prompt_with_image,
-                    'chosen': chosen,
-                    'rejected': rejected,
+                    'prompt': [
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "image", "text": None},
+                                {"type": "text", "text": prompt}
+                            ]
+                        }
+                    ],
+                    'chosen': [
+                        {
+                            "role": "assistant",
+                            "content": [{"type": "text", "text": chosen}]
+                        }
+                    ],
+                    'rejected': [
+                        {
+                            "role": "assistant",
+                            "content": [{"type": "text", "text": rejected}]
+                        }
+                    ],
                     'images': [image]  # TRL DPO expects 'images' column with list of PIL Images
                 })
 
@@ -464,9 +487,9 @@ class DPOTrainerWrapper:
             if not question or not options or not correct_answer:
                 continue
 
-            # Format the question with options
+            # Format the question with options - don't add <image> token, processor handles it
             options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
-            prompt = f"<image>{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
+            prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
 
             # Chosen = correct answer letter
             chosen = correct_answer
@@ -478,10 +501,29 @@ class DPOTrainerWrapper:
             else:
                 rejected = "X"  # Fallback
 
+            # Use chat template format for TRL VLM DPO
             dpo_data.append({
-                'prompt': prompt,
-                'chosen': chosen,
-                'rejected': rejected,
+                'prompt': [
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "image", "text": None},
+                            {"type": "text", "text": prompt}
+                        ]
+                    }
+                ],
+                'chosen': [
+                    {
+                        "role": "assistant",
+                        "content": [{"type": "text", "text": chosen}]
+                    }
+                ],
+                'rejected': [
+                    {
+                        "role": "assistant",
+                        "content": [{"type": "text", "text": rejected}]
+                    }
+                ],
                 'images': [image]
             })
 
@@ -591,13 +633,32 @@ class DPOTrainerWrapper:
             else:
                 rejected = random.choice(rejected_candidates)
 
-            # Format prompt with image token
-            prompt = f"<image>Answer briefly. {question}"
+            # Format prompt
+            prompt = f"Answer briefly. {question}"
 
+            # Use chat template format for TRL VLM DPO
             dpo_data.append({
-                'prompt': prompt,
-                'chosen': chosen,
-                'rejected': rejected,
+                'prompt': [
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "image", "text": None},
+                            {"type": "text", "text": prompt}
+                        ]
+                    }
+                ],
+                'chosen': [
+                    {
+                        "role": "assistant",
+                        "content": [{"type": "text", "text": chosen}]
+                    }
+                ],
+                'rejected': [
+                    {
+                        "role": "assistant",
+                        "content": [{"type": "text", "text": rejected}]
+                    }
+                ],
                 'images': [image]
             })
 
