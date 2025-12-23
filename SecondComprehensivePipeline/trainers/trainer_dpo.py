@@ -1,5 +1,10 @@
 """
 DPO Trainer - Direct Preference Optimization for SmolVLM
+
+Features:
+- Lazy image loading from disk (images loaded on-the-fly, not all at once)
+- Dataset caching to avoid reprocessing
+- RAM monitoring logged to WandB
 """
 
 import os
@@ -10,6 +15,8 @@ import json
 import logging
 import gc
 import torch
+import hashlib
+import psutil
 from PIL import Image
 
 # Set HuggingFace cache before imports (must be before transformers/peft)
@@ -24,7 +31,7 @@ from transformers import (
 )
 from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from datasets import Dataset, load_dataset
+from datasets import Dataset, load_dataset, load_from_disk, Features, Value, Sequence, Image as HFImage
 import random
 
 try:
@@ -35,6 +42,48 @@ except ImportError:
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def get_ram_usage_gb():
+    """Get current RAM usage in GB"""
+    process = psutil.Process()
+    return process.memory_info().rss / 1e9
+
+
+def get_system_ram_info():
+    """Get system RAM info"""
+    mem = psutil.virtual_memory()
+    return {
+        'total_gb': mem.total / 1e9,
+        'available_gb': mem.available / 1e9,
+        'used_gb': mem.used / 1e9,
+        'percent': mem.percent
+    }
+
+
+class RAMMonitorCallback(TrainerCallback):
+    """Callback to log RAM usage to WandB during training"""
+
+    def __init__(self, log_every_n_steps: int = 10):
+        self.log_every_n_steps = log_every_n_steps
+        self._initial_ram = get_ram_usage_gb()
+        logger.info(f"Initial process RAM: {self._initial_ram:.2f} GB")
+
+    def on_step_end(self, args, state, control, **kwargs):
+        if state.global_step % self.log_every_n_steps == 0:
+            current_ram = get_ram_usage_gb()
+            sys_ram = get_system_ram_info()
+
+            if WANDB_AVAILABLE and wandb.run is not None:
+                wandb.log({
+                    'system/process_ram_gb': current_ram,
+                    'system/ram_delta_gb': current_ram - self._initial_ram,
+                    'system/system_ram_used_gb': sys_ram['used_gb'],
+                    'system/system_ram_available_gb': sys_ram['available_gb'],
+                    'system/system_ram_percent': sys_ram['percent'],
+                }, step=state.global_step)
+
+        return control
 
 # Import shared image utilities
 from trainers.image_utils import prepare_image_with_fallback
@@ -304,13 +353,91 @@ class EpochEvaluationCallback(TrainerCallback):
 
 
 class DPOTrainerWrapper:
-    """Wrapper for DPO training"""
+    """Wrapper for DPO training with lazy image loading and dataset caching"""
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.model = None
         self.processor = None
         self.hf_cache_dir = get_hf_cache_dir()
+        # Dataset cache directory
+        self.dataset_cache_dir = Path(__file__).parent.parent / "datasets" / "dpo_cache"
+        self.dataset_cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def _get_cache_key(self, dataset_path: str, dataset_type: str, max_samples: int = None) -> str:
+        """Generate a cache key for the dataset"""
+        # Create hash from dataset path and config
+        key_str = f"{dataset_path}_{dataset_type}_{max_samples}"
+        return hashlib.md5(key_str.encode()).hexdigest()[:12]
+
+    def _get_cached_dataset(self, cache_key: str) -> Optional[Dataset]:
+        """Load dataset from cache if it exists"""
+        cache_path = self.dataset_cache_dir / cache_key
+        if cache_path.exists():
+            try:
+                logger.info(f"Loading cached dataset from: {cache_path}")
+                return load_from_disk(str(cache_path))
+            except Exception as e:
+                logger.warning(f"Failed to load cached dataset: {e}")
+        return None
+
+    def _save_dataset_to_cache(self, dataset: Dataset, cache_key: str):
+        """Save dataset to cache"""
+        cache_path = self.dataset_cache_dir / cache_key
+        try:
+            logger.info(f"Saving dataset to cache: {cache_path}")
+            dataset.save_to_disk(str(cache_path))
+            logger.info(f"Dataset cached successfully")
+        except Exception as e:
+            logger.warning(f"Failed to cache dataset: {e}")
+
+    def cleanup_cache(self, cache_key: str = None):
+        """
+        Clean up cached datasets to prevent disk pollution
+
+        Args:
+            cache_key: Specific cache to clean, or None to clean all
+        """
+        import shutil
+        freed_space = 0
+
+        if cache_key:
+            # Clean specific cache
+            cache_path = self.dataset_cache_dir / cache_key
+            if cache_path.exists():
+                try:
+                    size = sum(f.stat().st_size for f in cache_path.rglob('*') if f.is_file())
+                    shutil.rmtree(cache_path)
+                    freed_space += size
+                    logger.info(f"Cleaned cache {cache_key} ({size / 1e9:.2f} GB)")
+                except Exception as e:
+                    logger.warning(f"Failed to clean cache {cache_key}: {e}")
+        else:
+            # Clean all caches
+            if self.dataset_cache_dir.exists():
+                for cache_dir in self.dataset_cache_dir.iterdir():
+                    if cache_dir.is_dir():
+                        try:
+                            size = sum(f.stat().st_size for f in cache_dir.rglob('*') if f.is_file())
+                            shutil.rmtree(cache_dir)
+                            freed_space += size
+                            logger.info(f"Cleaned cache {cache_dir.name} ({size / 1e9:.2f} GB)")
+                        except Exception as e:
+                            logger.warning(f"Failed to clean cache {cache_dir.name}: {e}")
+
+        # Also clean HF datasets cache files
+        for pattern in ['cache-*.arrow', '*.lock']:
+            for cache_file in self.dataset_cache_dir.glob(f'**/{pattern}'):
+                try:
+                    size = cache_file.stat().st_size
+                    cache_file.unlink()
+                    freed_space += size
+                except Exception:
+                    pass
+
+        if freed_space > 0:
+            logger.info(f"Total disk space freed: {freed_space / 1e9:.2f} GB")
+        return freed_space
 
     def load_model(self, base_model: str = None):
         """Load model with LoRA for DPO training"""
@@ -359,73 +486,54 @@ class DPOTrainerWrapper:
         self.model.print_trainable_parameters()
 
     def prepare_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
-        """Prepare DPO dataset from JSON file with actual image loading for VLM DPO"""
+        """Prepare DPO dataset with lazy image loading (images loaded on-the-fly, not all at once)"""
         logger.info(f"Preparing DPO dataset from: {dataset_path}")
+        logger.info(f"RAM before dataset prep: {get_ram_usage_gb():.2f} GB")
+
+        # Check cache first
+        cache_key = self._get_cache_key(dataset_path, "dpo", max_samples)
+        cached_dataset = self._get_cached_dataset(cache_key)
+        if cached_dataset is not None:
+            logger.info(f"Using cached dataset with {len(cached_dataset)} samples")
+            logger.info(f"RAM after loading cache: {get_ram_usage_gb():.2f} GB")
+            return cached_dataset
 
         with open(dataset_path, 'r', encoding='utf-8') as f:
             raw_data = json.load(f)
 
-        image_dir = Path(image_dir)
+        image_dir = Path(image_dir).resolve()
 
-        # Convert to DPO format with images column (required for VLM DPO)
+        # Build dataset with image PATHS (not loaded images) for lazy loading
         dpo_data = []
         skipped_missing_image = 0
         skipped_no_image_name = 0
-        skipped_load_error = 0
+
         for item in raw_data:
             image_name = item.get('image_name', '')
-            image = None
+            image_path_str = None
 
             if image_name:
                 image_path = image_dir / image_name
                 if image_path.exists():
-                    try:
-                        image = Image.open(image_path)
-                        # Use fallback chain: no resize → 1920 → 1024 → 512
-                        image = prepare_image_with_fallback(image, str(image_path))
-                    except Exception as e:
-                        logger.warning(f"Failed to load image {image_path}: {e}")
-                        skipped_load_error += 1
-                        continue
+                    image_path_str = str(image_path)
                 else:
-                    logger.debug(f"Image not found: {image_path}")
                     skipped_missing_image += 1
                     continue
             else:
-                logger.debug(f"No image_name in item, using placeholder")
                 skipped_no_image_name += 1
-                # Create black placeholder for text-only samples
-                image = Image.new('RGB', (512, 512), color='black')
+                continue  # Skip samples without images for now
 
             prompt = item.get('prompt', '')
             chosen = item.get('chosen', '')
             rejected = item.get('rejected', '')
 
-            if prompt and chosen and rejected and image:
-                # Use chat template format for TRL VLM DPO
+            if prompt and chosen and rejected and image_path_str:
+                # Store image path instead of loaded image
                 dpo_data.append({
-                    'prompt': [
-                        {
-                            "role": "user",
-                            "content": [
-                                {"type": "image", "text": None},
-                                {"type": "text", "text": prompt}
-                            ]
-                        }
-                    ],
-                    'chosen': [
-                        {
-                            "role": "assistant",
-                            "content": [{"type": "text", "text": chosen}]
-                        }
-                    ],
-                    'rejected': [
-                        {
-                            "role": "assistant",
-                            "content": [{"type": "text", "text": rejected}]
-                        }
-                    ],
-                    'images': [image]  # TRL DPO expects 'images' column with list of PIL Images
+                    'prompt_text': prompt,
+                    'chosen_text': chosen,
+                    'rejected_text': rejected,
+                    'image_path': image_path_str,
                 })
 
         # Apply sample limit if specified
@@ -433,50 +541,108 @@ class DPOTrainerWrapper:
             logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
             dpo_data = dpo_data[:max_samples]
 
-        # Log summary of skipped samples
-        total_skipped = skipped_missing_image + skipped_no_image_name + skipped_load_error
+        # Log summary
+        total_skipped = skipped_missing_image + skipped_no_image_name
         if total_skipped > 0:
             logger.warning(f"Skipped {total_skipped} samples: {skipped_missing_image} missing images, "
-                          f"{skipped_load_error} load errors, {skipped_no_image_name} no image_name")
+                          f"{skipped_no_image_name} no image_name")
 
-        logger.info(f"Prepared {len(dpo_data)} DPO samples with images")
-        return Dataset.from_list(dpo_data)
+        logger.info(f"Prepared {len(dpo_data)} DPO samples (paths only, images not loaded)")
+        logger.info(f"RAM after building paths: {get_ram_usage_gb():.2f} GB")
+
+        # Create dataset with image paths
+        dataset = Dataset.from_list(dpo_data)
+
+        # Save to cache
+        self._save_dataset_to_cache(dataset, cache_key)
+
+        return dataset
+
+    def _transform_row_to_chat_format(self, row):
+        """Transform a single row to chat template format with lazy-loaded image"""
+        # Load image on-the-fly
+        image_path = row['image_path']
+        try:
+            image = Image.open(image_path)
+            image = prepare_image_with_fallback(image, image_path)
+        except Exception as e:
+            logger.warning(f"Failed to load image {image_path}: {e}")
+            # Use placeholder for failed loads
+            image = Image.new('RGB', (512, 512), color='black')
+
+        # Build chat format
+        return {
+            'prompt': [{
+                "role": "user",
+                "content": [
+                    {"type": "image", "text": None},
+                    {"type": "text", "text": row['prompt_text']}
+                ]
+            }],
+            'chosen': [{
+                "role": "assistant",
+                "content": [{"type": "text", "text": row['chosen_text']}]
+            }],
+            'rejected': [{
+                "role": "assistant",
+                "content": [{"type": "text", "text": row['rejected_text']}]
+            }],
+            'images': [image]
+        }
+
+    def _apply_chat_transform(self, dataset):
+        """Apply chat format transform to dataset (images loaded during map)"""
+        logger.info(f"Applying chat transform to {len(dataset)} samples...")
+        logger.info(f"RAM before transform: {get_ram_usage_gb():.2f} GB")
+
+        # Remove path columns and add chat format columns
+        transformed = dataset.map(
+            self._transform_row_to_chat_format,
+            remove_columns=['prompt_text', 'chosen_text', 'rejected_text', 'image_path'],
+            num_proc=1,  # Single process to avoid pickling PIL images
+            desc="Loading images"
+        )
+
+        logger.info(f"RAM after transform: {get_ram_usage_gb():.2f} GB")
+        return transformed
 
     def prepare_qcm_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
-        """Prepare DPO dataset from QCM by using correct answer as chosen and random wrong answer as rejected"""
+        """Prepare DPO dataset from QCM with lazy image loading"""
         logger.info(f"Preparing DPO dataset from QCM: {dataset_path}")
+        logger.info(f"RAM before dataset prep: {get_ram_usage_gb():.2f} GB")
+
+        # Check cache first
+        cache_key = self._get_cache_key(dataset_path, "qcm_dpo", max_samples)
+        cached_dataset = self._get_cached_dataset(cache_key)
+        if cached_dataset is not None:
+            logger.info(f"Using cached dataset with {len(cached_dataset)} samples")
+            logger.info(f"RAM after loading cache: {get_ram_usage_gb():.2f} GB")
+            return cached_dataset
 
         with open(dataset_path, 'r', encoding='utf-8') as f:
             raw_data = json.load(f)
 
-        image_dir = Path(image_dir)
+        image_dir = Path(image_dir).resolve()
 
+        # Build dataset with image PATHS for lazy loading
         dpo_data = []
         skipped_missing_image = 0
-        skipped_load_error = 0
+        skipped_no_image = 0
 
         for item in raw_data:
-            # Get image
             image_name = item.get('image_name', '')
-            image = None
+            image_path_str = None
 
             if image_name:
                 image_path = image_dir / image_name
                 if image_path.exists():
-                    try:
-                        image = Image.open(image_path)
-                        # Use fallback chain: no resize → 1920 → 1024 → 512
-                        image = prepare_image_with_fallback(image, str(image_path))
-                    except Exception as e:
-                        logger.warning(f"Failed to load image {image_path}: {e}")
-                        skipped_load_error += 1
-                        continue
+                    image_path_str = str(image_path)
                 else:
                     skipped_missing_image += 1
                     continue
             else:
-                # Create placeholder for samples without images
-                image = Image.new('RGB', (512, 512), color='white')
+                skipped_no_image += 1
+                continue
 
             # Get QCM data
             qcm_data = item.get('qcm', item)
@@ -487,7 +653,7 @@ class DPOTrainerWrapper:
             if not question or not options or not correct_answer:
                 continue
 
-            # Format the question with options - don't add <image> token, processor handles it
+            # Format the question with options
             options_text = "\n".join([f"{key}: {value}" for key, value in options.items()])
             prompt = f"{question}\n\nOptions:\n{options_text}\n\nAnswer with the letter of the correct option:"
 
@@ -496,50 +662,32 @@ class DPOTrainerWrapper:
 
             # Rejected = random wrong answer letter
             wrong_options = [key for key in options.keys() if key != correct_answer]
-            if wrong_options:
-                rejected = random.choice(wrong_options)
-            else:
-                rejected = "X"  # Fallback
+            rejected = random.choice(wrong_options) if wrong_options else "X"
 
-            # Use chat template format for TRL VLM DPO
+            # Store paths, not loaded images
             dpo_data.append({
-                'prompt': [
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "image", "text": None},
-                            {"type": "text", "text": prompt}
-                        ]
-                    }
-                ],
-                'chosen': [
-                    {
-                        "role": "assistant",
-                        "content": [{"type": "text", "text": chosen}]
-                    }
-                ],
-                'rejected': [
-                    {
-                        "role": "assistant",
-                        "content": [{"type": "text", "text": rejected}]
-                    }
-                ],
-                'images': [image]
+                'prompt_text': prompt,
+                'chosen_text': chosen,
+                'rejected_text': rejected,
+                'image_path': image_path_str,
             })
 
-        # Apply sample limit if specified
+        # Apply sample limit
         if max_samples is not None and len(dpo_data) > max_samples:
             logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
             dpo_data = dpo_data[:max_samples]
 
-        # Log summary of skipped samples
-        total_skipped = skipped_missing_image + skipped_load_error
+        # Log summary
+        total_skipped = skipped_missing_image + skipped_no_image
         if total_skipped > 0:
-            logger.warning(f"Skipped {total_skipped} samples: {skipped_missing_image} missing images, "
-                          f"{skipped_load_error} load errors")
+            logger.warning(f"Skipped {total_skipped} samples: {skipped_missing_image} missing, {skipped_no_image} no image")
 
-        logger.info(f"Prepared {len(dpo_data)} DPO samples from QCM")
-        return Dataset.from_list(dpo_data)
+        logger.info(f"Prepared {len(dpo_data)} DPO samples from QCM (paths only)")
+        logger.info(f"RAM after building paths: {get_ram_usage_gb():.2f} GB")
+
+        dataset = Dataset.from_list(dpo_data)
+        self._save_dataset_to_cache(dataset, cache_key)
+        return dataset
 
     def prepare_benchmark_dpo_dataset(self, benchmark_name: str, max_samples: int = None) -> Dataset:
         """Prepare DPO dataset from benchmark by using correct answer as chosen and random wrong answer as rejected"""
@@ -734,7 +882,7 @@ class DPOTrainerWrapper:
             dataset_num_proc=1,
         )
 
-        # Create evaluation callback with separate train/test datasets
+        # Create callbacks
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
@@ -743,6 +891,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset
         )
+        ram_callback = RAMMonitorCallback(log_every_n_steps=10)
 
         trainer = TRLDPOTrainer(
             model=self.model,
@@ -751,7 +900,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=self.processor,
-            callbacks=[eval_callback],
+            callbacks=[eval_callback, ram_callback],
         )
 
         trainer.train()
@@ -764,10 +913,11 @@ class DPOTrainerWrapper:
         if use_wandb and WANDB_AVAILABLE:
             wandb.finish()
 
-        # Cleanup
+        # Cleanup memory and cache
         gc.collect()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
+        self.cleanup_cache()  # Clean up dataset cache to prevent disk pollution
 
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
@@ -834,7 +984,11 @@ class DPOTrainerWrapper:
             dataset_num_proc=1,
         )
 
-        # Create evaluation callback with separate train/test datasets
+        # Apply chat format transform (loads images during map)
+        train_dataset = self._apply_chat_transform(train_dataset)
+        eval_dataset = self._apply_chat_transform(eval_dataset)
+
+        # Create callbacks
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
@@ -843,6 +997,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset
         )
+        ram_callback = RAMMonitorCallback(log_every_n_steps=10)
 
         trainer = TRLDPOTrainer(
             model=self.model,
@@ -851,7 +1006,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=self.processor,
-            callbacks=[eval_callback],
+            callbacks=[eval_callback, ram_callback],
         )
 
         trainer.train()
@@ -864,10 +1019,11 @@ class DPOTrainerWrapper:
         if use_wandb and WANDB_AVAILABLE:
             wandb.finish()
 
-        # Cleanup
+        # Cleanup memory and cache
         gc.collect()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
+        self.cleanup_cache()  # Clean up dataset cache to prevent disk pollution
 
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
@@ -935,7 +1091,11 @@ class DPOTrainerWrapper:
             dataset_num_proc=1,
         )
 
-        # Create evaluation callback with separate train/test datasets
+        # Apply chat format transform (loads images during map)
+        train_dataset = self._apply_chat_transform(train_dataset)
+        eval_dataset = self._apply_chat_transform(eval_dataset)
+
+        # Create callbacks
         eval_callback = EpochEvaluationCallback(
             config=self.config,
             output_dir=output_dir,
@@ -944,6 +1104,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset
         )
+        ram_callback = RAMMonitorCallback(log_every_n_steps=10)
 
         trainer = TRLDPOTrainer(
             model=self.model,
@@ -952,7 +1113,7 @@ class DPOTrainerWrapper:
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             processing_class=self.processor,
-            callbacks=[eval_callback],
+            callbacks=[eval_callback, ram_callback],
         )
 
         trainer.train()
@@ -965,10 +1126,11 @@ class DPOTrainerWrapper:
         if use_wandb and WANDB_AVAILABLE:
             wandb.finish()
 
-        # Cleanup
+        # Cleanup memory and cache
         gc.collect()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
+        self.cleanup_cache()  # Clean up dataset cache to prevent disk pollution
 
         logger.info(f"Model saved to: {output_dir}")
         return output_dir
