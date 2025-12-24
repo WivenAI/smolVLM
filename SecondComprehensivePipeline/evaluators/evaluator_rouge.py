@@ -25,8 +25,9 @@ class RougeEvaluator(BaseEvaluator):
         if self._rouge_scorer is None:
             try:
                 from rouge_score import rouge_scorer
+                # Only use ROUGE-L as it captures sentence-level structure via longest common subsequence
                 self._rouge_scorer = rouge_scorer.RougeScorer(
-                    ['rouge1', 'rouge2', 'rougeL'], use_stemmer=True
+                    ['rougeL'], use_stemmer=True
                 )
             except ImportError:
                 logger.error("rouge-score not installed. Run: pip install rouge-score")
@@ -54,8 +55,6 @@ class RougeEvaluator(BaseEvaluator):
         logger.info(f"Loaded {len(dataset)} DPO examples for ROUGE evaluation")
 
         results = []
-        all_rouge1 = []
-        all_rouge2 = []
         all_rougeL = []
 
         scorer = self._get_rouge_scorer()
@@ -70,15 +69,10 @@ class RougeEvaluator(BaseEvaluator):
             # Generate prediction
             prediction = self.generate_response(image, prompt)
 
-            # Calculate ROUGE scores
+            # Calculate ROUGE-L score (longest common subsequence)
             scores = scorer.score(reference, prediction)
-
-            rouge1_f = scores['rouge1'].fmeasure
-            rouge2_f = scores['rouge2'].fmeasure
             rougeL_f = scores['rougeL'].fmeasure
 
-            all_rouge1.append(rouge1_f)
-            all_rouge2.append(rouge2_f)
             all_rougeL.append(rougeL_f)
 
             results.append({
@@ -86,8 +80,6 @@ class RougeEvaluator(BaseEvaluator):
                 "prompt": prompt,
                 "prediction": prediction,
                 "reference": reference,
-                "rouge1": rouge1_f,
-                "rouge2": rouge2_f,
                 "rougeL": rougeL_f
             })
 
@@ -104,15 +96,11 @@ class RougeEvaluator(BaseEvaluator):
                 "accuracy": 0.0,
                 "total_samples": 0,
                 "skipped_samples": skipped_samples,
-                "rouge1": 0.0,
-                "rouge2": 0.0,
                 "rougeL": 0.0,
                 "results": []
             }
 
-        # Calculate means
-        rouge1_mean = sum(all_rouge1) / len(all_rouge1)
-        rouge2_mean = sum(all_rouge2) / len(all_rouge2)
+        # Calculate mean ROUGE-L score
         rougeL_mean = sum(all_rougeL) / len(all_rougeL)
 
         # Use ROUGE-L as the "accuracy" metric for comparison (scaled to percentage)
@@ -123,8 +111,6 @@ class RougeEvaluator(BaseEvaluator):
             "accuracy": accuracy,
             "total_samples": len(results),
             "skipped_samples": skipped_samples,
-            "rouge1": rouge1_mean,
-            "rouge2": rouge2_mean,
             "rougeL": rougeL_mean,
             "results": results
         }

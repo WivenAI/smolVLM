@@ -234,19 +234,19 @@ training:
 
     # Full fine-tuning on QCM datasets
     - name: "full_ft_qcm_gemini"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_qcm"
       dataset: "datasets/qcm/qcm_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "full_ft_qcm_nova"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_qcm"
       dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
     - name: "full_ft_qcm_combined"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_qcm_combined"
       datasets:
         - "datasets/qcm/qcm_dataset_gemini.json"
@@ -255,42 +255,42 @@ training:
 
     # Full fine-tuning on benchmark datasets
     - name: "full_ft_docvqa"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_benchmark"
       benchmark: "docvqa"
 
     - name: "full_ft_ocrbench"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_benchmark"
       benchmark: "ocrbench"
 
     - name: "full_ft_chartqa"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_benchmark"
       benchmark: "chartqa"
 
     # Full fine-tuning on chosen/rejected dataset (SFT using chosen responses)
     - name: "full_ft_sft_chosen_rej_gemini"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_chosen_rej_sft"
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "full_ft_sft_chosen_rej_nova"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_chosen_rej_sft"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
     # Full fine-tuning DPO (preference optimization with all parameters)
     - name: "full_ft_dpo_gemini"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_dpo"
       dataset: "datasets/dpo/dpo_dataset_gemini.json"
       image_dir: "datasets/images"
 
     - name: "full_ft_dpo_nova"
-      enabled: false  # Disabled: requires more GPU memory
+      enabled: true
       type: "full_ft_dpo"
       dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
@@ -402,7 +402,7 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: "ThirdComprehensivePipeline"
+  wandb_project: "SeventhComprehensivePipeline"
   debug_mode: false  # If true, use only debug_size samples
   debug_size: 2      # Number of samples to use in debug mode (min 2 for train/test split)
   num_workers: 1
