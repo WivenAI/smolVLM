@@ -82,7 +82,7 @@ class EpochEvaluationCallback(TrainerCallback):
         logger.info(f"[{self.strategy_name}] Running BASELINE evaluation at step 0 (before training)...")
 
         # Reuse on_epoch_end logic with epoch=0
-        self._run_evaluation(args, state, control, model, epoch=0, is_step_eval=True)
+        self._run_evaluation(args, state, control, model, epoch=0, is_step_eval=False)
 
         return control
 
@@ -93,8 +93,8 @@ class EpochEvaluationCallback(TrainerCallback):
         # Check if this step should trigger evaluation
         if current_step in self.EARLY_EVAL_STEPS and current_step not in self._evaluated_steps:
             self._evaluated_steps.add(current_step)
-            logger.info(f"[{self.strategy_name}] Running EARLY evaluation at step {current_step}...")
-            self._run_evaluation(args, state, control, model, epoch=current_step, is_step_eval=True)
+            logger.info(f"[{self.strategy_name}] Running FULL evaluation at step {current_step}...")
+            self._run_evaluation(args, state, control, model, epoch=current_step, is_step_eval=False)
 
         return control
 
