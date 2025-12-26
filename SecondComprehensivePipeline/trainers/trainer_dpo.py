@@ -101,10 +101,10 @@ class EpochEvaluationCallback(TrainerCallback):
     """
 
     # Steps at which to run early evaluation (to detect model breaking)
-    EARLY_EVAL_STEPS = [0, 1, 5, 10, 20, 50, 100]
+    EARLY_EVAL_STEPS = [0, 200]
 
-    # Epochs at which to run evaluation (skip 11-19, 21-29)
-    EVAL_EPOCHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30]
+    # Epochs at which to run evaluation
+    EVAL_EPOCHS = [0, 1, 2, 5, 10, 20, 30]
 
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor,
                  train_dataset=None, eval_dataset=None):
