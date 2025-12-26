@@ -36,6 +36,19 @@ training:
     # ============================================================
 
     # Full fine-tuning on QCM datasets
+
+    - name: "full_ft_qcm_procedure1"
+      enabled: true
+      type: "full_ft_qcm"
+      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
+      image_dir: "datasets/procedureimages"
+
+    - name: "full_ft_qcm_procedure2"
+      enabled: true
+      type: "full_ft_qcm"
+      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
+      image_dir: "datasets/procedureimages"
+
     - name: "full_ft_qcm_gemini"
       enabled: true
       type: "full_ft_qcm"
@@ -56,18 +69,6 @@ training:
         - "datasets/qcm/qcm_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
-    # Full fine-tuning on procedure QCM datasets
-    - name: "full_ft_qcm_procedure1"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "full_ft_qcm_procedure2"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
-      image_dir: "datasets/procedureimages"
 
     # Full fine-tuning on benchmark datasets
     - name: "full_ft_docvqa"
