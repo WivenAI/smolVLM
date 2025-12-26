@@ -24,6 +24,84 @@ training:
       enabled: true
       type: "none"  # No training, just evaluate base model
 
+    # ============================================================
+    # FULL FINE-TUNING STRATEGIES (run first)
+    # ============================================================
+    # Full fine-tuning trains ALL model parameters (no LoRA/QLoRA).
+    # Recommended for smaller models (256M, 500M) for best results.
+    # WARNING: Requires more GPU memory than LoRA:
+    #   - SmolVLM-256M: ~4-6 GB VRAM
+    #   - SmolVLM-500M: ~8-12 GB VRAM
+    #   - SmolVLM-2B: ~24-32 GB VRAM (consider LoRA instead)
+    # ============================================================
+
+    # Full fine-tuning on QCM datasets
+    - name: "full_ft_qcm_gemini"
+      enabled: true
+      type: "full_ft_qcm"
+      dataset: "datasets/qcm/qcm_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_qcm_nova"
+      enabled: true
+      type: "full_ft_qcm"
+      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_qcm_combined"
+      enabled: true
+      type: "full_ft_qcm_combined"
+      datasets:
+        - "datasets/qcm/qcm_dataset_gemini.json"
+        - "datasets/qcm/qcm_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # Full fine-tuning on benchmark datasets
+    - name: "full_ft_docvqa"
+      enabled: true
+      type: "full_ft_benchmark"
+      benchmark: "docvqa"
+
+    - name: "full_ft_ocrbench"
+      enabled: true
+      type: "full_ft_benchmark"
+      benchmark: "ocrbench"
+
+    - name: "full_ft_chartqa"
+      enabled: true
+      type: "full_ft_benchmark"
+      benchmark: "chartqa"
+
+    # Full fine-tuning on chosen/rejected dataset (SFT using chosen responses)
+    - name: "full_ft_sft_chosen_rej_gemini"
+      enabled: true
+      type: "full_ft_chosen_rej_sft"
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_sft_chosen_rej_nova"
+      enabled: true
+      type: "full_ft_chosen_rej_sft"
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # Full fine-tuning DPO (preference optimization with all parameters)
+    - name: "full_ft_dpo_gemini"
+      enabled: true
+      type: "full_ft_dpo"
+      dataset: "datasets/dpo/dpo_dataset_gemini.json"
+      image_dir: "datasets/images"
+
+    - name: "full_ft_dpo_nova"
+      enabled: true
+      type: "full_ft_dpo"
+      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
+      image_dir: "datasets/images"
+
+    # ============================================================
+    # LORA/QLORA STRATEGIES (run after full fine-tuning)
+    # ============================================================
+
     - name: "sft_docvqa"
       enabled: true
       type: "sft_benchmark"
@@ -219,80 +297,6 @@ training:
       qcm_datasets:
         - "datasets/qcm/qcm_dataset_gemini.json"
         - "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # ============================================================
-    # FULL FINE-TUNING STRATEGIES
-    # ============================================================
-    # Full fine-tuning trains ALL model parameters (no LoRA/QLoRA).
-    # Recommended for smaller models (256M, 500M) for best results.
-    # WARNING: Requires more GPU memory than LoRA:
-    #   - SmolVLM-256M: ~4-6 GB VRAM
-    #   - SmolVLM-500M: ~8-12 GB VRAM
-    #   - SmolVLM-2B: ~24-32 GB VRAM (consider LoRA instead)
-    # ============================================================
-
-    # Full fine-tuning on QCM datasets
-    - name: "full_ft_qcm_gemini"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_qcm_nova"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_qcm_combined"
-      enabled: true
-      type: "full_ft_qcm_combined"
-      datasets:
-        - "datasets/qcm/qcm_dataset_gemini.json"
-        - "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Full fine-tuning on benchmark datasets
-    - name: "full_ft_docvqa"
-      enabled: true
-      type: "full_ft_benchmark"
-      benchmark: "docvqa"
-
-    - name: "full_ft_ocrbench"
-      enabled: true
-      type: "full_ft_benchmark"
-      benchmark: "ocrbench"
-
-    - name: "full_ft_chartqa"
-      enabled: true
-      type: "full_ft_benchmark"
-      benchmark: "chartqa"
-
-    # Full fine-tuning on chosen/rejected dataset (SFT using chosen responses)
-    - name: "full_ft_sft_chosen_rej_gemini"
-      enabled: true
-      type: "full_ft_chosen_rej_sft"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_sft_chosen_rej_nova"
-      enabled: true
-      type: "full_ft_chosen_rej_sft"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Full fine-tuning DPO (preference optimization with all parameters)
-    - name: "full_ft_dpo_gemini"
-      enabled: true
-      type: "full_ft_dpo"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_dpo_nova"
-      enabled: true
-      type: "full_ft_dpo"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
       image_dir: "datasets/images"
 
 # Evaluation settings
