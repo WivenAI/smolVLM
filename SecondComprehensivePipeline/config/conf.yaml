@@ -13,7 +13,7 @@ training:
   full_finetune_dpo_learning_rate: 1.0e-07
   strategies:
   - name: baseline
-    enabled: true
+    enabled: false
     type: none
   - name: full_ft_qcm_procedure1
     enabled: false
