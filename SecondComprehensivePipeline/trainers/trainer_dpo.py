@@ -101,10 +101,10 @@ class EpochEvaluationCallback(TrainerCallback):
     """
 
     # Steps at which to run early evaluation (to detect model breaking)
-    EARLY_EVAL_STEPS = [0, 200]
+    EARLY_EVAL_STEPS = [200]  # Removed step 0 - baseline evaluated at pipeline start
 
     # Epochs at which to run evaluation
-    EVAL_EPOCHS = [0, 1, 2, 5, 10, 20, 30]
+    EVAL_EPOCHS = [1, 2, 5, 10, 20, 30, 40]  # Removed epoch 0 - baseline evaluated at pipeline start
 
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str, processor,
                  train_dataset=None, eval_dataset=None):
@@ -119,17 +119,10 @@ class EpochEvaluationCallback(TrainerCallback):
         self._evaluated_steps = set()  # Track which steps we've evaluated
 
     def on_train_begin(self, args, state, control, model=None, **kwargs):
-        """Run baseline evaluation at step 0 before any training."""
-        if self._initial_eval_done:
-            return control
-
-        self._initial_eval_done = True
-        self._evaluated_steps.add(0)
-        logger.info(f"[{self.strategy_name}] Running BASELINE evaluation at step 0 (before training)...")
-
-        # Reuse _run_evaluation logic with epoch=0
-        self._run_evaluation(args, state, control, model, epoch=0, is_step_eval=False)
-
+        """Skip baseline evaluation - it's done at pipeline start instead."""
+        # Baseline is evaluated once at the start of the pipeline (before any training)
+        # No need to re-evaluate at the start of each training strategy
+        logger.info(f"[{self.strategy_name}] Skipping step 0 evaluation (baseline evaluated at pipeline start)")
         return control
 
     def _compute_dpo_metrics(self, model, dataset, dataset_name="dataset"):
