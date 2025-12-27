@@ -1,425 +1,316 @@
-# NoHallucinations Pipeline Configuration
-# This file defines all training and evaluation settings
-
-# Model settings
 model:
-  base_model: "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
-  cache_dir: "../tmpcache"
-  image_size: 512  # SmolVLM2-256M uses image_size=512, patch_size=16
-
-# Training configurations to run
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
 training:
-  epochs: 40  # Increased from 30 to 40
+  epochs: 40
   train_samples: 1000
   batch_size: 1
-  gradient_accumulation_steps: 1  # Keep at 1 to encourage overfitting on training set
-  learning_rate: 0.00001
-  dpo_learning_rate: 0.0000005  # 5e-7, DPO typically needs lower LR than SFT
-  full_finetune_learning_rate: 0.000005  # 5e-6, lower LR for full fine-tuning
-  full_finetune_dpo_learning_rate: 0.0000001  # 1e-7, very low LR for full fine-tuning DPO
-
-  # Which training strategies to run
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
   strategies:
-    - name: "baseline"
-      enabled: true
-      type: "none"  # No training, just evaluate base model
-
-    # ============================================================
-    # FULL FINE-TUNING STRATEGIES (run first)
-    # ============================================================
-    # Full fine-tuning trains ALL model parameters (no LoRA/QLoRA).
-    # Recommended for smaller models (256M, 500M) for best results.
-    # WARNING: Requires more GPU memory than LoRA:
-    #   - SmolVLM-256M: ~4-6 GB VRAM
-    #   - SmolVLM-500M: ~8-12 GB VRAM
-    #   - SmolVLM-2B: ~24-32 GB VRAM (consider LoRA instead)
-    # ============================================================
-
-    # Full fine-tuning on QCM datasets
-    - name: "full_ft_qcm_procedure1"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "full_ft_qcm_procedure2"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "full_ft_qcm_gemini"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_qcm_nova"
-      enabled: true
-      type: "full_ft_qcm"
-      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_qcm_combined"
-      enabled: true
-      type: "full_ft_qcm_combined"
-      datasets:
-        - "datasets/qcm/qcm_dataset_gemini.json"
-        - "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Full fine-tuning on benchmark datasets (moved from above for better organization)
-    - name: "full_ft_docvqa"
-      enabled: true
-      type: "full_ft_benchmark"
-      benchmark: "docvqa"
-
-    - name: "full_ft_ocrbench"
-      enabled: true
-      type: "full_ft_benchmark"
-      benchmark: "ocrbench"
-
-    - name: "full_ft_chartqa"
-      enabled: true
-      type: "full_ft_benchmark"
-      benchmark: "chartqa"
-
-    # Full fine-tuning on chosen/rejected dataset (SFT using chosen responses)
-    - name: "full_ft_sft_chosen_rej_gemini"
-      enabled: true
-      type: "full_ft_chosen_rej_sft"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_sft_chosen_rej_nova"
-      enabled: true
-      type: "full_ft_chosen_rej_sft"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Full fine-tuning DPO (preference optimization with all parameters)
-    - name: "full_ft_dpo_gemini"
-      enabled: true
-      type: "full_ft_dpo"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "full_ft_dpo_nova"
-      enabled: true
-      type: "full_ft_dpo"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # ============================================================
-    # LORA/QLORA STRATEGIES (run after full fine-tuning)
-    # ============================================================
-
-    
-
-    - name: "sft_ocrbench"
-      enabled: true
-      type: "sft_benchmark"
-      benchmark: "ocrbench"
-
-    - name: "sft_chartqa"
-      enabled: true
-      type: "sft_benchmark"
-      benchmark: "chartqa"
-      
-     # Procedure QCM training (new datasets)
-    - name: "erp_qcm_procedure1"
-      enabled: true
-      type: "sft_qcm"
-      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "erp_qcm_procedure2"
-      enabled: true
-      type: "sft_qcm"
-      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "erp_qcm_gemini"
-      enabled: true
-      type: "sft_qcm"
-      dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_qcm_nova"
-      enabled: true
-      type: "sft_qcm"
-      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-    - name: "erp_sft_chosen_rej_gemini"
-      enabled: true
-      type: "sft_chosen_rej"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_sft_chosen_rej_nova"
-      enabled: true
-      type: "sft_chosen_rej"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # DPO on benchmarks (using random wrong answers as rejected)
-    - name: "dpo_docvqa"
-      enabled: true  # Testing DPO benchmark
-      type: "dpo_benchmark"
-      benchmark: "docvqa"
-
-    - name: "dpo_ocrbench"
-      enabled: true
-      type: "dpo_benchmark"
-      benchmark: "ocrbench"
-
-    - name: "dpo_chartqa"
-      enabled: true
-      type: "dpo_benchmark"
-      benchmark: "chartqa"
-
-   
-
-    - name: "erp_qcm_combined"
-      enabled: true
-      type: "sft_qcm_combined"
-      datasets:
-        - "datasets/qcm/qcm_dataset_gemini.json"
-        - "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    
-    - name: "erp_qcm_procedure_combined"
-      enabled: true
-      type: "sft_qcm_combined"
-      datasets:
-        - "datasets/qcm/qcm_procedure1_claude_code.json"
-        - "datasets/qcm/qcm_procedure2_geminicli.json"
-      image_dir: "datasets/procedureimages"
-
-    # DPO on QCM datasets (correct answer as chosen, random wrong as rejected)
-    - name: "dpo_qcm_gemini"
-      enabled: true
-      type: "dpo_qcm"
-      dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "dpo_qcm_nova"
-      enabled: true
-      type: "dpo_qcm"
-      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    - name: "dpo_qcm_procedure1"
-      enabled: true
-      type: "dpo_qcm"
-      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "dpo_qcm_procedure2"
-      enabled: true
-      type: "dpo_qcm"
-      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
-      image_dir: "datasets/procedureimages"
-
-    - name: "erp_dpo_gemini"
-      enabled: true
-      type: "dpo"
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_dpo_nova"
-      enabled: true
-      type: "dpo"
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_qcm_dpo_gemini"
-      enabled: true
-      type: "qcm_then_dpo"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_dpo_qcm_gemini"
-      enabled: true
-      type: "dpo_then_qcm"
-      dpo_dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_dpo_qcm_nova"
-      enabled: true
-      type: "dpo_then_qcm"
-      dpo_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # SFT on chosen/rejected datasets (using chosen responses only - no preference learning)
-    
-
-    # Combined: QCM then SFT on chosen/rejected dataset
-    - name: "erp_qcm_sft_chosen_rej_gemini"
-      enabled: true
-      type: "sft_qcm_chosen_rej"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      chosen_rej_dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_qcm_sft_chosen_rej_nova"
-      enabled: true
-      type: "sft_qcm_chosen_rej"
-      qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      chosen_rej_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Reverse order: SFT on chosen/rejected first, then QCM (to compare training order)
-    - name: "erp_sft_chosen_rej_qcm_gemini"
-      enabled: true
-      type: "sft_chosen_rej_qcm"
-      chosen_rej_dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      qcm_dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
-
-    - name: "erp_sft_chosen_rej_qcm_nova"
-      enabled: true
-      type: "sft_chosen_rej_qcm"
-      chosen_rej_dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      qcm_dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Combined datasets: QCM (both) then SFT on chosen/rejected (both)
-    - name: "erp_qcm_sft_chosen_rej_combined"
-      enabled: true
-      type: "sft_qcm_chosen_rej_combined"
-      qcm_datasets:
-        - "datasets/qcm/qcm_dataset_gemini.json"
-        - "datasets/qcm/qcm_dataset_nova_pro.json"
-      chosen_rej_datasets:
-        - "datasets/dpo/dpo_dataset_gemini.json"
-        - "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-    # Combined datasets: SFT on chosen/rejected (both) then QCM (both)
-    - name: "erp_sft_chosen_rej_qcm_combined"
-      enabled: true
-      type: "sft_chosen_rej_qcm_combined"
-      chosen_rej_datasets:
-        - "datasets/dpo/dpo_dataset_gemini.json"
-        - "datasets/dpo/dpo_dataset_nova_pro.json"
-      qcm_datasets:
-        - "datasets/qcm/qcm_dataset_gemini.json"
-        - "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-
-# Evaluation settings
+  - name: baseline
+    enabled: true
+    type: none
+  - name: full_ft_qcm_procedure1
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+  - name: full_ft_qcm_procedure2
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: full_ft_qcm_gemini
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: full_ft_qcm_nova
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_qcm_combined
+    enabled: false
+    type: full_ft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_docvqa
+    enabled: true
+    type: full_ft_benchmark
+    benchmark: docvqa
+  - name: full_ft_ocrbench
+    enabled: false
+    type: full_ft_benchmark
+    benchmark: ocrbench
+  - name: full_ft_chartqa
+    enabled: false
+    type: full_ft_benchmark
+    benchmark: chartqa
+  - name: full_ft_sft_chosen_rej_gemini
+    enabled: false
+    type: full_ft_chosen_rej_sft
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: full_ft_sft_chosen_rej_nova
+    enabled: false
+    type: full_ft_chosen_rej_sft
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_dpo_gemini
+    enabled: false
+    type: full_ft_dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: full_ft_dpo_nova
+    enabled: false
+    type: full_ft_dpo
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: sft_docvqa
+    enabled: true
+    type: sft_benchmark
+    benchmark: docvqa
+  - name: sft_ocrbench
+    enabled: false
+    type: sft_benchmark
+    benchmark: ocrbench
+  - name: sft_chartqa
+    enabled: false
+    type: sft_benchmark
+    benchmark: chartqa
+  - name: erp_qcm_procedure1
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+  - name: erp_qcm_procedure2
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: erp_qcm_gemini
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_qcm_nova
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_gemini
+    enabled: false
+    type: sft_chosen_rej
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_nova
+    enabled: false
+    type: sft_chosen_rej
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: dpo_docvqa
+    enabled: false
+    type: dpo_benchmark
+    benchmark: docvqa
+  - name: dpo_ocrbench
+    enabled: false
+    type: dpo_benchmark
+    benchmark: ocrbench
+  - name: dpo_chartqa
+    enabled: false
+    type: dpo_benchmark
+    benchmark: chartqa
+  - name: erp_qcm_combined
+    enabled: false
+    type: sft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_procedure_combined
+    enabled: false
+    type: sft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_procedure1_claude_code.json
+    - datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: dpo_qcm_gemini
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: dpo_qcm_nova
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: dpo_qcm_procedure1
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+  - name: dpo_qcm_procedure2
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: erp_dpo_gemini
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_nova
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_dpo_gemini
+    enabled: false
+    type: qcm_then_dpo
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    dpo_dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_qcm_gemini
+    enabled: false
+    type: dpo_then_qcm
+    dpo_dataset: datasets/dpo/dpo_dataset_gemini.json
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_qcm_nova
+    enabled: false
+    type: dpo_then_qcm
+    dpo_dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_sft_chosen_rej_gemini
+    enabled: false
+    type: sft_qcm_chosen_rej
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_qcm_sft_chosen_rej_nova
+    enabled: false
+    type: sft_qcm_chosen_rej
+    qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_qcm_gemini
+    enabled: false
+    type: sft_chosen_rej_qcm
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_gemini.json
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_qcm_nova
+    enabled: false
+    type: sft_chosen_rej_qcm
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_sft_chosen_rej_combined
+    enabled: false
+    type: sft_qcm_chosen_rej_combined
+    qcm_datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    chosen_rej_datasets:
+    - datasets/dpo/dpo_dataset_gemini.json
+    - datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_qcm_combined
+    enabled: false
+    type: sft_chosen_rej_qcm_combined
+    chosen_rej_datasets:
+    - datasets/dpo/dpo_dataset_gemini.json
+    - datasets/dpo/dpo_dataset_nova_pro.json
+    qcm_datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
 evaluation:
   benchmarks:
-    - name: "ocrbench"
-      enabled: true
-      dataset: "echo840/OCRBench"
-      split: "test"
-      max_samples: 30000
-
-    - name: "docvqa"
-      enabled: true
-      dataset: "nielsr/docvqa_1200_examples"  # Fixed: original dataset requires auth
-      split: "train"
-      max_samples: 30000
-
-    - name: "chartqa"
-      enabled: true
-      dataset: "HuggingFaceM4/ChartQA"
-      split: "test"
-      max_samples: 30000
-
-  # ERP-specific evaluations
+  - name: ocrbench
+    enabled: true
+    dataset: echo840/OCRBench
+    split: test
+    max_samples: 30000
+  - name: docvqa
+    enabled: true
+    dataset: nielsr/docvqa_1200_examples
+    split: train
+    max_samples: 30000
+  - name: chartqa
+    enabled: true
+    dataset: HuggingFaceM4/ChartQA
+    split: test
+    max_samples: 30000
   erp_evaluation:
     qcm_gemini:
       enabled: true
-      dataset: "datasets/qcm/qcm_dataset_gemini.json"
-      image_dir: "datasets/images"
+      dataset: datasets/qcm/qcm_dataset_gemini.json
+      image_dir: datasets/images
       max_samples: 30000
-
     qcm_nova:
       enabled: true
-      dataset: "datasets/qcm/qcm_dataset_nova_pro.json"
-      image_dir: "datasets/images"
+      dataset: datasets/qcm/qcm_dataset_nova_pro.json
+      image_dir: datasets/images
       max_samples: 30000
-
     qcm_claudette:
       enabled: true
-      dataset: "datasets/qcm/qcm_claudette.json"
+      dataset: datasets/qcm/qcm_claudette.json
       max_samples: 30000
-
     qcm_procedure1:
       enabled: true
-      dataset: "datasets/qcm/qcm_procedure1_claude_code.json"
-      image_dir: "datasets/procedureimages"
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
       max_samples: 30000
-
     qcm_procedure2:
       enabled: true
-      dataset: "datasets/qcm/qcm_procedure2_geminicli.json"
-      image_dir: "datasets/procedureimages"
+      dataset: datasets/qcm/qcm_procedure2_geminicli.json
+      image_dir: datasets/procedureimages
       max_samples: 30000
-
-    # LogProb/Perplexity evaluations (separate for Gemini and Nova)
-    # Uses fixed 300-sample subset with seed=42 for consistent comparison
     logprob_gemini:
       enabled: true
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
-
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
     logprob_nova:
       enabled: true
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
-
-    # BERTScore evaluations (separate for Gemini and Nova)
-    # Uses fixed 50-sample subset with seed=42 for consistent comparison (BERTScore is slow)
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
     bertscore_gemini:
       enabled: true
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-      lang: "en"
-      # Note: max_samples is overridden by BERTSCORE_SUBSET_SIZE (50) in evaluator_all.py
-
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      lang: en
     bertscore_nova:
       enabled: true
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-      lang: "en"
-      # Note: max_samples is overridden by BERTSCORE_SUBSET_SIZE (50) in evaluator_all.py
-
-    # ROUGE evaluations (separate for Gemini and Nova)
-    # Uses fixed 300-sample subset with seed=42 for consistent comparison
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      lang: en
     rouge_gemini:
       enabled: true
-      dataset: "datasets/dpo/dpo_dataset_gemini.json"
-      image_dir: "datasets/images"
-      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
-
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
     rouge_nova:
       enabled: true
-      dataset: "datasets/dpo/dpo_dataset_nova_pro.json"
-      image_dir: "datasets/images"
-      # Note: max_samples is overridden by EVAL_SUBSET_SIZE (300) in evaluator_all.py
-
-# Paths
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
 paths:
-  output_dir: "modelweights"
-  cache_dir: "datasets/cache"
-  results_dir: "results"
-  logs_dir: "logs"
-
-# Pipeline options
+  output_dir: modelweights
+  cache_dir: datasets/cache
+  results_dir: results
+  logs_dir: logs
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: "EighthComprehensivePipeline"
-  debug_mode: false  # If true, use only debug_size samples
-  debug_size: 2      # Number of samples to use in debug mode (min 2 for train/test split)
+  wandb_project: EighthComprehensivePipeline
+  debug_mode: false
+  debug_size: 2
   num_workers: 1
