@@ -117,7 +117,7 @@ training:
     # ============================================================
 
     - name: "sft_docvqa"
-      enabled: true
+      enabled: false
       type: "sft_benchmark"
       benchmark: "docvqa"
 
