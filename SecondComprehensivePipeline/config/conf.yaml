@@ -35,13 +35,6 @@ training:
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
-  - name: full_ft_qcm_combined
-    enabled: false
-    type: full_ft_qcm_combined
-    datasets:
-    - datasets/qcm/qcm_dataset_gemini.json
-    - datasets/qcm/qcm_dataset_nova_pro.json
-    image_dir: datasets/images
   - name: full_ft_docvqa
     enabled: true
     type: full_ft_benchmark
@@ -128,6 +121,23 @@ training:
     enabled: false
     type: dpo_benchmark
     benchmark: chartqa
+  - name: erp_dpo_gemini
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_nova
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_qcm_combined
+    enabled: false
+    type: full_ft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
   - name: erp_qcm_combined
     enabled: false
     type: sft_qcm_combined
@@ -162,16 +172,6 @@ training:
     type: dpo_qcm
     dataset: datasets/qcm/qcm_procedure2_geminicli.json
     image_dir: datasets/procedureimages
-  - name: erp_dpo_gemini
-    enabled: false
-    type: dpo
-    dataset: datasets/dpo/dpo_dataset_gemini.json
-    image_dir: datasets/images
-  - name: erp_dpo_nova
-    enabled: false
-    type: dpo
-    dataset: datasets/dpo/dpo_dataset_nova_pro.json
-    image_dir: datasets/images
   - name: erp_qcm_dpo_gemini
     enabled: false
     type: qcm_then_dpo
