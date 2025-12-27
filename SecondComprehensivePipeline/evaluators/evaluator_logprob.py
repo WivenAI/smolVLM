@@ -156,6 +156,9 @@ class LogProbEvaluator(BaseEvaluator):
 
             results.append({
                 "image_name": item['image_name'],
+                "question": prompt,  # Add for sample formatter
+                "response": f"Chosen: {chosen}\nRejected: {rejected}",  # Add for sample formatter
+                "ground_truth": f"Margin: {margin:.4f} (Preference Correct: {is_correct})",  # Add for sample formatter
                 "chosen_logprob": chosen_metrics['avg_logprob'],
                 "rejected_logprob": rejected_metrics['avg_logprob'],
                 "chosen_perplexity": chosen_metrics['perplexity'],
@@ -177,6 +180,12 @@ class LogProbEvaluator(BaseEvaluator):
 
         # Get skipped counts from iterator
         skipped_missing, skipped_errors = iterator.get_skip_counts()
+
+        # Save and print sample Q&A
+        if results:
+            from pathlib import Path
+            output_dir = Path(self.cache_dir).parent / "evaluation_samples"
+            self.save_and_print_samples(results, str(output_dir), "logprob", num_samples=3)
 
         return {
             "benchmark": "dpo_logprob",

@@ -254,3 +254,82 @@ class BaseEvaluator(ABC):
             json.dump(results, f, indent=2)
 
         logger.info(f"Results saved to: {output_path}")
+
+    def save_and_print_samples(self, results: List[Dict], output_dir: str, benchmark_name: str, num_samples: int = 3):
+        """
+        Save and print sample questions and answers to a file
+
+        Args:
+            results: List of evaluation results
+            output_dir: Directory to save samples
+            benchmark_name: Name of the benchmark (e.g., 'qcm', 'docvqa')
+            num_samples: Number of samples to save (default: 3)
+        """
+        if not results:
+            logger.warning("No results to save samples from")
+            return
+
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        sample_path = output_dir / f"{benchmark_name}_sample_qa.txt"
+
+        # Take first num_samples results
+        samples = results[:min(num_samples, len(results))]
+
+        # Create formatted text output
+        output_lines = []
+        output_lines.append(f"=" * 80)
+        output_lines.append(f"Sample Q&A from {benchmark_name.upper()} Evaluation")
+        output_lines.append(f"=" * 80)
+        output_lines.append("")
+
+        for idx, result in enumerate(samples, 1):
+            output_lines.append(f"\n{'=' * 80}")
+            output_lines.append(f"SAMPLE {idx}")
+            output_lines.append(f"{'=' * 80}\n")
+
+            # Question
+            question = result.get('question', 'N/A')
+            output_lines.append(f"QUESTION: {question}")
+            output_lines.append("")
+
+            # Options (for QCM)
+            if 'options' in result:
+                output_lines.append("OPTIONS:")
+                for key, value in result['options'].items():
+                    output_lines.append(f"  {key}: {value}")
+                output_lines.append("")
+
+            # Model Response
+            response = result.get('response', 'N/A')
+            output_lines.append(f"MODEL RESPONSE: {response}")
+            output_lines.append("")
+
+            # Ground Truth / Correct Answer
+            if 'correct_answer' in result:
+                output_lines.append(f"CORRECT ANSWER: {result['correct_answer']}")
+            elif 'ground_truth' in result:
+                gt = result['ground_truth']
+                if isinstance(gt, list):
+                    output_lines.append(f"GROUND TRUTH: {', '.join(str(g) for g in gt)}")
+                else:
+                    output_lines.append(f"GROUND TRUTH: {gt}")
+            output_lines.append("")
+
+            # Correctness (for QCM)
+            if 'is_correct' in result:
+                output_lines.append(f"CORRECT: {'✓ YES' if result['is_correct'] else '✗ NO'}")
+            elif 'predicted_letter' in result:
+                output_lines.append(f"PREDICTED: {result['predicted_letter']}")
+
+            output_lines.append("")
+
+        # Write to file
+        output_text = "\n".join(output_lines)
+        with open(sample_path, 'w', encoding='utf-8') as f:
+            f.write(output_text)
+
+        # Print to console
+        logger.info("\n" + output_text)
+        logger.info(f"\nSample Q&A saved to: {sample_path}")

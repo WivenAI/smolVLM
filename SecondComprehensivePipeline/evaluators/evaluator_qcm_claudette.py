@@ -135,6 +135,11 @@ class QCMClaudetteEvaluator(BaseEvaluator):
         metrics = calculate_qcm_accuracy(results, split="full")
         accuracy = metrics["accuracy"]
 
+        # Save and print sample Q&A
+        if results:
+            output_dir = Path(self.cache_dir).parent / "evaluation_samples"
+            self.save_and_print_samples(results, str(output_dir), "qcm_claudette", num_samples=3)
+
         return {
             "benchmark": "qcm_claudette",
             "accuracy": accuracy,

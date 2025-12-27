@@ -819,9 +819,16 @@ class SFTTrainer:
         self.model = prepare_model_for_kbit_training(self.model)
 
         lora_config = LoraConfig(
-            r=16,
-            lora_alpha=32,
-            target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
+            r=32,  # Increased from 16 for more capacity
+            lora_alpha=64,  # Increased proportionally
+            target_modules=[
+                # Attention layers (Q, K, V, O projections)
+                "q_proj", "v_proj", "k_proj", "o_proj",
+                # MLP layers (most knowledge stored here)
+                "gate_proj", "up_proj", "down_proj",
+                # Output projection for language modeling
+                "lm_head"
+            ],
             lora_dropout=0.05,
             bias="none",
             task_type="CAUSAL_LM"

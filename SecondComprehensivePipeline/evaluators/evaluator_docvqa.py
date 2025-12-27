@@ -48,6 +48,12 @@ class DocVQAEvaluator(BaseEvaluator):
         iterator.log_skip_summary()
         accuracy = self.calculate_accuracy(results)
 
+        # Save and print sample Q&A
+        if results:
+            from pathlib import Path
+            output_dir = Path(self.cache_dir).parent / "evaluation_samples"
+            self.save_and_print_samples(results, str(output_dir), "docvqa", num_samples=3)
+
         return {
             "benchmark": "docvqa",
             "accuracy": accuracy,

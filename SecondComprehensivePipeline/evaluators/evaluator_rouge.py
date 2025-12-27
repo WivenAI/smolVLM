@@ -77,6 +77,9 @@ class RougeEvaluator(BaseEvaluator):
 
             results.append({
                 "image_name": item['image_name'],
+                "question": prompt,  # Add for sample formatter
+                "response": prediction,  # Add for sample formatter
+                "ground_truth": reference,  # Add for sample formatter
                 "prompt": prompt,
                 "prediction": prediction,
                 "reference": reference,
@@ -105,6 +108,12 @@ class RougeEvaluator(BaseEvaluator):
 
         # Use ROUGE-L as the "accuracy" metric for comparison (scaled to percentage)
         accuracy = rougeL_mean * 100
+
+        # Save and print sample Q&A
+        if results:
+            from pathlib import Path
+            output_dir = Path(self.cache_dir).parent / "evaluation_samples"
+            self.save_and_print_samples(results, str(output_dir), "rouge", num_samples=3)
 
         return {
             "benchmark": "rouge",
