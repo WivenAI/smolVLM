@@ -77,7 +77,7 @@ def calculate_qcm_accuracy(
     wandb_prefix: str = "eval"
 ) -> Dict[str, float]:
     """
-    Calculate QCM accuracy with lenient matching.
+    Calculate QCM accuracy with strict letter matching.
 
     This is the single source of truth for QCM accuracy calculation.
     All evaluators and trainers should use this function.
@@ -134,37 +134,12 @@ def calculate_qcm_accuracy(
         # Get correct letter
         correct_letter = ground_truth.upper()[0] if ground_truth else ''
 
-        # Check 1: Exact letter match (strict)
+        # Exact letter match (strict) - ONLY this check is used
         if predicted_letter and predicted_letter == correct_letter:
             r['is_correct'] = True
             correct += 1
-            continue
-
-        # Check 2: Lenient text matching (if options available)
-        options = r.get('options', {})
-        if options and correct_letter in options:
-            correct_text = normalize_text(options[correct_letter])
-            response_norm = normalize_text(response)
-
-            # Bidirectional matching: correct in response OR response in correct
-            if correct_text and response_norm:
-                if correct_text in response_norm or response_norm in correct_text:
-                    r['is_correct'] = True
-                    correct += 1
-                    continue
-
-        # Check 3: Direct text comparison (without options)
-        if not options and ground_truth:
-            response_norm = normalize_text(response)
-            gt_norm = normalize_text(ground_truth)
-
-            if response_norm and gt_norm:
-                if gt_norm in response_norm or response_norm in gt_norm:
-                    r['is_correct'] = True
-                    correct += 1
-                    continue
-
-        r['is_correct'] = False
+        else:
+            r['is_correct'] = False
 
     accuracy = (correct / total * 100) if total > 0 else 0.0
 
