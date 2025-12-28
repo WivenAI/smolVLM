@@ -221,25 +221,40 @@ class EpochEvaluationCallback(TrainerCallback):
         if not results:
             return None, results
 
-        # Use shared accuracy calculation
-        # Map dataset_name to split for proper wandb labeling
+        # Calculate accuracy based on dataset type
         split = "train" if "train" in dataset_name.lower() else "test"
 
-        # Log to wandb with strategy name as prefix
         import wandb
         log_to_wandb = wandb.run is not None
 
-        metrics = calculate_qcm_accuracy(
-            results,
-            split=split,
-            log_to_wandb=log_to_wandb,
-            wandb_prefix=self.strategy_name
-        )
-        # Use lenient accuracy as main metric for training (model generates full responses)
-        lenient_accuracy = metrics["lenient_accuracy"]
+        if dataset_type == 'qcm':
+            # QCM: Use strict/lenient accuracy calculation
+            metrics = calculate_qcm_accuracy(
+                results,
+                split=split,
+                log_to_wandb=log_to_wandb,
+                wandb_prefix=self.strategy_name
+            )
+            # Use lenient accuracy as main metric for training (model generates full responses)
+            accuracy = metrics["lenient_accuracy"]
+            logger.info(f"  [{dataset_name}] Lenient: {accuracy:.2f}% ({dataset_type}, {split})")
+        else:
+            # Benchmarks: Simple text matching accuracy
+            correct = sum(1 for r in results if normalize_text(r['response']) == normalize_text(r['ground_truth']))
+            total = len(results)
+            accuracy = (correct / total * 100) if total > 0 else 0.0
 
-        logger.info(f"  [{dataset_name}] Lenient: {lenient_accuracy:.2f}% ({dataset_type}, {split})")
-        return lenient_accuracy, results
+            # Log to wandb
+            if log_to_wandb and wandb.run is not None:
+                wandb.log({
+                    f"{self.strategy_name}/{split}_accuracy": accuracy,
+                    f"{self.strategy_name}/{split}_correct": correct,
+                    f"{self.strategy_name}/{split}_total": total
+                })
+
+            logger.info(f"  [{dataset_name}] Accuracy: {accuracy:.2f}% ({dataset_type}, {split})")
+
+        return accuracy, results
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
         """Run full evaluation at end of specific epochs on both train and test sets"""
