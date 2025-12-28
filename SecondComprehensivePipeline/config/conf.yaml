@@ -237,28 +237,28 @@ training:
 evaluation:
   benchmarks:
   - name: ocrbench
-    enabled: true
+    enabled: false
     dataset: echo840/OCRBench
     split: test
     max_samples: 1000
   - name: docvqa
-    enabled: true
+    enabled: false
     dataset: nielsr/docvqa_1200_examples
     split: train
     max_samples: 1000
   - name: chartqa
-    enabled: true
+    enabled: false
     dataset: HuggingFaceM4/ChartQA
     split: test
     max_samples: 1000
   erp_evaluation:
     qcm_gemini:
-      enabled: true
+      enabled: false
       dataset: datasets/qcm/qcm_dataset_gemini.json
       image_dir: datasets/images
       max_samples: 30000
     qcm_nova:
-      enabled: true
+      enabled: false
       dataset: datasets/qcm/qcm_dataset_nova_pro.json
       image_dir: datasets/images
       max_samples: 30000
@@ -272,7 +272,7 @@ evaluation:
       image_dir: datasets/procedureimages
       max_samples: 30000
     qcm_procedure2:
-      enabled: true
+      enabled: false
       dataset: datasets/qcm/qcm_procedure2_geminicli.json
       image_dir: datasets/procedureimages
       max_samples: 30000
@@ -310,7 +310,7 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: TenthComprehensivePipeline
+  wandb_project: EleventhComprehensivePipeline
   debug_mode: false
   debug_size: 2
   num_workers: 1
