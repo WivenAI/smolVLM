@@ -65,6 +65,12 @@ class AnswerExtractor:
                 logger.debug(f"EleutherAI extracted: {result}")
                 return result
 
+        # Strategy 3: Fallback - check if first character is a valid option
+        first_char = response.strip().upper()[0] if response.strip() else ''
+        if first_char in [opt.upper() for opt in valid_options]:
+            logger.debug(f"First char fallback extracted: {first_char}")
+            return first_char
+
         # Silently return empty if extraction fails - extraction failures are tracked separately
         return ""
 
