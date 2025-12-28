@@ -134,6 +134,8 @@ class QCMClaudetteEvaluator(BaseEvaluator):
         # Use shared accuracy calculation
         metrics = calculate_qcm_accuracy(results, split="full")
         accuracy = metrics["accuracy"]
+        strict_accuracy = metrics["strict_accuracy"]
+        lenient_accuracy = metrics["lenient_accuracy"]
 
         # Save and print sample Q&A
         if results:
@@ -143,8 +145,12 @@ class QCMClaudetteEvaluator(BaseEvaluator):
         return {
             "benchmark": "qcm_claudette",
             "accuracy": accuracy,
+            "strict_accuracy": strict_accuracy,
+            "lenient_accuracy": lenient_accuracy,
             "total_samples": len(results),
-            "correct": sum(1 for r in results if r['is_correct']),
+            "correct": metrics["strict_correct"],
+            "strict_correct": metrics["strict_correct"],
+            "lenient_correct": metrics["lenient_correct"],
             "results": results
         }
 

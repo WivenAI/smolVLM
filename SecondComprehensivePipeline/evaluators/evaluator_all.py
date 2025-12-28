@@ -195,10 +195,14 @@ class EvaluatorAll:
                     )
                     all_results["erp_evaluation"][qcm_name] = {
                         "accuracy": result["accuracy"],
+                        "strict_accuracy": result.get("strict_accuracy", result["accuracy"]),
+                        "lenient_accuracy": result.get("lenient_accuracy", result["accuracy"]),
                         "total_samples": result["total_samples"],
-                        "correct": result["correct"]
+                        "correct": result["correct"],
+                        "strict_correct": result.get("strict_correct", result["correct"]),
+                        "lenient_correct": result.get("lenient_correct", result["correct"])
                     }
-                    logger.info(f"ERP {qcm_name}: {result['accuracy']:.2f}%")
+                    logger.info(f"ERP {qcm_name}: Strict {result['accuracy']:.2f}%, Lenient {result.get('lenient_accuracy', result['accuracy']):.2f}%")
                 except Exception as e:
                     logger.error(f"Error evaluating ERP {qcm_name}: {e}")
                     all_results["erp_evaluation"][qcm_name] = {"error": str(e)}
@@ -232,10 +236,14 @@ class EvaluatorAll:
                     )
                     all_results["erp_evaluation"]["qcm_claudette"] = {
                         "accuracy": result["accuracy"],
+                        "strict_accuracy": result.get("strict_accuracy", result["accuracy"]),
+                        "lenient_accuracy": result.get("lenient_accuracy", result["accuracy"]),
                         "total_samples": result["total_samples"],
-                        "correct": result["correct"]
+                        "correct": result["correct"],
+                        "strict_correct": result.get("strict_correct", result["correct"]),
+                        "lenient_correct": result.get("lenient_correct", result["correct"])
                     }
-                    logger.info(f"QCM Claudette: {result['accuracy']:.2f}%")
+                    logger.info(f"QCM Claudette: Strict {result['accuracy']:.2f}%, Lenient {result.get('lenient_accuracy', result['accuracy']):.2f}%")
                 except Exception as e:
                     logger.error(f"Error evaluating QCM Claudette: {e}")
                     all_results["erp_evaluation"]["qcm_claudette"] = {"error": str(e)}

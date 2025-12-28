@@ -95,6 +95,8 @@ class QCMEvaluator(BaseEvaluator):
         # Use shared accuracy calculation
         metrics = calculate_qcm_accuracy(results, split="full")
         accuracy = metrics["accuracy"]
+        strict_accuracy = metrics["strict_accuracy"]
+        lenient_accuracy = metrics["lenient_accuracy"]
 
         # Save and print sample Q&A
         if results:
@@ -104,8 +106,12 @@ class QCMEvaluator(BaseEvaluator):
         return {
             "benchmark": "erp_qcm",
             "accuracy": accuracy,
+            "strict_accuracy": strict_accuracy,
+            "lenient_accuracy": lenient_accuracy,
             "total_samples": len(results),
-            "correct": sum(1 for r in results if r['is_correct']),
+            "correct": metrics["strict_correct"],
+            "strict_correct": metrics["strict_correct"],
+            "lenient_correct": metrics["lenient_correct"],
             "results": results
         }
 

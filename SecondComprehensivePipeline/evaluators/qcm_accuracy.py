@@ -77,7 +77,7 @@ def calculate_qcm_accuracy(
     wandb_prefix: str = "eval"
 ) -> Dict[str, float]:
     """
-    Calculate QCM accuracy with strict letter matching.
+    Calculate QCM accuracy with BOTH strict and lenient matching.
 
     This is the single source of truth for QCM accuracy calculation.
     All evaluators and trainers should use this function.
@@ -94,21 +94,30 @@ def calculate_qcm_accuracy(
 
     Returns:
         Dictionary with accuracy metrics:
-            - accuracy: Overall accuracy percentage
-            - correct: Number of correct answers
+            - accuracy: Strict letter matching accuracy (main metric)
+            - strict_accuracy: Same as accuracy (for clarity)
+            - lenient_accuracy: Letter match OR text-based match
+            - correct: Number of correct answers (strict)
+            - strict_correct: Same as correct
+            - lenient_correct: Number correct with lenient matching
             - total: Total number of samples
             - split: The split name (train/test/full)
     """
     if not results:
         return {
             "accuracy": 0.0,
+            "strict_accuracy": 0.0,
+            "lenient_accuracy": 0.0,
             "correct": 0,
+            "strict_correct": 0,
+            "lenient_correct": 0,
             "total": 0,
             "extraction_failures": 0,
             "split": split
         }
 
-    correct = 0
+    strict_correct = 0
+    lenient_correct = 0
     total = len(results)
     extraction_failures = 0
 
@@ -134,18 +143,59 @@ def calculate_qcm_accuracy(
         # Get correct letter
         correct_letter = ground_truth.upper()[0] if ground_truth else ''
 
-        # Exact letter match (strict) - ONLY this check is used
-        if predicted_letter and predicted_letter == correct_letter:
+        # STRICT: Exact letter match only
+        is_strict_correct = predicted_letter and predicted_letter == correct_letter
+        if is_strict_correct:
+            strict_correct += 1
+            lenient_correct += 1  # Strict match also counts for lenient
             r['is_correct'] = True
-            correct += 1
+            r['is_correct_strict'] = True
+            r['is_correct_lenient'] = True
+            continue
+
+        # LENIENT: Text-based matching (if strict failed)
+        is_lenient_correct = False
+        options = r.get('options', {})
+
+        # Check 1: Lenient text matching (if options available)
+        if options and correct_letter in options:
+            correct_text = normalize_text(options[correct_letter])
+            response_norm = normalize_text(response)
+
+            # Bidirectional matching: correct in response OR response in correct
+            if correct_text and response_norm:
+                if correct_text in response_norm or response_norm in correct_text:
+                    is_lenient_correct = True
+
+        # Check 2: Direct text comparison (without options)
+        if not is_lenient_correct and not options and ground_truth:
+            response_norm = normalize_text(response)
+            gt_norm = normalize_text(ground_truth)
+
+            if response_norm and gt_norm:
+                if gt_norm in response_norm or response_norm in gt_norm:
+                    is_lenient_correct = True
+
+        if is_lenient_correct:
+            lenient_correct += 1
+            r['is_correct'] = False  # Strict is false
+            r['is_correct_strict'] = False
+            r['is_correct_lenient'] = True
         else:
             r['is_correct'] = False
+            r['is_correct_strict'] = False
+            r['is_correct_lenient'] = False
 
-    accuracy = (correct / total * 100) if total > 0 else 0.0
+    strict_accuracy = (strict_correct / total * 100) if total > 0 else 0.0
+    lenient_accuracy = (lenient_correct / total * 100) if total > 0 else 0.0
 
     metrics = {
-        "accuracy": accuracy,
-        "correct": correct,
+        "accuracy": strict_accuracy,  # Main metric is strict
+        "strict_accuracy": strict_accuracy,
+        "lenient_accuracy": lenient_accuracy,
+        "correct": strict_correct,
+        "strict_correct": strict_correct,
+        "lenient_correct": lenient_correct,
         "total": total,
         "extraction_failures": extraction_failures,
         "split": split
@@ -157,17 +207,21 @@ def calculate_qcm_accuracy(
             import wandb
             if wandb.run is not None:
                 wandb_metrics = {
-                    f"{wandb_prefix}/{split}_accuracy": accuracy,
-                    f"{wandb_prefix}/{split}_correct": correct,
+                    f"{wandb_prefix}/{split}_accuracy": strict_accuracy,
+                    f"{wandb_prefix}/{split}_strict_accuracy": strict_accuracy,
+                    f"{wandb_prefix}/{split}_lenient_accuracy": lenient_accuracy,
+                    f"{wandb_prefix}/{split}_correct": strict_correct,
+                    f"{wandb_prefix}/{split}_strict_correct": strict_correct,
+                    f"{wandb_prefix}/{split}_lenient_correct": lenient_correct,
                     f"{wandb_prefix}/{split}_total": total,
                     f"{wandb_prefix}/{split}_extraction_failures": extraction_failures,
                 }
                 wandb.log(wandb_metrics)
-                logger.info(f"Logged {split} accuracy to wandb: {accuracy:.2f}%")
+                logger.info(f"Logged {split} accuracies to wandb - Strict: {strict_accuracy:.2f}%, Lenient: {lenient_accuracy:.2f}%")
         except ImportError:
             pass
 
-    log_msg = f"[{split.upper()}] Accuracy: {accuracy:.2f}% ({correct}/{total})"
+    log_msg = f"[{split.upper()}] Strict: {strict_accuracy:.2f}% ({strict_correct}/{total}), Lenient: {lenient_accuracy:.2f}% ({lenient_correct}/{total})"
     if extraction_failures > 0:
         log_msg += f" [extraction_failures: {extraction_failures}]"
     logger.info(log_msg)
