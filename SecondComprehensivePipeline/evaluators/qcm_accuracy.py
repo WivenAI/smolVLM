@@ -143,8 +143,10 @@ def calculate_qcm_accuracy(
         # Get correct letter
         correct_letter = ground_truth.upper()[0] if ground_truth else ''
 
-        # STRICT: Exact letter match only
-        is_strict_correct = predicted_letter and predicted_letter == correct_letter
+        # STRICT: Check ONLY the first character of the response
+        first_char = response.strip().upper()[0] if response.strip() else ''
+        is_strict_correct = first_char == correct_letter and correct_letter != ''
+
         if is_strict_correct:
             strict_correct += 1
             lenient_correct += 1  # Strict match also counts for lenient
@@ -153,28 +155,12 @@ def calculate_qcm_accuracy(
             r['is_correct_lenient'] = True
             continue
 
-        # LENIENT: Text-based matching (if strict failed)
+        # LENIENT: Answer extractor only (if strict failed)
         is_lenient_correct = False
-        options = r.get('options', {})
 
-        # Check 1: Lenient text matching (if options available)
-        if options and correct_letter in options:
-            correct_text = normalize_text(options[correct_letter])
-            response_norm = normalize_text(response)
-
-            # Bidirectional matching: correct in response OR response in correct
-            if correct_text and response_norm:
-                if correct_text in response_norm or response_norm in correct_text:
-                    is_lenient_correct = True
-
-        # Check 2: Direct text comparison (without options)
-        if not is_lenient_correct and not options and ground_truth:
-            response_norm = normalize_text(response)
-            gt_norm = normalize_text(ground_truth)
-
-            if response_norm and gt_norm:
-                if gt_norm in response_norm or response_norm in gt_norm:
-                    is_lenient_correct = True
+        # Check: Answer extractor found the correct letter
+        if predicted_letter and predicted_letter == correct_letter:
+            is_lenient_correct = True
 
         if is_lenient_correct:
             lenient_correct += 1
