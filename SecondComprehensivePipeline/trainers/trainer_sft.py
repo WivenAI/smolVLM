@@ -224,10 +224,22 @@ class EpochEvaluationCallback(TrainerCallback):
         # Use shared accuracy calculation
         # Map dataset_name to split for proper wandb labeling
         split = "train" if "train" in dataset_name.lower() else "test"
-        metrics = calculate_qcm_accuracy(results, split=split)
-        accuracy = metrics["accuracy"]
 
-        logger.info(f"  [{dataset_name}] Accuracy ({dataset_type}, {split}): {accuracy:.2f}%")
+        # Log to wandb with strategy name as prefix
+        import wandb
+        log_to_wandb = wandb.run is not None
+
+        metrics = calculate_qcm_accuracy(
+            results,
+            split=split,
+            log_to_wandb=log_to_wandb,
+            wandb_prefix=self.strategy_name
+        )
+        accuracy = metrics["accuracy"]
+        strict_accuracy = metrics["strict_accuracy"]
+        lenient_accuracy = metrics["lenient_accuracy"]
+
+        logger.info(f"  [{dataset_name}] Strict: {strict_accuracy:.2f}%, Lenient: {lenient_accuracy:.2f}% ({dataset_type}, {split})")
         return accuracy, results
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
