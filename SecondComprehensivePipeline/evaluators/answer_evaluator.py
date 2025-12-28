@@ -65,8 +65,7 @@ class AnswerExtractor:
                 logger.debug(f"EleutherAI extracted: {result}")
                 return result
 
-        logger.warning(f"Failed to extract answer from response (len={len(response)}): '{response[:200]}{'...' if len(response) > 200 else ''}'")
-        logger.warning(f"  Valid options: {valid_options}, Found in response: {set(response.upper()) & set(valid_options)}")
+        # Silently return empty if extraction fails - extraction failures are tracked separately
         return ""
 
     def _extract_with_regex(self, response: str, valid_options: List[str]) -> str:
@@ -81,6 +80,14 @@ class AnswerExtractor:
         options_pattern_upper = '|'.join(sorted(valid_upper, key=len, reverse=True))
 
         patterns = [
+            # === SIMPLE CASES (HIGHEST PRIORITY) ===
+            # Match single letter responses like "B", "C", "D"
+            r'^({opt})$',
+            # Match letter with period like "B.", "C."
+            r'^({opt})\.',
+            # Match letter at start followed by space/newline
+            r'^({opt})\s',
+
             # === ENGLISH PATTERNS ===
 
             # Final/definitive answers (highest priority)
