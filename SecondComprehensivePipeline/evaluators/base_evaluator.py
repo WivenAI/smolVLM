@@ -255,7 +255,7 @@ class BaseEvaluator(ABC):
 
         logger.info(f"Results saved to: {output_path}")
 
-    def save_and_print_samples(self, results: List[Dict], output_dir: str, benchmark_name: str, num_samples: int = 3):
+    def save_and_print_samples(self, results: List[Dict], output_dir: str, benchmark_name: str, num_samples: int = 10):
         """
         Save and print sample questions and answers to a file
 
@@ -263,7 +263,7 @@ class BaseEvaluator(ABC):
             results: List of evaluation results
             output_dir: Directory to save samples
             benchmark_name: Name of the benchmark (e.g., 'qcm', 'docvqa')
-            num_samples: Number of samples to save (default: 3)
+            num_samples: Number of samples to save (default: 10)
         """
         if not results:
             logger.warning("No results to save samples from")
@@ -317,8 +317,13 @@ class BaseEvaluator(ABC):
                     output_lines.append(f"GROUND TRUTH: {gt}")
             output_lines.append("")
 
-            # Correctness (for QCM)
-            if 'is_correct' in result:
+            # Correctness (for QCM) - show both strict and lenient if available
+            if 'is_correct_strict' in result and 'is_correct_lenient' in result:
+                strict = '✓ YES' if result['is_correct_strict'] else '✗ NO'
+                lenient = '✓ YES' if result['is_correct_lenient'] else '✗ NO'
+                output_lines.append(f"CORRECT (STRICT): {strict}")
+                output_lines.append(f"CORRECT (LENIENT): {lenient}")
+            elif 'is_correct' in result:
                 output_lines.append(f"CORRECT: {'✓ YES' if result['is_correct'] else '✗ NO'}")
             elif 'predicted_letter' in result:
                 output_lines.append(f"PREDICTED: {result['predicted_letter']}")

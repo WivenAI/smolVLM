@@ -50,7 +50,7 @@ class OCRBenchEvaluator(BaseEvaluator):
         if results:
             from pathlib import Path
             output_dir = Path(self.cache_dir).parent / "evaluation_samples"
-            self.save_and_print_samples(results, str(output_dir), "ocrbench", num_samples=3)
+            self.save_and_print_samples(results, str(output_dir), "ocrbench", )
 
         return {
             "benchmark": "ocrbench",

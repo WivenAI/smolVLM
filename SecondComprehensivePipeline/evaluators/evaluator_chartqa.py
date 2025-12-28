@@ -51,7 +51,7 @@ class ChartQAEvaluator(BaseEvaluator):
         if results:
             from pathlib import Path
             output_dir = Path(self.cache_dir).parent / "evaluation_samples"
-            self.save_and_print_samples(results, str(output_dir), "chartqa", num_samples=3)
+            self.save_and_print_samples(results, str(output_dir), "chartqa", )
 
         return {
             "benchmark": "chartqa",

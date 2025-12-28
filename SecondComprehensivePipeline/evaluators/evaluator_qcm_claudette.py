@@ -140,7 +140,7 @@ class QCMClaudetteEvaluator(BaseEvaluator):
         # Save and print sample Q&A
         if results:
             output_dir = Path(self.cache_dir).parent / "evaluation_samples"
-            self.save_and_print_samples(results, str(output_dir), "qcm_claudette", num_samples=3)
+            self.save_and_print_samples(results, str(output_dir), "qcm_claudette")
 
         return {
             "benchmark": "qcm_claudette",
