@@ -42,7 +42,7 @@ class AnswerExtractor:
         question: Optional[str] = None
     ) -> str:
         """
-        Extract answer using fallback chain: regex -> EleutherAI
+        Extract answer using fallback chain: first char -> regex -> EleutherAI
 
         Args:
             response: The LLM's response text
@@ -52,24 +52,24 @@ class AnswerExtractor:
         Returns:
             Extracted answer in uppercase, or empty string if not found
         """
-        # Strategy 1: Custom Regex (fast, bilingual)
+        # Strategy 1: Check if first character is a valid option (fastest)
+        first_char = response.strip().upper()[0] if response.strip() else ''
+        if first_char in [opt.upper() for opt in valid_options]:
+            logger.debug(f"First char extracted: {first_char}")
+            return first_char
+
+        # Strategy 2: Custom Regex (for complex patterns)
         result = self._extract_with_regex(response, valid_options)
         if result:
             logger.debug(f"Regex extracted: {result}")
             return result
 
-        # Strategy 2: EleutherAI lm-eval filters (battle-tested)
+        # Strategy 3: EleutherAI lm-eval filters (battle-tested)
         if self.use_eleutherai:
             result = self._extract_with_eleutherai(response, valid_options)
             if result:
                 logger.debug(f"EleutherAI extracted: {result}")
                 return result
-
-        # Strategy 3: Fallback - check if first character is a valid option
-        first_char = response.strip().upper()[0] if response.strip() else ''
-        if first_char in [opt.upper() for opt in valid_options]:
-            logger.debug(f"First char fallback extracted: {first_char}")
-            return first_char
 
         # Silently return empty if extraction fails - extraction failures are tracked separately
         return ""
