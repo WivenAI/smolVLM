@@ -235,12 +235,11 @@ class EpochEvaluationCallback(TrainerCallback):
             log_to_wandb=log_to_wandb,
             wandb_prefix=self.strategy_name
         )
-        accuracy = metrics["accuracy"]
-        strict_accuracy = metrics["strict_accuracy"]
+        # Use lenient accuracy as main metric for training (model generates full responses)
         lenient_accuracy = metrics["lenient_accuracy"]
 
-        logger.info(f"  [{dataset_name}] Strict: {strict_accuracy:.2f}%, Lenient: {lenient_accuracy:.2f}% ({dataset_type}, {split})")
-        return accuracy, results
+        logger.info(f"  [{dataset_name}] Lenient: {lenient_accuracy:.2f}% ({dataset_type}, {split})")
+        return lenient_accuracy, results
 
     def on_epoch_end(self, args, state, control, model=None, **kwargs):
         """Run full evaluation at end of specific epochs on both train and test sets"""
