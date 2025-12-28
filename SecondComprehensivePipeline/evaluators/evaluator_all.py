@@ -353,9 +353,11 @@ class EvaluatorAll:
                     all_results["erp_evaluation"][rouge_name] = {
                         "accuracy": result["accuracy"],
                         "total_samples": result["total_samples"],
+                        "rouge1": result["rouge1"],
+                        "rouge2": result["rouge2"],
                         "rougeL": result["rougeL"]
                     }
-                    logger.info(f"{rouge_name} ROUGE-L: {result['rougeL']:.4f}")
+                    logger.info(f"{rouge_name} - ROUGE-1: {result['rouge1']:.4f}, ROUGE-2: {result['rouge2']:.4f}, ROUGE-L: {result['rougeL']:.4f}")
                 except Exception as e:
                     logger.error(f"Error evaluating {rouge_name}: {e}")
                     all_results["erp_evaluation"][rouge_name] = {"error": str(e)}
