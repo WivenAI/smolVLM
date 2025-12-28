@@ -16,22 +16,22 @@ training:
     enabled: true
     type: none
   - name: full_ft_qcm_procedure1
-    enabled: true
+    enabled: false
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_procedure1_claude_code.json
     image_dir: datasets/procedureimages
   - name: full_ft_qcm_procedure2
-    enabled: true
+    enabled: false
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_procedure2_geminicli.json
     image_dir: datasets/procedureimages
   - name: full_ft_qcm_gemini
-    enabled: true
+    enabled: false
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
   - name: full_ft_qcm_nova
-    enabled: true
+    enabled: false
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
@@ -242,7 +242,7 @@ evaluation:
     split: test
     max_samples: 1000
   - name: docvqa
-    enabled: false
+    enabled: true
     dataset: nielsr/docvqa_1200_examples
     split: train
     max_samples: 1000
