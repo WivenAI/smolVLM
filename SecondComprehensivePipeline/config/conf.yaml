@@ -277,29 +277,29 @@ evaluation:
       image_dir: datasets/procedureimages
       max_samples: 30000
     logprob_gemini:
-      enabled: true
+      enabled: false
       dataset: datasets/dpo/dpo_dataset_gemini.json
       image_dir: datasets/images
     logprob_nova:
-      enabled: true
+      enabled: false
       dataset: datasets/dpo/dpo_dataset_nova_pro.json
       image_dir: datasets/images
     bertscore_gemini:
-      enabled: true
+      enabled: false
       dataset: datasets/dpo/dpo_dataset_gemini.json
       image_dir: datasets/images
       lang: en
     bertscore_nova:
-      enabled: true
+      enabled: false
       dataset: datasets/dpo/dpo_dataset_nova_pro.json
       image_dir: datasets/images
       lang: en
     rouge_gemini:
-      enabled: true
+      enabled: false
       dataset: datasets/dpo/dpo_dataset_gemini.json
       image_dir: datasets/images
     rouge_nova:
-      enabled: true
+      enabled: false
       dataset: datasets/dpo/dpo_dataset_nova_pro.json
       image_dir: datasets/images
 paths:
