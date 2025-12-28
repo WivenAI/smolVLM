@@ -263,7 +263,7 @@ evaluation:
       image_dir: datasets/images
       max_samples: 30000
     qcm_claudette:
-      enabled: true
+      enabled: false
       dataset: datasets/qcm/qcm_claudette.json
       max_samples: 30000
     qcm_procedure1:
