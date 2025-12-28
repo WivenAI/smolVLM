@@ -155,6 +155,17 @@ class EvaluatorAll:
                         "total_samples": result["total_samples"]
                     }
                     logger.info(f"{name}: {result['accuracy']:.2f}%")
+
+                    # Log to wandb
+                    try:
+                        import wandb
+                        if wandb.run is not None:
+                            wandb.log({
+                                f"eval/{name}_accuracy": result["accuracy"],
+                                f"eval/{name}_total": result["total_samples"]
+                            })
+                    except ImportError:
+                        pass
                 except Exception as e:
                     logger.error(f"Error evaluating {name}: {e}")
                     all_results["benchmarks"][name] = {"error": str(e)}
@@ -203,6 +214,20 @@ class EvaluatorAll:
                         "lenient_correct": result.get("lenient_correct", result["correct"])
                     }
                     logger.info(f"ERP {qcm_name}: Strict {result['accuracy']:.2f}%, Lenient {result.get('lenient_accuracy', result['accuracy']):.2f}%")
+
+                    # Log to wandb
+                    try:
+                        import wandb
+                        if wandb.run is not None:
+                            wandb.log({
+                                f"eval/{qcm_name}_strict_accuracy": result["accuracy"],
+                                f"eval/{qcm_name}_lenient_accuracy": result.get("lenient_accuracy", result["accuracy"]),
+                                f"eval/{qcm_name}_strict_correct": result.get("strict_correct", result["correct"]),
+                                f"eval/{qcm_name}_lenient_correct": result.get("lenient_correct", result["correct"]),
+                                f"eval/{qcm_name}_total": result["total_samples"]
+                            })
+                    except ImportError:
+                        pass
                 except Exception as e:
                     logger.error(f"Error evaluating ERP {qcm_name}: {e}")
                     all_results["erp_evaluation"][qcm_name] = {"error": str(e)}
@@ -244,6 +269,20 @@ class EvaluatorAll:
                         "lenient_correct": result.get("lenient_correct", result["correct"])
                     }
                     logger.info(f"QCM Claudette: Strict {result['accuracy']:.2f}%, Lenient {result.get('lenient_accuracy', result['accuracy']):.2f}%")
+
+                    # Log to wandb
+                    try:
+                        import wandb
+                        if wandb.run is not None:
+                            wandb.log({
+                                f"eval/qcm_claudette_strict_accuracy": result["accuracy"],
+                                f"eval/qcm_claudette_lenient_accuracy": result.get("lenient_accuracy", result["accuracy"]),
+                                f"eval/qcm_claudette_strict_correct": result.get("strict_correct", result["correct"]),
+                                f"eval/qcm_claudette_lenient_correct": result.get("lenient_correct", result["correct"]),
+                                f"eval/qcm_claudette_total": result["total_samples"]
+                            })
+                    except ImportError:
+                        pass
                 except Exception as e:
                     logger.error(f"Error evaluating QCM Claudette: {e}")
                     all_results["erp_evaluation"]["qcm_claudette"] = {"error": str(e)}
