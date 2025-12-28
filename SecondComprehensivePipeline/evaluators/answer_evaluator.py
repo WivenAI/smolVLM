@@ -200,9 +200,6 @@ class AnswerExtractor:
             r'({opt})\s*-',
             r'^[\-\*\•]\s*({opt})',
             r'[\-\*\•]\s*({opt})',
-
-            # Generic match (lowest priority)
-            r'({opt})',
         ]
 
         # First pass: search in lowercase
@@ -299,11 +296,6 @@ class AnswerExtractor:
                 extracted = match.group(1).upper()
                 if extracted in valid_upper:
                     return extracted
-
-        # Last resort: first valid option character found
-        for char in response_clean.upper():
-            if char in valid_upper:
-                return char
 
         return ""
 
