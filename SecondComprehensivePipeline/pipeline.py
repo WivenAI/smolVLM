@@ -409,10 +409,15 @@ class Pipeline:
                     if "erp_qcm_accuracy" in summary:
                         print(f"  ERP QCM accuracy: {summary['erp_qcm_accuracy']:.2f}%")
 
-                # Save individual results
+                # Save individual results (mark as baseline if this is the baseline strategy)
+                is_baseline = (strategy_type == "none")
                 result_file = self.results_dir / f"{name}_{self.timestamp}.json"
                 with open(result_file, 'w') as f:
                     json.dump(results, f, indent=2)
+
+                # Also save to baseline_results.json if this is the baseline
+                if is_baseline:
+                    evaluator.save_results(results, str(self.results_dir), is_baseline=True)
 
             except Exception as e:
                 logger.error(f"Evaluation failed for {name}: {e}")

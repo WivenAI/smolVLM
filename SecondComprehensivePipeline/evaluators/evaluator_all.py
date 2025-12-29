@@ -507,8 +507,15 @@ class EvaluatorAll:
 
         return result_data
 
-    def save_results(self, results: Dict[str, Any], output_dir: str):
-        """Save evaluation results to file"""
+    def save_results(self, results: Dict[str, Any], output_dir: str, is_baseline: bool = False):
+        """
+        Save evaluation results to file
+
+        Args:
+            results: Evaluation results dictionary
+            output_dir: Directory to save results
+            is_baseline: If True, also save to baseline_results.json for epoch 0 comparison
+        """
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
 
@@ -521,7 +528,40 @@ class EvaluatorAll:
             json.dump(results, f, indent=2)
 
         logger.info(f"Results saved to: {filepath}")
+
+        # If this is baseline evaluation, save to well-known location for epoch 0 comparison
+        if is_baseline:
+            baseline_filepath = output_path / "baseline_results.json"
+            with open(baseline_filepath, 'w') as f:
+                json.dump(results, f, indent=2)
+            logger.info(f"Baseline results also saved to: {baseline_filepath}")
+
         return filepath
+
+    @staticmethod
+    def load_baseline_results(results_dir: str) -> Dict[str, Any]:
+        """
+        Load baseline results if they exist
+
+        Args:
+            results_dir: Directory containing baseline_results.json
+
+        Returns:
+            Baseline results dictionary, or empty dict if not found
+        """
+        baseline_path = Path(results_dir) / "baseline_results.json"
+        if baseline_path.exists():
+            try:
+                with open(baseline_path, 'r') as f:
+                    results = json.load(f)
+                logger.info(f"Loaded baseline results from: {baseline_path}")
+                return results
+            except Exception as e:
+                logger.warning(f"Failed to load baseline results: {e}")
+                return {}
+        else:
+            logger.info(f"No baseline results found at: {baseline_path}")
+            return {}
 
 
 def evaluate_model(model_path: str = None, model_name: str = "model",

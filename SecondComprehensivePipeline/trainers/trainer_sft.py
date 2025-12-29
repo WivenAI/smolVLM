@@ -73,10 +73,29 @@ class EpochEvaluationCallback(TrainerCallback):
         self._evaluated_steps = set()  # Track which steps we've evaluated
 
     def on_train_begin(self, args, state, control, model=None, **kwargs):
-        """Skip baseline evaluation - it's done at pipeline start instead."""
+        """Load baseline results and log them at epoch 0 for beautiful comparison graphs."""
         # Baseline is evaluated once at the start of the pipeline (before any training)
-        # No need to re-evaluate at the start of each training strategy
-        logger.info(f"[{self.strategy_name}] Skipping step 0 evaluation (baseline evaluated at pipeline start)")
+        # Load those results and log them at epoch 0 to have a starting point in graphs
+        logger.info(f"[{self.strategy_name}] Loading baseline results for epoch 0 logging...")
+
+        try:
+            # Find results directory
+            results_dir = Path(__file__).parent.parent / "results"
+
+            # Load baseline results
+            from evaluators.evaluator_all import EvaluatorAll
+            baseline_results = EvaluatorAll.load_baseline_results(str(results_dir))
+
+            if baseline_results:
+                # Log baseline results at epoch 0 to WandB and TensorBoard
+                self._log_baseline_results_at_epoch_0(baseline_results, state)
+                logger.info(f"[{self.strategy_name}] Baseline results logged at epoch 0")
+            else:
+                logger.warning(f"[{self.strategy_name}] No baseline results found - run baseline evaluation first")
+
+        except Exception as e:
+            logger.warning(f"[{self.strategy_name}] Failed to load baseline results: {e}")
+
         return control
 
     def on_step_end(self, args, state, control, model=None, **kwargs):
@@ -265,6 +284,74 @@ class EpochEvaluationCallback(TrainerCallback):
         logger.info(f"[{self.strategy_name}] Running train/test evaluation at epoch {epoch}...")
         self._run_evaluation(args, state, control, model, epoch=epoch, is_step_eval=False)
         return control
+
+    def _log_baseline_results_at_epoch_0(self, baseline_results: Dict[str, Any], state):
+        """
+        Log baseline results at epoch 0 for comparison graphs.
+
+        Args:
+            baseline_results: Baseline evaluation results dictionary
+            state: Training state object
+        """
+        if not WANDB_AVAILABLE or wandb.run is None:
+            logger.info("WandB not available, skipping baseline logging")
+            return
+
+        try:
+            metrics = {}
+
+            # Log benchmark accuracies at epoch 0
+            for bench_name, bench_data in baseline_results.get("benchmarks", {}).items():
+                if "accuracy" in bench_data:
+                    metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+
+            # Log ERP evaluation metrics at epoch 0
+            erp = baseline_results.get("erp_evaluation", {})
+
+            # QCM metrics (use strict accuracy as main metric for benchmarking)
+            for qcm_name in ["qcm_gemini", "qcm_nova", "qcm_claudette", "qcm_procedure1", "qcm_procedure2"]:
+                if qcm_name in erp and "accuracy" in erp[qcm_name]:
+                    metrics[f"eval/{qcm_name}_acc"] = erp[qcm_name]["accuracy"]
+
+            # LogProb/Perplexity metrics
+            for logprob_name in ["logprob_gemini", "logprob_nova"]:
+                if logprob_name in erp and "accuracy" in erp[logprob_name]:
+                    metrics[f"eval/{logprob_name}_acc"] = erp[logprob_name]["accuracy"]
+                    metrics[f"eval/{logprob_name}_margin"] = erp[logprob_name].get("margin_mean", 0)
+                    metrics[f"eval/{logprob_name}_chosen_ppl"] = erp[logprob_name].get("chosen_perplexity", 0)
+                    metrics[f"eval/{logprob_name}_rejected_ppl"] = erp[logprob_name].get("rejected_perplexity", 0)
+
+            # ROUGE metrics
+            for rouge_name in ["rouge_gemini", "rouge_nova"]:
+                if rouge_name in erp and "accuracy" in erp[rouge_name]:
+                    metrics[f"eval/{rouge_name}_acc"] = erp[rouge_name]["accuracy"]
+                    metrics[f"eval/{rouge_name}_rouge1"] = erp[rouge_name].get("rouge1", 0)
+                    metrics[f"eval/{rouge_name}_rouge2"] = erp[rouge_name].get("rouge2", 0)
+                    metrics[f"eval/{rouge_name}_rougeL"] = erp[rouge_name].get("rougeL", 0)
+
+            # BERTScore metrics
+            for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
+                if bertscore_name in erp and "f1" in erp[bertscore_name]:
+                    metrics[f"eval/{bertscore_name}_f1"] = erp[bertscore_name]["f1"]
+                    metrics[f"eval/{bertscore_name}_precision"] = erp[bertscore_name].get("precision", 0)
+                    metrics[f"eval/{bertscore_name}_recall"] = erp[bertscore_name].get("recall", 0)
+
+            # Log average benchmark accuracy
+            if baseline_results.get("summary", {}).get("avg_benchmark_accuracy"):
+                metrics["eval/avg_benchmark_acc"] = baseline_results["summary"]["avg_benchmark_accuracy"]
+
+            # Set epoch to 0 and global_step to 0
+            metrics["epoch"] = 0
+            metrics["global_step"] = 0
+
+            # Log all baseline metrics at step 0
+            wandb.log(metrics, step=0)
+            logger.info(f"[{self.strategy_name}] Baseline metrics logged at epoch 0 for comparison")
+
+        except Exception as e:
+            logger.warning(f"[{self.strategy_name}] Failed to log baseline results: {e}")
+            import traceback
+            traceback.print_exc()
 
     def _run_evaluation(self, args, state, control, model, epoch: int, is_step_eval: bool = False):
         """
