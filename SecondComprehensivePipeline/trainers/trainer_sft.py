@@ -34,6 +34,12 @@ try:
 except ImportError:
     WANDB_AVAILABLE = False
 
+try:
+    from torch.utils.tensorboard import SummaryWriter
+    TENSORBOARD_AVAILABLE = True
+except ImportError:
+    TENSORBOARD_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -71,6 +77,30 @@ class EpochEvaluationCallback(TrainerCallback):
         self.cache_dir = Path(__file__).parent.parent / "datasets" / "cache"
         self._initial_eval_done = False
         self._evaluated_steps = set()  # Track which steps we've evaluated
+
+        # Setup TensorBoard logging
+        self.tensorboard_writer = None
+        if TENSORBOARD_AVAILABLE:
+            tensorboard_dir = Path(__file__).parent.parent / "tensorboard_logs" / strategy_name
+            tensorboard_dir.mkdir(parents=True, exist_ok=True)
+            self.tensorboard_writer = SummaryWriter(log_dir=str(tensorboard_dir))
+            logger.info(f"TensorBoard logging enabled: {tensorboard_dir}")
+
+        # Setup WandB with offline fallback
+        self.wandb_enabled = False
+        if WANDB_AVAILABLE and self.config.get("pipeline", {}).get("use_wandb", True):
+            try:
+                if wandb.run is not None:
+                    self.wandb_enabled = True
+                    logger.info(f"WandB logging enabled (online mode)")
+                else:
+                    # Try to initialize WandB in offline mode
+                    os.environ["WANDB_MODE"] = "offline"
+                    self.wandb_enabled = True
+                    logger.info(f"WandB logging enabled (offline mode)")
+            except Exception as e:
+                logger.warning(f"WandB initialization failed, continuing without WandB: {e}")
+                self.wandb_enabled = False
 
     def on_train_begin(self, args, state, control, model=None, **kwargs):
         """Load baseline results and log them at epoch 0 for beautiful comparison graphs."""
@@ -288,15 +318,12 @@ class EpochEvaluationCallback(TrainerCallback):
     def _log_baseline_results_at_epoch_0(self, baseline_results: Dict[str, Any], state):
         """
         Log baseline results at epoch 0 for comparison graphs.
+        Logs to both WandB and TensorBoard for redundancy.
 
         Args:
             baseline_results: Baseline evaluation results dictionary
             state: Training state object
         """
-        if not WANDB_AVAILABLE or wandb.run is None:
-            logger.info("WandB not available, skipping baseline logging")
-            return
-
         try:
             metrics = {}
 
@@ -344,9 +371,24 @@ class EpochEvaluationCallback(TrainerCallback):
             metrics["epoch"] = 0
             metrics["global_step"] = 0
 
-            # Log all baseline metrics at step 0
-            wandb.log(metrics, step=0)
-            logger.info(f"[{self.strategy_name}] Baseline metrics logged at epoch 0 for comparison")
+            # Log to WandB (with offline fallback)
+            if self.wandb_enabled and WANDB_AVAILABLE:
+                try:
+                    wandb.log(metrics, step=0)
+                    logger.info(f"[{self.strategy_name}] Baseline metrics logged to WandB at epoch 0")
+                except Exception as e:
+                    logger.warning(f"[{self.strategy_name}] WandB logging failed: {e}")
+
+            # Log to TensorBoard (always works offline)
+            if self.tensorboard_writer:
+                try:
+                    for key, value in metrics.items():
+                        if key not in ["epoch", "global_step"] and isinstance(value, (int, float)):
+                            self.tensorboard_writer.add_scalar(key, value, global_step=0)
+                    self.tensorboard_writer.flush()
+                    logger.info(f"[{self.strategy_name}] Baseline metrics logged to TensorBoard at epoch 0")
+                except Exception as e:
+                    logger.warning(f"[{self.strategy_name}] TensorBoard logging failed: {e}")
 
         except Exception as e:
             logger.warning(f"[{self.strategy_name}] Failed to log baseline results: {e}")
@@ -438,99 +480,113 @@ class EpochEvaluationCallback(TrainerCallback):
                 skip_datasets=skip_datasets
             )
 
-            # Log to WandB with clear train/test/full labels
-            if WANDB_AVAILABLE and wandb.run is not None:
-                metrics = {}
+            # Collect all metrics for dual logging (WandB + TensorBoard)
+            metrics = {}
 
-                # Log train/test losses with clear labels
-                if train_loss is not None:
-                    metrics["eval/loss_train"] = train_loss
-                if test_loss is not None:
-                    metrics["eval/loss_test"] = test_loss
+            # Log train/test losses with clear labels
+            if train_loss is not None:
+                metrics["eval/loss_train"] = train_loss
+            if test_loss is not None:
+                metrics["eval/loss_test"] = test_loss
 
-                # Log train/test/full accuracies with clear labels
-                if train_accuracy is not None:
-                    metrics["eval/accuracy_train"] = train_accuracy
-                if test_accuracy is not None:
-                    metrics["eval/accuracy_test"] = test_accuracy
+            # Log train/test/full accuracies with clear labels
+            if train_accuracy is not None:
+                metrics["eval/accuracy_train"] = train_accuracy
+            if test_accuracy is not None:
+                metrics["eval/accuracy_test"] = test_accuracy
 
-                # Calculate and log full (combined) accuracy
-                if train_accuracy is not None and test_accuracy is not None:
-                    # Weight by dataset sizes
-                    train_size = len(train_results) if train_results else 0
-                    test_size = len(test_results) if test_results else 0
-                    total_size = train_size + test_size
-                    if total_size > 0:
-                        full_accuracy = (train_accuracy * train_size + test_accuracy * test_size) / total_size
-                        metrics["eval/accuracy_full"] = full_accuracy
+            # Calculate and log full (combined) accuracy
+            if train_accuracy is not None and test_accuracy is not None:
+                # Weight by dataset sizes
+                train_size = len(train_results) if train_results else 0
+                test_size = len(test_results) if test_results else 0
+                total_size = train_size + test_size
+                if total_size > 0:
+                    full_accuracy = (train_accuracy * train_size + test_accuracy * test_size) / total_size
+                    metrics["eval/accuracy_full"] = full_accuracy
 
-                # Log train-test gap (for memorization detection)
-                if train_accuracy is not None and test_accuracy is not None:
-                    metrics["eval/train_test_gap"] = train_accuracy - test_accuracy
+            # Log train-test gap (for memorization detection)
+            if train_accuracy is not None and test_accuracy is not None:
+                metrics["eval/train_test_gap"] = train_accuracy - test_accuracy
 
-                # Log split info for clarity
-                metrics["eval/split_type"] = 0 if is_step_eval else 1  # 0=step_eval(test only), 1=full_eval(train+test)
+            # Log split info for clarity
+            metrics["eval/split_type"] = 0 if is_step_eval else 1  # 0=step_eval(test only), 1=full_eval(train+test)
 
-                # Log benchmark accuracies and skipped samples
-                for bench_name, bench_data in results.get("benchmarks", {}).items():
-                    if "accuracy" in bench_data:
-                        metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
-                    if "skipped_samples" in bench_data:
-                        metrics[f"eval/{bench_name}_skipped"] = bench_data["skipped_samples"]
+            # Log benchmark accuracies and skipped samples
+            for bench_name, bench_data in results.get("benchmarks", {}).items():
+                if "accuracy" in bench_data:
+                    metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+                if "skipped_samples" in bench_data:
+                    metrics[f"eval/{bench_name}_skipped"] = bench_data["skipped_samples"]
 
-                # Log ERP evaluation metrics
-                erp = results.get("erp_evaluation", {})
-                if "qcm_gemini" in erp and "accuracy" in erp["qcm_gemini"]:
-                    metrics["eval/qcm_gemini_acc"] = erp["qcm_gemini"]["accuracy"]
-                if "qcm_nova" in erp and "accuracy" in erp["qcm_nova"]:
-                    metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
-                if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
-                    metrics["eval/qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
-                if "qcm_procedure1" in erp and "accuracy" in erp["qcm_procedure1"]:
-                    metrics["eval/qcm_procedure1_acc"] = erp["qcm_procedure1"]["accuracy"]
-                if "qcm_procedure2" in erp and "accuracy" in erp["qcm_procedure2"]:
-                    metrics["eval/qcm_procedure2_acc"] = erp["qcm_procedure2"]["accuracy"]
+            # Log ERP evaluation metrics
+            erp = results.get("erp_evaluation", {})
+            if "qcm_gemini" in erp and "accuracy" in erp["qcm_gemini"]:
+                metrics["eval/qcm_gemini_acc"] = erp["qcm_gemini"]["accuracy"]
+            if "qcm_nova" in erp and "accuracy" in erp["qcm_nova"]:
+                metrics["eval/qcm_nova_acc"] = erp["qcm_nova"]["accuracy"]
+            if "qcm_claudette" in erp and "accuracy" in erp["qcm_claudette"]:
+                metrics["eval/qcm_claudette_acc"] = erp["qcm_claudette"]["accuracy"]
+            if "qcm_procedure1" in erp and "accuracy" in erp["qcm_procedure1"]:
+                metrics["eval/qcm_procedure1_acc"] = erp["qcm_procedure1"]["accuracy"]
+            if "qcm_procedure2" in erp and "accuracy" in erp["qcm_procedure2"]:
+                metrics["eval/qcm_procedure2_acc"] = erp["qcm_procedure2"]["accuracy"]
 
-                # Log LogProb/Perplexity metrics for Gemini and Nova
-                for logprob_name in ["logprob_gemini", "logprob_nova"]:
-                    if logprob_name in erp and "accuracy" in erp[logprob_name]:
-                        metrics[f"eval/{logprob_name}_acc"] = erp[logprob_name]["accuracy"]
-                        metrics[f"eval/{logprob_name}_margin"] = erp[logprob_name].get("margin_mean", 0)
-                        metrics[f"eval/{logprob_name}_chosen_ppl"] = erp[logprob_name].get("chosen_perplexity", 0)
-                        metrics[f"eval/{logprob_name}_rejected_ppl"] = erp[logprob_name].get("rejected_perplexity", 0)
-                        if "skipped_samples" in erp[logprob_name]:
-                            metrics[f"eval/{logprob_name}_skipped"] = erp[logprob_name]["skipped_samples"]
+            # Log LogProb/Perplexity metrics for Gemini and Nova
+            for logprob_name in ["logprob_gemini", "logprob_nova"]:
+                if logprob_name in erp and "accuracy" in erp[logprob_name]:
+                    metrics[f"eval/{logprob_name}_acc"] = erp[logprob_name]["accuracy"]
+                    metrics[f"eval/{logprob_name}_margin"] = erp[logprob_name].get("margin_mean", 0)
+                    metrics[f"eval/{logprob_name}_chosen_ppl"] = erp[logprob_name].get("chosen_perplexity", 0)
+                    metrics[f"eval/{logprob_name}_rejected_ppl"] = erp[logprob_name].get("rejected_perplexity", 0)
+                    if "skipped_samples" in erp[logprob_name]:
+                        metrics[f"eval/{logprob_name}_skipped"] = erp[logprob_name]["skipped_samples"]
 
-                # Log ROUGE metrics for gemini and nova DPO
-                for rouge_name in ["rouge_gemini", "rouge_nova"]:
-                    if rouge_name in erp and "accuracy" in erp[rouge_name]:
-                        metrics[f"eval/{rouge_name}_acc"] = erp[rouge_name]["accuracy"]
-                        metrics[f"eval/{rouge_name}_rouge1"] = erp[rouge_name].get("rouge1", 0)
-                        metrics[f"eval/{rouge_name}_rouge2"] = erp[rouge_name].get("rouge2", 0)
-                        metrics[f"eval/{rouge_name}_rougeL"] = erp[rouge_name].get("rougeL", 0)
-                        if "skipped_samples" in erp[rouge_name]:
-                            metrics[f"eval/{rouge_name}_skipped"] = erp[rouge_name]["skipped_samples"]
+            # Log ROUGE metrics for gemini and nova DPO
+            for rouge_name in ["rouge_gemini", "rouge_nova"]:
+                if rouge_name in erp and "accuracy" in erp[rouge_name]:
+                    metrics[f"eval/{rouge_name}_acc"] = erp[rouge_name]["accuracy"]
+                    metrics[f"eval/{rouge_name}_rouge1"] = erp[rouge_name].get("rouge1", 0)
+                    metrics[f"eval/{rouge_name}_rouge2"] = erp[rouge_name].get("rouge2", 0)
+                    metrics[f"eval/{rouge_name}_rougeL"] = erp[rouge_name].get("rougeL", 0)
+                    if "skipped_samples" in erp[rouge_name]:
+                        metrics[f"eval/{rouge_name}_skipped"] = erp[rouge_name]["skipped_samples"]
 
-                # Log BERTScore metrics for Gemini and Nova
-                for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
-                    if bertscore_name in erp and "f1" in erp[bertscore_name]:
-                        metrics[f"eval/{bertscore_name}_f1"] = erp[bertscore_name]["f1"]
-                        metrics[f"eval/{bertscore_name}_precision"] = erp[bertscore_name].get("precision", 0)
-                        metrics[f"eval/{bertscore_name}_recall"] = erp[bertscore_name].get("recall", 0)
-                        if "skipped_samples" in erp[bertscore_name]:
-                            metrics[f"eval/{bertscore_name}_skipped"] = erp[bertscore_name]["skipped_samples"]
+            # Log BERTScore metrics for Gemini and Nova
+            for bertscore_name in ["bertscore_gemini", "bertscore_nova"]:
+                if bertscore_name in erp and "f1" in erp[bertscore_name]:
+                    metrics[f"eval/{bertscore_name}_f1"] = erp[bertscore_name]["f1"]
+                    metrics[f"eval/{bertscore_name}_precision"] = erp[bertscore_name].get("precision", 0)
+                    metrics[f"eval/{bertscore_name}_recall"] = erp[bertscore_name].get("recall", 0)
+                    if "skipped_samples" in erp[bertscore_name]:
+                        metrics[f"eval/{bertscore_name}_skipped"] = erp[bertscore_name]["skipped_samples"]
 
-                # Log average
-                if results.get("summary", {}).get("avg_benchmark_accuracy"):
-                    metrics["eval/avg_benchmark_acc"] = results["summary"]["avg_benchmark_accuracy"]
+            # Log average
+            if results.get("summary", {}).get("avg_benchmark_accuracy"):
+                metrics["eval/avg_benchmark_acc"] = results["summary"]["avg_benchmark_accuracy"]
 
-                # Log epoch/step number explicitly
-                metrics[eval_type] = epoch
-                metrics["global_step"] = state.global_step
+            # Log epoch/step number explicitly
+            metrics[eval_type] = epoch
+            metrics["global_step"] = state.global_step
 
-                # Log all metrics at current step
-                wandb.log(metrics, step=state.global_step)
-                logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged to WandB")
+            # Log to WandB (with offline fallback)
+            if self.wandb_enabled and WANDB_AVAILABLE:
+                try:
+                    wandb.log(metrics, step=state.global_step)
+                    logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged to WandB")
+                except Exception as e:
+                    logger.warning(f"[{self.strategy_name}] WandB logging failed: {e}")
+
+            # Log to TensorBoard (always works offline)
+            if self.tensorboard_writer:
+                try:
+                    for key, value in metrics.items():
+                        if key not in ["epoch", "global_step", "eval/split_type"] and isinstance(value, (int, float)):
+                            self.tensorboard_writer.add_scalar(key, value, global_step=state.global_step)
+                    self.tensorboard_writer.flush()
+                    logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged to TensorBoard")
+                except Exception as e:
+                    logger.warning(f"[{self.strategy_name}] TensorBoard logging failed: {e}")
 
             # Log summary
             logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} benchmark evaluation complete:")
