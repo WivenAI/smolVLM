@@ -310,7 +310,7 @@ paths:
 pipeline:
   continue_on_error: true
   use_wandb: true
-  wandb_project: EleventhComprehensivePipeline
+  wandb_project: 15ComprehensivePipeline
   debug_mode: false
   debug_size: 2
   num_workers: 1
