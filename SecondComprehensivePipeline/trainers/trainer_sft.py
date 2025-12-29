@@ -56,7 +56,7 @@ class EpochEvaluationCallback(TrainerCallback):
     EARLY_EVAL_STEPS = [200]  # Removed step 0 - baseline evaluated at pipeline start
 
     # Epochs at which to run evaluation
-    EVAL_EPOCHS = [1, 2, 5, 10, 20, 30, 40]  # Removed epoch 0 - baseline evaluated at pipeline start
+    EVAL_EPOCHS = [1, 2, 5, 10, 20, 30, 40, 100]  # Removed epoch 0 - baseline evaluated at pipeline start
 
     def __init__(self, config: Dict[str, Any], output_dir: str, strategy_name: str,
                  processor=None, train_dataset=None, eval_dataset=None,
