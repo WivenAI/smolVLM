@@ -290,7 +290,7 @@ evaluation:
       image_dir: datasets/images
       max_samples: 2
     qcm_claudette:
-      enabled: false
+      enabled: true
       dataset: datasets/qcm/qcm_claudette.json
       max_samples: 2
     qcm_procedure1:
@@ -314,15 +314,17 @@ evaluation:
       image_dir: datasets/images
       max_samples: 2
     bertscore_gemini:
-      enabled: false
+      enabled: true
       dataset: datasets/dpo/dpo_dataset_gemini.json
       image_dir: datasets/images
       lang: en
+      max_samples: 2
     bertscore_nova:
-      enabled: false
+      enabled: true
       dataset: datasets/dpo/dpo_dataset_nova_pro.json
       image_dir: datasets/images
       lang: en
+      max_samples: 2
     rouge_gemini:
       enabled: true
       dataset: datasets/dpo/dpo_dataset_gemini.json
