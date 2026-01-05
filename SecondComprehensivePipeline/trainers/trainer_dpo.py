@@ -741,7 +741,7 @@ class DPOTrainerWrapper:
         transformed = dataset.map(
             self._transform_row_to_chat_format,
             remove_columns=['prompt_text', 'chosen_text', 'rejected_text', 'image_path'],
-            num_proc=1,  # Single process to avoid pickling PIL images
+            num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
             desc="Loading images"
         )
 
@@ -1025,7 +1025,7 @@ class DPOTrainerWrapper:
             loss_type="sigmoid",
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=1,
+            dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 
         # Create callbacks
@@ -1127,7 +1127,7 @@ class DPOTrainerWrapper:
             loss_type="sigmoid",
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=1,
+            dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 
         # Apply chat format transform (loads images during map)
@@ -1234,7 +1234,7 @@ class DPOTrainerWrapper:
             loss_type="sigmoid",
             max_length=512,
             max_prompt_length=256,
-            dataset_num_proc=1,
+            dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 
         # Apply chat format transform (loads images during map)
