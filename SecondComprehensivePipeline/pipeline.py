@@ -95,30 +95,12 @@ class Pipeline:
         with open(self.config_path, 'r') as f:
             config = yaml.safe_load(f)
 
-        # Try multiple cache locations (fixes IZAR compute node issues)
-        cache_candidates = [
-            "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/tmpcache",  # Priority: IZAR scratch
-            config.get("model", {}).get("cache_dir"),  # From config
-            str(self.base_path / "tmpcache"),  # Project root tmpcache
-            str(self.base_path.parent / "tmpcache"),  # One level up
-        ]
-
-        cache_dir = None
-        for candidate in cache_candidates:
-            if candidate and os.path.exists(candidate):
-                cache_dir = candidate
-                logger.info(f"Using model.cache_dir: {cache_dir}")
-                break
-
-        if cache_dir is None:
-            # Create the priority path if none exist
-            cache_dir = "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/tmpcache"
-            os.makedirs(cache_dir, exist_ok=True)
-            logger.info(f"Created model.cache_dir: {cache_dir}")
-
-        if "model" not in config:
-            config["model"] = {}
-        config["model"]["cache_dir"] = cache_dir
+        # Convert relative cache_dir to absolute path (relative to project root)
+        if "model" in config and "cache_dir" in config["model"]:
+            cache_dir = config["model"]["cache_dir"]
+            if not os.path.isabs(cache_dir):
+                config["model"]["cache_dir"] = str(self.base_path / cache_dir)
+                logger.info(f"Using model.cache_dir: {config['model']['cache_dir']}")
 
         logger.info(f"Loaded config from: {self.config_path}")
         return config
