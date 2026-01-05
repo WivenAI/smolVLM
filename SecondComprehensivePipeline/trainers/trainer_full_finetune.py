@@ -52,6 +52,18 @@ try:
 except ImportError:
     WANDB_AVAILABLE = False
 
+try:
+    from torch.utils.tensorboard import SummaryWriter
+    TENSORBOARD_AVAILABLE = True
+except ImportError:
+    TENSORBOARD_AVAILABLE = False
+
+try:
+    from utils.dual_logger import init_dual_logger, log_metrics
+    DUAL_LOGGER_AVAILABLE = True
+except ImportError:
+    DUAL_LOGGER_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 

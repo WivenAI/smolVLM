@@ -20,6 +20,12 @@ from typing import List, Dict, Optional
 
 from .answer_evaluator import AnswerExtractor
 
+try:
+    from utils.dual_logger import log_metrics
+    DUAL_LOGGER_AVAILABLE = True
+except ImportError:
+    DUAL_LOGGER_AVAILABLE = False
+
 logger = logging.getLogger(__name__)
 
 # Singleton extractor instance for performance
@@ -190,20 +196,18 @@ def calculate_qcm_accuracy(
     # Log to wandb if requested
     if log_to_wandb:
         try:
-            import wandb
-            if wandb.run is not None:
-                wandb_metrics = {
-                    f"{wandb_prefix}/{split}_accuracy": strict_accuracy,
-                    f"{wandb_prefix}/{split}_strict_accuracy": strict_accuracy,
-                    f"{wandb_prefix}/{split}_lenient_accuracy": lenient_accuracy,
-                    f"{wandb_prefix}/{split}_correct": strict_correct,
-                    f"{wandb_prefix}/{split}_strict_correct": strict_correct,
-                    f"{wandb_prefix}/{split}_lenient_correct": lenient_correct,
-                    f"{wandb_prefix}/{split}_total": total,
-                    f"{wandb_prefix}/{split}_extraction_failures": extraction_failures,
-                }
-                wandb.log(wandb_metrics)
-                logger.info(f"Logged {split} accuracies to wandb - Strict: {strict_accuracy:.2f}%, Lenient: {lenient_accuracy:.2f}%")
+            wandb_metrics = {
+                f"{wandb_prefix}/{split}_accuracy": strict_accuracy,
+                f"{wandb_prefix}/{split}_strict_accuracy": strict_accuracy,
+                f"{wandb_prefix}/{split}_lenient_accuracy": lenient_accuracy,
+                f"{wandb_prefix}/{split}_correct": strict_correct,
+                f"{wandb_prefix}/{split}_strict_correct": strict_correct,
+                f"{wandb_prefix}/{split}_lenient_correct": lenient_correct,
+                f"{wandb_prefix}/{split}_total": total,
+                f"{wandb_prefix}/{split}_extraction_failures": extraction_failures,
+            }
+            log_metrics(wandb_metrics)
+            logger.info(f"Logged {split} accuracies - Strict: {strict_accuracy:.2f}%, Lenient: {lenient_accuracy:.2f}%")
         except ImportError:
             pass
 
@@ -267,22 +271,20 @@ def calculate_accuracy_train_test(
     # Log to wandb if requested
     if log_to_wandb:
         try:
-            import wandb
-            if wandb.run is not None:
-                wandb_metrics = {
-                    f"{wandb_prefix}/train_accuracy": train_metrics["accuracy"],
-                    f"{wandb_prefix}/test_accuracy": test_metrics["accuracy"],
-                    f"{wandb_prefix}/full_accuracy": full_metrics["accuracy"],
-                    f"{wandb_prefix}/train_test_gap": train_test_gap,
-                    f"{wandb_prefix}/train_extraction_failures": train_metrics["extraction_failures"],
-                    f"{wandb_prefix}/test_extraction_failures": test_metrics["extraction_failures"],
-                    f"{wandb_prefix}/full_extraction_failures": full_metrics["extraction_failures"],
-                }
-                if global_step is not None:
-                    wandb.log(wandb_metrics, step=global_step)
-                else:
-                    wandb.log(wandb_metrics)
-                logger.info(f"Logged train/test/full accuracy to wandb")
+            wandb_metrics = {
+                f"{wandb_prefix}/train_accuracy": train_metrics["accuracy"],
+                f"{wandb_prefix}/test_accuracy": test_metrics["accuracy"],
+                f"{wandb_prefix}/full_accuracy": full_metrics["accuracy"],
+                f"{wandb_prefix}/train_test_gap": train_test_gap,
+                f"{wandb_prefix}/train_extraction_failures": train_metrics["extraction_failures"],
+                f"{wandb_prefix}/test_extraction_failures": test_metrics["extraction_failures"],
+                f"{wandb_prefix}/full_extraction_failures": full_metrics["extraction_failures"],
+            }
+            if global_step is not None:
+                log_metrics(wandb_metrics, step=global_step)
+            else:
+                log_metrics(wandb_metrics)
+            logger.info(f"Logged train/test/full accuracy")
         except ImportError:
             pass
 

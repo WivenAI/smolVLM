@@ -40,6 +40,12 @@ try:
 except ImportError:
     TENSORBOARD_AVAILABLE = False
 
+try:
+    from utils.dual_logger import init_dual_logger, log_metrics
+    DUAL_LOGGER_AVAILABLE = True
+except ImportError:
+    DUAL_LOGGER_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -293,9 +299,9 @@ class EpochEvaluationCallback(TrainerCallback):
             total = len(results)
             accuracy = (correct / total * 100) if total > 0 else 0.0
 
-            # Log to wandb
-            if log_to_wandb and wandb.run is not None:
-                wandb.log({
+            # Log to WandB and TensorBoard
+            if log_to_wandb:
+                log_metrics({
                     f"{self.strategy_name}/{split}_accuracy": accuracy,
                     f"{self.strategy_name}/{split}_correct": correct,
                     f"{self.strategy_name}/{split}_total": total
@@ -371,15 +377,11 @@ class EpochEvaluationCallback(TrainerCallback):
             metrics["epoch"] = 0
             metrics["global_step"] = 0
 
-            # Log to WandB (with offline fallback)
-            if self.wandb_enabled and WANDB_AVAILABLE:
-                try:
-                    wandb.log(metrics, step=0)
-                    logger.info(f"[{self.strategy_name}] Baseline metrics logged to WandB at epoch 0")
-                except Exception as e:
-                    logger.warning(f"[{self.strategy_name}] WandB logging failed: {e}")
+            # Log to both WandB (offline) and TensorBoard
+            log_metrics(metrics, step=0)
+            logger.info(f"[{self.strategy_name}] Baseline metrics logged at epoch 0")
 
-            # Log to TensorBoard (always works offline)
+            # Legacy TensorBoard writer (dual logger handles this now)
             if self.tensorboard_writer:
                 try:
                     for key, value in metrics.items():
@@ -569,15 +571,11 @@ class EpochEvaluationCallback(TrainerCallback):
             metrics[eval_type] = epoch
             metrics["global_step"] = state.global_step
 
-            # Log to WandB (with offline fallback)
-            if self.wandb_enabled and WANDB_AVAILABLE:
-                try:
-                    wandb.log(metrics, step=state.global_step)
-                    logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged to WandB")
-                except Exception as e:
-                    logger.warning(f"[{self.strategy_name}] WandB logging failed: {e}")
+            # Log to both WandB (offline) and TensorBoard
+            log_metrics(metrics, step=state.global_step)
+            logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged")
 
-            # Log to TensorBoard (always works offline)
+            # Legacy TensorBoard writer (dual logger handles this now)
             if self.tensorboard_writer:
                 try:
                     for key, value in metrics.items():
@@ -1015,6 +1013,10 @@ class SFTTrainer:
                 reinit=True
             )
 
+        # Initialize dual logger (WandB offline + TensorBoard)
+        tensorboard_dir = f"tensorboard_logs/{strategy_name}"
+        dual_logger = init_dual_logger(tensorboard_dir, use_wandb=use_wandb and WANDB_AVAILABLE)
+
         logger.info(f"Training on QCM dataset: {dataset_path}")
 
         # Create dataset
@@ -1118,6 +1120,10 @@ class SFTTrainer:
                 config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
+
+        # Initialize dual logger (WandB offline + TensorBoard)
+        tensorboard_dir = f"tensorboard_logs/{strategy_name}"
+        dual_logger = init_dual_logger(tensorboard_dir, use_wandb=use_wandb and WANDB_AVAILABLE)
 
         logger.info(f"Training on combined QCM datasets: {dataset_paths}")
 

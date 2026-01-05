@@ -46,6 +46,12 @@ try:
 except ImportError:
     TENSORBOARD_AVAILABLE = False
 
+try:
+    from utils.dual_logger import init_dual_logger, log_metrics
+    DUAL_LOGGER_AVAILABLE = True
+except ImportError:
+    DUAL_LOGGER_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -80,14 +86,13 @@ class RAMMonitorCallback(TrainerCallback):
             current_ram = get_ram_usage_gb()
             sys_ram = get_system_ram_info()
 
-            if WANDB_AVAILABLE and wandb.run is not None:
-                wandb.log({
-                    'system/process_ram_gb': current_ram,
-                    'system/ram_delta_gb': current_ram - self._initial_ram,
-                    'system/system_ram_used_gb': sys_ram['used_gb'],
-                    'system/system_ram_available_gb': sys_ram['available_gb'],
-                    'system/system_ram_percent': sys_ram['percent'],
-                }, step=state.global_step)
+            log_metrics({
+                'system/process_ram_gb': current_ram,
+                'system/ram_delta_gb': current_ram - self._initial_ram,
+                'system/system_ram_used_gb': sys_ram['used_gb'],
+                'system/system_ram_available_gb': sys_ram['available_gb'],
+                'system/system_ram_percent': sys_ram['percent'],
+            }, step=state.global_step)
 
         return control
 
@@ -326,15 +331,11 @@ class EpochEvaluationCallback(TrainerCallback):
             metrics["epoch"] = 0
             metrics["global_step"] = 0
 
-            # Log to WandB (with offline fallback)
-            if self.wandb_enabled and WANDB_AVAILABLE:
-                try:
-                    wandb.log(metrics, step=0)
-                    logger.info(f"[{self.strategy_name}] Baseline metrics logged to WandB at epoch 0")
-                except Exception as e:
-                    logger.warning(f"[{self.strategy_name}] WandB logging failed: {e}")
+            # Log to both WandB (offline) and TensorBoard
+            log_metrics(metrics, step=0)
+            logger.info(f"[{self.strategy_name}] Baseline metrics logged at epoch 0")
 
-            # Log to TensorBoard (always works offline)
+            # Legacy TensorBoard writer (dual logger handles this now)
             if self.tensorboard_writer:
                 try:
                     for key, value in metrics.items():
@@ -463,15 +464,11 @@ class EpochEvaluationCallback(TrainerCallback):
             metrics[eval_type] = epoch
             metrics["global_step"] = state.global_step
 
-            # Log to WandB (with offline fallback)
-            if self.wandb_enabled and WANDB_AVAILABLE:
-                try:
-                    wandb.log(metrics, step=state.global_step)
-                    logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged to WandB")
-                except Exception as e:
-                    logger.warning(f"[{self.strategy_name}] WandB logging failed: {e}")
+            # Log to both WandB (offline) and TensorBoard
+            log_metrics(metrics, step=state.global_step)
+            logger.info(f"[{self.strategy_name}] {eval_type.capitalize()} {epoch} eval metrics logged")
 
-            # Log to TensorBoard (always works offline)
+            # Legacy TensorBoard writer (dual logger handles this now)
             if self.tensorboard_writer:
                 try:
                     for key, value in metrics.items():
@@ -979,6 +976,10 @@ class DPOTrainerWrapper:
                 config={"base_model": self.config.get("model", {}).get("base_model", "unknown")},
                 reinit=True
             )
+
+        # Initialize dual logger (WandB offline + TensorBoard)
+        tensorboard_dir = f"tensorboard_logs/{strategy_name}"
+        dual_logger = init_dual_logger(tensorboard_dir, use_wandb=use_wandb and WANDB_AVAILABLE)
 
         logger.info(f"Training with DPO on benchmark: {benchmark_name}")
 
