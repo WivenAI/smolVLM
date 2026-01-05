@@ -345,17 +345,25 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         else:
             question = "What do you see in this image?"
 
-        # Extract answer
+        # Extract answer - handle both list and string formats
         if 'answers' in item:
             answers = item['answers']
             if isinstance(answers, list) and len(answers) > 0:
-                answer = answers[0]
+                answer = str(answers[0])
             else:
                 answer = str(answers)
         elif 'answer' in item:
-            answer = item['answer']
+            ans = item['answer']
+            if isinstance(ans, list) and len(ans) > 0:
+                answer = str(ans[0])
+            else:
+                answer = str(ans)
         elif 'label' in item:
-            answer = str(item['label'])
+            lbl = item['label']
+            if isinstance(lbl, list) and len(lbl) > 0:
+                answer = str(lbl[0])
+            else:
+                answer = str(lbl)
         else:
             answer = "Unknown"
 
