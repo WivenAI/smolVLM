@@ -31,7 +31,13 @@ class DocVQAEvaluator(BaseEvaluator):
         iterator = BenchmarkDatasetIterator(dataset, self.load_image, "DocVQA")
 
         for item, image in tqdm(iterator, desc="DocVQA", total=len(dataset)):
-            question = item.get('question', item.get('query', ''))
+            # Handle query field which can be a dict with language keys or a string
+            query_field = item.get('question', item.get('query', ''))
+            if isinstance(query_field, dict):
+                # Extract English text from multi-language query dict
+                question = query_field.get('en', str(query_field))
+            else:
+                question = str(query_field)
             answers = item.get('answers', item.get('answer', []))
             if isinstance(answers, str):
                 answers = [answers]

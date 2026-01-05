@@ -34,6 +34,9 @@ class ChartQAEvaluator(BaseEvaluator):
         for item, image in tqdm(iterator, desc="ChartQA", total=len(dataset)):
             question = item.get('question', item.get('query', ''))
             answer = item.get('answer', item.get('label', ''))
+            # Handle label field which is a list in ChartQA cache
+            if isinstance(answer, list):
+                answer = answer[0] if answer else ''
 
             response = self.generate_response(image, question)
 
