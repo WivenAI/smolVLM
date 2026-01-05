@@ -97,12 +97,10 @@ class Pipeline:
 
         # Try multiple cache locations (fixes IZAR compute node issues)
         cache_candidates = [
+            "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/tmpcache",  # Priority: IZAR scratch
             config.get("model", {}).get("cache_dir"),  # From config
             str(self.base_path / "tmpcache"),  # Project root tmpcache
             str(self.base_path.parent / "tmpcache"),  # One level up
-            "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/SecondComprehensivePipeline/tmpcache",
-            "/scratch/izar/dlacour/wiven7/tmpcache",
-            "/scratch/izar/dlacour/tmpcache",
         ]
 
         cache_dir = None
@@ -113,8 +111,8 @@ class Pipeline:
                 break
 
         if cache_dir is None:
-            # Create the first absolute path option if none exist
-            cache_dir = "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/SecondComprehensivePipeline/tmpcache"
+            # Create the priority path if none exist
+            cache_dir = "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/tmpcache"
             os.makedirs(cache_dir, exist_ok=True)
             logger.info(f"Created model.cache_dir: {cache_dir}")
 

@@ -978,12 +978,10 @@ class SFTTrainer:
 
         # Try multiple cache locations (fixes IZAR compute node issues)
         cache_candidates = [
+            "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/tmpcache",  # Priority: IZAR scratch
             cache_dir,  # From config (e.g., ../tmpcache)
             str(Path(__file__).parent.parent / "tmpcache"),  # Project root tmpcache
             str(Path(__file__).parent.parent.parent / "tmpcache"),  # One level up
-            "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/SecondComprehensivePipeline/tmpcache",
-            "/scratch/izar/dlacour/wiven7/tmpcache",
-            "/scratch/izar/dlacour/tmpcache",
         ]
 
         cache_dir = None
@@ -994,8 +992,8 @@ class SFTTrainer:
                 break
 
         if cache_dir is None:
-            # Create the first absolute path option if none exist
-            cache_dir = "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/SecondComprehensivePipeline/tmpcache"
+            # Create the priority path if none exist
+            cache_dir = "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/tmpcache"
             os.makedirs(cache_dir, exist_ok=True)
             logger.info(f"Created cache_dir: {cache_dir}")
 
