@@ -95,6 +95,14 @@ class Pipeline:
         with open(self.config_path, 'r') as f:
             config = yaml.safe_load(f)
 
+        # Convert relative cache_dir to absolute path (fixes IZAR compute node issues)
+        if "model" in config and "cache_dir" in config["model"]:
+            cache_dir = config["model"]["cache_dir"]
+            if not os.path.isabs(cache_dir):
+                # Resolve relative to base_path (project root)
+                config["model"]["cache_dir"] = str(self.base_path / cache_dir)
+                logger.info(f"Converted model.cache_dir to absolute: {config['model']['cache_dir']}")
+
         logger.info(f"Loaded config from: {self.config_path}")
         return config
 

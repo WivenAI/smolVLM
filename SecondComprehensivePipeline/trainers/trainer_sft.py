@@ -976,6 +976,11 @@ class SFTTrainer:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
         cache_dir = self.config.get("model", {}).get("cache_dir", None)
 
+        # Convert relative cache_dir to absolute path (fixes IZAR compute node issues)
+        if cache_dir and not os.path.isabs(cache_dir):
+            cache_dir = str(Path(__file__).parent.parent / cache_dir)
+            logger.info(f"Converted cache_dir to absolute: {cache_dir}")
+
         logger.info(f"Loading model: {base_model}")
 
         self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True, cache_dir=cache_dir)
