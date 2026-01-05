@@ -733,6 +733,9 @@ class FullFineTuneTrainer:
 
         training_args = self._get_training_args(output_dir, epochs, use_wandb)
 
+        # Use benchmark name to skip duplicate evaluation (e.g., "docvqa", "ocrbench", "chartqa")
+        training_dataset_name = benchmark_name
+
         # Create evaluation callback
         eval_callback = EpochEvaluationCallback(
             config=self.config,
@@ -740,7 +743,8 @@ class FullFineTuneTrainer:
             strategy_name=strategy_name or f"full_ft_{benchmark_name}",
             processor=self.processor,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset
+            eval_dataset=eval_dataset,
+            training_dataset_name=training_dataset_name
         )
 
         trainer = Trainer(
