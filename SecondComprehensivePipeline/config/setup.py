@@ -17,9 +17,9 @@ from pathlib import Path
 # Base model used throughout the pipeline
 BASE_MODEL = "HuggingFaceTB/SmolVLM2-256M-Video-Instruct"
 
-# HuggingFace cache directory (relative to project root)
+# HuggingFace cache directory (same as config.yaml: ../tmpcache)
 _PROJECT_ROOT = Path(__file__).parent.parent
-HF_CACHE_DIR = str(_PROJECT_ROOT / "hf_cache")
+HF_CACHE_DIR = str(_PROJECT_ROOT.parent / "tmpcache")
 
 _setup_done = False
 
