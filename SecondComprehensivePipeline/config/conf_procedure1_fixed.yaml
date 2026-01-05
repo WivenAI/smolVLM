@@ -1,0 +1,127 @@
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+
+training:
+  epochs: 30
+  train_samples: 1000
+  batch_size: 1
+  gradient_accumulation_steps: 16
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+
+  strategies:
+    - name: baseline
+      enabled: false
+      type: none
+
+    - name: full_ft_qcm_procedure1
+      enabled: true
+      type: full_ft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+evaluation:
+  benchmarks:
+    - name: ocrbench
+      enabled: false
+      dataset: echo840/OCRBench
+      split: test
+      max_samples: 1000
+
+    - name: docvqa
+      enabled: false
+      dataset: nielsr/docvqa_1200_examples
+      split: train
+      max_samples: 1000
+
+    - name: chartqa
+      enabled: false
+      dataset: HuggingFaceM4/ChartQA
+      split: test
+      max_samples: 1000
+
+  erp_evaluation:
+    qcm_gemini:
+      enabled: false
+      dataset: datasets/qcm/qcm_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 30000
+
+    qcm_nova:
+      enabled: false
+      dataset: datasets/qcm/qcm_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 30000
+
+    qcm_claudette:
+      enabled: false
+      dataset: datasets/qcm/qcm_claudette.json
+      max_samples: 30000
+
+    qcm_procedure1:
+      enabled: true
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+      max_samples: 30000
+
+    qcm_procedure2:
+      enabled: false
+      dataset: datasets/qcm/qcm_procedure2_geminicli.json
+      image_dir: datasets/procedureimages
+      max_samples: 30000
+
+    logprob_gemini:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 30000
+
+    logprob_nova:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 30000
+
+    bertscore_gemini:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      lang: en
+      max_samples: 30000
+
+    bertscore_nova:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      lang: en
+      max_samples: 30000
+
+    rouge_gemini:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 30000
+
+    rouge_nova:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 30000
+
+paths:
+  output_dir: modelweights_procedure1_fixed
+  cache_dir: datasets/cache
+  results_dir: results_procedure1_fixed
+  logs_dir: logs
+
+pipeline:
+  continue_on_error: true
+  use_wandb: true
+  wandb_project: 22ComprehensivePipeline
+  debug_mode: false
+  debug_size: 2
+  num_workers: 1
