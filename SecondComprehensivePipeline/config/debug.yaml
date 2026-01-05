@@ -263,7 +263,7 @@ training:
 evaluation:
   benchmarks:
   - name: ocrbench
-    enabled: false
+    enabled: true
     dataset: echo840/OCRBench
     split: test
     max_samples: 2
@@ -273,7 +273,7 @@ evaluation:
     split: train
     max_samples: 2
   - name: chartqa
-    enabled: false
+    enabled: true
     dataset: HuggingFaceM4/ChartQA
     split: test
     max_samples: 2
@@ -285,7 +285,7 @@ evaluation:
       image_dir: datasets/images
       max_samples: 2
     qcm_nova:
-      enabled: false
+      enabled: true
       dataset: datasets/qcm/qcm_dataset_nova_pro.json
       image_dir: datasets/images
       max_samples: 2
@@ -294,23 +294,25 @@ evaluation:
       dataset: datasets/qcm/qcm_claudette.json
       max_samples: 2
     qcm_procedure1:
-      enabled: false
+      enabled: true
       dataset: datasets/qcm/qcm_procedure1_claude_code.json
       image_dir: datasets/procedureimages
       max_samples: 2
     qcm_procedure2:
-      enabled: false
+      enabled: true
       dataset: datasets/qcm/qcm_procedure2_geminicli.json
       image_dir: datasets/procedureimages
       max_samples: 2
     logprob_gemini:
-      enabled: false
+      enabled: true
       dataset: datasets/dpo/dpo_dataset_gemini.json
       image_dir: datasets/images
+      max_samples: 2
     logprob_nova:
-      enabled: false
+      enabled: true
       dataset: datasets/dpo/dpo_dataset_nova_pro.json
       image_dir: datasets/images
+      max_samples: 2
     bertscore_gemini:
       enabled: false
       dataset: datasets/dpo/dpo_dataset_gemini.json
@@ -322,13 +324,15 @@ evaluation:
       image_dir: datasets/images
       lang: en
     rouge_gemini:
-      enabled: false
+      enabled: true
       dataset: datasets/dpo/dpo_dataset_gemini.json
       image_dir: datasets/images
+      max_samples: 2
     rouge_nova:
-      enabled: false
+      enabled: true
       dataset: datasets/dpo/dpo_dataset_nova_pro.json
       image_dir: datasets/images
+      max_samples: 2
 
 paths:
   output_dir: modelweights_debug
