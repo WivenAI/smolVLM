@@ -976,10 +976,28 @@ class SFTTrainer:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
         cache_dir = self.config.get("model", {}).get("cache_dir", None)
 
-        # Convert relative cache_dir to absolute path (fixes IZAR compute node issues)
-        if cache_dir and not os.path.isabs(cache_dir):
-            cache_dir = str(Path(__file__).parent.parent / cache_dir)
-            logger.info(f"Converted cache_dir to absolute: {cache_dir}")
+        # Try multiple cache locations (fixes IZAR compute node issues)
+        cache_candidates = [
+            cache_dir,  # From config (e.g., ../tmpcache)
+            str(Path(__file__).parent.parent / "tmpcache"),  # Project root tmpcache
+            str(Path(__file__).parent.parent.parent / "tmpcache"),  # One level up
+            "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/SecondComprehensivePipeline/tmpcache",
+            "/scratch/izar/dlacour/wiven7/tmpcache",
+            "/scratch/izar/dlacour/tmpcache",
+        ]
+
+        cache_dir = None
+        for candidate in cache_candidates:
+            if candidate and os.path.exists(candidate):
+                cache_dir = candidate
+                logger.info(f"Using cache_dir: {cache_dir}")
+                break
+
+        if cache_dir is None:
+            # Create the first absolute path option if none exist
+            cache_dir = "/scratch/izar/dlacour/wiven7/smolvlm/smolVLM/SecondComprehensivePipeline/tmpcache"
+            os.makedirs(cache_dir, exist_ok=True)
+            logger.info(f"Created cache_dir: {cache_dir}")
 
         logger.info(f"Loading model: {base_model}")
 
