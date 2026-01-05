@@ -230,9 +230,28 @@ class EpochEvaluationCallback(TrainerCallback):
                     attention_mask = inputs.get('attention_mask', None)
                     pixel_values = inputs.get('pixel_values', None)
 
-                    gen_inputs = {'input_ids': input_ids}
-                    if attention_mask is not None:
-                        gen_inputs['attention_mask'] = attention_mask
+                    # FIXED: Find where answer starts (same logic as masking)
+                    # We need to trim input_ids to only the prompt portion for generation
+                    labels = inputs.get('labels', None)
+                    prompt_end_pos = None
+                    if labels is not None:
+                        # Find first non-masked token (where answer starts)
+                        mask = labels[0] != -100
+                        if mask.any():
+                            prompt_end_pos = mask.nonzero()[0].item()
+
+                    # If we can't find the answer position, use the full sequence (fallback)
+                    if prompt_end_pos is None or prompt_end_pos >= input_ids.shape[1]:
+                        prompt_end_pos = input_ids.shape[1]
+                        logger.warning(f"Could not find answer position for batch {batch_idx}, using full sequence")
+
+                    # Trim to prompt only
+                    prompt_input_ids = input_ids[:, :prompt_end_pos]
+                    prompt_attention_mask = attention_mask[:, :prompt_end_pos] if attention_mask is not None else None
+
+                    gen_inputs = {'input_ids': prompt_input_ids}
+                    if prompt_attention_mask is not None:
+                        gen_inputs['attention_mask'] = prompt_attention_mask
                     if pixel_values is not None:
                         gen_inputs['pixel_values'] = pixel_values
 
@@ -246,7 +265,8 @@ class EpochEvaluationCallback(TrainerCallback):
                         pad_token_id=self.processor.tokenizer.pad_token_id
                     )
 
-                    pred_tokens = outputs[0][input_ids.shape[1]:]
+                    # FIXED: Extract tokens after the PROMPT, not after full sequence
+                    pred_tokens = outputs[0][prompt_input_ids.shape[1]:]
                     pred_text = self.processor.decode(pred_tokens, skip_special_tokens=True).strip()
 
                     label_tokens = labels[0][labels[0] != -100]
