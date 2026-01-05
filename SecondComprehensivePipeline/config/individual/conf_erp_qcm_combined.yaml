@@ -1,0 +1,322 @@
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+training:
+  epochs: 101
+  train_samples: 1000
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+  strategies:
+  - name: baseline
+    enabled: false
+    type: none
+  - name: full_ft_qcm_procedure1
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+  - name: full_ft_qcm_procedure2
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: full_ft_qcm_gemini
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: full_ft_qcm_nova
+    enabled: false
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_docvqa
+    enabled: false
+    type: full_ft_benchmark
+    benchmark: docvqa
+  - name: full_ft_ocrbench
+    enabled: false
+    type: full_ft_benchmark
+    benchmark: ocrbench
+  - name: full_ft_chartqa
+    enabled: false
+    type: full_ft_benchmark
+    benchmark: chartqa
+  - name: full_ft_sft_chosen_rej_gemini
+    enabled: false
+    type: full_ft_chosen_rej_sft
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: full_ft_sft_chosen_rej_nova
+    enabled: false
+    type: full_ft_chosen_rej_sft
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_dpo_gemini
+    enabled: false
+    type: full_ft_dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: full_ft_dpo_nova
+    enabled: false
+    type: full_ft_dpo
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: sft_docvqa
+    enabled: false
+    type: sft_benchmark
+    benchmark: docvqa
+  - name: sft_ocrbench
+    enabled: false
+    type: sft_benchmark
+    benchmark: ocrbench
+  - name: sft_chartqa
+    enabled: false
+    type: sft_benchmark
+    benchmark: chartqa
+  - name: erp_qcm_procedure1
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+  - name: erp_qcm_procedure2
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: erp_qcm_gemini
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_qcm_nova
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_gemini
+    enabled: false
+    type: sft_chosen_rej
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_nova
+    enabled: false
+    type: sft_chosen_rej
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: dpo_docvqa
+    enabled: false
+    type: dpo_benchmark
+    benchmark: docvqa
+  - name: dpo_ocrbench
+    enabled: false
+    type: dpo_benchmark
+    benchmark: ocrbench
+  - name: dpo_chartqa
+    enabled: false
+    type: dpo_benchmark
+    benchmark: chartqa
+  - name: erp_dpo_gemini
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_nova
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: full_ft_qcm_combined
+    enabled: false
+    type: full_ft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_combined
+    enabled: true
+    type: sft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_procedure_combined
+    enabled: false
+    type: sft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_procedure1_claude_code.json
+    - datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: dpo_qcm_gemini
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: dpo_qcm_nova
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: dpo_qcm_procedure1
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+  - name: dpo_qcm_procedure2
+    enabled: false
+    type: dpo_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+  - name: erp_qcm_dpo_gemini
+    enabled: false
+    type: qcm_then_dpo
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    dpo_dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_qcm_gemini
+    enabled: false
+    type: dpo_then_qcm
+    dpo_dataset: datasets/dpo/dpo_dataset_gemini.json
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_dpo_qcm_nova
+    enabled: false
+    type: dpo_then_qcm
+    dpo_dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_sft_chosen_rej_gemini
+    enabled: false
+    type: sft_qcm_chosen_rej
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_qcm_sft_chosen_rej_nova
+    enabled: false
+    type: sft_qcm_chosen_rej
+    qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_qcm_gemini
+    enabled: false
+    type: sft_chosen_rej_qcm
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_gemini.json
+    qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_qcm_nova
+    enabled: false
+    type: sft_chosen_rej_qcm
+    chosen_rej_dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_qcm_sft_chosen_rej_combined
+    enabled: false
+    type: sft_qcm_chosen_rej_combined
+    qcm_datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    chosen_rej_datasets:
+    - datasets/dpo/dpo_dataset_gemini.json
+    - datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+  - name: erp_sft_chosen_rej_qcm_combined
+    enabled: false
+    type: sft_chosen_rej_qcm_combined
+    chosen_rej_datasets:
+    - datasets/dpo/dpo_dataset_gemini.json
+    - datasets/dpo/dpo_dataset_nova_pro.json
+    qcm_datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+evaluation:
+  benchmarks:
+  - name: ocrbench
+    enabled: true
+    dataset: echo840/OCRBench
+    split: test
+    max_samples: 1000
+  - name: docvqa
+    enabled: true
+    dataset: nielsr/docvqa_1200_examples
+    split: train
+    max_samples: 1000
+  - name: chartqa
+    enabled: true
+    dataset: HuggingFaceM4/ChartQA
+    split: test
+    max_samples: 1000
+  erp_evaluation:
+    qcm_gemini:
+      enabled: true
+      dataset: datasets/qcm/qcm_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 30000
+    qcm_nova:
+      enabled: true
+      dataset: datasets/qcm/qcm_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 30000
+    qcm_claudette:
+      enabled: true
+      dataset: datasets/qcm/qcm_claudette.json
+      max_samples: 30000
+    qcm_procedure1:
+      enabled: true
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+      max_samples: 30000
+    qcm_procedure2:
+      enabled: true
+      dataset: datasets/qcm/qcm_procedure2_geminicli.json
+      image_dir: datasets/procedureimages
+      max_samples: 30000
+    logprob_gemini:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 30000
+    logprob_nova:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 30000
+    bertscore_gemini:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      lang: en
+      max_samples: 30000
+    bertscore_nova:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      lang: en
+      max_samples: 30000
+    rouge_gemini:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 30000
+    rouge_nova:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 30000
+paths:
+  output_dir: modelweights
+  cache_dir: datasets/cache
+  results_dir: results
+  logs_dir: logs
+pipeline:
+  continue_on_error: true
+  use_wandb: true
+  wandb_project: 15ComprehensivePipeline
+  debug_mode: false
+  debug_size: 2
+  num_workers: 1
