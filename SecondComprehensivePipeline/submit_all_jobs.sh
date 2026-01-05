@@ -92,21 +92,21 @@ for config_file in "${CONFIG_FILES[@]}"; do
     # Skip full DPO strategies
     if [[ "$strategy_name" == "full_ft_dpo_gemini" ]] || [[ "$strategy_name" == "full_ft_dpo_nova" ]]; then
         echo "  ⊘ Skipping (full DPO excluded)"
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
         continue
     fi
 
     # Check limit
     if [ $LIMIT -gt 0 ] && [ $SUBMITTED -ge $LIMIT ]; then
         echo "  ⊘ Skipping (limit reached)"
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
         continue
     fi
 
     # Submit or show command
     if [ "$DRY_RUN" = true ]; then
         echo "  → Would submit: sbatch --job-name=wiven_$strategy_name $JOB_SCRIPT $config_file"
-        ((SUBMITTED++))
+        SUBMITTED=$((SUBMITTED + 1))
     else
         # Submit with custom job name
         job_output=$(sbatch --job-name="wiven_$strategy_name" "$JOB_SCRIPT" "$config_file" 2>&1)
@@ -114,13 +114,13 @@ for config_file in "${CONFIG_FILES[@]}"; do
         if [ $? -eq 0 ]; then
             job_id=$(echo "$job_output" | grep -oP 'Submitted batch job \K\d+')
             echo "  ✓ Submitted: Job ID $job_id"
-            ((SUBMITTED++))
+            SUBMITTED=$((SUBMITTED + 1))
 
             # Small delay to avoid overwhelming the scheduler
             sleep 0.5
         else
             echo "  ✗ Failed: $job_output"
-            ((SKIPPED++))
+            SKIPPED=$((SKIPPED + 1))
         fi
     fi
 done
