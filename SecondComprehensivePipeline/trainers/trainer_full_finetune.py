@@ -360,7 +360,7 @@ class BenchmarkDataset(torch.utils.data.Dataset):
             answer = "Unknown"
 
         # Format using chat template with proper prompt masking
-        user_message = [
+        full_messages = [
             {
                 "role": "user",
                 "content": [
@@ -368,26 +368,15 @@ class BenchmarkDataset(torch.utils.data.Dataset):
                     {"type": "image"},
                     {"type": "text", "text": question}
                 ]
-            }
-        ]
-
-        full_messages = user_message + [
+            },
             {
                 "role": "assistant",
                 "content": [{"type": "text", "text": answer}]
             }
         ]
 
-        prompt_text = self.processor.apply_chat_template(user_message, add_generation_prompt=True, tokenize=False)
+        # FIXED: Process only the full sequence (not prompt separately)
         full_text = self.processor.apply_chat_template(full_messages, add_generation_prompt=False, tokenize=False)
-
-        prompt_inputs = self.processor(
-            text=prompt_text,
-            images=image,
-            return_tensors="pt",
-            padding=True,
-            size={"longest_edge": 1024}
-        )
 
         full_inputs = self.processor(
             text=full_text,
@@ -397,10 +386,66 @@ class BenchmarkDataset(torch.utils.data.Dataset):
             size={"longest_edge": 1024}
         )
 
-        # Mask prompt tokens so we only compute loss on the answer
-        prompt_length = prompt_inputs["input_ids"].shape[1]
+        # FIXED: Find where the answer actually starts in the tokenized sequence
+        # Try multiple tokenization variants since context affects tokenization
+        full_token_list = full_inputs["input_ids"][0].tolist()
+        answer_start_pos = None
+
+        # Try 1: Answer with leading space (most common in chat templates)
+        answer_with_space = " " + answer
+        answer_tokens_spaced = self.processor.tokenizer.encode(answer_with_space, add_special_tokens=False)
+        for i in range(len(full_token_list) - len(answer_tokens_spaced) + 1):
+            if full_token_list[i:i+len(answer_tokens_spaced)] == answer_tokens_spaced:
+                answer_start_pos = i
+                break
+
+        # Try 2: Answer without leading space
+        if answer_start_pos is None:
+            answer_tokens = self.processor.tokenizer.encode(answer, add_special_tokens=False)
+            for i in range(len(full_token_list) - len(answer_tokens) + 1):
+                if full_token_list[i:i+len(answer_tokens)] == answer_tokens:
+                    answer_start_pos = i
+                    break
+
+        # Try 3: Find "Assistant:" marker and use position after it
+        if answer_start_pos is None:
+            try:
+                # Try different assistant marker formats
+                for marker in ["Assistant:", "Assistant: ", ": "]:
+                    marker_tokens = self.processor.tokenizer.encode(marker, add_special_tokens=False)
+                    for i in range(len(full_token_list) - len(marker_tokens) + 1):
+                        if full_token_list[i:i+len(marker_tokens)] == marker_tokens:
+                            answer_start_pos = i + len(marker_tokens)
+                            break
+                    if answer_start_pos is not None:
+                        break
+            except Exception:
+                pass
+
+        # NO FALLBACK - crash if answer position not found to avoid training on garbage
+        if answer_start_pos is None or answer_start_pos >= len(full_token_list):
+            raise ValueError(
+                f"Sample {idx} ({self.benchmark_name}): Could not find answer position!\n"
+                f"  Answer: '{answer}'\n"
+                f"  Answer tokens (with space): {self.processor.tokenizer.encode(' ' + answer, add_special_tokens=False)}\n"
+                f"  Answer tokens (no space): {self.processor.tokenizer.encode(answer, add_special_tokens=False)}\n"
+                f"  Total tokens: {len(full_token_list)}\n"
+                f"  Last 10 tokens: {full_token_list[-10:]}\n"
+                f"  Decoded last 10: {[self.processor.tokenizer.decode([t]) for t in full_token_list[-10:]]}"
+            )
+
+        # FIXED: Mask everything before the answer
         labels = full_inputs["input_ids"].clone()
-        labels[:, :prompt_length] = -100
+        labels[:, :answer_start_pos] = -100
+
+        # FIXED: Add validation to detect masking failures
+        unmasked_count = (labels[0] != -100).sum().item()
+        if unmasked_count == 0:
+            logger.error(f"Sample {idx} ({self.benchmark_name}): ALL TOKENS MASKED! answer_start_pos={answer_start_pos}, total={len(full_token_list)}")
+            # Emergency: unmask last 5 tokens
+            labels[:, -5:] = full_inputs["input_ids"][:, -5:]
+        elif unmasked_count < 3:
+            logger.warning(f"Sample {idx} ({self.benchmark_name}): Only {unmasked_count} tokens unmasked for training")
 
         inputs = {}
         for key in full_inputs:
