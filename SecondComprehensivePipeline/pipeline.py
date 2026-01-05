@@ -525,7 +525,7 @@ class Pipeline:
             print("No QCM datasets found in config")
             return
 
-        from evaluators.base_evaluator import BaseEvaluator
+        from evaluators.simple_evaluator import SimpleEvaluator
         from PIL import Image
 
         for strategy in strategies:
@@ -545,7 +545,7 @@ class Pipeline:
 
             try:
                 # Load model once for this strategy
-                evaluator = BaseEvaluator(self.config, str(self.cache_dir))
+                evaluator = SimpleEvaluator(str(self.cache_dir))
                 evaluator.load_model(str(model_path) if model_path else None)
 
                 for qcm_cfg in qcm_datasets:
