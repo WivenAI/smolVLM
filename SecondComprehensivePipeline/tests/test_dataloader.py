@@ -458,13 +458,14 @@ class TestBenchmarkMixin:
         assert result == "English question"
 
     def test_extract_question_fallback(self):
-        """Test fallback when key not found"""
+        """Test raises KeyError when key not found (no fallback)"""
         from dataloader.benchmark_dataset import BenchmarkMixin
 
         item = {}
-        result = BenchmarkMixin.extract_question(item, "question")
+        with pytest.raises(KeyError) as exc_info:
+            BenchmarkMixin.extract_question(item, "question")
 
-        assert "What do you see" in result
+        assert "Could not find question" in str(exc_info.value)
 
     def test_extract_answer_list(self):
         """Test extracting answer from list"""
@@ -492,6 +493,26 @@ class TestBenchmarkMixin:
         result = BenchmarkMixin.extract_all_answers(item, "answers")
 
         assert result == ["ans1", "ans2", "ans3"]
+
+    def test_extract_answer_raises_when_missing(self):
+        """Test raises KeyError when answer not found (no fallback)"""
+        from dataloader.benchmark_dataset import BenchmarkMixin
+
+        item = {}
+        with pytest.raises(KeyError) as exc_info:
+            BenchmarkMixin.extract_answer(item, "answers")
+
+        assert "Could not find answer" in str(exc_info.value)
+
+    def test_extract_all_answers_raises_when_missing(self):
+        """Test raises KeyError when answers not found (no fallback)"""
+        from dataloader.benchmark_dataset import BenchmarkMixin
+
+        item = {}
+        with pytest.raises(KeyError) as exc_info:
+            BenchmarkMixin.extract_all_answers(item, "answers")
+
+        assert "Could not find answers" in str(exc_info.value)
 
 
 class TestBenchmarkDataset:

@@ -1,0 +1,95 @@
+# Overfitting Debug Configuration - Full Finetuning
+# Tests if model can overfit on 100 samples with FULL finetuning (no QLORA)
+# Compare with QLORA results to see if full FT overfits faster
+# Use with: python pipeline.py --config config/conf_debug_overfit_fullft.yaml
+
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+
+training:
+  epochs: 100
+  train_samples: 100
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+  strategies:
+    # Test FULL_FT overfitting on QCM
+    - name: overfit_full_ft_qcm
+      enabled: true
+      type: full_ft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+    # QLORA disabled for this test
+    - name: overfit_qlora_qcm
+      enabled: false
+      type: sft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+    - name: baseline
+      enabled: false
+      type: none
+
+evaluation:
+  benchmarks:
+    - name: ocrbench
+      enabled: false
+      dataset: echo840/OCRBench
+      split: test
+      max_samples: 100
+    - name: docvqa
+      enabled: false
+      dataset: nielsr/docvqa_1200_examples
+      split: train
+      max_samples: 100
+    - name: chartqa
+      enabled: false
+      dataset: HuggingFaceM4/ChartQA
+      split: test
+      max_samples: 100
+  erp_evaluation:
+    qcm_procedure1:
+      enabled: true
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+      max_samples: 100
+    qcm_gemini:
+      enabled: false
+    qcm_nova:
+      enabled: false
+    qcm_claudette:
+      enabled: false
+    qcm_procedure2:
+      enabled: false
+    logprob_gemini:
+      enabled: false
+    logprob_nova:
+      enabled: false
+    bertscore_gemini:
+      enabled: false
+    bertscore_nova:
+      enabled: false
+    rouge_gemini:
+      enabled: false
+    rouge_nova:
+      enabled: false
+
+paths:
+  output_dir: modelweights_overfit_fullft
+  cache_dir: datasets/cache
+  results_dir: results_overfit_fullft
+  logs_dir: logs_overfit_fullft
+
+pipeline:
+  continue_on_error: true
+  use_wandb: false
+  wandb_project: OverfitDebugFullFT
+  debug_mode: false
+  debug_size: 2
+  num_workers: 1

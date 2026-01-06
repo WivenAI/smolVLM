@@ -72,7 +72,7 @@ class BenchmarkMixin:
     
     @staticmethod
     def extract_question(item: Dict[str, Any], question_key: str = "question") -> str:
-        """Extract question from various formats"""
+        """Extract question from various formats. Raises KeyError if not found."""
         # Try the specified key first
         if question_key in item:
             value = item[question_key]
@@ -80,20 +80,21 @@ class BenchmarkMixin:
                 # Handle multi-language queries (e.g., DocVQA with 'en', 'de', 'fr' keys)
                 return value.get('en', str(next(iter(value.values()), '')))
             return str(value)
-        
-        # Fallback keys for different dataset formats
+
+        # Try alternative keys for different dataset formats
         for key in ['query', 'question', 'text', 'prompt']:
             if key in item:
                 value = item[key]
                 if isinstance(value, dict):
                     return value.get('en', str(next(iter(value.values()), '')))
                 return str(value)
-        
-        return "What do you see in this image?"
+
+        # No fallback - crash to find errors
+        raise KeyError(f"Could not find question in item. Tried keys: {question_key}, query, question, text, prompt. Item keys: {list(item.keys())}")
     
     @staticmethod
     def extract_answer(item: Dict[str, Any], answer_key: str = "answers") -> str:
-        """Extract answer from various formats"""
+        """Extract answer from various formats. Raises KeyError if not found."""
         for key in [answer_key, 'answers', 'answer', 'label']:
             if key in item:
                 value = item[key]
@@ -101,11 +102,13 @@ class BenchmarkMixin:
                     return str(value[0])
                 elif value is not None:
                     return str(value)
-        return "Unknown"
+
+        # No fallback - crash to find errors
+        raise KeyError(f"Could not find answer in item. Tried keys: {answer_key}, answers, answer, label. Item keys: {list(item.keys())}")
     
     @staticmethod
     def extract_all_answers(item: Dict[str, Any], answer_key: str = "answers") -> List[str]:
-        """Extract all valid answers (for evaluation with multiple ground truths)"""
+        """Extract all valid answers (for evaluation with multiple ground truths). Raises KeyError if not found."""
         for key in [answer_key, 'answers', 'answer', 'label']:
             if key in item:
                 value = item[key]
@@ -113,34 +116,40 @@ class BenchmarkMixin:
                     return [str(v) for v in value if v is not None]
                 elif value is not None:
                     return [str(value)]
-        return ["Unknown"]
+
+        # No fallback - crash to find errors
+        raise KeyError(f"Could not find answers in item. Tried keys: {answer_key}, answers, answer, label. Item keys: {list(item.keys())}")
     
     @staticmethod
     def extract_image(
         item: Dict[str, Any],
         image_key: str = "image",
         max_size: int = 2048
-    ) -> Optional[Image.Image]:
-        """Extract and process image from dataset item"""
+    ) -> Image.Image:
+        """Extract and process image from dataset item. Raises ValueError if not found."""
         # First check for image_path (local JSON format)
         image_path = item.get('image_path')
-        if image_path and Path(image_path).exists():
+        if image_path:
+            if not Path(image_path).exists():
+                raise FileNotFoundError(f"Image path does not exist: {image_path}")
             image = ImageUtils.load_image(Path(image_path))
             if image is not None:
                 return ImageUtils.resize_image(image, max_size)
-        
+            raise ValueError(f"Failed to load image from path: {image_path}")
+
         # Then try direct image keys (HuggingFace format)
         for key in [image_key, 'image', 'img']:
             if key in item and item[key] is not None:
                 image = item[key]
-                
+
                 # Handle PIL Image
                 if isinstance(image, Image.Image):
                     if image.mode != 'RGB':
                         image = image.convert('RGB')
                     return ImageUtils.resize_image(image, max_size)
-        
-        return None
+
+        # No fallback - crash to find errors
+        raise KeyError(f"Could not find image in item. Tried keys: image_path, {image_key}, image, img. Item keys: {list(item.keys())}")
 
 
 @DatasetRegistry.register("benchmark")
@@ -275,16 +284,14 @@ class BenchmarkDataset(BaseVisionDataset, BenchmarkMixin):
     
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
         item = self._get_item_at(idx)
-        
-        # Extract and process image
+
+        # Extract and process image - will raise exception if not found
         image = self.extract_image(item, self._image_key, self.config.max_image_size)
-        if image is None:
-            image = ImageUtils.create_placeholder(self.config.placeholder_size)
-        
+
         # Process for training
         prompt = self.format_prompt(item)
         response = self.get_response(item)
-        
+
         return self.process_for_training(image, prompt, response)
     
     def get_raw_item(self, idx: int) -> Dict[str, Any]:

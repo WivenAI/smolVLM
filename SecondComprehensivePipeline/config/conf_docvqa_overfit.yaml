@@ -1,0 +1,90 @@
+# DocVQA Overfitting Test - QLORA vs Full Finetuning
+# Compare learning capacity on DocVQA benchmark
+# Use with: python pipeline.py --config config/conf_docvqa_overfit.yaml
+
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+
+training:
+  epochs: 100
+  train_samples: 100
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+  strategies:
+    # QLORA SFT on DocVQA
+    - name: qlora_docvqa
+      enabled: true
+      type: sft_benchmark
+      benchmark: docvqa
+
+    # Full Finetuning on DocVQA
+    - name: fullft_docvqa
+      enabled: true
+      type: full_ft_benchmark
+      benchmark: docvqa
+
+    - name: baseline
+      enabled: false
+      type: none
+
+evaluation:
+  benchmarks:
+    # Evaluate on DocVQA
+    - name: docvqa
+      enabled: true
+      dataset: nielsr/docvqa_1200_examples
+      split: train
+      max_samples: 100
+    - name: ocrbench
+      enabled: false
+      dataset: echo840/OCRBench
+      split: test
+      max_samples: 100
+    - name: chartqa
+      enabled: false
+      dataset: HuggingFaceM4/ChartQA
+      split: test
+      max_samples: 100
+  erp_evaluation:
+    qcm_procedure1:
+      enabled: false
+    qcm_gemini:
+      enabled: false
+    qcm_nova:
+      enabled: false
+    qcm_claudette:
+      enabled: false
+    qcm_procedure2:
+      enabled: false
+    logprob_gemini:
+      enabled: false
+    logprob_nova:
+      enabled: false
+    bertscore_gemini:
+      enabled: false
+    bertscore_nova:
+      enabled: false
+    rouge_gemini:
+      enabled: false
+    rouge_nova:
+      enabled: false
+
+paths:
+  output_dir: modelweights_docvqa_overfit
+  cache_dir: datasets/cache
+  results_dir: results_docvqa_overfit
+  logs_dir: logs_docvqa_overfit
+
+pipeline:
+  continue_on_error: true
+  use_wandb: false
+  wandb_project: DocVQAOverfit
+  debug_mode: false
+  debug_size: 2
+  num_workers: 1
