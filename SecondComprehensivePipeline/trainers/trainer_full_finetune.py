@@ -46,9 +46,10 @@ import gc
 from dataloader.benchmark_dataset import BenchmarkMixin, BENCHMARK_CONFIGS
 from dataloader.data_collators import VisionLanguageDataCollator
 
-# Import the evaluation callbacks to reuse them
-from trainers.trainer_sft import EpochEvaluationCallback
-from trainers.trainer_dpo import EpochEvaluationCallback as DPOEpochEvaluationCallback
+# Import the evaluation callbacks from shared module
+from trainers.callbacks import SFTEpochEvaluationCallback as EpochEvaluationCallback
+from trainers.callbacks import DPOEpochEvaluationCallback
+from trainers.model_utils import load_model_full_ft, resolve_cache_dir
 
 try:
     import wandb
@@ -421,36 +422,22 @@ class FullFineTuneTrainer:
         """
         Load model for full fine-tuning (no quantization, no LoRA).
 
-        All model parameters will be trainable.
+        All model parameters will be trainable. Uses shared model_utils.
         """
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
 
-        logger.info(f"[FULL_FT] Loading model for FULL fine-tuning: {base_model}")
-
-        self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
-
-        # Load model WITHOUT quantization for full fine-tuning
-        # Use bfloat16 for memory efficiency while maintaining training precision
-        self.model = AutoModelForImageTextToText.from_pretrained(
-            base_model,
-            trust_remote_code=True,
-            dtype=torch.bfloat16,
-            device_map="auto",
-            low_cpu_mem_usage=True
+        # Resolve cache directory using shared utility
+        cache_dir = resolve_cache_dir(
+            self.config.get("model", {}).get("cache_dir", None),
+            self.config
         )
 
-        # Enable gradient checkpointing for memory efficiency
-        if hasattr(self.model, 'gradient_checkpointing_enable'):
-            self.model.gradient_checkpointing_enable()
-
-        # Count trainable parameters
-        total_params = sum(p.numel() for p in self.model.parameters())
-        trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
-
-        logger.info(f"[FULL_FT] Full fine-tuning - ALL parameters trainable:")
-        logger.info(f"  Total parameters: {total_params:,}")
-        logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
+        # Use shared model loading function for full fine-tuning
+        self.model, self.processor = load_model_full_ft(
+            base_model=base_model,
+            cache_dir=cache_dir
+        )
 
     def _get_training_args(self, output_dir: str, epochs: int, use_wandb: bool) -> TrainingArguments:
         """Get training arguments optimized for full fine-tuning."""
@@ -801,34 +788,21 @@ class FullFineTuneDPOTrainer:
         self.hf_cache_dir = get_hf_cache_dir()
 
     def load_model(self, base_model: str = None):
-        """Load model for full fine-tuning DPO (no quantization, no LoRA)."""
+        """Load model for full fine-tuning DPO (no quantization, no LoRA). Uses shared model_utils."""
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
 
-        logger.info(f"[FULL_FT-DPO] Loading model for FULL fine-tuning DPO: {base_model}")
-
-        self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
-
-        # Load model WITHOUT quantization for full fine-tuning
-        self.model = AutoModelForImageTextToText.from_pretrained(
-            base_model,
-            trust_remote_code=True,
-            dtype=torch.bfloat16,
-            device_map="auto",
-            low_cpu_mem_usage=True
+        # Resolve cache directory using shared utility
+        cache_dir = resolve_cache_dir(
+            self.config.get("model", {}).get("cache_dir", None),
+            self.config
         )
 
-        # Enable gradient checkpointing for memory efficiency
-        if hasattr(self.model, 'gradient_checkpointing_enable'):
-            self.model.gradient_checkpointing_enable()
-
-        # Count trainable parameters
-        total_params = sum(p.numel() for p in self.model.parameters())
-        trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
-
-        logger.info(f"[FULL_FT-DPO] Full fine-tuning DPO - ALL parameters trainable:")
-        logger.info(f"  Total parameters: {total_params:,}")
-        logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
+        # Use shared model loading function for full fine-tuning
+        self.model, self.processor = load_model_full_ft(
+            base_model=base_model,
+            cache_dir=cache_dir
+        )
 
     def prepare_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
         """Prepare DPO dataset from JSON file with actual image loading for VLM DPO"""
