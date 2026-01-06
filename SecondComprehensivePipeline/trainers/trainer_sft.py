@@ -1038,11 +1038,16 @@ class SFTTrainer:
                 reinit=True
             )
 
+        # Extract dataset name for logging
+        dataset_name = Path(dataset_path).stem  # e.g., "qcm_procedure1_claude_code"
+
         # Initialize dual logger (WandB offline + TensorBoard)
-        tensorboard_dir = f"tensorboard_logs/{strategy_name}"
+        # Include training type (qlora) and dataset in tensorboard path
+        tensorboard_dir = f"tensorboard_logs/qlora_{strategy_name}_{dataset_name}"
         dual_logger = init_dual_logger(tensorboard_dir, use_wandb=use_wandb and WANDB_AVAILABLE)
 
-        logger.info(f"Training on QCM dataset: {dataset_path}")
+        logger.info(f"[QLORA] Training on QCM dataset: {dataset_path}")
+        logger.info(f"[QLORA] Strategy: {strategy_name}, Dataset: {dataset_name}")
 
         # Create dataset
         full_dataset = QCMDataset(dataset_path, image_dir, self.processor)
@@ -1146,11 +1151,16 @@ class SFTTrainer:
                 reinit=True
             )
 
+        # Extract dataset names for logging
+        dataset_names = "_".join([Path(p).stem for p in dataset_paths])
+
         # Initialize dual logger (WandB offline + TensorBoard)
-        tensorboard_dir = f"tensorboard_logs/{strategy_name}"
+        # Include training type (qlora) and datasets in tensorboard path
+        tensorboard_dir = f"tensorboard_logs/qlora_{strategy_name}_combined"
         dual_logger = init_dual_logger(tensorboard_dir, use_wandb=use_wandb and WANDB_AVAILABLE)
 
-        logger.info(f"Training on combined QCM datasets: {dataset_paths}")
+        logger.info(f"[QLORA] Training on combined QCM datasets: {dataset_paths}")
+        logger.info(f"[QLORA] Strategy: {strategy_name}, Datasets: {dataset_names}")
 
         # Load all datasets and concatenate
         datasets = []

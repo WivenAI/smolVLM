@@ -1,0 +1,99 @@
+# Overfitting Debug Configuration
+# Tests if model can overfit on 100 samples - measures learning capacity
+# Evaluates at epochs: [1, 2, 5, 10, 20, 30, 40, 100]
+# Use with: python pipeline.py --config config/conf_debug_overfit.yaml
+
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+
+training:
+  epochs: 20  # Run 20 epochs to see overfitting curve
+  train_samples: 100  # 100 samples to overfit on
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+  strategies:
+    # Test QLORA overfitting on QCM
+    - name: overfit_qlora_qcm
+      enabled: true
+      type: sft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+    # Test FULL_FT overfitting on QCM (should overfit faster)
+    - name: overfit_full_ft_qcm
+      enabled: false  # Enable to compare
+      type: full_ft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+    # Disabled strategies
+    - name: baseline
+      enabled: false
+      type: none
+
+evaluation:
+  benchmarks:
+    # Disable external benchmarks - only measure on training data
+    - name: ocrbench
+      enabled: false
+      dataset: echo840/OCRBench
+      split: test
+      max_samples: 100
+    - name: docvqa
+      enabled: false
+      dataset: nielsr/docvqa_1200_examples
+      split: train
+      max_samples: 100
+    - name: chartqa
+      enabled: false
+      dataset: HuggingFaceM4/ChartQA
+      split: test
+      max_samples: 100
+  erp_evaluation:
+    # Evaluate on training QCM dataset to measure overfitting
+    qcm_procedure1:
+      enabled: true
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+      max_samples: 100  # Same 100 samples as training
+    # Disable other evaluations
+    qcm_gemini:
+      enabled: false
+    qcm_nova:
+      enabled: false
+    qcm_claudette:
+      enabled: false
+    qcm_procedure2:
+      enabled: false
+    logprob_gemini:
+      enabled: false
+    logprob_nova:
+      enabled: false
+    bertscore_gemini:
+      enabled: false
+    bertscore_nova:
+      enabled: false
+    rouge_gemini:
+      enabled: false
+    rouge_nova:
+      enabled: false
+
+paths:
+  output_dir: modelweights_overfit
+  cache_dir: datasets/cache
+  results_dir: results_overfit
+  logs_dir: logs_overfit
+
+pipeline:
+  continue_on_error: true
+  use_wandb: false  # Disable WandB for local testing
+  wandb_project: OverfitDebug
+  debug_mode: false  # NOT debug mode - we want full 100 samples
+  debug_size: 2
+  num_workers: 1

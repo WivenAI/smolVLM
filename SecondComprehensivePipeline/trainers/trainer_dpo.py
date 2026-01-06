@@ -983,10 +983,12 @@ class DPOTrainerWrapper:
             )
 
         # Initialize dual logger (WandB offline + TensorBoard)
-        tensorboard_dir = f"tensorboard_logs/{strategy_name}"
+        # Include training type (qlora_dpo) and benchmark in tensorboard path
+        tensorboard_dir = f"tensorboard_logs/qlora_dpo_{strategy_name}_{benchmark_name}"
         dual_logger = init_dual_logger(tensorboard_dir, use_wandb=use_wandb and WANDB_AVAILABLE)
 
-        logger.info(f"Training with DPO on benchmark: {benchmark_name}")
+        logger.info(f"[QLORA-DPO] Training with DPO on benchmark: {benchmark_name}")
+        logger.info(f"[QLORA-DPO] Strategy: {strategy_name}, Benchmark: {benchmark_name}")
 
         # Prepare dataset
         full_dataset = self.prepare_benchmark_dpo_dataset(benchmark_name, max_samples=max_samples)
@@ -1089,7 +1091,11 @@ class DPOTrainerWrapper:
                 reinit=True
             )
 
-        logger.info(f"Training with DPO on QCM: {dataset_path}")
+        # Extract dataset name for logging
+        dataset_name = Path(dataset_path).stem
+
+        logger.info(f"[QLORA-DPO] Training with DPO on QCM: {dataset_path}")
+        logger.info(f"[QLORA-DPO] Strategy: {strategy_name}, Dataset: {dataset_name}")
 
         # Prepare dataset
         full_dataset = self.prepare_qcm_dpo_dataset(dataset_path, image_dir, max_samples=max_samples)
@@ -1195,7 +1201,11 @@ class DPOTrainerWrapper:
                 reinit=True
             )
 
-        logger.info(f"Training with DPO on: {dataset_path}")
+        # Extract dataset name for logging
+        dataset_name = Path(dataset_path).stem
+
+        logger.info(f"[QLORA-DPO] Training with DPO on: {dataset_path}")
+        logger.info(f"[QLORA-DPO] Strategy: {strategy_name}, Dataset: {dataset_name}")
 
         # Prepare dataset
         full_dataset = self.prepare_dpo_dataset(dataset_path, image_dir, max_samples=max_samples)

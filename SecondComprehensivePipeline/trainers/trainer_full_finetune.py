@@ -487,7 +487,7 @@ class FullFineTuneTrainer:
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
 
-        logger.info(f"Loading model for FULL fine-tuning: {base_model}")
+        logger.info(f"[FULL_FT] Loading model for FULL fine-tuning: {base_model}")
 
         self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
 
@@ -509,7 +509,7 @@ class FullFineTuneTrainer:
         total_params = sum(p.numel() for p in self.model.parameters())
         trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
 
-        logger.info(f"Full fine-tuning - ALL parameters trainable:")
+        logger.info(f"[FULL_FT] Full fine-tuning - ALL parameters trainable:")
         logger.info(f"  Total parameters: {total_params:,}")
         logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
 
@@ -565,7 +565,11 @@ class FullFineTuneTrainer:
                 reinit=True
             )
 
-        logger.info(f"Full fine-tuning on QCM dataset: {dataset_path}")
+        # Extract dataset name for logging
+        dataset_name = Path(dataset_path).stem
+
+        logger.info(f"[FULL_FT] Full fine-tuning on QCM dataset: {dataset_path}")
+        logger.info(f"[FULL_FT] Strategy: {strategy_name}, Dataset: {dataset_name}")
 
         full_dataset = QCMDataset(dataset_path, image_dir, self.processor)
 
@@ -635,13 +639,17 @@ class FullFineTuneTrainer:
                 reinit=True
             )
 
-        logger.info(f"Full fine-tuning on combined QCM datasets: {dataset_paths}")
+        # Extract dataset names for logging
+        dataset_names = "_".join([Path(p).stem for p in dataset_paths])
+
+        logger.info(f"[FULL_FT] Full fine-tuning on combined QCM datasets: {dataset_paths}")
+        logger.info(f"[FULL_FT] Strategy: {strategy_name}, Datasets: {dataset_names}")
 
         datasets = []
         for dataset_path in dataset_paths:
             ds = QCMDataset(dataset_path, image_dir, self.processor)
             datasets.append(ds)
-            logger.info(f"  Loaded {len(ds)} samples from {Path(dataset_path).name}")
+            logger.info(f"[FULL_FT]   Loaded {len(ds)} samples from {Path(dataset_path).name}")
 
         full_dataset = torch.utils.data.ConcatDataset(datasets)
         logger.info(f"Combined dataset: {len(full_dataset)} total samples")
@@ -711,7 +719,11 @@ class FullFineTuneTrainer:
                 reinit=True
             )
 
-        logger.info(f"Full fine-tuning SFT on chosen/rejected dataset: {dataset_path}")
+        # Extract dataset name for logging
+        dataset_name = Path(dataset_path).stem
+
+        logger.info(f"[FULL_FT] Full fine-tuning SFT on chosen/rejected dataset: {dataset_path}")
+        logger.info(f"[FULL_FT] Strategy: {strategy_name}, Dataset: {dataset_name}")
 
         full_dataset = DPOSFTDataset(dataset_path, image_dir, self.processor)
 
@@ -780,7 +792,8 @@ class FullFineTuneTrainer:
                 reinit=True
             )
 
-        logger.info(f"Full fine-tuning on benchmark: {benchmark_name}")
+        logger.info(f"[FULL_FT] Full fine-tuning on benchmark: {benchmark_name}")
+        logger.info(f"[FULL_FT] Strategy: {strategy_name or f'full_ft_{benchmark_name}'}, Benchmark: {benchmark_name}")
 
         full_dataset = BenchmarkDataset(benchmark_name, self.processor, max_samples)
 
@@ -853,7 +866,7 @@ class FullFineTuneDPOTrainer:
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
 
-        logger.info(f"Loading model for FULL fine-tuning DPO: {base_model}")
+        logger.info(f"[FULL_FT-DPO] Loading model for FULL fine-tuning DPO: {base_model}")
 
         self.processor = AutoProcessor.from_pretrained(base_model, trust_remote_code=True)
 
@@ -874,7 +887,7 @@ class FullFineTuneDPOTrainer:
         total_params = sum(p.numel() for p in self.model.parameters())
         trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
 
-        logger.info(f"Full fine-tuning DPO - ALL parameters trainable:")
+        logger.info(f"[FULL_FT-DPO] Full fine-tuning DPO - ALL parameters trainable:")
         logger.info(f"  Total parameters: {total_params:,}")
         logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
 
@@ -947,7 +960,11 @@ class FullFineTuneDPOTrainer:
                 reinit=True
             )
 
-        logger.info(f"Full fine-tuning DPO on: {dataset_path}")
+        # Extract dataset name for logging
+        dataset_name = Path(dataset_path).stem
+
+        logger.info(f"[FULL_FT-DPO] Full fine-tuning DPO on: {dataset_path}")
+        logger.info(f"[FULL_FT-DPO] Strategy: {strategy_name}, Dataset: {dataset_name}")
 
         full_dataset = self.prepare_dpo_dataset(dataset_path, image_dir, max_samples=max_samples)
 

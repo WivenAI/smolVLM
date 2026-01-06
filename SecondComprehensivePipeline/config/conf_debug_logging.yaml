@@ -1,0 +1,131 @@
+# Debug Configuration for Testing All Training Types and Logging
+# This config enables one of each training type to verify logging works correctly
+# Use with: python pipeline.py --config config/conf_debug_logging.yaml --debug
+
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+
+training:
+  epochs: 1  # Single epoch for debug
+  train_samples: 2  # Minimal samples for debug
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+  strategies:
+    # Baseline - no training
+    - name: baseline
+      enabled: false
+      type: none
+
+    # QLORA SFT on QCM
+    - name: debug_qlora_qcm
+      enabled: true
+      type: sft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+    # FULL_FT SFT on QCM
+    - name: debug_full_ft_qcm
+      enabled: true
+      type: full_ft_qcm
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+
+    # QLORA SFT on benchmark
+    - name: debug_qlora_benchmark
+      enabled: true
+      type: sft_benchmark
+      benchmark: ocrbench
+
+    # FULL_FT on benchmark
+    - name: debug_full_ft_benchmark
+      enabled: true
+      type: full_ft_benchmark
+      benchmark: ocrbench
+
+    # Disabled strategies (can enable for more extensive testing)
+    - name: debug_qlora_dpo
+      enabled: false
+      type: dpo_benchmark
+      benchmark: ocrbench
+
+    - name: debug_full_ft_dpo
+      enabled: false
+      type: full_ft_dpo
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+
+    - name: debug_qlora_chosen_rej
+      enabled: false
+      type: sft_chosen_rej
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+
+    - name: debug_full_ft_chosen_rej
+      enabled: false
+      type: full_ft_chosen_rej_sft
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+
+evaluation:
+  benchmarks:
+    - name: ocrbench
+      enabled: true
+      dataset: echo840/OCRBench
+      split: test
+      max_samples: 2  # Minimal for debug
+    - name: docvqa
+      enabled: false
+      dataset: nielsr/docvqa_1200_examples
+      split: train
+      max_samples: 2
+    - name: chartqa
+      enabled: false
+      dataset: HuggingFaceM4/ChartQA
+      split: test
+      max_samples: 2
+  erp_evaluation:
+    qcm_gemini:
+      enabled: false
+    qcm_nova:
+      enabled: false
+    qcm_claudette:
+      enabled: false
+    qcm_procedure1:
+      enabled: true
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+      max_samples: 2
+    qcm_procedure2:
+      enabled: false
+    logprob_gemini:
+      enabled: false
+    logprob_nova:
+      enabled: false
+    bertscore_gemini:
+      enabled: false
+    bertscore_nova:
+      enabled: false
+    rouge_gemini:
+      enabled: false
+    rouge_nova:
+      enabled: false
+
+paths:
+  output_dir: modelweights_debug_logging
+  cache_dir: datasets/cache
+  results_dir: results_debug_logging
+  logs_dir: logs_debug_logging
+
+pipeline:
+  continue_on_error: true
+  use_wandb: false  # Disable WandB for faster debug
+  wandb_project: DebugLogging
+  debug_mode: true  # Force debug mode
+  debug_size: 2
+  num_workers: 1
