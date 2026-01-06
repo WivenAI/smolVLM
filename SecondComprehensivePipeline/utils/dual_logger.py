@@ -141,7 +141,8 @@ def init_dual_logger(tensorboard_dir: str, use_wandb: bool = True) -> DualLogger
         DualLogger instance
     """
     global _dual_logger
-    _dual_logger = DualLogger(tensorboard_dir, use_wandb)
+    # Fix: use keyword argument to avoid passing bool as wandb_dir
+    _dual_logger = DualLogger(tensorboard_dir, use_wandb=use_wandb)
     return _dual_logger
 
 
