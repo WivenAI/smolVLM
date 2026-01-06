@@ -451,8 +451,10 @@ class EpochEvaluationCallback(TrainerCallback):
                 logger.info(f"  Test Loss: {test_loss:.4f}")
             if train_accuracy is not None:
                 logger.info(f"  Train Accuracy: {train_accuracy:.2f}%")
+                print(f">>> ACCURACY [{self.strategy_name}] Epoch {epoch} TRAIN: {train_accuracy:.2f}%", flush=True)
             if test_accuracy is not None:
                 logger.info(f"  Test Accuracy: {test_accuracy:.2f}%")
+                print(f">>> ACCURACY [{self.strategy_name}] Epoch {epoch} TEST: {test_accuracy:.2f}%", flush=True)
 
             # Check for memorization/overfitting (only for epoch eval)
             if not is_step_eval and train_accuracy is not None and test_accuracy is not None:

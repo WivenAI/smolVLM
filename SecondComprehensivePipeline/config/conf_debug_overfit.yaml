@@ -9,7 +9,7 @@ model:
   image_size: 512
 
 training:
-  epochs: 20  # Run 20 epochs to see overfitting curve
+  epochs: 100  # Run 100 epochs to see full overfitting curve
   train_samples: 100  # 100 samples to overfit on
   batch_size: 1
   gradient_accumulation_steps: 1
