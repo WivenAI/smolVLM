@@ -34,6 +34,9 @@ from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import Dataset, load_dataset, load_from_disk, Features, Value, Sequence, Image as HFImage
 import random
 
+# Import dataloader utilities for field extraction (single source of truth)
+from dataloader.benchmark_dataset import BenchmarkMixin, BENCHMARK_CONFIGS
+
 try:
     import wandb
     WANDB_AVAILABLE = True
@@ -840,86 +843,49 @@ class DPOTrainerWrapper:
         """Prepare DPO dataset from benchmark by using correct answer as chosen and random wrong answer as rejected"""
         logger.info(f"Preparing DPO dataset from benchmark: {benchmark_name}")
 
-        # Load benchmark dataset
-        if benchmark_name == "docvqa":
-            dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
-        elif benchmark_name == "ocrbench":
-            dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
-        elif benchmark_name == "chartqa":
-            dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
-        else:
-            raise ValueError(f"Unknown benchmark: {benchmark_name}")
+        # Use config from dataloader module (single source of truth)
+        if benchmark_name not in BENCHMARK_CONFIGS:
+            raise ValueError(f"Unknown benchmark: {benchmark_name}. Available: {list(BENCHMARK_CONFIGS.keys())}")
+
+        config = BENCHMARK_CONFIGS[benchmark_name]
+        dataset = load_dataset(config["hf_name"], split=config["split"], trust_remote_code=True)
+
+        question_key = config["question_key"]
+        answer_key = config["answer_key"]
+        image_key = config["image_key"]
 
         # Limit samples if specified
         if max_samples and max_samples < len(dataset):
             dataset = dataset.select(range(max_samples))
 
-        # Collect all answers for generating wrong answers
+        # Collect all answers for generating wrong answers using dataloader extraction
         all_answers = []
         for item in dataset:
-            if 'answers' in item:
-                answers = item['answers']
-                if isinstance(answers, list) and len(answers) > 0:
-                    all_answers.append(answers[0])
-                else:
-                    all_answers.append(str(answers))
-            elif 'answer' in item:
-                answer = item['answer']
-                if isinstance(answer, list) and len(answer) > 0:
-                    all_answers.append(answer[0])
-                else:
-                    all_answers.append(str(answer))
-            elif 'label' in item:
-                all_answers.append(str(item['label']))
+            try:
+                answer = BenchmarkMixin.extract_answer(item, answer_key)
+                all_answers.append(answer)
+            except KeyError:
+                pass  # Skip items without answers for collection phase
 
         # Convert to DPO format
         dpo_data = []
-        skipped_no_image = 0
-        skipped_no_answer = 0
         for idx, item in enumerate(dataset):
-            # Extract image
-            if 'image' in item:
+            # Extract image (will raise KeyError if not found)
+            if image_key in item and item[image_key] is not None:
+                image = item[image_key]
+            elif 'image' in item and item['image'] is not None:
                 image = item['image']
-            elif 'img' in item:
-                image = item['img']
             else:
-                logger.debug(f"Sample {idx}: No image field found")
-                skipped_no_image += 1
-                continue
+                raise KeyError(f"Sample {idx}: No image found. Tried keys: {image_key}, image. Item keys: {list(item.keys())}")
 
             # Use fallback chain: no resize → 1920 → 1024 → 512
             image = prepare_image_with_fallback(image, f"benchmark_{benchmark_name}_{idx}")
 
-            # Extract question
-            if 'query' in item:
-                if isinstance(item['query'], dict):
-                    question = item['query'].get('en', '')
-                else:
-                    question = item['query']
-            elif 'question' in item:
-                question = item['question']
-            else:
-                question = "What do you see in this image?"
+            # Extract question using dataloader method (will raise KeyError if not found)
+            question = BenchmarkMixin.extract_question(item, question_key)
 
-            # Extract correct answer (chosen)
-            if 'answers' in item:
-                answers = item['answers']
-                if isinstance(answers, list) and len(answers) > 0:
-                    chosen = answers[0]
-                else:
-                    chosen = str(answers)
-            elif 'answer' in item:
-                answer = item['answer']
-                if isinstance(answer, list) and len(answer) > 0:
-                    chosen = answer[0]
-                else:
-                    chosen = str(answer)
-            elif 'label' in item:
-                chosen = str(item['label'])
-            else:
-                logger.debug(f"Sample {idx}: No answer field found")
-                skipped_no_answer += 1
-                continue
+            # Extract correct answer (chosen) using dataloader method (will raise KeyError if not found)
+            chosen = BenchmarkMixin.extract_answer(item, answer_key)
 
             # Generate rejected answer (random wrong answer from other samples)
             rejected_candidates = [a for a in all_answers if a != chosen]
@@ -956,12 +922,6 @@ class DPOTrainerWrapper:
                 ],
                 'images': [image]
             })
-
-        # Log summary of skipped samples
-        total_skipped = skipped_no_image + skipped_no_answer
-        if total_skipped > 0:
-            logger.warning(f"Skipped {total_skipped} samples from {benchmark_name}: "
-                          f"{skipped_no_image} no image, {skipped_no_answer} no answer")
 
         logger.info(f"Prepared {len(dpo_data)} DPO samples from {benchmark_name}")
         return Dataset.from_list(dpo_data)

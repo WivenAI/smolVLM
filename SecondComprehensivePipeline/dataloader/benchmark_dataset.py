@@ -98,9 +98,12 @@ class BenchmarkMixin:
         for key in [answer_key, 'answers', 'answer', 'label']:
             if key in item:
                 value = item[key]
-                if isinstance(value, list) and len(value) > 0:
-                    return str(value[0])
-                elif value is not None:
+                if isinstance(value, list):
+                    if len(value) > 0:
+                        return str(value[0])
+                    # Empty list - continue to next key
+                    continue
+                elif value is not None and str(value).strip():
                     return str(value)
 
         # No fallback - crash to find errors

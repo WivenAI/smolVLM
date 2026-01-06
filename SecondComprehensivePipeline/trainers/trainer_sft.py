@@ -28,6 +28,9 @@ from transformers import (
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import load_dataset
 
+# Import dataloader utilities for field extraction (single source of truth)
+from dataloader.benchmark_dataset import BenchmarkMixin, BENCHMARK_CONFIGS
+
 try:
     import wandb
     WANDB_AVAILABLE = True
@@ -852,15 +855,17 @@ class BenchmarkDataset(torch.utils.data.Dataset):
 
         logger.info(f"Loading {benchmark_name} dataset...")
 
-        # Load different benchmarks
-        if benchmark_name == "docvqa":
-            self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
-        elif benchmark_name == "ocrbench":
-            self.dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
-        elif benchmark_name == "chartqa":
-            self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
-        else:
-            raise ValueError(f"Unknown benchmark: {benchmark_name}")
+        # Use config from dataloader module (single source of truth)
+        if benchmark_name not in BENCHMARK_CONFIGS:
+            raise ValueError(f"Unknown benchmark: {benchmark_name}. Available: {list(BENCHMARK_CONFIGS.keys())}")
+
+        config = BENCHMARK_CONFIGS[benchmark_name]
+        self.dataset = load_dataset(config["hf_name"], split=config["split"], trust_remote_code=True)
+
+        # Store field keys from config
+        self._question_key = config["question_key"]
+        self._answer_key = config["answer_key"]
+        self._image_key = config["image_key"]
 
         # Limit samples if specified
         if max_samples and max_samples < len(self.dataset):
@@ -874,41 +879,22 @@ class BenchmarkDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         item = self.dataset[idx]
 
-        # Extract image
-        if 'image' in item:
+        # Extract image using dataloader method (will raise KeyError if not found)
+        if self._image_key in item and item[self._image_key] is not None:
+            image = item[self._image_key]
+        elif 'image' in item and item['image'] is not None:
             image = item['image']
-        elif 'img' in item:
-            image = item['img']
         else:
-            raise ValueError("No image field found in dataset")
+            raise KeyError(f"No image found in item. Tried keys: {self._image_key}, image. Item keys: {list(item.keys())}")
 
         # Use fallback chain: let processor handle if ≤1920px, else resize
         image = prepare_image_with_fallback(image, f"benchmark_{self.benchmark_name}_{idx}")
 
-        # Extract question
-        if 'query' in item:
-            if isinstance(item['query'], dict):
-                question = item['query'].get('en', '')
-            else:
-                question = item['query']
-        elif 'question' in item:
-            question = item['question']
-        else:
-            question = "What do you see in this image?"
+        # Extract question using dataloader method (will raise KeyError if not found)
+        question = BenchmarkMixin.extract_question(item, self._question_key)
 
-        # Extract answer
-        if 'answers' in item:
-            answers = item['answers']
-            if isinstance(answers, list) and len(answers) > 0:
-                answer = answers[0]
-            else:
-                answer = str(answers)
-        elif 'answer' in item:
-            answer = item['answer']
-        elif 'label' in item:
-            answer = str(item['label'])
-        else:
-            answer = "Unknown"
+        # Extract answer using dataloader method (will raise KeyError if not found)
+        answer = BenchmarkMixin.extract_answer(item, self._answer_key)
 
         # Format using chat template - separate prompt and full text for proper masking
         user_message = [

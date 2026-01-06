@@ -42,6 +42,9 @@ from trl import DPOTrainer as TRLDPOTrainer, DPOConfig
 from datasets import Dataset, load_dataset
 import gc
 
+# Import dataloader utilities for field extraction (single source of truth)
+from dataloader.benchmark_dataset import BenchmarkMixin, BENCHMARK_CONFIGS
+
 # Import the evaluation callbacks to reuse them
 from trainers.trainer_sft import EpochEvaluationCallback
 from trainers.trainer_dpo import EpochEvaluationCallback as DPOEpochEvaluationCallback
@@ -299,14 +302,17 @@ class BenchmarkDataset(torch.utils.data.Dataset):
 
         logger.info(f"Loading {benchmark_name} dataset...")
 
-        if benchmark_name == "docvqa":
-            self.dataset = load_dataset("nielsr/docvqa_1200_examples", split="train", trust_remote_code=True)
-        elif benchmark_name == "ocrbench":
-            self.dataset = load_dataset("echo840/OCRBench", split="test", trust_remote_code=True)
-        elif benchmark_name == "chartqa":
-            self.dataset = load_dataset("HuggingFaceM4/ChartQA", split="test", trust_remote_code=True)
-        else:
-            raise ValueError(f"Unknown benchmark: {benchmark_name}")
+        # Use config from dataloader module (single source of truth)
+        if benchmark_name not in BENCHMARK_CONFIGS:
+            raise ValueError(f"Unknown benchmark: {benchmark_name}. Available: {list(BENCHMARK_CONFIGS.keys())}")
+
+        config = BENCHMARK_CONFIGS[benchmark_name]
+        self.dataset = load_dataset(config["hf_name"], split=config["split"], trust_remote_code=True)
+
+        # Store field keys from config
+        self._question_key = config["question_key"]
+        self._answer_key = config["answer_key"]
+        self._image_key = config["image_key"]
 
         if max_samples and max_samples < len(self.dataset):
             self.dataset = self.dataset.select(range(max_samples))
@@ -319,13 +325,13 @@ class BenchmarkDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         item = self.dataset[idx]
 
-        # Extract image
-        if 'image' in item:
+        # Extract image using dataloader method (will raise KeyError if not found)
+        if self._image_key in item and item[self._image_key] is not None:
+            image = item[self._image_key]
+        elif 'image' in item and item['image'] is not None:
             image = item['image']
-        elif 'img' in item:
-            image = item['img']
         else:
-            raise ValueError("No image field found in dataset")
+            raise KeyError(f"No image found in item. Tried keys: {self._image_key}, image. Item keys: {list(item.keys())}")
 
         if image.mode != 'RGB':
             image = image.convert('RGB')
@@ -334,38 +340,11 @@ class BenchmarkDataset(torch.utils.data.Dataset):
         if image.size[0] > max_size or image.size[1] > max_size:
             image.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
 
-        # Extract question
-        if 'query' in item:
-            if isinstance(item['query'], dict):
-                question = item['query'].get('en', '')
-            else:
-                question = item['query']
-        elif 'question' in item:
-            question = item['question']
-        else:
-            question = "What do you see in this image?"
+        # Extract question using dataloader method (will raise KeyError if not found)
+        question = BenchmarkMixin.extract_question(item, self._question_key)
 
-        # Extract answer - handle both list and string formats
-        if 'answers' in item:
-            answers = item['answers']
-            if isinstance(answers, list) and len(answers) > 0:
-                answer = str(answers[0])
-            else:
-                answer = str(answers)
-        elif 'answer' in item:
-            ans = item['answer']
-            if isinstance(ans, list) and len(ans) > 0:
-                answer = str(ans[0])
-            else:
-                answer = str(ans)
-        elif 'label' in item:
-            lbl = item['label']
-            if isinstance(lbl, list) and len(lbl) > 0:
-                answer = str(lbl[0])
-            else:
-                answer = str(lbl)
-        else:
-            answer = "Unknown"
+        # Extract answer using dataloader method (will raise KeyError if not found)
+        answer = BenchmarkMixin.extract_answer(item, self._answer_key)
 
         # Format using chat template with proper prompt masking
         full_messages = [

@@ -991,5 +991,183 @@ class TestFactoryFunctions:
         assert isinstance(dataset, DPOSFTDataset)
 
 
+# =============================================================================
+# Tests for Trainer/Evaluator Integration with Dataloader
+# =============================================================================
+
+class TestTrainerDataloaderIntegration:
+    """Tests that trainers correctly use the dataloader module"""
+
+    def test_trainer_sft_imports_from_dataloader(self):
+        """Test that trainer_sft imports BenchmarkMixin and BENCHMARK_CONFIGS from dataloader"""
+        from trainers.trainer_sft import BenchmarkMixin, BENCHMARK_CONFIGS
+
+        # Verify they are the same objects from dataloader
+        from dataloader.benchmark_dataset import BenchmarkMixin as DLBenchmarkMixin
+        from dataloader.benchmark_dataset import BENCHMARK_CONFIGS as DL_BENCHMARK_CONFIGS
+
+        assert BenchmarkMixin is DLBenchmarkMixin
+        assert BENCHMARK_CONFIGS is DL_BENCHMARK_CONFIGS
+
+    def test_trainer_dpo_imports_from_dataloader(self):
+        """Test that trainer_dpo imports BenchmarkMixin and BENCHMARK_CONFIGS from dataloader"""
+        from trainers.trainer_dpo import BenchmarkMixin, BENCHMARK_CONFIGS
+
+        from dataloader.benchmark_dataset import BenchmarkMixin as DLBenchmarkMixin
+        from dataloader.benchmark_dataset import BENCHMARK_CONFIGS as DL_BENCHMARK_CONFIGS
+
+        assert BenchmarkMixin is DLBenchmarkMixin
+        assert BENCHMARK_CONFIGS is DL_BENCHMARK_CONFIGS
+
+    def test_trainer_full_finetune_imports_from_dataloader(self):
+        """Test that trainer_full_finetune imports BenchmarkMixin and BENCHMARK_CONFIGS from dataloader"""
+        from trainers.trainer_full_finetune import BenchmarkMixin, BENCHMARK_CONFIGS
+
+        from dataloader.benchmark_dataset import BenchmarkMixin as DLBenchmarkMixin
+        from dataloader.benchmark_dataset import BENCHMARK_CONFIGS as DL_BENCHMARK_CONFIGS
+
+        assert BenchmarkMixin is DLBenchmarkMixin
+        assert BENCHMARK_CONFIGS is DL_BENCHMARK_CONFIGS
+
+    def test_benchmark_configs_has_expected_keys(self):
+        """Test that BENCHMARK_CONFIGS has required benchmark configurations"""
+        from dataloader.benchmark_dataset import BENCHMARK_CONFIGS
+
+        # Verify required benchmarks exist
+        assert "docvqa" in BENCHMARK_CONFIGS
+        assert "chartqa" in BENCHMARK_CONFIGS
+        assert "ocrbench" in BENCHMARK_CONFIGS
+
+        # Verify each config has required fields
+        for name, config in BENCHMARK_CONFIGS.items():
+            assert "hf_name" in config, f"{name} missing hf_name"
+            assert "split" in config, f"{name} missing split"
+            assert "question_key" in config, f"{name} missing question_key"
+            assert "answer_key" in config, f"{name} missing answer_key"
+            assert "image_key" in config, f"{name} missing image_key"
+
+
+class TestEvaluatorDataloaderIntegration:
+    """Tests that evaluators correctly use the dataloader module"""
+
+    def test_dpo_utils_reexports_from_dataloader(self):
+        """Test that evaluators/dpo_utils.py re-exports from dataloader"""
+        from evaluators.dpo_utils import (
+            BenchmarkMixin,
+            BENCHMARK_CONFIGS,
+            extract_question,
+            extract_answer,
+            extract_all_answers,
+        )
+
+        from dataloader.benchmark_dataset import (
+            BenchmarkMixin as DLBenchmarkMixin,
+            BENCHMARK_CONFIGS as DL_BENCHMARK_CONFIGS,
+        )
+
+        # Verify re-exports are the same objects
+        assert BenchmarkMixin is DLBenchmarkMixin
+        assert BENCHMARK_CONFIGS is DL_BENCHMARK_CONFIGS
+
+        # Verify extraction methods are the BenchmarkMixin methods
+        assert extract_question is BenchmarkMixin.extract_question
+        assert extract_answer is BenchmarkMixin.extract_answer
+        assert extract_all_answers is BenchmarkMixin.extract_all_answers
+
+    def test_extraction_methods_raise_keyerror(self):
+        """Test that extraction methods raise KeyError instead of fallback values"""
+        from evaluators.dpo_utils import extract_question, extract_answer, extract_all_answers
+
+        empty_item = {}
+
+        # extract_question should raise KeyError
+        with pytest.raises(KeyError) as exc_info:
+            extract_question(empty_item, "question")
+        assert "Could not find question" in str(exc_info.value)
+
+        # extract_answer should raise KeyError
+        with pytest.raises(KeyError) as exc_info:
+            extract_answer(empty_item, "answer")
+        assert "Could not find answer" in str(exc_info.value)
+
+        # extract_all_answers should raise KeyError
+        with pytest.raises(KeyError) as exc_info:
+            extract_all_answers(empty_item, "answers")
+        assert "Could not find answers" in str(exc_info.value)
+
+    def test_extraction_methods_work_with_valid_data(self):
+        """Test extraction methods work correctly with valid data"""
+        from evaluators.dpo_utils import extract_question, extract_answer, extract_all_answers
+
+        # Test question extraction
+        item = {"query": "What is shown?"}
+        assert extract_question(item, "query") == "What is shown?"
+
+        # Test single answer extraction
+        item = {"label": "42"}
+        assert extract_answer(item, "label") == "42"
+
+        # Test list answer extraction (returns first)
+        item = {"answers": ["answer1", "answer2"]}
+        assert extract_answer(item, "answers") == "answer1"
+
+        # Test all answers extraction
+        assert extract_all_answers(item, "answers") == ["answer1", "answer2"]
+
+    def test_extraction_handles_dict_format(self):
+        """Test extraction handles dict format (multi-language) correctly"""
+        from evaluators.dpo_utils import extract_question
+
+        # Multi-language format with 'en' key
+        item = {"query": {"en": "English", "de": "German"}}
+        assert extract_question(item, "query") == "English"
+
+
+class TestNoFallbackBehavior:
+    """Tests to verify fallback behavior is removed"""
+
+    def test_benchmark_mixin_no_fallback_on_missing_question(self):
+        """Verify BenchmarkMixin.extract_question raises error, not fallback"""
+        from dataloader.benchmark_dataset import BenchmarkMixin
+
+        item = {"other_field": "value"}
+
+        with pytest.raises(KeyError):
+            BenchmarkMixin.extract_question(item, "question")
+
+    def test_benchmark_mixin_no_fallback_on_missing_answer(self):
+        """Verify BenchmarkMixin.extract_answer raises error, not fallback"""
+        from dataloader.benchmark_dataset import BenchmarkMixin
+
+        item = {"other_field": "value"}
+
+        with pytest.raises(KeyError):
+            BenchmarkMixin.extract_answer(item, "answer")
+
+    def test_benchmark_mixin_no_fallback_on_empty_answer_list(self):
+        """Verify empty answer list raises error"""
+        from dataloader.benchmark_dataset import BenchmarkMixin
+
+        item = {"answers": []}
+
+        with pytest.raises(KeyError) as exc_info:
+            BenchmarkMixin.extract_answer(item, "answers")
+        assert "Could not find answer" in str(exc_info.value)
+
+    def test_single_source_of_truth(self):
+        """Verify all modules use the same extraction logic"""
+        from dataloader.benchmark_dataset import BenchmarkMixin as DLMixin
+        from trainers.trainer_sft import BenchmarkMixin as SFTMixin
+        from trainers.trainer_dpo import BenchmarkMixin as DPOMixin
+        from trainers.trainer_full_finetune import BenchmarkMixin as FullFTMixin
+        from evaluators.dpo_utils import BenchmarkMixin as EvalMixin
+
+        # All should be the exact same class
+        assert DLMixin is SFTMixin
+        assert DLMixin is DPOMixin
+        assert DLMixin is FullFTMixin
+        assert DLMixin is EvalMixin
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

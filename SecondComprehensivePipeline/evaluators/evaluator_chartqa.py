@@ -9,7 +9,7 @@ import logging
 
 from .base_evaluator import BaseEvaluator
 from .qcm_accuracy import normalize_text
-from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded
+from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded, extract_question, extract_answer
 
 logger = logging.getLogger(__name__)
 
@@ -32,11 +32,9 @@ class ChartQAEvaluator(BaseEvaluator):
         iterator = BenchmarkDatasetIterator(dataset, self.load_image, "ChartQA")
 
         for item, image in tqdm(iterator, desc="ChartQA", total=len(dataset)):
-            question = item.get('question', item.get('query', ''))
-            answer = item.get('answer', item.get('label', ''))
-            # Handle label field which is a list in ChartQA cache
-            if isinstance(answer, list):
-                answer = answer[0] if answer else ''
+            # Use dataloader extraction methods (will raise KeyError if field not found)
+            question = extract_question(item, "query")
+            answer = extract_answer(item, "label")
 
             response = self.generate_response(image, question)
 

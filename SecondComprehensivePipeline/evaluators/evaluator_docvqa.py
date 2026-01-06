@@ -8,7 +8,7 @@ import logging
 
 from .base_evaluator import BaseEvaluator
 from .qcm_accuracy import normalize_text
-from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded
+from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded, extract_question, extract_all_answers
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class DocVQAEvaluator(BaseEvaluator):
 
     def __init__(self, cache_dir: str = None):
         super().__init__(cache_dir)
-        self.dataset_name = "nielsr/docvqa_1200_examples"  # Fixed: original requires auth
+        self.dataset_name = "nielsr/docvqa_1200_examples"
 
     def evaluate(self, model_path: str = None, max_samples: int = None) -> Dict[str, Any]:
         """Evaluate on DocVQA dataset"""
@@ -31,16 +31,9 @@ class DocVQAEvaluator(BaseEvaluator):
         iterator = BenchmarkDatasetIterator(dataset, self.load_image, "DocVQA")
 
         for item, image in tqdm(iterator, desc="DocVQA", total=len(dataset)):
-            # Handle query field which can be a dict with language keys or a string
-            query_field = item.get('question', item.get('query', ''))
-            if isinstance(query_field, dict):
-                # Extract English text from multi-language query dict
-                question = query_field.get('en', str(query_field))
-            else:
-                question = str(query_field)
-            answers = item.get('answers', item.get('answer', []))
-            if isinstance(answers, str):
-                answers = [answers]
+            # Use dataloader extraction methods (will raise KeyError if field not found)
+            question = extract_question(item, "query")
+            answers = extract_all_answers(item, "answers")
 
             response = self.generate_response(image, question)
 

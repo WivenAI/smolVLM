@@ -8,7 +8,7 @@ import logging
 
 from .base_evaluator import BaseEvaluator
 from .qcm_accuracy import normalize_text
-from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded
+from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded, extract_question, extract_answer
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +31,9 @@ class OCRBenchEvaluator(BaseEvaluator):
         iterator = BenchmarkDatasetIterator(dataset, self.load_image, "OCRBench")
 
         for item, image in tqdm(iterator, desc="OCRBench", total=len(dataset)):
-            question = item['question']
-            ground_truth = item.get('answer', '')
+            # Use dataloader extraction methods (will raise KeyError if field not found)
+            question = extract_question(item, "question")
+            ground_truth = extract_answer(item, "answer")
             response = self.generate_response(image, question)
 
             results.append({
