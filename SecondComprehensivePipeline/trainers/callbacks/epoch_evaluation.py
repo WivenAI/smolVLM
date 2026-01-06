@@ -286,7 +286,7 @@ class BaseEpochEvaluationCallback(TrainerCallback, ABC):
 
     def _compute_dataset_loss(self, model, dataset, dataset_name: str = "dataset") -> Optional[float]:
         """Compute loss on a given dataset."""
-        if dataset is None:
+        if dataset is None or model is None:
             return None
 
         model.eval()
@@ -513,7 +513,7 @@ class SFTEpochEvaluationCallback(BaseEpochEvaluationCallback):
         """
         Compute accuracy on a dataset using the shared QCM accuracy module.
         """
-        if dataset is None or self.processor is None:
+        if dataset is None or self.processor is None or model is None:
             return None, []
 
         dataset_type = self._detect_dataset_type()
@@ -639,17 +639,8 @@ class SFTEpochEvaluationCallback(BaseEpochEvaluationCallback):
         train_accuracy, train_results = train_result
         test_accuracy, test_results = test_result
 
-        # Log losses
-        if not is_step_eval and self.train_dataset is not None:
-            train_loss = self._compute_dataset_loss(None, self.train_dataset, "train")  # model is already in train mode
-            if train_loss is not None:
-                metrics["eval/loss_train"] = train_loss
-                logger.info(f"  Train Loss: {train_loss:.4f}")
-
-        test_loss = self._compute_dataset_loss(None, self.eval_dataset, "test")
-        if test_loss is not None:
-            metrics["eval/loss_test"] = test_loss
-            logger.info(f"  Test Loss: {test_loss:.4f}")
+        # Note: Losses are already computed and logged in _run_evaluation
+        # We only log accuracy metrics here
 
         # Log accuracies
         if train_accuracy is not None:
@@ -740,7 +731,7 @@ class DPOEpochEvaluationCallback(BaseEpochEvaluationCallback):
         Returns:
             Tuple of (preference_accuracy, avg_margin)
         """
-        if dataset is None or self.processor is None:
+        if dataset is None or self.processor is None or model is None:
             return None, None
 
         model.eval()
@@ -753,21 +744,41 @@ class DPOEpochEvaluationCallback(BaseEpochEvaluationCallback):
                 try:
                     item = dataset[idx]
 
-                    prompt = item.get('prompt', '')
-                    chosen = item.get('chosen', '')
-                    rejected = item.get('rejected', '')
+                    prompt = item.get('prompt', None)
+                    chosen = item.get('chosen', None)
+                    rejected = item.get('rejected', None)
                     images = item.get('images', None)
 
-                    if not prompt or not chosen or not rejected:
-                        continue
+                    # Strict validation - DPO requires all fields and images
+                    if not prompt:
+                        raise ValueError(f"DPO sample {idx} in {dataset_name} missing prompt")
+                    if not chosen:
+                        raise ValueError(f"DPO sample {idx} in {dataset_name} missing chosen response")
+                    if not rejected:
+                        raise ValueError(f"DPO sample {idx} in {dataset_name} missing rejected response")
+                    if not images or len(images) == 0:
+                        raise ValueError(f"DPO sample {idx} in {dataset_name} missing images - "
+                                       f"VLM DPO requires images for all samples")
 
                     device = next(model.parameters()).device
+                    image = images[0]
+
+                    # Handle chat format (list of message dicts) vs plain text
+                    if isinstance(prompt, list):
+                        # Chat format - use processor's apply_chat_template
+                        chosen_messages = prompt + chosen
+                        rejected_messages = prompt + rejected
+                        chosen_text = self.processor.apply_chat_template(chosen_messages, tokenize=False)
+                        rejected_text = self.processor.apply_chat_template(rejected_messages, tokenize=False)
+                    else:
+                        # Plain text format
+                        chosen_text = f"{prompt}{chosen}"
+                        rejected_text = f"{prompt}{rejected}"
 
                     # Compute log probs for chosen
-                    chosen_text = f"{prompt}{chosen}"
                     chosen_inputs = self.processor(
                         text=chosen_text,
-                        images=images[0] if images else None,
+                        images=image,
                         return_tensors="pt",
                         padding=True
                     )
@@ -778,10 +789,9 @@ class DPOEpochEvaluationCallback(BaseEpochEvaluationCallback):
                     chosen_loss = chosen_outputs.loss.item()
 
                     # Compute log probs for rejected
-                    rejected_text = f"{prompt}{rejected}"
                     rejected_inputs = self.processor(
                         text=rejected_text,
-                        images=images[0] if images else None,
+                        images=image,
                         return_tensors="pt",
                         padding=True
                     )

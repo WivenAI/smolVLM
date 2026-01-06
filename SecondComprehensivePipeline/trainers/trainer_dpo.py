@@ -536,15 +536,19 @@ class DPOTrainerWrapper:
             eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
-            bf16=torch.cuda.is_available(),
+            # Use fp16 instead of bf16 - bf16 causes dtype mismatch with SmolVLM vision encoder
+            fp16=torch.cuda.is_available(),
+            bf16=False,
             dataloader_pin_memory=True,
             dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             loss_type="sigmoid",
-            max_length=512,
-            max_prompt_length=256,
+            # Increase limits to accommodate 64 image tokens + text
+            # SmolVLM uses 64 image tokens, so max_prompt_length must be >= 64 + text_length
+            max_length=1024,
+            max_prompt_length=512,
             dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 
@@ -642,15 +646,19 @@ class DPOTrainerWrapper:
             eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
-            bf16=torch.cuda.is_available(),
+            # Use fp16 instead of bf16 - bf16 causes dtype mismatch with SmolVLM vision encoder
+            fp16=torch.cuda.is_available(),
+            bf16=False,
             dataloader_pin_memory=True,
             dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             loss_type="sigmoid",
-            max_length=512,
-            max_prompt_length=256,
+            # Increase limits to accommodate 64 image tokens + text
+            # SmolVLM uses 64 image tokens, so max_prompt_length must be >= 64 + text_length
+            max_length=1024,
+            max_prompt_length=512,
             dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 
@@ -753,15 +761,19 @@ class DPOTrainerWrapper:
             eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
-            bf16=torch.cuda.is_available(),
+            # Use fp16 instead of bf16 - bf16 causes dtype mismatch with SmolVLM vision encoder
+            fp16=torch.cuda.is_available(),
+            bf16=False,
             dataloader_pin_memory=True,
             dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             loss_type="sigmoid",
-            max_length=512,
-            max_prompt_length=256,
+            # Increase limits to accommodate 64 image tokens + text
+            # SmolVLM uses 64 image tokens, so max_prompt_length must be >= 64 + text_length
+            max_length=1024,
+            max_prompt_length=512,
             dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 

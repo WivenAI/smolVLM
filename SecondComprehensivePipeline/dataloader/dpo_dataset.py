@@ -283,37 +283,35 @@ class LazyDPODataset(BaseDPODataset):
     def get_rejected(self, item: Dict[str, Any]) -> str:
         return item['rejected']
     
-    def _load_image_at_index(self, idx: int) -> Optional[Image.Image]:
-        """Load image for index on-demand"""
+    def _load_image_at_index(self, idx: int) -> Image.Image:
+        """Load image for index on-demand. Raises exception if image cannot be loaded."""
         image_path = self._image_paths[idx]
-        
+
         if image_path is None:
-            return None
-        
-        try:
-            image = ImageUtils.load_image(image_path)
-            if image is not None:
-                image = ImageUtils.resize_image(
-                    image,
-                    max_size=self.config.max_image_size,
-                    force_patch_divisible=self.config.force_patch_divisible,
-                    patch_size=self.config.patch_size
-                )
-            return image
-        except Exception as e:
-            logger.warning(f"Failed to load image at index {idx}: {e}")
-            return None
-    
+            raise ValueError(f"DPO dataset item at index {idx} has no image path - "
+                           f"all DPO samples must have valid images")
+
+        image = ImageUtils.load_image(image_path)
+        if image is None:
+            raise ValueError(f"Failed to load DPO image at index {idx}: {image_path}")
+
+        image = ImageUtils.resize_image(
+            image,
+            max_size=self.config.max_image_size,
+            force_patch_divisible=self.config.force_patch_divisible,
+            patch_size=self.config.patch_size
+        )
+        if image is None:
+            raise ValueError(f"Failed to resize DPO image at index {idx}: {image_path}")
+
+        return image
+
     def __getitem__(self, idx: int) -> Dict[str, Any]:
         item = self._data[idx]
-        
-        # Load image on-demand
+
+        # Load image on-demand - raises exception if image cannot be loaded
         image = self._load_image_at_index(idx)
-        
-        # Use placeholder if image failed to load
-        if image is None:
-            image = ImageUtils.create_placeholder(self.config.placeholder_size, 'black')
-        
+
         # Get prompt and responses
         prompt = self.get_prompt(item)
         chosen = self.get_chosen(item)
