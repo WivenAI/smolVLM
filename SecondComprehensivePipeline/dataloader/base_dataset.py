@@ -170,47 +170,91 @@ class ImageUtils:
 
 class AnswerMaskingMixin:
     """Mixin providing answer masking functionality for SFT training"""
-    
+
     def find_answer_start_position(
         self,
         full_token_list: List[int],
         answer_tokens: List[int],
         tokenizer,
-        fallback_ratio: float = 0.9
+        answer_text: Optional[str] = None,
+        fallback_ratio: float = 0.9,
+        raise_on_failure: bool = False,
+        sample_info: str = ""
     ) -> int:
         """
         Find the position where the answer starts in the tokenized sequence.
-        
+
         This is critical for correct SFT training - we only want to train
         on the answer portion, not the prompt.
-        
+
+        Uses 3-strategy approach for robust answer position finding:
+        1. Answer with leading space (most common in chat templates)
+        2. Answer without leading space
+        3. Find "Assistant:" marker and use position after it
+
         Args:
             full_token_list: Full tokenized sequence
             answer_tokens: Tokenized answer without special tokens
             tokenizer: Tokenizer for fallback methods
+            answer_text: Optional raw answer text for spaced tokenization
             fallback_ratio: Fallback position as ratio of sequence length
-            
+            raise_on_failure: If True, raise ValueError instead of using fallback
+            sample_info: Info string for error messages
+
         Returns:
             Position where answer starts
+
+        Raises:
+            ValueError: If raise_on_failure=True and answer position not found
         """
-        # Method 1: Direct search for answer tokens
+        answer_start_pos = None
+
+        # Strategy 1: Answer with leading space (most common in chat templates)
+        if answer_text:
+            try:
+                answer_with_space = " " + answer_text
+                answer_tokens_spaced = tokenizer.encode(answer_with_space, add_special_tokens=False)
+                for i in range(len(full_token_list) - len(answer_tokens_spaced) + 1):
+                    if full_token_list[i:i + len(answer_tokens_spaced)] == answer_tokens_spaced:
+                        return i
+            except Exception as e:
+                logger.debug(f"Strategy 1 (spaced answer) failed: {e}")
+
+        # Strategy 2: Answer without leading space (direct search)
         for i in range(len(full_token_list) - len(answer_tokens) + 1):
             if full_token_list[i:i + len(answer_tokens)] == answer_tokens:
                 return i
-        
-        # Method 2: Search for assistant marker
+
+        # Strategy 3: Search for assistant marker and use position after it
         try:
-            assistant_markers = ["Assistant:", "assistant:", "<|assistant|>"]
+            assistant_markers = ["Assistant:", "Assistant: ", "assistant:", ": ", "<|assistant|>"]
             for marker in assistant_markers:
                 marker_tokens = tokenizer.encode(marker, add_special_tokens=False)
                 for i in range(len(full_token_list) - len(marker_tokens) + 1):
                     if full_token_list[i:i + len(marker_tokens)] == marker_tokens:
-                        return i + len(marker_tokens)
+                        answer_start_pos = i + len(marker_tokens)
+                        break
+                if answer_start_pos is not None:
+                    break
         except Exception as e:
-            logger.debug(f"Assistant marker search failed: {e}")
-        
-        # Method 3: Fallback to ratio-based position
-        logger.warning(f"Could not find answer position, using fallback ratio {fallback_ratio}")
+            logger.debug(f"Strategy 3 (assistant marker) failed: {e}")
+
+        if answer_start_pos is not None:
+            return answer_start_pos
+
+        # Handle failure case
+        if raise_on_failure:
+            error_msg = (
+                f"Could not find answer position! {sample_info}\n"
+                f"  Answer: '{answer_text}'\n" if answer_text else ""
+                f"  Answer tokens: {answer_tokens}\n"
+                f"  Total tokens: {len(full_token_list)}\n"
+                f"  Last 10 tokens: {full_token_list[-10:]}"
+            )
+            raise ValueError(error_msg)
+
+        # Fallback to ratio-based position
+        logger.warning(f"Could not find answer position, using fallback ratio {fallback_ratio} {sample_info}")
         return int(len(full_token_list) * fallback_ratio)
     
     def create_masked_labels(
@@ -385,11 +429,12 @@ class BaseVisionDataset(BaseDataset, AnswerMaskingMixin):
         # Find answer position and create masked labels
         answer_tokens = self.processor.tokenizer.encode(response, add_special_tokens=False)
         full_token_list = full_inputs["input_ids"][0].tolist()
-        
+
         answer_start_pos = self.find_answer_start_position(
             full_token_list,
             answer_tokens,
-            self.processor.tokenizer
+            self.processor.tokenizer,
+            answer_text=response  # Pass raw text for spaced tokenization strategy
         )
         
         labels = self.create_masked_labels(

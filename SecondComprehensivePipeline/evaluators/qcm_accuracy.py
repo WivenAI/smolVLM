@@ -76,6 +76,37 @@ def normalize_text(text: str) -> str:
     return text
 
 
+def contains_answer(prediction: str, ground_truth: str) -> bool:
+    """
+    Check if the prediction contains the ground truth answer.
+
+    Only checks one direction: whether the expected answer is contained
+    in the model's prediction. This prevents false positives from empty
+    or very short predictions.
+
+    Handles cases like:
+    - "The answer is B" containing "B"
+    - "Paris is the capital of France" containing "Paris"
+    - "42.0" containing "42"
+
+    Args:
+        prediction: The model's predicted response
+        ground_truth: The expected correct answer
+
+    Returns:
+        True if normalized ground_truth is contained in normalized prediction
+    """
+    norm_pred = normalize_text(prediction)
+    norm_truth = normalize_text(ground_truth)
+
+    # Handle empty strings
+    if not norm_pred or not norm_truth:
+        return False
+
+    # Only check if ground truth is in prediction (not vice versa)
+    return norm_truth in norm_pred
+
+
 def calculate_qcm_accuracy(
     results: List[Dict],
     split: str = "full",

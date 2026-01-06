@@ -30,6 +30,7 @@ from datasets import load_dataset
 
 # Import dataloader utilities for field extraction (single source of truth)
 from dataloader.benchmark_dataset import BenchmarkMixin, BENCHMARK_CONFIGS
+from dataloader.data_collators import VisionLanguageDataCollator
 
 try:
     import wandb
@@ -621,47 +622,6 @@ class EpochEvaluationCallback(TrainerCallback):
             logger.error(f"[{self.strategy_name}] Evaluation failed at {eval_type} {epoch}: {e}")
             import traceback
             traceback.print_exc()
-
-
-@dataclass
-class VisionLanguageDataCollator:
-    """Custom data collator for vision-language models"""
-
-    def __call__(self, features: List[Dict[str, torch.Tensor]]) -> Dict[str, torch.Tensor]:
-        pixel_values = [f.pop('pixel_values') for f in features]
-        max_length = max(f['input_ids'].shape[0] for f in features)
-
-        batch = {}
-        batch['pixel_values'] = torch.stack(pixel_values)
-
-        input_ids = []
-        attention_mask = []
-        labels = []
-
-        for f in features:
-            seq_len = f['input_ids'].shape[0]
-            pad_len = max_length - seq_len
-
-            input_ids.append(torch.cat([
-                f['input_ids'],
-                torch.full((pad_len,), 0, dtype=f['input_ids'].dtype)
-            ]))
-
-            attention_mask.append(torch.cat([
-                f['attention_mask'],
-                torch.zeros(pad_len, dtype=f['attention_mask'].dtype)
-            ]))
-
-            labels.append(torch.cat([
-                f['labels'],
-                torch.full((pad_len,), -100, dtype=f['labels'].dtype)
-            ]))
-
-        batch['input_ids'] = torch.stack(input_ids)
-        batch['attention_mask'] = torch.stack(attention_mask)
-        batch['labels'] = torch.stack(labels)
-
-        return batch
 
 
 class QCMDataset(torch.utils.data.Dataset):
