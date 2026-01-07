@@ -2,13 +2,12 @@
 ChartQA Evaluator - Evaluates chart understanding and question answering
 """
 
-import re
 from typing import Dict, Any, List
 from tqdm import tqdm
 import logging
 
 from .base_evaluator import BaseEvaluator
-from .qcm_accuracy import normalize_text
+from .text_metrics import text_contains_answer, compare_numeric, normalize_text, calculate_anls
 from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded, extract_question, extract_answer
 
 logger = logging.getLogger(__name__)
@@ -46,7 +45,7 @@ class ChartQAEvaluator(BaseEvaluator):
             })
 
         iterator.log_skip_summary()
-        accuracy = self.calculate_accuracy(results)
+        accuracy, anls = self.calculate_accuracy(results)
 
         # Save and print sample Q&A
         if results:
@@ -57,59 +56,57 @@ class ChartQAEvaluator(BaseEvaluator):
         return {
             "benchmark": "chartqa",
             "accuracy": accuracy,
+            "anls": anls,
             "total_samples": len(results),
             "skipped_samples": iterator.get_total_skipped(),
             "results": results
         }
 
-    def calculate_accuracy(self, results: List[Dict]) -> float:
+    def calculate_accuracy(self, results: List[Dict]) -> tuple:
         """
-        Calculate ChartQA accuracy with relaxed matching
-        Handles numeric values and text answers
+        Calculate ChartQA accuracy and ANLS.
+
+        Handles numeric values (5% tolerance) and text answers.
+        Uses UNIDIRECTIONAL matching: only checks if ground truth is IN prediction.
+        Does NOT check if prediction is in ground truth (no bidirectional matching).
+
+        Returns:
+            Tuple of (accuracy percentage, ANLS score 0-1)
         """
         if not results:
-            return 0.0
+            return 0.0, 0.0
 
         correct = 0
         total = 0
+        predictions = []
+        ground_truths = []
 
         for result in results:
             if 'ground_truth' in result and 'response' in result:
                 response = str(result['response']).lower().strip()
                 gt = str(result['ground_truth']).lower().strip()
 
-                # Try numeric comparison first
-                try:
-                    pred_num = self._extract_number(response)
-                    gt_num = self._extract_number(gt)
-                    if pred_num is not None and gt_num is not None:
-                        # Allow 5% tolerance for numeric answers
-                        if abs(pred_num - gt_num) <= abs(gt_num) * 0.05 + 0.01:
-                            correct += 1
-                            total += 1
-                            continue
-                except:
-                    pass
+                # Collect for ANLS calculation
+                predictions.append(response)
+                ground_truths.append(gt)
 
-                # Text comparison with bidirectional matching
-                response_norm = normalize_text(response)
-                gt_norm = normalize_text(gt)
+                # Try numeric comparison first (5% tolerance)
+                numeric_match = compare_numeric(response, gt, tolerance=0.05)
+                if numeric_match is True:
+                    correct += 1
+                    total += 1
+                    continue
 
-                # Bidirectional: gt in response OR response in gt OR exact match
-                if gt_norm and response_norm:
-                    if gt_norm in response_norm or response_norm in gt_norm or gt_norm == response_norm:
-                        correct += 1
+                # Text comparison with UNIDIRECTIONAL matching only
+                # Only check: gt in response (NOT response in gt)
+                if text_contains_answer(response, gt):
+                    correct += 1
 
                 total += 1
 
-        return (correct / total * 100) if total > 0 else 0.0
+        accuracy = (correct / total * 100) if total > 0 else 0.0
 
-    def _extract_number(self, text: str) -> float:
-        """Extract first number from text"""
-        # Remove commas and percentage signs
-        text = text.replace(',', '').replace('%', '')
-        # Find numbers
-        numbers = re.findall(r'-?\d+\.?\d*', text)
-        if numbers:
-            return float(numbers[0])
-        return None
+        # Calculate ANLS
+        avg_anls, _ = calculate_anls(predictions, ground_truths)
+
+        return accuracy, avg_anls

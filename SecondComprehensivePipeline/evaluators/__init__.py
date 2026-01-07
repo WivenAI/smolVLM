@@ -17,6 +17,14 @@ from .qcm_accuracy import (
     calculate_accuracy_train_test,
     normalize_text,
 )
+from .text_metrics import (
+    calculate_anls,
+    calculate_nls,
+    text_contains_answer,
+    text_matches_any,
+    compare_numeric,
+    levenshtein_distance,
+)
 from .answer_evaluator import AnswerExtractor, extract_answer
 from .dpo_utils import (
     load_dpo_dataset,
@@ -44,6 +52,13 @@ __all__ = [
     "normalize_text",
     "AnswerExtractor",
     "extract_answer",
+    # Shared text metrics (ANLS, unidirectional matching)
+    "calculate_anls",
+    "calculate_nls",
+    "text_contains_answer",
+    "text_matches_any",
+    "compare_numeric",
+    "levenshtein_distance",
     # Shared dataset utilities
     "load_dpo_dataset",
     "load_and_resize_image",

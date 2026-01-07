@@ -7,7 +7,7 @@ from tqdm import tqdm
 import logging
 
 from .base_evaluator import BaseEvaluator
-from .qcm_accuracy import normalize_text
+from .text_metrics import text_matches_any, calculate_anls
 from .dpo_utils import BenchmarkDatasetIterator, ensure_model_loaded, extract_question, extract_all_answers
 
 logger = logging.getLogger(__name__)
@@ -45,7 +45,7 @@ class DocVQAEvaluator(BaseEvaluator):
             })
 
         iterator.log_skip_summary()
-        accuracy = self.calculate_accuracy(results)
+        accuracy, anls = self.calculate_accuracy(results)
 
         # Save and print sample Q&A
         if results:
@@ -56,41 +56,50 @@ class DocVQAEvaluator(BaseEvaluator):
         return {
             "benchmark": "docvqa",
             "accuracy": accuracy,
+            "anls": anls,
             "total_samples": len(results),
             "skipped_samples": iterator.get_total_skipped(),
             "results": results
         }
 
-    def calculate_accuracy(self, results: List[Dict]) -> float:
+    def calculate_accuracy(self, results: List[Dict]) -> tuple:
         """
-        Calculate DocVQA accuracy using ANLS (Average Normalized Levenshtein Similarity)
-        Simplified version: exact match or contains check
+        Calculate DocVQA accuracy and ANLS.
+
+        Uses UNIDIRECTIONAL matching: only checks if ground truth is IN prediction.
+        Does NOT check if prediction is in ground truth (no bidirectional matching).
+
+        Returns:
+            Tuple of (accuracy percentage, ANLS score 0-1)
         """
         if not results:
-            return 0.0
+            return 0.0, 0.0
 
         correct = 0
         total = 0
+        predictions = []
+        ground_truths = []
 
         for result in results:
             if 'ground_truth' in result and 'response' in result:
-                response = normalize_text(str(result['response']))
-                ground_truths = result['ground_truth'] if isinstance(result['ground_truth'], list) else [result['ground_truth']]
+                response = str(result['response'])
+                gt = result['ground_truth']
+                gt_list = gt if isinstance(gt, list) else [gt]
 
-                # Check if any ground truth matches
-                matched = False
-                for gt in ground_truths:
-                    gt_norm = normalize_text(str(gt))
-                    if gt_norm in response or response in gt_norm:
-                        matched = True
-                        break
-                    # Also check exact match
-                    if gt_norm == response:
-                        matched = True
-                        break
+                # Unidirectional: only check if gt is IN response
+                matched = text_matches_any(response, gt_list)
 
                 if matched:
                     correct += 1
                 total += 1
 
-        return (correct / total * 100) if total > 0 else 0.0
+                # Collect for ANLS calculation
+                predictions.append(response)
+                ground_truths.append(gt_list)
+
+        accuracy = (correct / total * 100) if total > 0 else 0.0
+
+        # Calculate ANLS
+        avg_anls, _ = calculate_anls(predictions, ground_truths)
+
+        return accuracy, avg_anls
