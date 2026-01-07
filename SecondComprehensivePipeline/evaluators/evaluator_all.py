@@ -156,18 +156,29 @@ class EvaluatorAll:
                         evaluator.load_base_model()
 
                     result = evaluator.evaluate(max_samples=max_samples)
-                    all_results["benchmarks"][name] = {
+                    bench_result = {
                         "accuracy": result["accuracy"],
                         "total_samples": result["total_samples"]
                     }
-                    logger.info(f"{name}: {result['accuracy']:.2f}%")
+                    # Add ANLS if available (OCR, ChartQA, DocVQA)
+                    if "anls" in result:
+                        bench_result["anls"] = result["anls"]
+                    all_results["benchmarks"][name] = bench_result
+
+                    log_msg = f"{name}: {result['accuracy']:.2f}%"
+                    if "anls" in result:
+                        log_msg += f", ANLS: {result['anls']:.4f}"
+                    logger.info(log_msg)
 
                     # Log to WandB and TensorBoard
                     try:
-                        log_metrics({
+                        metrics_to_log = {
                             f"eval/{name}_accuracy": result["accuracy"],
                             f"eval/{name}_total": result["total_samples"]
-                        })
+                        }
+                        if "anls" in result:
+                            metrics_to_log[f"eval/{name}_anls"] = result["anls"]
+                        log_metrics(metrics_to_log)
                     except ImportError:
                         pass
                 except Exception as e:
