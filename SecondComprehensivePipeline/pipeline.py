@@ -541,9 +541,10 @@ class Pipeline:
 
             print(f"\n[{model_name}] Generating sample outputs...")
 
-            # Get model path
+            # Get model path - skip baseline (no trained model)
             if strategy_type == "none":
-                model_path = None
+                print(f"  Skipping baseline - no trained model")
+                continue
             else:
                 model_path = self.output_dir / model_name
                 if not model_path.exists():
