@@ -1,0 +1,106 @@
+# Overfit test config: full_ft_sft_chosen_rej_nova (full_ft_chosen_rej_sft)
+# train_samples: 100, epochs: 20 - evaluate only logprob_nova, bertscore_nova, rouge_nova
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache
+  image_size: 512
+training:
+  epochs: 20
+  train_samples: 100
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+  strategies:
+  - name: full_ft_sft_chosen_rej_nova
+    enabled: true
+    type: full_ft_chosen_rej_sft
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+evaluation:
+  benchmarks:
+  - name: ocrbench
+    enabled: false
+    dataset: echo840/OCRBench
+    split: test
+    max_samples: 100
+  - name: docvqa
+    enabled: false
+    dataset: nielsr/docvqa_1200_examples
+    split: train
+    max_samples: 100
+  - name: chartqa
+    enabled: false
+    dataset: HuggingFaceM4/ChartQA
+    split: test
+    max_samples: 100
+  erp_evaluation:
+    qcm_gemini:
+      enabled: false
+      dataset: datasets/qcm/qcm_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 100
+    qcm_nova:
+      enabled: false
+      dataset: datasets/qcm/qcm_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 100
+    qcm_claudette:
+      enabled: false
+      dataset: datasets/qcm/qcm_claudette.json
+      max_samples: 100
+    qcm_procedure1:
+      enabled: false
+      dataset: datasets/qcm/qcm_procedure1_claude_code.json
+      image_dir: datasets/procedureimages
+      max_samples: 100
+    qcm_procedure2:
+      enabled: false
+      dataset: datasets/qcm/qcm_procedure2_geminicli.json
+      image_dir: datasets/procedureimages
+      max_samples: 100
+    logprob_gemini:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 100
+    logprob_nova:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 100
+    bertscore_gemini:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      lang: en
+      max_samples: 100
+    bertscore_nova:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      lang: en
+      max_samples: 100
+    rouge_gemini:
+      enabled: false
+      dataset: datasets/dpo/dpo_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 100
+    rouge_nova:
+      enabled: true
+      dataset: datasets/dpo/dpo_dataset_nova_pro.json
+      image_dir: datasets/images
+      max_samples: 100
+paths:
+  output_dir: modelweights_overfit
+  cache_dir: datasets/cache_overfit
+  results_dir: results_overfit
+  logs_dir: logs_overfit
+pipeline:
+  continue_on_error: false
+  use_wandb: false
+  wandb_project: overfit_test
+  debug_mode: false
+  num_workers: 1
