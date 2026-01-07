@@ -101,6 +101,6 @@ paths:
 pipeline:
   continue_on_error: false
   use_wandb: true
-  wandb_project: 23overfit_test
+  wandb_project: 25ComprehensivePipeline
   debug_mode: false
   num_workers: 1
