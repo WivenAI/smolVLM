@@ -1,0 +1,86 @@
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache_debug
+  image_size: 512
+
+training:
+  epochs: 1
+  train_samples: 4
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 1.0e-06
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+
+  strategies:
+  # Baseline (always enabled for comparison)
+  - name: baseline
+    enabled: true
+    type: none
+
+  # SFT QLoRA strategies (batch size 2 test)
+  - name: sft_qcm_gemini_batch2
+    enabled: false
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_dataset_gemini.json
+    image_dir: datasets/images
+
+  # SFT Benchmark (QLoRA)
+  - name: sft_docvqa_batch2
+    enabled: false
+    type: sft_benchmark
+    benchmark: docvqa
+
+  # QLoRA DPO (batch size 2 test)
+  - name: dpo_gemini_batch2
+    enabled: false
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+
+  # Full Fine-tune DPO (batch size 1 test)
+  - name: full_ft_dpo_gemini
+    enabled: true
+    type: full_ft_dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+
+evaluation:
+  benchmarks:
+  - name: ocrbench
+    enabled: true
+    dataset: echo840/OCRBench
+    split: test
+    max_samples: 2
+  - name: docvqa
+    enabled: true
+    dataset: nielsr/docvqa_1200_examples
+    split: train
+    max_samples: 2
+  - name: chartqa
+    enabled: true
+    dataset: HuggingFaceM4/ChartQA
+    split: test
+    max_samples: 2
+
+  erp_evaluation:
+    qcm_gemini:
+      enabled: true
+      dataset: datasets/qcm/qcm_dataset_gemini.json
+      image_dir: datasets/images
+      max_samples: 2
+
+paths:
+  output_dir: modelweights_batch2_debug
+  cache_dir: datasets/cache_batch2_debug
+  results_dir: results_batch2_debug
+  logs_dir: logs_batch2_debug
+
+pipeline:
+  continue_on_error: false
+  use_wandb: false
+  wandb_project: debug_batch2_pipeline
+  debug_mode: true
+  debug_size: 4
+  num_workers: 1

@@ -519,13 +519,16 @@ class DPOTrainerWrapper:
         learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
                               self.config.get("training", {}).get("learning_rate", 5e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
+        batch_size = self.config.get("training", {}).get("batch_size", 1)
+
+        logger.info(f"[BATCH] Using batch_size={batch_size}")
 
         # DPO config
         training_args = DPOConfig(
             output_dir=output_dir,
             num_train_epochs=num_epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
             learning_rate=learning_rate,
             lr_scheduler_type="cosine",
@@ -629,13 +632,16 @@ class DPOTrainerWrapper:
         learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
                               self.config.get("training", {}).get("learning_rate", 5e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
+        batch_size = self.config.get("training", {}).get("batch_size", 1)
+
+        logger.info(f"[BATCH] Using batch_size={batch_size}")
 
         # DPO config
         training_args = DPOConfig(
             output_dir=output_dir,
             num_train_epochs=num_epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
             learning_rate=learning_rate,
             lr_scheduler_type="cosine",
@@ -744,13 +750,16 @@ class DPOTrainerWrapper:
         learning_rate = float(self.config.get("training", {}).get("dpo_learning_rate",
                               self.config.get("training", {}).get("learning_rate", 5e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 4))
+        batch_size = self.config.get("training", {}).get("batch_size", 1)
+
+        logger.info(f"[BATCH] Using batch_size={batch_size}")
 
         # DPO config
         training_args = DPOConfig(
             output_dir=output_dir,
             num_train_epochs=num_epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
             learning_rate=learning_rate,
             lr_scheduler_type="cosine",

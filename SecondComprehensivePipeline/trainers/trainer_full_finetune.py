@@ -445,12 +445,15 @@ class FullFineTuneTrainer:
         # Full fine-tuning typically needs lower learning rate than LoRA
         # since we're updating all parameters
         full_ft_lr = self.config.get("training", {}).get("full_finetune_learning_rate", 5e-6)
+        batch_size = self.config.get("training", {}).get("batch_size", 1)
+
+        logger.info(f"[BATCH] Using batch_size={batch_size}")
 
         return TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
             # Larger gradient accumulation to compensate for small batch size
             gradient_accumulation_steps=self.config.get("training", {}).get("gradient_accumulation_steps", 16),
             learning_rate=full_ft_lr,
@@ -778,6 +781,8 @@ class FullFineTuneDPOTrainer:
 
     Unlike LoRA DPO which freezes most parameters and only trains adapter weights,
     full fine-tuning DPO trains ALL model parameters during preference optimization.
+
+    Reuses dataset preparation methods from QLoRA DPO trainer for consistency.
     """
 
     def __init__(self, config: Dict[str, Any]):
@@ -786,6 +791,10 @@ class FullFineTuneDPOTrainer:
         self.ref_model = None
         self.processor = None
         self.hf_cache_dir = get_hf_cache_dir()
+
+        # Import QLoRA DPO trainer methods for dataset preparation
+        from trainers.trainer_dpo import DPOTrainerWithQLoRA
+        self._qlora_trainer = DPOTrainerWithQLoRA(config)
 
     def load_model(self, base_model: str = None):
         """Load model for full fine-tuning DPO (no quantization, no LoRA). Uses shared model_utils."""
@@ -803,60 +812,16 @@ class FullFineTuneDPOTrainer:
             base_model=base_model,
             cache_dir=cache_dir
         )
+        # Share processor with QLoRA trainer for transforms
+        self._qlora_trainer.processor = self.processor
 
     def prepare_dpo_dataset(self, dataset_path: str, image_dir: str, max_samples: int = None) -> Dataset:
-        """Prepare DPO dataset from JSON file with actual image loading for VLM DPO"""
-        logger.info(f"Preparing DPO dataset from: {dataset_path}")
+        """Reuse QLoRA DPO's dataset preparation"""
+        return self._qlora_trainer.prepare_dpo_dataset(dataset_path, image_dir, max_samples)
 
-        with open(dataset_path, 'r', encoding='utf-8') as f:
-            raw_data = json.load(f)
-
-        image_dir = Path(image_dir)
-
-        dpo_data = []
-        skipped = 0
-        for item in raw_data:
-            image_name = item.get('image_name', '')
-            image = None
-
-            if image_name:
-                image_path = image_dir / image_name
-                if image_path.exists():
-                    try:
-                        image = Image.open(image_path).convert('RGB')
-                        image.thumbnail((384, 384))
-                    except Exception as e:
-                        logger.warning(f"Failed to load image {image_path}: {e}")
-                        skipped += 1
-                        continue
-                else:
-                    skipped += 1
-                    continue
-            else:
-                image = Image.new('RGB', (384, 384), color='black')
-
-            prompt = item.get('prompt', '')
-            chosen = item.get('chosen', '')
-            rejected = item.get('rejected', '')
-
-            if prompt and chosen and rejected and image:
-                prompt_with_image = f"<image>{prompt}"
-                dpo_data.append({
-                    'prompt': prompt_with_image,
-                    'chosen': chosen,
-                    'rejected': rejected,
-                    'images': [image]
-                })
-
-        if max_samples is not None and len(dpo_data) > max_samples:
-            logger.info(f"Limiting dataset from {len(dpo_data)} to {max_samples} samples")
-            dpo_data = dpo_data[:max_samples]
-
-        if skipped > 0:
-            logger.warning(f"Skipped {skipped} samples due to missing/invalid images")
-
-        logger.info(f"Prepared {len(dpo_data)} DPO samples with images")
-        return Dataset.from_list(dpo_data)
+    def _apply_chat_transform(self, dataset):
+        """Reuse QLoRA DPO's chat transform"""
+        return self._qlora_trainer._apply_chat_transform(dataset)
 
     def train(self, dataset_path: str, image_dir: str, output_dir: str,
               use_wandb: bool = True, max_samples: int = None,
@@ -887,17 +852,24 @@ class FullFineTuneDPOTrainer:
 
         logger.info(f"Train: {len(train_dataset)}, Eval: {len(eval_dataset)}")
 
+        # Apply chat format transform (loads images during map) - same as QLoRA DPO
+        train_dataset = self._apply_chat_transform(train_dataset)
+        eval_dataset = self._apply_chat_transform(eval_dataset)
+
         num_epochs = int(self.config.get("training", {}).get("epochs", 3))
         # Use lower learning rate for full fine-tuning DPO
         learning_rate = float(self.config.get("training", {}).get("full_finetune_dpo_learning_rate",
                               self.config.get("training", {}).get("dpo_learning_rate", 1e-7)))
         gradient_accumulation_steps = int(self.config.get("training", {}).get("gradient_accumulation_steps", 16))
+        batch_size = self.config.get("training", {}).get("batch_size", 1)
+
+        logger.info(f"[BATCH] Using batch_size={batch_size}")
 
         training_args = DPOConfig(
             output_dir=output_dir,
             num_train_epochs=num_epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
             learning_rate=learning_rate,
             lr_scheduler_type="cosine",
@@ -908,18 +880,23 @@ class FullFineTuneDPOTrainer:
             eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
-            bf16=torch.cuda.is_available(),
-            dataloader_pin_memory=False,
+            # Use fp16 instead of bf16 - bf16 causes dtype mismatch with SmolVLM vision encoder
+            fp16=torch.cuda.is_available(),
+            bf16=False,
+            dataloader_pin_memory=True,
+            dataloader_num_workers=0,
             remove_unused_columns=False,
             report_to="wandb" if use_wandb else "none",
             beta=0.1,
             loss_type="sigmoid",
-            max_length=512,
-            max_prompt_length=256,
+            # Increase limits to accommodate 64 image tokens + text (match QLoRA DPO)
+            max_length=1024,
+            max_prompt_length=512,
             gradient_checkpointing=True,
             # Use standard optimizer for full fine-tuning
             optim="adamw_torch",
             max_grad_norm=1.0,
+            dataset_num_proc=None,  # Disable multiprocessing to avoid CUDA fork error
         )
 
         # Create DPO evaluation callback

@@ -11,73 +11,134 @@ from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
 
 import torch
+import torch.nn.functional as F
 
 logger = logging.getLogger(__name__)
+
+
+def pad_pixel_values(pixel_values_list: List[torch.Tensor]) -> torch.Tensor:
+    """
+    Pad pixel values to the same shape and stack them.
+
+    Handles variable-sized images by padding to the maximum dimensions in the batch.
+    For SmolVLM, pixel_values typically have shape (num_images, channels, height, width)
+    or (channels, height, width).
+
+    Args:
+        pixel_values_list: List of pixel value tensors
+
+    Returns:
+        Stacked and padded tensor
+    """
+    if not pixel_values_list:
+        raise ValueError("Empty pixel_values_list")
+
+    # Get shapes of all tensors
+    shapes = [pv.shape for pv in pixel_values_list]
+
+    # Check if all shapes are the same - if so, just stack
+    if all(s == shapes[0] for s in shapes):
+        return torch.stack(pixel_values_list)
+
+    # Handle different number of dimensions
+    ndims = [len(s) for s in shapes]
+    if len(set(ndims)) > 1:
+        logger.warning(f"Pixel values have different number of dimensions: {ndims}. Attempting to handle.")
+
+    max_ndim = max(ndims)
+
+    # Normalize all tensors to have the same number of dimensions
+    normalized = []
+    for pv in pixel_values_list:
+        while len(pv.shape) < max_ndim:
+            pv = pv.unsqueeze(0)
+        normalized.append(pv)
+
+    # Get max size for each dimension
+    shapes = [pv.shape for pv in normalized]
+    max_shape = [max(s[i] for s in shapes) for i in range(max_ndim)]
+
+    # Pad each tensor to max_shape
+    padded = []
+    for pv in normalized:
+        # Calculate padding for each dimension (from last to first)
+        pad_sizes = []
+        for i in range(max_ndim - 1, -1, -1):
+            pad_needed = max_shape[i] - pv.shape[i]
+            pad_sizes.extend([0, pad_needed])  # (left, right) for each dim
+
+        if any(p > 0 for p in pad_sizes):
+            pv = F.pad(pv, pad_sizes, mode='constant', value=0)
+        padded.append(pv)
+
+    return torch.stack(padded)
 
 
 @dataclass
 class VisionLanguageDataCollator:
     """
     Custom data collator for vision-language models.
-    
+
     Handles:
     - Dynamic padding of text sequences
     - Proper label masking with -100 for padded positions
-    - Pixel values stacking
+    - Pixel values padding and stacking (supports variable-sized images)
     """
-    
+
     pad_token_id: int = 0
     label_pad_token_id: int = -100
-    
+
     def __call__(self, features: List[Dict[str, torch.Tensor]]) -> Dict[str, torch.Tensor]:
         """
         Collate a batch of features.
-        
+
         Args:
             features: List of feature dicts from dataset
-            
+
         Returns:
             Batched tensors dict
         """
-        # Extract pixel values first (they should all have same shape)
+        # Extract pixel values first
         pixel_values = [f.pop('pixel_values') for f in features]
-        
+
         # Find max sequence length
         max_length = max(f['input_ids'].shape[0] for f in features)
-        
+
         batch = {}
-        batch['pixel_values'] = torch.stack(pixel_values)
-        
+
+        # Use padding-aware stacking for pixel values (handles different image sizes)
+        batch['pixel_values'] = pad_pixel_values(pixel_values)
+
         input_ids = []
         attention_mask = []
         labels = []
-        
+
         for f in features:
             seq_len = f['input_ids'].shape[0]
             pad_len = max_length - seq_len
-            
+
             # Pad input_ids
             input_ids.append(torch.cat([
                 f['input_ids'],
                 torch.full((pad_len,), self.pad_token_id, dtype=f['input_ids'].dtype)
             ]))
-            
+
             # Pad attention_mask
             attention_mask.append(torch.cat([
                 f['attention_mask'],
                 torch.zeros(pad_len, dtype=f['attention_mask'].dtype)
             ]))
-            
+
             # Pad labels with -100 (ignored in loss)
             labels.append(torch.cat([
                 f['labels'],
                 torch.full((pad_len,), self.label_pad_token_id, dtype=f['labels'].dtype)
             ]))
-        
+
         batch['input_ids'] = torch.stack(input_ids)
         batch['attention_mask'] = torch.stack(attention_mask)
         batch['labels'] = torch.stack(labels)
-        
+
         return batch
 
 
@@ -116,9 +177,9 @@ class VisionLanguageDataCollatorWithPadding:
             max_seq_len = min(max_seq_len, self.max_length)
         
         batch = {}
-        
+
         if pixel_values:
-            batch['pixel_values'] = torch.stack(pixel_values)
+            batch['pixel_values'] = pad_pixel_values(pixel_values)
         
         input_ids = []
         attention_mask = []

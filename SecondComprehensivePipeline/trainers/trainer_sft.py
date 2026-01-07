@@ -426,8 +426,8 @@ class SFTTrainer:
         training_args = TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=self.config.get("training", {}).get("batch_size", 1),
+            per_device_eval_batch_size=self.config.get("training", {}).get("batch_size", 1),
             gradient_accumulation_steps=self.config.get("training", {}).get("gradient_accumulation_steps", 8),
             learning_rate=self.config.get("training", {}).get("learning_rate", 1e-5),
             lr_scheduler_type="cosine",
@@ -448,6 +448,8 @@ class SFTTrainer:
             gradient_checkpointing=True,
             optim="adamw_8bit",
         )
+
+        logger.info(f"[BATCH] Using batch_size={self.config.get('training', {}).get('batch_size', 1)}")
 
         # Extract training dataset name from path (e.g., "qcm_gemini" from "datasets/erp/qcm_gemini.json")
         training_dataset_name = Path(dataset_path).stem
@@ -547,8 +549,8 @@ class SFTTrainer:
         training_args = TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=self.config.get("training", {}).get("batch_size", 1),
+            per_device_eval_batch_size=self.config.get("training", {}).get("batch_size", 1),
             gradient_accumulation_steps=self.config.get("training", {}).get("gradient_accumulation_steps", 8),
             learning_rate=self.config.get("training", {}).get("learning_rate", 1e-5),
             lr_scheduler_type="cosine",
@@ -569,6 +571,8 @@ class SFTTrainer:
             gradient_checkpointing=True,
             optim="adamw_8bit",
         )
+
+        logger.info(f"[BATCH] Using batch_size={self.config.get('training', {}).get('batch_size', 1)}")
 
         # For combined training, we can't skip individual dataset evaluations
         # because train/test split was done on the combined dataset
@@ -652,8 +656,8 @@ class SFTTrainer:
         training_args = TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=self.config.get("training", {}).get("batch_size", 1),
+            per_device_eval_batch_size=self.config.get("training", {}).get("batch_size", 1),
             gradient_accumulation_steps=self.config.get("training", {}).get("gradient_accumulation_steps", 8),
             learning_rate=self.config.get("training", {}).get("learning_rate", 1e-5),
             lr_scheduler_type="cosine",
@@ -674,6 +678,8 @@ class SFTTrainer:
             gradient_checkpointing=True,
             optim="adamw_8bit",
         )
+
+        logger.info(f"[BATCH] Using batch_size={self.config.get('training', {}).get('batch_size', 1)}")
 
         # Extract training dataset name from path
         training_dataset_name = Path(dataset_path).stem
@@ -764,8 +770,8 @@ class SFTTrainer:
         training_args = TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=self.config.get("training", {}).get("batch_size", 1),
+            per_device_eval_batch_size=self.config.get("training", {}).get("batch_size", 1),
             gradient_accumulation_steps=self.config.get("training", {}).get("gradient_accumulation_steps", 8),
             learning_rate=self.config.get("training", {}).get("learning_rate", 1e-5),
             lr_scheduler_type="cosine",
@@ -786,6 +792,8 @@ class SFTTrainer:
             gradient_checkpointing=True,
             optim="adamw_8bit",
         )
+
+        logger.info(f"[BATCH] Using batch_size={self.config.get('training', {}).get('batch_size', 1)}")
 
         # For combined training, we can't skip individual dataset evaluations
         training_dataset_name = None
@@ -861,8 +869,8 @@ class SFTTrainer:
         training_args = TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=1,
-            per_device_eval_batch_size=1,
+            per_device_train_batch_size=self.config.get("training", {}).get("batch_size", 1),
+            per_device_eval_batch_size=self.config.get("training", {}).get("batch_size", 1),
             gradient_accumulation_steps=self.config.get("training", {}).get("gradient_accumulation_steps", 8),
             learning_rate=self.config.get("training", {}).get("learning_rate", 1e-5),
             lr_scheduler_type="cosine",
@@ -883,6 +891,8 @@ class SFTTrainer:
             gradient_checkpointing=True,
             optim="adamw_8bit",
         )
+
+        logger.info(f"[BATCH] Using batch_size={self.config.get('training', {}).get('batch_size', 1)}")
 
         # Use benchmark name to skip duplicate evaluation (e.g., "docvqa", "ocrbench", "chartqa")
         training_dataset_name = benchmark_name
