@@ -100,7 +100,7 @@ paths:
   logs_dir: logs_overfit
 pipeline:
   continue_on_error: false
-  use_wandb: false
+  use_wandb: true
   wandb_project: 23overfit_test
   debug_mode: false
   num_workers: 1
