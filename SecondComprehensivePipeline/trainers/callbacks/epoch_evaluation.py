@@ -221,10 +221,12 @@ class BaseEpochEvaluationCallback(TrainerCallback, ABC):
         try:
             metrics = {}
 
-            # Log benchmark accuracies at epoch 0
+            # Log benchmark accuracies and ANLS at epoch 0
             for bench_name, bench_data in baseline_results.get("benchmarks", {}).items():
                 if "accuracy" in bench_data:
                     metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+                if "anls" in bench_data:
+                    metrics[f"eval/{bench_name}_anls"] = bench_data["anls"]
 
             # Log ERP evaluation metrics at epoch 0
             erp = baseline_results.get("erp_evaluation", {})
@@ -390,10 +392,12 @@ class BaseEpochEvaluationCallback(TrainerCallback, ABC):
             # Let subclass add task-specific metrics
             self._log_task_metrics(metrics, train_result, test_result, epoch, is_step_eval)
 
-            # Log benchmark accuracies
+            # Log benchmark accuracies and ANLS
             for bench_name, bench_data in results.get("benchmarks", {}).items():
                 if "accuracy" in bench_data:
                     metrics[f"eval/{bench_name}_acc"] = bench_data["accuracy"]
+                if "anls" in bench_data:
+                    metrics[f"eval/{bench_name}_anls"] = bench_data["anls"]
                 if "skipped_samples" in bench_data:
                     metrics[f"eval/{bench_name}_skipped"] = bench_data["skipped_samples"]
 
