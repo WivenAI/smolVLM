@@ -89,13 +89,6 @@ for config_file in "${CONFIG_FILES[@]}"; do
 
     echo "[$((SUBMITTED + SKIPPED + 1))/${#CONFIG_FILES[@]}] $strategy_name"
 
-    # Skip full DPO strategies
-    if [[ "$strategy_name" == "full_ft_dpo_gemini" ]] || [[ "$strategy_name" == "full_ft_dpo_nova" ]]; then
-        echo "  ⊘ Skipping (full DPO excluded)"
-        SKIPPED=$((SKIPPED + 1))
-        continue
-    fi
-
     # Check limit
     if [ $LIMIT -gt 0 ] && [ $SUBMITTED -ge $LIMIT ]; then
         echo "  ⊘ Skipping (limit reached)"
