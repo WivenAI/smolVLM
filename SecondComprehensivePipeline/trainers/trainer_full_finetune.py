@@ -793,11 +793,13 @@ class FullFineTuneDPOTrainer:
         self.hf_cache_dir = get_hf_cache_dir()
 
         # Import QLoRA DPO trainer methods for dataset preparation
-        from trainers.trainer_dpo import DPOTrainerWithQLoRA
-        self._qlora_trainer = DPOTrainerWithQLoRA(config)
+        from trainers.trainer_dpo import DPOTrainerWrapper
+        self._qlora_trainer = DPOTrainerWrapper(config)
 
     def load_model(self, base_model: str = None):
         """Load model for full fine-tuning DPO (no quantization, no LoRA). Uses shared model_utils."""
+        from trainers.model_utils import load_model_full_ft_dpo
+
         if base_model is None:
             base_model = self.config.get("model", {}).get("base_model", BASE_MODEL)
 
@@ -807,8 +809,8 @@ class FullFineTuneDPOTrainer:
             self.config
         )
 
-        # Use shared model loading function for full fine-tuning
-        self.model, self.processor = load_model_full_ft(
+        # Use DPO-specific model loading (with do_image_splitting=False)
+        self.model, self.processor = load_model_full_ft_dpo(
             base_model=base_model,
             cache_dir=cache_dir
         )
@@ -880,9 +882,9 @@ class FullFineTuneDPOTrainer:
             eval_steps=100,
             save_strategy="epoch",
             save_total_limit=2,
-            # Use fp16 instead of bf16 - bf16 causes dtype mismatch with SmolVLM vision encoder
-            fp16=torch.cuda.is_available(),
-            bf16=False,
+            # Use bf16 for full fine-tuning (model is loaded in bf16)
+            fp16=False,
+            bf16=torch.cuda.is_available(),
             dataloader_pin_memory=True,
             dataloader_num_workers=0,
             remove_unused_columns=False,

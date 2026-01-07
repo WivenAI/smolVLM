@@ -279,3 +279,60 @@ def load_model_full_ft(
     logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
 
     return model, processor
+
+
+def load_model_full_ft_dpo(
+    base_model: Optional[str] = None,
+    cache_dir: Optional[str] = None,
+    enable_gradient_checkpointing: bool = True
+) -> Tuple[Any, Any]:
+    """
+    Load model for full fine-tuning DPO (no quantization, no LoRA).
+
+    Same as load_model_full_ft but with do_image_splitting=False in processor,
+    which is required for VLM DPO training per TRL documentation.
+
+    Args:
+        base_model: Model name/path (default BASE_MODEL from config)
+        cache_dir: HuggingFace cache directory
+        enable_gradient_checkpointing: Whether to enable gradient checkpointing
+
+    Returns:
+        Tuple of (model, processor)
+    """
+    if base_model is None:
+        base_model = BASE_MODEL
+
+    logger.info(f"[FULL_FT-DPO] Loading model for FULL fine-tuning DPO: {base_model}")
+
+    # Load processor with do_image_splitting=False (required for VLM DPO)
+    processor = AutoProcessor.from_pretrained(
+        base_model,
+        trust_remote_code=True,
+        cache_dir=cache_dir,
+        do_image_splitting=False  # Required for VLM DPO training
+    )
+
+    # Load model WITHOUT quantization for full fine-tuning
+    model = AutoModelForImageTextToText.from_pretrained(
+        base_model,
+        trust_remote_code=True,
+        dtype=torch.bfloat16,
+        device_map="auto",
+        low_cpu_mem_usage=True,
+        cache_dir=cache_dir
+    )
+
+    # Enable gradient checkpointing for memory efficiency
+    if enable_gradient_checkpointing and hasattr(model, 'gradient_checkpointing_enable'):
+        model.gradient_checkpointing_enable()
+
+    # Log trainable parameters
+    total_params = sum(p.numel() for p in model.parameters())
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+    logger.info(f"[FULL_FT-DPO] Full fine-tuning DPO - ALL parameters trainable:")
+    logger.info(f"  Total parameters: {total_params:,}")
+    logger.info(f"  Trainable parameters: {trainable_params:,} ({100 * trainable_params / total_params:.2f}%)")
+
+    return model, processor
