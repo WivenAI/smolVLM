@@ -11,7 +11,7 @@ training:
   batch_size: 1
   gradient_accumulation_steps: 1
   learning_rate: 1.0e-05
-  dpo_learning_rate: 5.0e-07
+  dpo_learning_rate: 1.0e-06
   full_finetune_learning_rate: 5.0e-06
   full_finetune_dpo_learning_rate: 1.0e-07
 
