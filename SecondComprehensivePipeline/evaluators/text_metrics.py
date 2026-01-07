@@ -14,6 +14,45 @@ import re
 from typing import List, Union, Optional, Tuple
 
 
+# Number to word mapping (bidirectional: "1" <-> "one")
+NUMBER_WORDS = {
+    "0": "zero", "1": "one", "2": "two", "3": "three", "4": "four",
+    "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine",
+    "10": "ten", "11": "eleven", "12": "twelve", "13": "thirteen",
+    "14": "fourteen", "15": "fifteen", "16": "sixteen", "17": "seventeen",
+    "18": "eighteen", "19": "nineteen", "20": "twenty"
+}
+# Reverse mapping: word -> number
+WORD_NUMBERS = {v: k for k, v in NUMBER_WORDS.items()}
+
+
+def get_number_variants(text: str) -> List[str]:
+    """
+    Get number/word variants for a text.
+
+    If text is a digit (0-20), returns [digit, word].
+    If text is a number word, returns [word, digit].
+    Otherwise returns [text].
+
+    Args:
+        text: Normalized text to get variants for
+
+    Returns:
+        List of variants including the original
+    """
+    variants = [text]
+
+    # Check if it's a digit that has a word equivalent
+    if text in NUMBER_WORDS:
+        variants.append(NUMBER_WORDS[text])
+
+    # Check if it's a word that has a digit equivalent
+    if text in WORD_NUMBERS:
+        variants.append(WORD_NUMBERS[text])
+
+    return variants
+
+
 def normalize_text(text: str) -> str:
     """
     Normalize text for comparison.
@@ -139,12 +178,14 @@ def text_contains_answer(prediction: str, ground_truth: str) -> bool:
     UNIDIRECTIONAL: Only checks if ground truth is IN the prediction.
     Does NOT check if prediction is in ground truth (removes bidirectional matching).
 
+    Also handles number-word equivalence: "1" matches "one", "2" matches "two", etc.
+
     Args:
         prediction: Model's predicted response
         ground_truth: Expected correct answer
 
     Returns:
-        True if normalized ground truth is contained in normalized prediction
+        True if normalized ground truth (or number/word variant) is contained in prediction
     """
     pred_norm = normalize_text(prediction)
     gt_norm = normalize_text(ground_truth)
@@ -152,8 +193,15 @@ def text_contains_answer(prediction: str, ground_truth: str) -> bool:
     if not pred_norm or not gt_norm:
         return False
 
-    # Only check: ground truth IN prediction (NOT prediction in ground truth)
-    return gt_norm in pred_norm
+    # Get number/word variants for ground truth (e.g., "1" -> ["1", "one"])
+    gt_variants = get_number_variants(gt_norm)
+
+    # Check if any variant of ground truth is in prediction
+    for variant in gt_variants:
+        if variant in pred_norm:
+            return True
+
+    return False
 
 
 def text_matches_any(prediction: str, ground_truths: Union[str, List[str]]) -> bool:
@@ -161,13 +209,14 @@ def text_matches_any(prediction: str, ground_truths: Union[str, List[str]]) -> b
     Check if prediction matches any of the ground truths.
 
     Uses unidirectional containment: gt in prediction only.
+    Also handles number-word equivalence: "1" matches "one", "2" matches "two", etc.
 
     Args:
         prediction: Model's predicted response
         ground_truths: Single ground truth or list of ground truths
 
     Returns:
-        True if any ground truth is contained in prediction
+        True if any ground truth (or number/word variant) is contained in prediction
     """
     if isinstance(ground_truths, str):
         ground_truths = [ground_truths]
@@ -178,11 +227,19 @@ def text_matches_any(prediction: str, ground_truths: Union[str, List[str]]) -> b
 
     for gt in ground_truths:
         gt_norm = normalize_text(gt)
-        if gt_norm and gt_norm in pred_norm:
-            return True
-        # Also check exact match
-        if gt_norm and gt_norm == pred_norm:
-            return True
+        if not gt_norm:
+            continue
+
+        # Get number/word variants for ground truth
+        gt_variants = get_number_variants(gt_norm)
+
+        for variant in gt_variants:
+            # Check containment
+            if variant in pred_norm:
+                return True
+            # Also check exact match
+            if variant == pred_norm:
+                return True
 
     return False
 
