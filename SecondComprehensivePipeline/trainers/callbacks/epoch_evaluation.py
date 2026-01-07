@@ -114,7 +114,7 @@ class BaseEpochEvaluationCallback(TrainerCallback, ABC):
     EARLY_EVAL_STEPS = [200]
 
     # Epochs at which to run evaluation
-    EVAL_EPOCHS = [1, 2, 5, 10, 20, 30, 40, 100]
+    EVAL_EPOCHS = [1, 2, 5, 10, 20, 30, 40, 100, 200, 300]
 
     def __init__(
         self,

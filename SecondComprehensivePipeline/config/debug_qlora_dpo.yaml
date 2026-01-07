@@ -1,0 +1,40 @@
+model:
+  base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
+  cache_dir: ../tmpcache_debug
+  image_size: 512
+
+training:
+  epochs: 1
+  train_samples: 5
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 1.0e-05
+  dpo_learning_rate: 5.0e-07
+  full_finetune_learning_rate: 5.0e-06
+  full_finetune_dpo_learning_rate: 1.0e-07
+
+  strategies:
+  # Baseline
+  - name: baseline
+    enabled: true
+    type: none
+
+  # QLoRA DPO only
+  - name: dpo_gemini_debug
+    enabled: true
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+
+evaluation:
+  benchmarks:
+    - name: qcm
+      enabled: true
+      eval_dir: datasets/qcm
+      json_file: qcm_dataset_gemini.json
+      image_dir: datasets/images
+      task: qcm
+
+output:
+  results_dir: results_debug_qlora_dpo
+  weights_dir: modelweights_debug_qlora_dpo

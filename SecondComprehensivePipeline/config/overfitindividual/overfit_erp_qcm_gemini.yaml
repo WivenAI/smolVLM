@@ -1,12 +1,12 @@
 # Overfit test config: erp_qcm_gemini (SFT QLoRA on QCM Gemini dataset)
-# train_samples: 100, epochs: 20 - evaluate only qcm_gemini
+# train_samples: 100, epochs: 301 - evaluate only qcm_gemini
 model:
   base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
   cache_dir: ../tmpcache
   image_size: 512
 
 training:
-  epochs: 20
+  epochs: 301
   train_samples: 100
   batch_size: 1
   gradient_accumulation_steps: 1
@@ -107,6 +107,6 @@ paths:
 pipeline:
   continue_on_error: false
   use_wandb: false
-  wandb_project: overfit_test
+  wandb_project: 23overfit_test
   debug_mode: false
   num_workers: 1
