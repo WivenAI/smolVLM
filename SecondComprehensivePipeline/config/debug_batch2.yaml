@@ -5,8 +5,8 @@ model:
 
 training:
   epochs: 1
-  train_samples: 4
-  batch_size: 2
+  train_samples: 40
+  batch_size: 16
   gradient_accumulation_steps: 1
   learning_rate: 1.0e-05
   dpo_learning_rate: 1.0e-06
@@ -19,29 +19,29 @@ training:
     enabled: true
     type: none
 
-  # SFT QLoRA strategies (batch size 2 test)
-  - name: sft_qcm_gemini_batch2
-    enabled: false
+  # SFT QLoRA strategies (batch size 20 test)
+  - name: sft_qcm_gemini_batch20
+    enabled: true
     type: sft_qcm
     dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
 
-  # SFT Benchmark (QLoRA)
-  - name: sft_docvqa_batch2
+  # SFT Benchmark (QLoRA) - disabled for quick test
+  - name: sft_docvqa_batch20
     enabled: false
     type: sft_benchmark
     benchmark: docvqa
 
-  # QLoRA DPO (batch size 2 test)
-  - name: dpo_gemini_batch2
+  # QLoRA DPO - disabled for quick test
+  - name: dpo_gemini_batch20
     enabled: false
     type: dpo
     dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images
 
-  # Full Fine-tune DPO (batch size 1 test)
+  # Full Fine-tune DPO - disabled for quick test
   - name: full_ft_dpo_gemini
-    enabled: true
+    enabled: false
     type: full_ft_dpo
     dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images

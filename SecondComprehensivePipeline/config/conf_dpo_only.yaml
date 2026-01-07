@@ -11,7 +11,7 @@ model:
 training:
   epochs: 30
   train_samples: 1000
-  batch_size: 1
+  batch_size: 16
   gradient_accumulation_steps: 1
   learning_rate: 0.00001
   dpo_learning_rate: 0.0000005  # 5e-7, DPO typically needs lower LR than SFT

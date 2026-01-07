@@ -5,7 +5,7 @@ model:
 training:
   epochs: 1
   train_samples: 2
-  batch_size: 1
+  batch_size: 16
   gradient_accumulation_steps: 1
   learning_rate: 1.0e-05
   dpo_learning_rate: 1.0e-06

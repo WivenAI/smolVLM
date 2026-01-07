@@ -11,7 +11,7 @@ model:
 training:
   epochs: 100  # Run 100 epochs to see full overfitting curve
   train_samples: 100  # 100 samples to overfit on
-  batch_size: 1
+  batch_size: 16
   gradient_accumulation_steps: 1
   learning_rate: 1.0e-05
   dpo_learning_rate: 1.0e-06

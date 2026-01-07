@@ -10,7 +10,7 @@ model:
 training:
   epochs: 1  # Single epoch for debug
   train_samples: 2  # Minimal samples for debug
-  batch_size: 1
+  batch_size: 16
   gradient_accumulation_steps: 1
   learning_rate: 1.0e-05
   dpo_learning_rate: 1.0e-06

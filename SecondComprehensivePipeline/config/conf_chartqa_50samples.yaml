@@ -8,7 +8,7 @@ model:
 training:
   epochs: 101
   train_samples: 2  # Only 2 samples - overfit test
-  batch_size: 1
+  batch_size: 16
   gradient_accumulation_steps: 8  # Smaller effective batch for 50 samples
   learning_rate: 0.00001
   full_finetune_learning_rate: 0.000005

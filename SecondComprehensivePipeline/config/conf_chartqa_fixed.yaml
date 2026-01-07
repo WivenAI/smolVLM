@@ -10,7 +10,7 @@ model:
 training:
   epochs: 3  # Use 3 epochs to see if accuracy improves instead of dropping
   train_samples: null  # Use all samples (or set to 50 for quick test)
-  batch_size: 1
+  batch_size: 16
   gradient_accumulation_steps: 16  # Effective batch size = 16
   learning_rate: 0.00001
   full_finetune_learning_rate: 0.000005  # Lower LR for full fine-tuning
