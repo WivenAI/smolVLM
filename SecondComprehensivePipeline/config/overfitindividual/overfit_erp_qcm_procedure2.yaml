@@ -1,11 +1,11 @@
 # Overfit test config: erp_qcm_procedure2 (sft_qcm)
-# train_samples: 100, epochs: 301 - evaluate only qcm_procedure2
+# train_samples: 100, epochs: 1002 - evaluate only qcm_procedure2
 model:
   base_model: HuggingFaceTB/SmolVLM2-256M-Video-Instruct
   cache_dir: ../tmpcache
   image_size: 512
 training:
-  epochs: 301
+  epochs: 1002
   train_samples: 100
   batch_size: 16
   gradient_accumulation_steps: 1
