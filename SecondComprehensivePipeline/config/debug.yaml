@@ -19,228 +19,259 @@ training:
     enabled: true
     type: none
 
-  # One SFT strategy for testing
+  # SFT QCM strategies
   - name: sft_qcm_gemini_debug
     enabled: true
     type: sft_qcm
     dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
 
-  # One DPO strategy for testing
+  - name: erp_qcm_nova
+    enabled: true
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+
+  - name: erp_qcm_procedure1
+    enabled: true
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+
+  - name: erp_qcm_procedure2
+    enabled: true
+    type: sft_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+
+  # DPO strategies (QLoRA, not full FT)
   - name: dpo_gemini_debug
     enabled: true
     type: dpo
     dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images
 
-  # One benchmark strategy for testing
+  - name: erp_dpo_nova
+    enabled: true
+    type: dpo
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+
+  # SFT Benchmark strategies
   - name: sft_docvqa_debug
     enabled: true
     type: sft_benchmark
     benchmark: docvqa
 
-  # All other strategies disabled for debug
-  - name: full_ft_qcm_procedure1
-    enabled: false
-    type: full_ft_qcm
-    dataset: datasets/qcm/qcm_procedure1_claude_code.json
-    image_dir: datasets/procedureimages
-  - name: full_ft_qcm_procedure2
-    enabled: false
-    type: full_ft_qcm
-    dataset: datasets/qcm/qcm_procedure2_geminicli.json
-    image_dir: datasets/procedureimages
+  - name: sft_ocrbench
+    enabled: true
+    type: sft_benchmark
+    benchmark: ocrbench
+
+  - name: sft_chartqa
+    enabled: true
+    type: sft_benchmark
+    benchmark: chartqa
+
+  # SFT on DPO chosen responses
+  - name: erp_sft_chosen_rej_gemini
+    enabled: true
+    type: sft_chosen_rej
+    dataset: datasets/dpo/dpo_dataset_gemini.json
+    image_dir: datasets/images
+
+  - name: erp_sft_chosen_rej_nova
+    enabled: true
+    type: sft_chosen_rej
+    dataset: datasets/dpo/dpo_dataset_nova_pro.json
+    image_dir: datasets/images
+
+  # Full fine-tuning QCM (no LoRA)
   - name: full_ft_qcm_gemini
-    enabled: false
+    enabled: true
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
+
   - name: full_ft_qcm_nova
-    enabled: false
+    enabled: true
     type: full_ft_qcm
     dataset: datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
+
+  - name: full_ft_qcm_procedure1
+    enabled: true
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_procedure1_claude_code.json
+    image_dir: datasets/procedureimages
+
+  - name: full_ft_qcm_procedure2
+    enabled: true
+    type: full_ft_qcm
+    dataset: datasets/qcm/qcm_procedure2_geminicli.json
+    image_dir: datasets/procedureimages
+
+  # Full fine-tuning benchmarks
   - name: full_ft_docvqa
-    enabled: false
+    enabled: true
     type: full_ft_benchmark
     benchmark: docvqa
+
   - name: full_ft_ocrbench
-    enabled: false
+    enabled: true
     type: full_ft_benchmark
     benchmark: ocrbench
+
   - name: full_ft_chartqa
-    enabled: false
+    enabled: true
     type: full_ft_benchmark
     benchmark: chartqa
+
+  # Full fine-tuning SFT on chosen responses
   - name: full_ft_sft_chosen_rej_gemini
-    enabled: false
+    enabled: true
     type: full_ft_chosen_rej_sft
     dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images
+
   - name: full_ft_sft_chosen_rej_nova
-    enabled: false
+    enabled: true
     type: full_ft_chosen_rej_sft
     dataset: datasets/dpo/dpo_dataset_nova_pro.json
     image_dir: datasets/images
+
+  # DISABLED: Full fine-tuning DPO (requires too much GPU memory)
   - name: full_ft_dpo_gemini
     enabled: false
     type: full_ft_dpo
     dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images
+
   - name: full_ft_dpo_nova
     enabled: false
     type: full_ft_dpo
     dataset: datasets/dpo/dpo_dataset_nova_pro.json
     image_dir: datasets/images
-  - name: sft_docvqa
-    enabled: false
-    type: sft_benchmark
-    benchmark: docvqa
-  - name: sft_ocrbench
-    enabled: false
-    type: sft_benchmark
-    benchmark: ocrbench
-  - name: sft_chartqa
-    enabled: false
-    type: sft_benchmark
-    benchmark: chartqa
-  - name: erp_qcm_procedure1
-    enabled: false
-    type: sft_qcm
-    dataset: datasets/qcm/qcm_procedure1_claude_code.json
-    image_dir: datasets/procedureimages
-  - name: erp_qcm_procedure2
-    enabled: false
-    type: sft_qcm
-    dataset: datasets/qcm/qcm_procedure2_geminicli.json
-    image_dir: datasets/procedureimages
-  - name: erp_qcm_gemini
-    enabled: false
-    type: sft_qcm
-    dataset: datasets/qcm/qcm_dataset_gemini.json
-    image_dir: datasets/images
-  - name: erp_qcm_nova
-    enabled: false
-    type: sft_qcm
-    dataset: datasets/qcm/qcm_dataset_nova_pro.json
-    image_dir: datasets/images
-  - name: erp_sft_chosen_rej_gemini
-    enabled: false
-    type: sft_chosen_rej
-    dataset: datasets/dpo/dpo_dataset_gemini.json
-    image_dir: datasets/images
-  - name: erp_sft_chosen_rej_nova
-    enabled: false
-    type: sft_chosen_rej
-    dataset: datasets/dpo/dpo_dataset_nova_pro.json
-    image_dir: datasets/images
-  - name: dpo_docvqa
-    enabled: false
-    type: dpo_benchmark
-    benchmark: docvqa
-  - name: dpo_ocrbench
-    enabled: false
-    type: dpo_benchmark
-    benchmark: ocrbench
-  - name: dpo_chartqa
-    enabled: false
-    type: dpo_benchmark
-    benchmark: chartqa
-  - name: erp_dpo_gemini
-    enabled: false
-    type: dpo
-    dataset: datasets/dpo/dpo_dataset_gemini.json
-    image_dir: datasets/images
-  - name: erp_dpo_nova
-    enabled: false
-    type: dpo
-    dataset: datasets/dpo/dpo_dataset_nova_pro.json
-    image_dir: datasets/images
-  - name: full_ft_qcm_combined
-    enabled: false
-    type: full_ft_qcm_combined
-    datasets:
-    - datasets/qcm/qcm_dataset_gemini.json
-    - datasets/qcm/qcm_dataset_nova_pro.json
-    image_dir: datasets/images
+
+  # Combined QCM strategies
   - name: erp_qcm_combined
-    enabled: false
+    enabled: true
     type: sft_qcm_combined
     datasets:
     - datasets/qcm/qcm_dataset_gemini.json
     - datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
+
   - name: erp_qcm_procedure_combined
-    enabled: false
+    enabled: true
     type: sft_qcm_combined
     datasets:
     - datasets/qcm/qcm_procedure1_claude_code.json
     - datasets/qcm/qcm_procedure2_geminicli.json
     image_dir: datasets/procedureimages
+
+  - name: full_ft_qcm_combined
+    enabled: true
+    type: full_ft_qcm_combined
+    datasets:
+    - datasets/qcm/qcm_dataset_gemini.json
+    - datasets/qcm/qcm_dataset_nova_pro.json
+    image_dir: datasets/images
+
+  # DPO QCM strategies
   - name: dpo_qcm_gemini
-    enabled: false
+    enabled: true
     type: dpo_qcm
     dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
+
   - name: dpo_qcm_nova
-    enabled: false
+    enabled: true
     type: dpo_qcm
     dataset: datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
+
   - name: dpo_qcm_procedure1
-    enabled: false
+    enabled: true
     type: dpo_qcm
     dataset: datasets/qcm/qcm_procedure1_claude_code.json
     image_dir: datasets/procedureimages
+
   - name: dpo_qcm_procedure2
-    enabled: false
+    enabled: true
     type: dpo_qcm
     dataset: datasets/qcm/qcm_procedure2_geminicli.json
     image_dir: datasets/procedureimages
+
+  # DPO Benchmark strategies
+  - name: dpo_docvqa
+    enabled: true
+    type: dpo_benchmark
+    benchmark: docvqa
+
+  - name: dpo_ocrbench
+    enabled: true
+    type: dpo_benchmark
+    benchmark: ocrbench
+
+  - name: dpo_chartqa
+    enabled: true
+    type: dpo_benchmark
+    benchmark: chartqa
+
+  # Sequential training strategies (QCM then DPO)
   - name: erp_qcm_dpo_gemini
-    enabled: false
+    enabled: true
     type: qcm_then_dpo
     qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
     dpo_dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images
+
   - name: erp_dpo_qcm_gemini
-    enabled: false
+    enabled: true
     type: dpo_then_qcm
     dpo_dataset: datasets/dpo/dpo_dataset_gemini.json
     qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
+
   - name: erp_dpo_qcm_nova
-    enabled: false
+    enabled: true
     type: dpo_then_qcm
     dpo_dataset: datasets/dpo/dpo_dataset_nova_pro.json
     qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
+
+  # Combined SFT strategies
   - name: erp_qcm_sft_chosen_rej_gemini
-    enabled: false
+    enabled: true
     type: sft_qcm_chosen_rej
     qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
     chosen_rej_dataset: datasets/dpo/dpo_dataset_gemini.json
     image_dir: datasets/images
+
   - name: erp_qcm_sft_chosen_rej_nova
-    enabled: false
+    enabled: true
     type: sft_qcm_chosen_rej
     qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
     chosen_rej_dataset: datasets/dpo/dpo_dataset_nova_pro.json
     image_dir: datasets/images
+
   - name: erp_sft_chosen_rej_qcm_gemini
-    enabled: false
+    enabled: true
     type: sft_chosen_rej_qcm
     chosen_rej_dataset: datasets/dpo/dpo_dataset_gemini.json
     qcm_dataset: datasets/qcm/qcm_dataset_gemini.json
     image_dir: datasets/images
+
   - name: erp_sft_chosen_rej_qcm_nova
-    enabled: false
+    enabled: true
     type: sft_chosen_rej_qcm
     chosen_rej_dataset: datasets/dpo/dpo_dataset_nova_pro.json
     qcm_dataset: datasets/qcm/qcm_dataset_nova_pro.json
     image_dir: datasets/images
+
   - name: erp_qcm_sft_chosen_rej_combined
-    enabled: false
+    enabled: true
     type: sft_qcm_chosen_rej_combined
     qcm_datasets:
     - datasets/qcm/qcm_dataset_gemini.json
@@ -249,8 +280,9 @@ training:
     - datasets/dpo/dpo_dataset_gemini.json
     - datasets/dpo/dpo_dataset_nova_pro.json
     image_dir: datasets/images
+
   - name: erp_sft_chosen_rej_qcm_combined
-    enabled: false
+    enabled: true
     type: sft_chosen_rej_qcm_combined
     chosen_rej_datasets:
     - datasets/dpo/dpo_dataset_gemini.json
@@ -343,7 +375,7 @@ paths:
   logs_dir: logs_debug
 
 pipeline:
-  continue_on_error: true
+  continue_on_error: false
   use_wandb: false
   wandb_project: debug_pipeline
   debug_mode: true
