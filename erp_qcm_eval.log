@@ -1,7 +1,0 @@
-/home/david-lacour/.pyenv/versions/myenv/lib/python3.12/site-packages/torch/cuda/__init__.py:182: UserWarning: CUDA initialization: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:109.)
-  return torch._C._cuda_getDeviceCount() > 0
-usage: evaluate_qcm_erp.py [-h] [--model-path MODEL_PATH]
-                           [--qcm-path QCM_PATH] [--output-file OUTPUT_FILE]
-                           [--num-samples NUM_SAMPLES]
-                           [--percentage PERCENTAGE] [--verbose]
-evaluate_qcm_erp.py: error: unrecognized arguments:     

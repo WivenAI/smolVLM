@@ -1,7 +1,0 @@
-usage: evaluate_ocrbench.py [-h] [--model-path MODEL_PATH]
-                            [--output-file OUTPUT_FILE]
-                            [--benchmarks {ocrbench,textvqa,docvqa,chartqa,ai2d,scienceqa,mmstar,mmmu,mathvista} [{ocrbench,textvqa,docvqa,chartqa,ai2d,scienceqa,mmstar,mmmu,mathvista} ...]]
-                            [--num-samples NUM_SAMPLES]
-                            [--percentage PERCENTAGE] [--cache-dir CACHE_DIR]
-                            [--verbose]
-evaluate_ocrbench.py: error: argument --benchmarks: invalid choice: '' (choose from 'ocrbench', 'textvqa', 'docvqa', 'chartqa', 'ai2d', 'scienceqa', 'mmstar', 'mmmu', 'mathvista')
