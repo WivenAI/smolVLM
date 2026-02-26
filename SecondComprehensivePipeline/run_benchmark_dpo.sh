@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --account=master
-#SBATCH --job-name=smolvlm2_2B
-#SBATCH --output=izarlogs/smolvlm2_2B_%j_%a.out
-#SBATCH --error=izarlogs/smolvlm2_2B_%j_%a.err
-#SBATCH --time=71:00:00
+#SBATCH --job-name=bench_dpo
+#SBATCH --output=izarlogs/bench_dpo_%j_%a.out
+#SBATCH --error=izarlogs/bench_dpo_%j_%a.err
+#SBATCH --time=48:00:00
 #SBATCH --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH --cpus-per-task=5
@@ -11,14 +11,15 @@
 #SBATCH --ntasks=1
 
 # ============================================================================
-# SmolVLM2 2.2B Training Script - 23ComprehensivePipeline
+# Benchmark DPO Training Script
 # ============================================================================
-# Model: HuggingFaceTB/SmolVLM2-2.2B-Instruct
+# Runs DPO training on benchmark datasets (ChartQA, DocVQA, OCRBench)
+# with fixed learning rate (1e-6)
 #
 # Usage:
-#   Single config:  sbatch run_smolvlm2_2B_individual.sh smolvlm2_2B_full_sft_ocrbench
-#   Array job:      sbatch --array=0-11 run_smolvlm2_2B_individual.sh
-#   Limited:        sbatch --array=0-11%5 run_smolvlm2_2B_individual.sh  # max 5 concurrent
+#   Single config:  sbatch run_benchmark_dpo.sh chartqa
+#   Array job:      sbatch --array=0-5 run_benchmark_dpo.sh
+#   Limited:        sbatch --array=0-5%3 run_benchmark_dpo.sh  # max 3 concurrent
 # ============================================================================
 
 # Change to project directory
@@ -39,38 +40,44 @@ export WANDB_ENTITY=david-lacour-epfl
 export WANDB_API_KEY=${WANDB_API_KEY:-"YOUR_WANDB_API_KEY"}
 export WANDB_MODE=offline
 
-# List of all 12 SmolVLM2 2.2B configs
+# List of benchmark DPO configs (LoRA + Full Fine-tune)
 CONFIGS=(
-    # Full FT Benchmark (3)
-    "smolvlm2_2B_full_sft_ocrbench"
-    "smolvlm2_2B_full_sft_docvqa"
-    "smolvlm2_2B_full_sft_chartqa"
-    # Full FT ERP (6)
-    "smolvlm2_2B_full_sft_chosen_nova"
-    "smolvlm2_2B_full_sft_chosen_gemini"
-    "smolvlm2_2B_full_sft_qcm_nova"
-    "smolvlm2_2B_full_sft_qcm_gemini"
-    "smolvlm2_2B_full_sft_qcm_procedure1"
-    "smolvlm2_2B_full_sft_qcm_procedure2"
-    # QLoRA Benchmark (3)
-    "smolvlm2_2B_qlora_sft_ocrbench"
-    "smolvlm2_2B_qlora_sft_docvqa"
-    "smolvlm2_2B_qlora_sft_chartqa"
+    # LoRA/QLoRA DPO on benchmarks
+    "dpo_chartqa"
+    "dpo_docvqa"
+    "dpo_ocrbench"
+    # Full Fine-tune DPO on benchmarks
+    "full_ft_dpo_chartqa"
+    "full_ft_dpo_docvqa"
+    "full_ft_dpo_ocrbench"
 )
 
 # Determine which config to run
 if [ -n "$1" ]; then
-    # Config name passed as argument
-    CONFIG_NAME="$1"
+    # Config name passed as argument (allow short names)
+    case "$1" in
+        chartqa|dpo_chartqa)
+            CONFIG_NAME="dpo_chartqa"
+            ;;
+        docvqa|dpo_docvqa)
+            CONFIG_NAME="dpo_docvqa"
+            ;;
+        ocrbench|dpo_ocrbench)
+            CONFIG_NAME="dpo_ocrbench"
+            ;;
+        *)
+            CONFIG_NAME="$1"
+            ;;
+    esac
 elif [ -n "$SLURM_ARRAY_TASK_ID" ]; then
     # Array job - use task ID to select config
     CONFIG_NAME="${CONFIGS[$SLURM_ARRAY_TASK_ID]}"
 else
     echo "Error: No config specified. Use:"
-    echo "  sbatch run_smolvlm2_2B_individual.sh <config_name>"
-    echo "  sbatch --array=0-11 run_smolvlm2_2B_individual.sh"
+    echo "  sbatch run_benchmark_dpo.sh <config_name>"
+    echo "  sbatch --array=0-5 run_benchmark_dpo.sh"
     echo ""
-    echo "Available configs (0-11):"
+    echo "Available configs:"
     for i in "${!CONFIGS[@]}"; do
         echo "  $i: ${CONFIGS[$i]}"
     done
@@ -85,14 +92,14 @@ if [ ! -f "$CONFIG_FILE" ]; then
 fi
 
 echo "=========================================="
-echo "SmolVLM2 2.2B Training"
+echo "Benchmark DPO Training"
 echo "=========================================="
 echo "Config: $CONFIG_NAME"
 echo "File: $CONFIG_FILE"
-echo "Model: HuggingFaceTB/SmolVLM2-2.2B-Instruct"
 echo "Node: $SLURM_NODELIST"
 echo "GPU: $CUDA_VISIBLE_DEVICES"
-echo "WandB Project: 23ComprehensivePipeline"
+echo "WandB Project: 25ComprehensivePipeline"
+echo "Learning Rate: 1e-6 (fixed)"
 echo "Started: $(date)"
 echo "=========================================="
 

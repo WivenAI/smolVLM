@@ -24,6 +24,6 @@ mkdir -p $HF_HOME
 
 
 export WANDB_ENTITY=david-lacour-epfl
-export WANDB_API_KEY=1d6641b737cd13fe32a9371dd3780308fee23512 
+export WANDB_API_KEY=${WANDB_API_KEY:-"YOUR_WANDB_API_KEY"}
 export WANDB_MODE=offline
 python pipeline.py

@@ -10,8 +10,7 @@ import google.generativeai as genai
 from crewai import Agent, Task, Crew, Process, LLM
 
 # Configure Gemini API
-with open('/home/david-lacour/Desktop/geminiAPIkey.txt', 'r') as f:
-    GEMINI_API_KEY = f.read().strip()
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY")
 
 genai.configure(api_key=GEMINI_API_KEY)
 

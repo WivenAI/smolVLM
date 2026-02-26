@@ -36,7 +36,7 @@ mkdir -p $HF_HOME
 
 # WandB setup (offline mode for cluster)
 export WANDB_ENTITY=david-lacour-epfl
-export WANDB_API_KEY=1d6641b737cd13fe32a9371dd3780308fee23512
+export WANDB_API_KEY=${WANDB_API_KEY:-"YOUR_WANDB_API_KEY"}
 export WANDB_MODE=offline
 
 # List of all 12 Qwen2-VL-2B configs
